@@ -1,10 +1,11 @@
 public class AccountAttachment {
  public List<Account> Records { get; set; }    
  public Id MoreRecordId {get; set; }
- public Account MoreRecord {get; set;} 
+ public Account MoreRecord {get; set;}  
     public ApexPages.StandardSetController contactSet {
         
         get {
+        	
             if(contactSet == null) {
                 contactSet = new         
                 ApexPages.StandardSetController(Database.getQueryLocator(
