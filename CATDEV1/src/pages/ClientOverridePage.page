@@ -1,0 +1,19 @@
+<apex:page standardController="ClientMaster__c" extensions="ClientMasterExtension" sidebar="false" >
+
+  <!-- Style Sheet -->
+  <style type="text/css">
+     #contents{
+        float:left;
+        width:1000px;
+    }
+    #chatter{
+        float:left;
+        width:300px;
+    }
+  </style>
+
+    <apex:form >
+      <apex:detail relatedList="true"/>
+    </apex:form>
+
+</apex:page>

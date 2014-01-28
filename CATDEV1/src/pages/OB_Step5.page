@@ -1,0 +1,25 @@
+<apex:page standardController="Candidate__c"
+    extensions="OB_CandidateStatusController"
+    tabStyle="Candidate_Status__c" showHeader="false">
+    <apex:composition template="{!$Site.Template}">
+        <apex:define name="body">
+            <apex:sectionHeader subtitle="Step 5 of 6" />
+            <apex:form >
+                <apex:pageBlock title="Associate Handbook" id="theBlock">
+                    <apex:facet name="footer">
+                        <apex:outputPanel >
+                            <apex:commandButton action="{!step4}" value="Previous"
+                                styleClass="btn" />
+                            <apex:commandButton action="{!step6}" value="Next"
+                                styleClass="btn" />
+                        </apex:outputPanel>
+                    </apex:facet>
+                    <c:OB_DocumentView embededDocument="{!URLFOR($Resource.OB_Documents, 'AssociateHandbook.swf')}"
+                        downlaodDocument="{!URLFOR($Resource.OB_Documents, 'AssociateHandbook.pdf')}"></c:OB_DocumentView>
+                    <apex:inputField value="{!candidateStatus.Initial_Associate_Handbook__c}"  required="true" />
+                    <em>I acknowledge receipt of the Catalina Associate Handbook and understand that I am responsible for adhering to the policies therin.</em>
+                </apex:pageBlock>
+            </apex:form>
+        </apex:define>
+    </apex:composition>
+</apex:page>

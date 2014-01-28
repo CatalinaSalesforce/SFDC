@@ -1,0 +1,64 @@
+<apex:page standardController="Candidate__c">
+
+    <html>
+<head>
+</head>
+<body>
+    <div id="emailBody">
+        <p>Hello {!Candidate__c.First_Name__c},</p>
+        <p>&nbsp;</p>
+        <p>
+           Congratulations and welcome to Catalina! 
+        </p>
+        <p>
+        Our QuickStart Portal will help you get off to a great start at Catalina. To log in, here are the details you’ll need: 
+        </p>
+        <p>&nbsp;</p>
+        <table border="0" cellpadding="1">
+            <tr>
+                <td>Link</td><td>&nbsp;&nbsp;&nbsp;</td>
+                <td><a
+                    href="http://catalinamarketing.force.com/Onboard">http://catalinamarketing.force.com/Onboard</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Username</td><td>&nbsp;&nbsp;&nbsp;</td>
+                <td>{!Candidate__c.Email__c}</td>
+            </tr>
+            <tr>
+                <td>Passcode</td><td>&nbsp;&nbsp;&nbsp;</td>
+                <td>{!Candidate__c.Passcode__c}</td>
+            </tr>
+            <tr><td></td><td></td><td>Hint: Try copying and pasting passcode</td></tr>
+        </table>
+        <p>
+            Joining our team should be an exceptional and professional experience for you, so if there is anything you need, please contact our HR Specialist at: <a href="mailto:QuickStart@catalinamarketing.com">QuickStart@catalinamarketing.com</a>
+        </p>
+        <p>
+        Welcome aboard, <br/>
+        Catalina Human Resources 
+        </p>
+   </div>
+
+    <p>
+        <em>To send the email to the Candidate, copy the above text and
+            paste it to Outlook or click <a href="javascript:composeEmail();">this
+                link</a> </em>
+    </p>
+
+    <script>
+
+function composeEmail(){
+var emailBody = document.getElementById("emailBody");
+var bodyText = encodeURIComponent(emailBody.innerText);
+var subject = 'Welcome to Catalina';
+var email = '{!Candidate__c.Email__c}';
+var mailto_link = 'mailto:'+email+'?subject='+subject+'&body='+bodyText;
+win = window.open(mailto_link);
+}
+</script>
+
+
+</body>
+    </html>
+</apex:page>

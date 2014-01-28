@@ -1,0 +1,4 @@
+<apex:page controller="SVC_SubmitCaseController" action="{!createCase}"  contenttype="text/x-json" showHeader="false" sidebar="false">    
+  {caseId:{!strCaseId},
+   error:"{!StrError}"} 
+</apex:page>

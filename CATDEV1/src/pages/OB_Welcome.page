@@ -1,0 +1,28 @@
+<apex:page showHeader="false" title="{!$Label.site.site_login}">
+    <apex:composition template="{!$Site.Template}">
+        <apex:define name="body">
+        <style> 
+    
+        </style>
+<div id="welcome_container">
+    <div id="content">
+    <div class="sideImage"><input name="" type="image" src="{!URLFOR($Resource.OB_StaticResources, 'images/side_image.jpg')}" /></div><br />
+    <div class="copy">
+        
+        <img src="{!URLFOR($Resource.OB_StaticResources, 'images/welcome_txt.gif')}"/>
+<p>We're pleased that you have elected to join our dynamic and exceptional team of talented associates. This QuickStart Portal is designed to introduce you to Catalina and speed your assimilation. By reviewing and completing some of our onboarding documents, we can ensure your smooth transition to the company and quickly provide you the opportunity to become a valued and contributing member of your new team.</p>
+<p>To begin, click on the "Start" button below. Please be sure to complete the New Associate Details form first, as the data you enter on this form will populate subsequent forms, saving you time. Please review the forms thoroughly as they contain key accountabilities for our new associates. You do not have to complete all forms in one session since your progress is retained when you save and return later.</p>
+<p>We are glad to be adding such a talented new team member and encourage you to contact your hiring manager with any questions you may have prior to your first day at Catalina.</p>
+
+                <apex:outputLink value="OB_Step1" id="startLink"
+                    style="align:right;font-size:1.1em;">Start >> </apex:outputLink>
+</div>
+<br clear="all" />
+    <br clear="all" />
+    </div>
+    <div id="footer"></div>
+</div>
+
+        </apex:define>
+    </apex:composition>
+</apex:page>

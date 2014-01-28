@@ -1,0 +1,47 @@
+<apex:component controller="ProductTrackerCls" allowDML="true">
+    <apex:attribute name="object" type="String" assignTo="{!obj}" required="true" description="String parameter to store object name"/>
+    <apex:attribute name="objId" type="String" assignTo="{!objectId}" required="true" description="String parameter to store parent object id"/>
+    <apex:attribute name="rType" type="String" assignTo="{!recordType}" required="false" description="String parameter to store record type"/>
+    <apex:attribute name="cField" type="String" assignTo="{!conditionField}" required="true" description="String parameter to store conditionField for query"/>
+    
+    <apex:outputPanel rendered="{!IF(dataList.size==0,true,false)}">
+        <table class="list" border="0" cellspacing="0" cellpadding="0"><tr bgcolor="#f8f8f8"><td>No records to display</td></tr></table>
+    </apex:outputPanel>
+    <apex:outputPanel id="main" rendered="{!IF(dataList.size!=0,true,false)}">
+        <table width="100%" class="list" border="0" cellspacing="0" cellpadding="0">
+            <tr class="headerRow">
+                <th scope="col" width="5%">
+                    <apex:outputlabel value="Action"></apex:outputlabel> 
+                </th>
+                <apex:repeat value="{!fieldsLabel}" var="f">
+                    <th class="headerRow">
+                        <apex:outputlabel value="{!f}"></apex:outputlabel> 
+                    </th>
+                </apex:repeat>
+            </tr>
+            <apex:repeat value="{!dataList}" var="r">  
+                <tr class="dataRow even first">
+                    <td>
+                        <apex:commandLink value="Edit" action="{!editRecord}" style="color:#488AC7" rendered="{!IF(AND(obj!='Product_Project__c',obj!='Project_Release__c',obj!='Product_Feature_Link__c',obj!='Release_Feature__c'),true,false)}">
+                            <apex:param name="cid" value="{!r.sobj['Id']}" assignTo="{!editId}"/>
+                        </apex:commandlink><apex:outputPanel rendered="{!IF(AND(obj!='Product_Project__c',obj!='Project_Release__c',obj!='Product_Feature_Link__c',obj!='Release_Feature__c'),true,false)}">&nbsp;|&nbsp;</apex:outputPanel>
+                        <apex:commandLink value="Del" action="{!delRecord}" style="color:#488AC7" onclick="if(!confirm('Are you sure?')) return false;" reRender="main">
+                            <apex:param name="cid" value="{!r.sobj['Id']}" assignTo="{!delId}"/>
+                        </apex:commandLink>
+                    </td>
+                    <apex:repeat value="{!fieldsTypeWrapperList}" var="afield" > 
+                        <td>
+                            <apex:commandLink action="{!viewRecord}" value="{!r.sobj[afield.apiName]}" id="thelink" rendered="{!IF(OR(afield.apiName=='Name',afield.apiName=='Subject'), true, false)}"><apex:param name="recordID" value="{!r.sobj['Id']}"/></apex:commandLink>  
+                            <apex:commandLink action="{!viewRecord}" value="{!r.sobj[afield.referenceName]}" rendered="{!IF(AND(afield.apiName!='Name',afield.dataType=='REFERENCE',afield.apiName!='Subject',afield.dataType!='DATE',afield.dataType!='DATETIME'), true, false)}"><apex:param name="recordID" value="{!r.sobj[afield.apiName]}"/></apex:commandLink>
+                            <apex:outputText value="{!r.sobj[afield.apiName]}" rendered="{!IF(AND(r.sobj[afield.apiName]==null,afield.apiName!='Name',afield.dataType!='REFERENCE',afield.apiName!='Subject'), true, false)}"/>
+                            <apex:outputText value=" {!r.sobj[afield.apiName]}" rendered="{!IF(AND(r.sobj[afield.apiName]!=null,afield.apiName!='Name',afield.dataType!='REFERENCE',afield.apiName!='Subject'), true, false)}"/>
+                <!--
+                            <apex:outputText value=" {!r.sobj[afield.apiName]}" rendered="{!IF(AND(afield.apiName!='Name',afield.apiName!='Subject', OR(afield.dataType=='DATE',afield.dataType=='DATETIME')), true, false)}"/>  
+                -->
+                        </td>
+                    </apex:repeat>
+                </tr> 
+            </apex:repeat>
+        </table>
+    </apex:outputPanel>
+</apex:component>

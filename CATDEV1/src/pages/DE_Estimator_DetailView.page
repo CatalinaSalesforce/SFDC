@@ -1,0 +1,24 @@
+<apex:page standardcontroller="DE_Estimator__c" extensions="DE_Estimator_Controller" showheader="true">  
+  
+  <apex:detail subject="{!DE_Estimator__c.id}" relatedList="false" title="false"/> 
+  <apex:form >
+         <apex:pageblock title="Program Costs" id="idpgblock" mode="maindetail"> 
+         <apex:pageMessages /> 
+           <apex:repeat value="{!estimatesList}" var="estimate" id="theRepeat">       
+             <apex:pageblocksection title="{!estimate.OfferTypePrintOrL2C__c}" columns="2">           
+                <apex:outputField value="{!estimate.Total_Est_Prints_Over_Program_Duration__c}" rendered="{!CONTAINS(estimate.OfferTypePrintOrL2C__c,'Printable')}"/> 
+                <apex:outputField value="{!estimate.Total_Est_Loads_Over_Program_Duration__c}" rendered="{!CONTAINS(estimate.OfferTypePrintOrL2C__c,'Load to Card')}"/>    
+                <apex:outputField value="{!estimate.Redemptions__c}" />         
+                <apex:outputField value="{!estimate.Distribution_Cost__c}" />    
+                <apex:outputField value="{!estimate.Redemption_Cost__c}" />     
+                <apex:outputField value="{!estimate.Program_Cost__c}" /> 
+                <apex:outputField value="{!estimate.Units_Moved__c}" />         
+                <apex:outputField value="{!estimate.CPUM__c}" />   
+                <apex:commandButton value="Delete" action="{!deleteEstimate}" rerender="idpgblock">
+                   <apex:param name="DelEst" value="{!estimate.id}" assignTo="{!delEstimateId}"/>
+                </apex:commandButton>
+              </apex:pageblocksection> 
+            </apex:repeat>             
+         </apex:pageblock>            
+  </apex:form>        
+</apex:page>

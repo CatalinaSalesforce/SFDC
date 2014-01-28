@@ -1,0 +1,537 @@
+<apex:page controller="AccountBestGuessController" showHeader="true" sidebar="false" standardStyleSheets="false" id="ThePage">
+    <apex:form id="TheForm">
+    <!-- Stylings -->
+    <style type="text/css">
+        [id*=ManBase] {padding:0pz;}
+    
+    </style>
+    <style>
+        span.cellWithoutBackground
+        {
+            display:block;
+            background-image:none;
+            margin-right:-2px;
+            margin-left:-2px;
+            height:14px;
+            padding:4px;
+        }
+        input {
+            background-color : #9CCB19;
+        }
+        .editableCellsClass{
+            background-color : #DAD295;
+        }
+        .nonEditableCellsClass{
+            background-color : #909B86;
+        }
+    </style>
+    <style>
+        .selected { color:red; }
+        .highlight { background:yellow; }
+    </style>
+    
+    <!-- Load the jquery libraries and the css stylesheets -->
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.jQuery, 'jquery/jquery-ui.css')}" />
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.jQuery, 'jquery/ui.jqgrid.css')}" /> 
+    <script src="{!URLFOR($Resource.jSonResource, '/resource/js/jquery-1.5.2.min.js')}" type="text/javascript"></script> 
+    <script src="{!URLFOR($Resource.jSonResource, '/resource/js/i18n/grid.locale-en.js')}" type="text/javascript"></script>
+    <script src="{!URLFOR($Resource.jSonResource, '/resource/js/jquery.jqGrid.min.js')}" type="text/javascript"></script> 
+    <script src="{!URLFOR($Resource.jSonResource, '/resource/js/jquery.jqGrid.src.js')}" type="text/javascript"></script>
+          
+    <!-- Action function to pass data from grid to controller -->
+    <apex:actionFunction name="saveBestGuess" reRender="TheData" action="{!saveBestGuess}" status="Saving" oncomplete="return collapseAll();">
+        <apex:param name="data" value="" assignTo="{!gstrSave}"/>
+    </apex:actionFunction>
+    <!-- Action function to search -->
+    <apex:actionFunction name="searchForGuess" reRender="TheData" action="{!setBestGuessRecord}" status="Loading" oncomplete="return collapseAll();"/>
+    
+    <!-- Initial javascript -->
+    <script type="text/javascript">
+        var saveFlag = false;
+        
+        //Search function
+        function searchGuess(){
+            var answer = true;
+            if(saveFlag == true){
+                answer = confirm("The changes are not saved. Do you want to Undo the changes and Continue?")
+            }
+            if(answer){
+                //Undo the changes
+                saveFlag = false;
+                searchForGuess();
+            }
+            return false;
+        }
+        
+        //Function to default the sections to collapsed
+        function addLoadEvent(func) {
+            var oldonload = window.onload;
+                if (typeof window.onload != 'function') {
+                window.onload = func;
+            } else {
+                window.onload = function() {
+                    if (oldonload) {
+                        oldonload();
+                    }
+                    func();
+                }
+            }
+        }
+        
+        function collapseAll() {
+            try{
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheManDetails').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheManDetails:ManBase').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheManDetails:ManDigi').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheManDetails:ManAud').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheManDetails:ManMob').childNodes[0].childNodes[0]);
+            } catch(e){}
+            try{
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheRetDetails').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheRetDetails:RetBase').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheRetDetails:RetDigi').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheRetDetails:RetAud').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheRetDetails:RetMob').childNodes[0].childNodes[0]);
+            } catch(e){}
+            return false;
+        }
+        
+        addLoadEvent(collapseAll);
+    </script>
+    
+    <apex:sectionHeader title="Account Best Guess"/>
+    
+    <!-- display the searching -->
+    <apex:pageBlock >
+        <!-- Display the search and reset buttons -->
+        <table width="100%">
+            <tr>
+                <td width="70%" align="center">
+                    <apex:actionStatus startText="Processing...Please Wait   " id="Searching"/>
+                    <apex:commandButton value="Search" onClick="return searchGuess();" style="width=100px;"/>
+                    <apex:commandButton value="Reset" style="width=100px;" action="{!resetSearch}" reRender="TheSearch"/>
+                </td>
+            </tr>
+        </table>
+        <apex:pageBlockSection id="TheSearch">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Account"/>
+                <apex:selectList value="{!gstrAccountId}" size="1">
+                    <apex:selectOptions value="{!Accounts}"/>
+                    <apex:actionSupport event="onchange" reRender="TheSearch"/>
+                </apex:selectList>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Quarter"/>
+                <apex:selectList value="{!gstrGuessId}" size="1">
+                    <apex:selectOptions value="{!Quarters}"/>
+                </apex:selectList>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Section Type"/>
+                <apex:selectList value="{!gstrSectionType}" size="1">
+                    <apex:selectOptions value="{!SectionTypes}"/>
+                    <apex:actionSupport event="onchange" action="{!setSectionType}" reRender="TheSearch" status="Searching"/>
+                </apex:selectList>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection> 
+    </apex:pageBlock>
+    
+    <!-- Display the field information -->
+    <apex:outputPanel id="TheData">
+    <apex:pageBlock id="TheInfo" title="{!gabg.Name}" rendered="{!displayData}">
+        <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Record Link"/>
+                <apex:outputLink value="{!'/' + gabg.Id}">
+                    {!gabg.Name}
+                </apex:outputLink>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Previous Year Actual"/>
+                <apex:outputText value="{!gabg.Previous_Year_Actual__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Low Total"/>
+                <apex:outputText value="{!gabg.Total_L__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Best Guess Total"/>
+                <apex:outputText value="{!gabg.Total_BG__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="High Total"/>
+                <apex:outputText value="{!gabg.Total_H__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem />
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    <!-- display the status -->
+    <apex:actionStatus startText="Loading..." id="Loading"/> 
+    <apex:actionStatus startText="Saving..." id="Saving"/>
+    
+    <!-- display the grids -->
+    <apex:pageBlock id="TheGrids" rendered="{!displayData}">
+    
+        <!-- jquery code for the grids -->
+        <script type="text/javascript">
+            var rowNum;
+            var colNum;
+            jQuery(document).ready(function(){
+                loadManufacturer();
+                loadRetail();
+                calculateManufacturerTotals();
+                calculateRetailTotals();
+            });
+            function loadManufacturer(){ 
+                jQuery("#Manufacturer").jqGrid({
+                data: {!gstrManufacturer},
+                datatype: 'local',
+                colNames:['','Low','Best Guess','High'],
+                colModel :[ 
+                    {name:'rowName',index:'rName',sortable:false,resizable:false,classes:'nonEditableCellsClass'},
+                    {name:'low',index:'low',align:"right",resizable:false,editable:true,classes:'editableCellsClass',sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"$", defaultValue: '$0'}},
+                    {name:'bestGuess',index:'bestGuess',align:"right",resizable:false,editable:true,classes:'editableCellsClass',sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"$",defaultValue: '$0'}},
+                    {name:'high',index:'high',align:"right",resizable:false,sortable:false,editable:true,classes:'editableCellsClass',formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"$",defaultValue: '$0'}},
+                ],
+                rowNum:5,
+                caption: 'Manufacturer Estimate',
+                height:'100%',
+                cellEdit:true,
+                cellsubmit:'clientArray',
+                hidegrid:false,
+                autowidth:true,
+                footerrow:true,
+                afterSaveCell: function(rowid,colname,data){
+                    calculateManufacturerTotals();
+                    jQuery("#Manufacturer").jqGrid('setCell',rowid,colname,data,{'font-weight':'bold','color':'red','background-color':''});
+                    saveFlag = true;
+                },
+                beforeEditCell: function(rowid,cellname,value,iRow,iCol){
+                    rowNum = iRow;
+                    colNum = iCol;
+                }
+                });
+            } 
+            function loadRetail(){
+                jQuery("#Retail").jqGrid({
+                data: {!gstrRetail},
+                datatype: 'local',
+                colNames:['','Low','Best Guess','High'],
+                colModel :[ 
+                    {name:'rowName',index:'rName',sortable:false,resizable:false,classes:'nonEditableCellsClass'},
+                    {name:'low',index:'low',align:"right",resizable:false,editable:true,classes:'editableCellsClass',sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"$", defaultValue: '$0'}},
+                    {name:'bestGuess',index:'bestGuess',align:"right",resizable:false,editable:true,classes:'editableCellsClass',sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"$",defaultValue: '$0'}},
+                    {name:'high',index:'high',align:"right",resizable:false,sortable:false,editable:true,classes:'editableCellsClass',formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"$",defaultValue: '$0'}},
+                ],
+                rowNum:5,
+                caption: 'Retail Estimate',
+                height:'100%',
+                cellEdit:true,
+                cellsubmit:'clientArray',
+                hidegrid:false,
+                autowidth:true,
+                footerrow:true,
+                afterSaveCell: function(rowid,colname,data){
+                    calculateRetailTotals();
+                    jQuery("#Retail").jqGrid('setCell',rowid,colname,data,{'font-weight':'bold','color':'red','background-color':''});
+                    saveFlag = true;
+                }
+                }); 
+            }
+            
+            //Functions to calculate the totals
+            function calculateManufacturerTotals(){
+                var lTotal = jQuery("#Manufacturer").jqGrid('getCol','low',false,'sum');
+                var bgTotal = jQuery("#Manufacturer").jqGrid('getCol','bestGuess',false,'sum');
+                var hTotal = jQuery("#Manufacturer").jqGrid('getCol','high',false,'sum');
+                jQuery("#Manufacturer").jqGrid('footerData','set',{rowName:'Total',low:lTotal,bestGuess:bgTotal,high:hTotal});
+            }
+            function calculateRetailTotals(){
+                var lTotal = jQuery("#Retail").jqGrid('getCol','low',false,'sum');
+                var bgTotal = jQuery("#Retail").jqGrid('getCol','bestGuess',false,'sum');
+                var hTotal = jQuery("#Retail").jqGrid('getCol','high',false,'sum');
+                jQuery("#Retail").jqGrid('footerData','set',{rowName:'Total',low:lTotal,bestGuess:bgTotal,high:hTotal});
+            }
+            
+            //Function to create the save strings
+            function saveData() {
+                //Save all of the cells and add the saved values to the save string
+                var strSave = '';
+                //Save each cell to exit edit mode and get the edited value
+                try{
+                    jQuery("#Manufacturer").saveCell(rowNum,colNum);
+                } catch(err) {}
+                try{
+                    jQuery("#Retail").saveCell(rowNum,colNum);
+                } catch(err) {}
+                for(var i=1;i<5;i++){
+                    for(var j=1;j<4;j++){
+                        var manuCellValue = jQuery("#Manufacturer").getCell(i,j);
+                        var retailCellValue = jQuery("#Retail").getCell(i,j);
+                        strSave += manuCellValue + ":" + retailCellValue + ":";
+                    }
+                }
+                strSave = strSave.substring(0,strSave.length-1);
+                //Call an apex action function to pass the save string to the controller
+                saveBestGuess(strSave);
+                saveFlag = false;
+                return false;
+            }
+        </script>
+    
+        <!-- Manufacturer details section -->
+        <apex:pageBlockSection columns="1" id="TheManDetails" rendered="{!isManufacturer}">
+            <apex:facet name="header">
+                 <span style="color:black">Manufacturer Details</span>
+             </apex:facet>  
+            
+            <apex:pageBlockSection id="ManBase">
+                <apex:facet name="header">
+                    <apex:outputText value="Base Bookings - {0, number,$###,###,##0}" style="color:black">
+                        <apex:param value="{!gabg.M_B_Booked_Actual__c}"/> 
+                    </apex:outputText>
+                </apex:facet>
+                <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_B_Booked_Proposal__c}"/> 
+                     </apex:outputText>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Full Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_B_Booked_Full_Proposal__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Actual"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_B_Booked_Actual__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+                
+            <apex:pageBlockSection id="ManDigi">
+                <apex:facet name="header">
+                    <apex:outputText value="Digital Bookings - {0, number,$###,###,##0}" style="color:black">
+                        <apex:param value="{!gabg.M_D_Booked_Actual__c}"/> 
+                    </apex:outputText>
+                </apex:facet>
+                <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_D_Booked_Proposal__c}"/>
+                     </apex:outputText>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Full Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_D_Booked_Full_Proposal__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Actual"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_D_Booked_Actual__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection> 
+                
+            <apex:pageBlockSection id="ManAud">
+                <apex:facet name="header">
+                    <apex:outputText value="Audience Network Bookings - {0, number,$###,###,##0}" style="color:black">
+                        <apex:param value="{!gabg.M_A_Booked_Actual__c}"/> 
+                    </apex:outputText>
+                </apex:facet>
+                <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_A_Booked_Proposal__c}"/>
+                     </apex:outputText>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Full Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_A_Booked_Full_Proposal__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Actual"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_A_Booked_Actual__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="ManMob">
+                <apex:facet name="header">
+                    <apex:outputText value="Mobile Bookings - {0, number,$###,###,##0}" style="color:black">
+                        <apex:param value="{!gabg.M_M_Booked_Actual__c}"/> 
+                    </apex:outputText>
+                </apex:facet>
+                <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_M_Booked_Proposal__c}"/>
+                     </apex:outputText>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Full Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_M_Booked_Full_Proposal__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Actual"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.M_M_Booked_Actual__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlockSection>
+    
+        <apex:pageMessages ></apex:pageMessages>
+        <!-- display the top save button -->
+        <table width="100%">
+            <tr>
+                <td width="70%" align="center">
+                    <apex:commandButton value="Save" onClick="return saveData();" style="width:100px;" status="Saving" rendered="{!isManufacturer}"/>
+                </td>
+            </tr>
+        </table>
+        
+        <apex:pageBlockSection columns="1" rendered="{!isManufacturer}">
+            <table id="Manufacturer"></table>
+        </apex:pageBlockSection>
+        
+        <!-- Retail details section -->
+        <apex:pageBlockSection columns="1" id="TheRetDetails" rendered="{!!isManufacturer}">
+            <apex:facet name="header">
+                 <span style="color:black">Retail Details</span>
+             </apex:facet>   
+             
+             <apex:pageBlockSection id="RetBase">
+                <apex:facet name="header">
+                    <apex:outputText value="Base Bookings - {0, number,$###,###,##0}" style="color:black">
+                        <apex:param value="{!gabg.R_B_Booked_Actual__c}"/> 
+                    </apex:outputText>
+                </apex:facet>
+                <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_B_Booked_Proposal__c}"/>
+                     </apex:outputText>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Full Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_B_Booked_Full_Proposal__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Actual"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_B_Booked_Actual__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="RetDigi">
+                <apex:facet name="header">
+                    <apex:outputText value="Digital Bookings - {0, number,$###,###,##0}" style="color:black">
+                        <apex:param value="{!gabg.R_D_Booked_Actual__c}"/> 
+                    </apex:outputText>
+                </apex:facet>
+                <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_D_Booked_Proposal__c}"/>
+                     </apex:outputText>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Full Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_D_Booked_Full_Proposal__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Actual"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_D_Booked_Actual__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="RetAud">
+                <apex:facet name="header">
+                    <apex:outputText value="Audience Network Bookings - {0, number,$###,###,##0}" style="color:black">
+                        <apex:param value="{!gabg.R_A_Booked_Actual__c}"/> 
+                    </apex:outputText>
+                </apex:facet>
+                <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_A_Booked_Proposal__c}"/>
+                     </apex:outputText>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Full Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_A_Booked_Full_Proposal__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Actual"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_A_Booked_Actual__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="RetMob">
+                <apex:facet name="header">
+                    <apex:outputText value="Mobile Bookings - {0, number,$###,###,##0}" style="color:black">
+                        <apex:param value="{!gabg.R_M_Booked_Actual__c}"/> 
+                    </apex:outputText>
+                </apex:facet>
+                <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_M_Booked_Proposal__c}"/>
+                     </apex:outputText>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Full Proposal"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_M_Booked_Full_Proposal__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                     <apex:outputLabel value="Actual"/>
+                     <apex:outputText value="{0, number,$###,###,##0}">
+                         <apex:param value="{!gabg.R_M_Booked_Actual__c}"/>
+                     </apex:outputText>
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlockSection>
+    
+        
+        <!-- display the bottom save button -->
+        <table width="100%">
+            <tr>
+                <td width="70%" align="center">
+                    <apex:commandButton id="bottomSave" rendered="{!!isManufacturer}" value="Save" onClick="return saveData();" style="width:100px;" status="Saving"/>
+                </td>
+            </tr>
+        </table>
+        <apex:pageBlockSection columns="1" rendered="{!!isManufacturer}">
+            <table id="Retail"></table>
+        </apex:pageBlockSection>
+        
+    </apex:pageBlock>
+    </apex:outputPanel>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,53 @@
+<apex:page standardcontroller="Opportunity" extensions="OppCategoryController" action="{!init}">
+	<apex:form >
+	<apex:sectionHeader title="{!$ObjectType.Opportunity.label} Edit" subtitle="{!opp.Name}"/>
+	<apex:pageBlock title="{!$ObjectType.Opportunity.label} Edit" mode="edit">
+		<apex:pageBlockButtons >
+			<apex:commandButton action="{!save}" value="Save" />
+			<apex:commandButton action="{!cancel}" value="Cancel" />
+		</apex:pageBlockButtons>
+		<apex:pageBlockSection title="Information" >
+			<apex:outputField value="{!opp.OwnerId}" />
+			<apex:outputField value="{!opp.Opportunity_Owner_Manager__c}" />
+			<apex:inputField value="{!opp.Name}" required="true" />
+			<apex:inputField value="{!opp.CloseDate}" required="true"/>
+			<apex:inputField value="{!opp.Catalina_Business_Unit__c}" />
+			<!-- Custom Cat Multi Select -->
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel value="At Risk Categories"/>
+                    <apex:panelGrid columns="3" id="Grid">
+                        <apex:selectList value="{!mCatSelect.leftselected}" multiselect="true" size="5">
+                            <apex:selectOptions value="{!mCatSelect.unselectedvalues}"/>
+                        </apex:selectList>
+                        <apex:panelGroup >
+                            <br/>
+                            <apex:image value="{!$Resource.multiselected}">
+                                <apex:actionSupport event="onclick" action="{!mCatSelect.selectclick}" reRender="Grid"/>
+                            </apex:image>
+                            <br/><br/>
+                            <apex:image value="{!$Resource.multiunselected}">
+                                <apex:actionSupport event="onclick" action="{!mCatSelect.unselectclick}" reRender="Grid"/>
+                            </apex:image>
+                        </apex:panelGroup>
+                        <apex:selectList value="{!mCatSelect.rightselected}" multiselect="true" size="5">
+                            <apex:selectOptions value="{!mCatSelect.SelectedValues}" />
+                        </apex:selectList>
+                    </apex:panelGrid>
+                </apex:pageblockSectionItem>
+             <!-- End Custom Brand Multi Select -->
+            <apex:inputField value="{!opp.AccountId}" required="true"/>
+			 <apex:inputField value="{!opp.StageName}"/>
+             <apex:inputField value="{!opp.Related_Contract__c}" required="{!relatedContractRequired}"/>
+             <apex:outputField value="{!opp.RecordTypeId}" />
+             <apex:inputField value="{!opp.Amount}" required="true"/>
+             <apex:outputField value="{!opp.CATS_External_ID__c}" />
+             <apex:inputField value="{!opp.Best_Guess__c}" required="true"/>
+             <apex:outputField value="{!opp.Renewal_Rights_Expiry_Date__c}" />
+             <apex:inputField value="{!opp.Prior_Year_Amount__c}" />
+             <apex:inputField value="{!opp.Renewal_Comments__c}" />
+             <apex:inputField value="{!opp.Renewal_Goal_Amount__c}" />
+             <apex:inputField value="{!opp.At_Risk_Comments__c}" />
+		</apex:pageBlockSection>
+	</apex:pageBlock>
+    </apex:form>
+</apex:page>

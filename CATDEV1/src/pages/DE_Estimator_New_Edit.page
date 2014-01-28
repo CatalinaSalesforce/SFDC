@@ -1,0 +1,132 @@
+<apex:page standardcontroller="DE_Estimator__c" extensions="DE_Estimator_Controller" showheader="true">
+    
+    <apex:form >    
+    <apex:pageBlock title="New Estimate" mode="maindetail">
+         <apex:pageMessages id="idpagemsgs"/>
+         <apex:pageBlockButtons >
+                <apex:commandButton action="{!Save}" value="Estimate"/> 
+                <apex:commandButton action="{!Cancel}" value="Cancel"/> 
+         </apex:pageBlockButtons>   
+         
+         <apex:pageBlockSection title="Enter Name" columns="2">
+             <apex:inputField value="{!DE_Estimator__c.Name}"/>
+             <apex:outputField value="{!DE_Estimator__c.Old_Estimator_Name__c}" rendered="false"/> 
+         </apex:pageBlockSection>    
+         
+         <apex:actionRegion >
+         <apex:pageBlockSection title="Select Offer Type" columns="2">    
+                <apex:inputField value="{!DE_Estimator__c.OffType_Printable__c}" id="idOffPrint" required="true">
+                    <apex:actionSupport event="onchange" action="{!VFUpdatePrintOffType}" rerender="idOffAddonPanel,idOffTypePanel,idPrintPricingPanel, idL2CPricingPanel"/>  
+                </apex:inputField>                      
+                <apex:commandButton value="Customize" action="{!VFUpdateCustOffType}" rerender="idOffTypePanel,idOffPrint,idOffL2C,idOffAddonPanel,idPrintPricingPanel, idL2CPricingPanel"/>                   
+                <apex:inputField value="{!DE_Estimator__c.OffType_L2C__c}" id="idOffL2C" required="true">
+                    <apex:actionSupport event="onchange" action="{!VFUpdateL2COffType}" rerender="idOffTypePanel,idPrintPricingPanel, idL2CPricingPanel"/>  
+                </apex:inputField>  
+         </apex:pageBlockSection>                                  
+         </apex:actionRegion> 
+          
+          
+         <apex:outputPanel id="idOffTypePanel">       
+         <apex:pageBlockSection title="Offer Type" rendered="{!DE_Estimator__c.IsOfferCustomized__c}">             
+                <apex:pageBlockSectionitem >   
+                <apex:outputLabel value="Offer Type"/>  
+                <apex:actionRegion >    
+                <apex:inputField value="{!DE_Estimator__c.Cust_Offer_Type__c}">
+                        <apex:actionSupport event="onchange" action="{!VFUpdateCustPrintOrL2C}" rerender="idOffAddonPanel,idPrintPricingPanel, idL2CPricingPanel"/>  
+                </apex:inputField>    
+                </apex:actionRegion>
+                </apex:pageBlockSectionitem>                
+        </apex:pageBlockSection>   
+        </apex:outputPanel>  
+        
+        <apex:outputPanel id="idOffAddonPanel">
+            <apex:pageBlockSection title="Printable Offer Add-Ons" columns="1" rendered="{!(DE_Estimator__c.OffType_Printable__c) || (IF((DE_Estimator__c.IsOfferCustomized__c) && (CONTAINS(DE_Estimator__c.Cust_Offer_Type__c,'Printable')),true,false))}"> 
+                <apex:pageBlockSectionitem >   
+                    <apex:outputLabel value="Printable Add-On's"/> 
+                    <apex:actionRegion >
+                        <apex:inputField value="{!DE_Estimator__c.AddOns__c}">
+                            <apex:actionSupport event="onchange" action="{!VFUpdateVideoAddOns}" rerender="idSetUpFeesPanel"/>  
+                        </apex:inputField>                 
+                    </apex:actionRegion>
+                </apex:pageBlockSectionitem>
+                <apex:outputText value="Note : Video and Like Rewards are not included on Target.com"/>
+                <apex:outputPanel id="idSetUpFeesPanel">
+                     <apex:pageBlockSection rendered="{!IF(CONTAINS(DE_Estimator__c.AddOns__c,'Rewards'), true, false)}">
+                      <apex:inputField value="{!DE_Estimator__c.Add_SetUp_Fees__c}"/>
+                    </apex:pageBlockSection>
+                </apex:outputPanel>
+            </apex:pageBlockSection> 
+        </apex:outputPanel>                                                 
+        
+        
+       
+        <apex:pageBlockSection title="Offer Details" columns="2">   
+                <apex:inputField value="{!DE_Estimator__c.Promoted_Brand_Name__c}" required="true"/> 
+                <apex:inputField value="{!DE_Estimator__c.Account__c}" required="true"/>                   
+                <apex:inputField value="{!DE_Estimator__c.Offer_Value__c}" required="true"/>                   
+                <apex:inputField value="{!DE_Estimator__c.Calendar_Month__c}" id="iddate" required="true"/>
+                <apex:inputField value="{!DE_Estimator__c.Program_Duration__c}" required="true"/>
+                <apex:inputField value="{!DE_Estimator__c.Purchase_Requirement__c}" required="true"/>                
+        </apex:pageBlockSection>  
+          
+              
+        <apex:pageBlockSection title="Category Details" columns="2">               
+                <apex:pageBlockSectionitem >   
+                    <apex:outputLabel value="Category"/>
+                    <apex:actionRegion >            
+                        <apex:inputField value="{!DE_Estimator__c.Category__c}" required="true">
+                            <apex:actionSupport action="{!VFUpdateFillProducts}" event="onchange" rerender="idCatNum,idDesc,idCatUpspw,idCatUpt"/>  
+                        </apex:inputField>
+                    </apex:actionRegion> 
+                </apex:pageBlockSectionitem>
+                <apex:outputText value=""/>
+                
+                <apex:pageBlockSectionitem >   
+                    <apex:outputLabel value="Category Number"/>
+                    <apex:actionRegion >
+                        <apex:inputField value="{!DE_Estimator__c.Promoted_Category_Number__c}" id="idCatNum">
+                            <apex:actionSupport action="{!VFUpdateFillProducts}" event="onchange" rerender="idCatNum,idDesc,idCatUpspw,idCatUpt"/>  
+                        </apex:inputField>
+                    </apex:actionRegion> 
+                </apex:pageBlockSectionitem>
+                 
+                <apex:outputField value="{!DE_Estimator__c.Category_Description__c}" id="idDesc"/> 
+                <apex:outputField value="{!DE_Estimator__c.Category_UPSPW__c}" id="idCatUpspw"/>
+                <apex:outputField value="{!DE_Estimator__c.Category_Units_Per_Trip__c}" id="idCatUpt"/> 
+                <apex:inputField value="{!DE_Estimator__c.Avg_Retail_Price__c}" required="true"/>
+                <apex:inputField value="{!DE_Estimator__c.UPSPW_Promoted_Brand__c}" required="true"/>
+        </apex:pageBlockSection>                   
+        
+         
+        <apex:outputPanel id="idPrintPricingPanel">
+        <apex:pageBlockSection title="Printable Pricing" columns="2" rendered="{!(DE_Estimator__c.OffType_Printable__c) || (IF((DE_Estimator__c.IsOfferCustomized__c) && (CONTAINS(DE_Estimator__c.Cust_Offer_Type__c,'Printable')),true,false))}">   
+              <apex:pageBlockSectionItem >  
+                <apex:outputLabel value="Distribution Cost Per Print"/>
+                <apex:actionRegion > 
+                <apex:inputField value="{!DE_Estimator__c.Distribution_Cost_Per_Print__c}" required="true">
+                <apex:actionSupport action="{!VFUpdateCopyValue}" event="onchange" rerender="idDistCostLoad"/>
+                </apex:inputField> 
+                </apex:actionRegion> 
+              </apex:pageBlockSectionItem>  
+              <apex:inputField value="{!DE_Estimator__c.Estimated_Redemption__c}" required="true"/> 
+              <apex:inputField value="{!DE_Estimator__c.Handling_Fee__c}" required="true"/>                
+        </apex:pageBlockSection>
+        </apex:outputPanel>        
+        
+        <apex:outputPanel id="idL2CPricingPanel">
+        <apex:pageBlockSection title="L2C Pricing" columns="2" rendered="{!(DE_Estimator__c.OffType_L2C__c) || (IF((DE_Estimator__c.IsOfferCustomized__c) && (CONTAINS(DE_Estimator__c.Cust_Offer_Type__c,'Load to Card')),true,false))}">   
+              <apex:inputField value="{!DE_Estimator__c.Distribution_Cost_Per_Load__c}" id="idDistCostLoad" required="true"/>
+              <apex:inputField value="{!DE_Estimator__c.L2C_Estimated_Redemption__c}" required="true"/>
+              <apex:inputField value="{!DE_Estimator__c.L2C_Handling_Fee__c}" required="true"/>           
+        </apex:pageBlockSection> 
+        </apex:outputPanel>  
+              
+        <apex:pageBlockSection title="Client Budget">
+             <apex:inputField value="{!DE_Estimator__c.Client_Budget__c}"/>   
+        </apex:pageBlockSection>    
+        
+      </apex:pageBlock>
+          
+    </apex:form>
+
+</apex:page>

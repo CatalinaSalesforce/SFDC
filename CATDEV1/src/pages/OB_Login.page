@@ -1,0 +1,12 @@
+<apex:page id="candidateSiteLogin" showHeader="false"
+	title="{!$Label.site.site_login}">
+	<apex:composition template="{!$Site.Template}">
+		<apex:define name="body">
+			<center>
+				<br /> <br />
+				<apex:outputText style="font-style:italic; color:red" value="Your session has timed out. Please login again." rendered="{!$CurrentPage.parameters.session= 'INACTIVE'}"/>
+				<c:OB_CandidateLogin id="candidateLogin" />
+			</center>
+		</apex:define>
+	</apex:composition>
+</apex:page>

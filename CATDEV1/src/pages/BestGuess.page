@@ -1,0 +1,1065 @@
+<apex:page controller="BestGuessController" showHeader="true" sidebar="false" standardStyleSheets="false" id="ThePage">
+    <apex:form id="TheForm">
+    <!-- Stylings -->
+    <style type="text/css">
+        [id*=ManBase] {padding:0pz;}
+    </style>
+    <style>
+        span.cellWithoutBackground{
+            display:block;
+            background-image:none;
+            margin-right:-2px;
+            margin-left:-2px;
+            height:14px;
+            padding:4px;
+        }
+        input {
+            background-color : #9CCB19;
+        }
+        .editableCellsClass{
+            background-color : #DAD295;
+        }
+        .nonEditableCellsClass{
+            background-color : #909B86;
+        }
+    </style>
+    <style>
+        .selected { color:red; }
+        .highlight { background:yellow; }
+        #HistoricalBG { width:55%; text-align:right;margin-top:10px;}
+        #HistoricalBG tr.headerRow th {text-align:center; width:14%;}
+        #HistoricalBG td.rowText {text-align:left;}
+        #HistoricalBG td.diff {background-color : #E0E6F8;}
+    </style>
+    
+    <!-- Library Includes -->
+    <apex:includeScript value="{!URLFOR($Resource.jqGrid,'/js/jquery-1.9.0.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jqGrid,'/js/jquery.jqGrid.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jqGrid,'/js/i18n/grid.locale-en.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.FlexBox, '/FlexBox/js/jquery.flexbox.min.js')}"/>
+
+    <!-- Stylings -->
+    <apex:stylesheet value="{!URLFOR($Resource.FlexBox, '/FlexBox/css/jquery.flexbox.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.jqGrid,'/css/ui.jqgrid.css')}"/>
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.jQuery, 'jquery/jquery-ui.css')}" />
+    
+    <script>
+        var j$ = jQuery.noConflict();
+        
+        function copyAccBGSConfirm(){
+            if(saveFlag == true){
+                alert("The changes are not saved. Please save the changes and then copy.");
+                return false;
+            }
+            var accName = j$('#AccFLEXBOX_input').val();
+            if(accName==null || accName=='' || accName=='Enter account name'){
+                alert("Please select an account.");
+                return false;
+            }
+            var r=confirm("Are you sure you want to copy your Best Guess numbers to your Account Best Guess for "+accName+"?");
+            if (r==true){
+                var tmpStrSave = '';
+                try{
+                    jQuery("#Manufacturer").saveCell(rowNum,colNum);
+                } catch(err) {}
+                try{
+                    jQuery("#Retail").saveCell(rowNum,colNum);
+                } catch(err) {}
+                for(var i=1;i<5;i++){
+                    for(var j=1;j<9;j++){       
+                        var manuCellValue = jQuery("#Manufacturer").getCell(i,j);
+                        var retailCellValue = jQuery("#Retail").getCell(i,j);
+                        tmpStrSave += manuCellValue + ":" + retailCellValue + ":";
+                    }
+                }
+                tmpStrSave = tmpStrSave.substring(0,tmpStrSave.length-1);
+                copyABGS(tmpStrSave);
+            } else {
+                return false;
+            }
+        }
+        
+        function copyDoneConfirm(){
+            var accName = j$('#AccFLEXBOX_input').val();
+            alert("Your Best Guess numbers are copied to your Account Best Guess for "+accName);
+        }
+    </script>
+    
+    <!-- Action function to pass data from grid to controller -->
+    <apex:actionFunction name="saveBestGuess" reRender="TheGrids,TheInfo, historicalPanel" action="{!saveBestGuess}" status="Saving"> <!-- oncomplete="return collapseAll();"  --> 
+        <apex:param name="data" value="" assignTo="{!gstrSave}"/>
+    </apex:actionFunction>
+    <!-- Action function to search -->
+    <apex:actionFunction name="searchForGuess" reRender="TheGrids,TheInfo, historicalPanel,accBestGuess" action="{!setBestGuessRecord}" status="Loading"/> <!-- oncomplete="return collapseAll();"  --> 
+    <!--Action Function to pass the selected account id-->
+    <apex:actionFunction name="setAcc" rerender="AccFLEXBOX" immediate="true">
+        <apex:param value="" name="p1" assignTo="{!selectedAccId}"/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="copyABGS" action="{!copyAccBGS}" reRender="ThePage" status="Copying" oncomplete="javascript:copyDoneConfirm();return false;">
+        <apex:param name="data" value="" assignTo="{!gstrSave}"/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="setTypeAF" reRender="bTypeBlk" action="{!setType}" status="safeRun"/>
+    
+    <!-- Initial javascript -->
+    <script type="text/javascript">
+        var saveFlag = false;         
+        
+        //Search function
+        function searchGuess(){
+            var answer = true;
+            if(saveFlag == true){
+                answer = confirm("The changes are not saved. Do you want to Undo the changes and Continue?")
+            }
+            if(answer){
+                //Undo the changes
+                saveFlag = false;
+                searchForGuess();
+            }
+            return false;
+        }
+        
+        function setTypeJF(usr){
+            var answer = true;
+            if(saveFlag==true && usr=='null'){
+                answer = confirm("The changes are not saved. Do you want to Undo the changes and Continue?")
+            }
+            if(answer || saveFlag==false){
+                //Undo the changes
+                saveFlag = false;
+                setTypeAF();
+            }
+            return false;
+        }
+        
+        //Function to default the sections to collapsed
+        function addLoadEvent(func) {
+            var oldonload = window.onload;
+            if (typeof window.onload != 'function') {
+                window.onload = func;
+            } else {
+                window.onload = function() {
+                    if (oldonload) {
+                        oldonload();
+                    }
+                    func();
+                }
+            }
+        }
+        
+        function collapseAll() {
+            try{
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheManDetails').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheManDetails:ManBase').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheManDetails:ManDigi').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheManDetails:ManAud').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheManDetails:ManMob').childNodes[0].childNodes[0]);
+            } catch(e){}
+            try{
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheRetDetails').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheRetDetails:RetBase').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheRetDetails:RetDigi').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheRetDetails:RetAud').childNodes[0].childNodes[0]);
+                twistSection(document.getElementById('ThePage:TheForm:TheGrids:TheRetDetails:RetMob').childNodes[0].childNodes[0]);
+            } catch(e){}
+            return false;
+        }
+    </script>
+    
+    <apex:sectionHeader title="Best Guess"/>    
+    <apex:pageBlock id="bTypeBlk">
+        <apex:pageblockSection title="" columns="1" collapsible="false">
+            <apex:pageBlockSectionItem rendered="{!RenderSelect}">
+                <apex:outputLabel value="Best Guess" for="bType"></apex:outputLabel>
+                <apex:selectRadio value="{!bestGuessType}" id="bType">
+                    <apex:selectOptions value="{!bestGuessTypes}"/>
+                    <apex:actionSupport event="onchange" reRender="bTypeBlk" />
+                </apex:selectRadio>                
+            </apex:pageBlockSectionItem>  
+        </apex:pageblockSection>
+ 
+        <apex:outputPanel id="accBestGuesssection">
+            <apex:pageBlockSection columns="1" rendered="{!IF(bestGuessType == 'account', true, false)}">            
+                <apex:pageblockSection >
+                    <apex:pageBlockSectionItem rendered="{!IF(conglomerateAccounts.size>1, true, false)}">
+                        <apex:outputLabel value="Conglomerate"/>                       
+                        <apex:selectList value="{!congAccount}" size="1">
+                        <apex:selectOptions value="{!conglomerateAccounts}"/>
+                            <apex:actionSupport event="onchange" action="{!conglomerateAccountBestGuess}" reRender="childaccts,CongAccBestGuess" status="srch"/>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                </apex:pageblockSection>    
+                
+                <apex:pageBlockSection id="childaccts" columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Account" for="acclist"/>
+                        <apex:selectList value="{!childAccount}" size="1" id="acclist">
+                            <apex:selectOptions value="{!ChildAccounts}"/>
+                            <apex:actionSupport immediate="false" status="srch"/>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>    
+                </apex:pageBlockSection>                         
+          
+                <apex:pageBlock mode="maindetail"> 
+                    <apex:pageblockButtons location="top">                 
+                        <apex:commandButton value="Go" action="{!openBestGuess}"/>
+                    </apex:pageblockButtons>
+                </apex:pageBlock>     
+            </apex:pageBlockSection>
+        </apex:outputPanel>        
+
+        <!-- display the searching -->
+        <apex:pageBlock id="userBestGuessBlk" rendered="{!IF(bestGuessType == 'user', true, false)}">
+            <!-- Disable the search and reset buttons while code is executing -->
+            <apex:actionStatus id="safeRun" onstart="DisableButtons()" onstop="EnableButtons()" ></apex:actionStatus>
+            <script>
+                function DisableButtons(){
+                    var mainSearch = document.getElementById("{!$Component.MainSearch}");
+                    mainSearch.disabled = true;
+                    mainSearch.className = 'btnDisabled';
+                    var mainReset = document.getElementById("{!$Component.MainReset}");
+                    mainReset.disabled = true;
+                    mainReset.className = 'btnDisabled';
+                }
+        
+                function EnableButtons(){
+                    var mainSearch = document.getElementById("{!$Component.MainSearch}");
+                    mainSearch.disabled = false;
+                    mainSearch.className = 'btn';
+                    var mainReset = document.getElementById("{!$Component.MainReset}");
+                    mainReset.disabled = false;
+                    mainReset.className = 'btn';
+                }
+            </script> 
+            
+            <!-- Display the search and reset buttons -->
+            <apex:outputPanel id="buttonsOP">
+                <table width="100%">
+                    <tr>
+                        <td width="70%" align="center">
+                            <apex:actionStatus startText="Processing...Please Wait   " id="Searching"/>
+                            <apex:outputPanel rendered="{!IF(AND(gstrUserId!=null,gstrUserId!='',gstrUserId!='null'),true,false)}">
+                                <apex:commandButton id="MainSearch" value="Search" onClick="return searchGuess();" style="width=100px;"/>
+                                <apex:commandButton id="MainReset" value="Reset" style="width=100px;" action="{!resetSearch}" reRender="TheSearch,buttonsOP"/>
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+            
+            <apex:pageBlockSection id="TheSearch">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.User}"/>
+                    <apex:selectList value="{!gstrUserId}" size="1" id="UserName" onchange="setTypeJF(this.value);">
+                        <apex:selectOptions value="{!Users}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+             
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Year"/>
+                    <apex:selectList value="{!gstrGuessId}" size="1">
+                        <apex:selectOptions value="{!Years}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            
+                <apex:pageBlockSectionItem rendered="{!selectType}">
+                    <apex:outputLabel value="{!$Label.Guess_Type}"/>
+                    <apex:selectList value="{!gstrType}" size="1">
+                        <apex:selectOptions value="{!Types}"/>
+                        <apex:actionSupport event="onchange" action="{!setIsManBestGuess}" reRender="TheSearch" status="safeRun"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!!selectType}"></apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.Section_Type}"/>
+                    <apex:selectList value="{!gstrSectionType}" size="1">
+                        <apex:selectOptions value="{!SectionTypes}"/>
+                        <apex:actionSupport event="onchange" action="{!setSectionType}" reRender="TheSearch" status="Searching"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>      
+            </apex:pageBlockSection> 
+        </apex:pageBlock>
+    
+        <!-- Display the field information -->
+        <apex:pageBlock id="TheInfo" rendered="{!IF(bestGuessType == 'user', true, false)}">
+            <apex:pageBlockSection >        
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.Team_Previous_Year_Actual}"/>
+                    <apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}">
+                        <apex:param value="{!team_Previous_Year_Actual}"/>
+                    </apex:outputText>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.Total_L}"/>
+                    <apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}">
+                        <apex:param value="{!total_L}"/>
+                    </apex:outputText>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!isGridManBestGuess}">
+                    <apex:outputLabel value="{!$Label.Override_Total_L}"/>
+                    <apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}">
+                        <apex:param value="{!override_Total_L}"/>
+                    </apex:outputText>
+                </apex:pageBlockSectionItem>
+            
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.Total_BG}"/>
+                    <apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}">
+                        <apex:param value="{!total_BG}"/>
+                    </apex:outputText>
+                </apex:pageBlockSectionItem>
+            
+                <apex:pageBlockSectionItem rendered="{!isGridManBestGuess}">
+                    <apex:outputLabel value="{!$Label.Override_Total_BG}"/>
+                    <apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}">
+                        <apex:param value="{!override_Total_BG}"/>
+                    </apex:outputText>
+                </apex:pageBlockSectionItem>
+            
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.Total_H}"/>
+                    <apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}">
+                        <apex:param value="{!total_H}"/>
+                    </apex:outputText>
+                </apex:pageBlockSectionItem>
+            
+                <apex:pageBlockSectionItem rendered="{!isGridManBestGuess}">
+                    <apex:outputLabel value="{!$Label.Override_Total_H}"/>
+                    <apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}">
+                        <apex:param value="{!override_Total_H}"/>
+                    </apex:outputText>
+                </apex:pageBlockSectionItem>
+            
+                <apex:pageBlockSectionItem rendered="{!!isGridManBestGuess}"/>            
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    
+        <!-- display the status -->
+        <apex:actionStatus startText="Loading..." id="Loading"/> 
+        <apex:actionStatus startText="Saving..." id="Saving"/>
+    
+        <!-- display the grids -->
+        <apex:pageBlock id="TheGrids"  rendered="{!IF(AND(bestGuessType == 'user',gstrUserId!='null'), true, false)}">
+            <!-- jquery code for the grids -->
+            <script type="text/javascript">
+                var rowNum;
+                var colNum;
+                var isManagerGuess = {!isGridManBestGuess};
+                var isHidden = !{!isGridManBestGuess};
+                var qlEdit = !{!q1Edit};
+                var q2Edit = !{!q2Edit};
+                var q3Edit = !{!q3Edit};
+                var q4Edit = !{!q4Edit};
+                var salesQ1Edit;
+                var salesQ2Edit;
+                var salesQ3Edit;
+                var salesQ4Edit;
+                if({!isGridManBestGuess}){
+                    salesQ1Edit = !{!isGridManBestGuess};
+                    salesQ2Edit = !{!isGridManBestGuess};
+                    salesQ3Edit = !{!isGridManBestGuess};
+                    salesQ4Edit = !{!isGridManBestGuess};
+                }else{
+                    salesQ1Edit = !{!q1Edit};
+                    salesQ2Edit = !{!q2Edit};
+                    salesQ3Edit = !{!q3Edit};
+                    salesQ4Edit = !{!q4Edit};
+                }
+                var classRep1Edit = salesQ1Edit == true ? 'editableCellsClass' : 'nonEditableCellsClass';
+                var classRep2Edit = salesQ2Edit == true ? 'editableCellsClass' : 'nonEditableCellsClass';
+                var classRep3Edit = salesQ3Edit == true ? 'editableCellsClass' : 'nonEditableCellsClass';
+                var classRep4Edit = salesQ4Edit == true ? 'editableCellsClass' : 'nonEditableCellsClass';
+                var classManager1Edit = qlEdit == true ? 'editableCellsClass' : 'nonEditableCellsClass';
+                var classManager2Edit = q2Edit == true ? 'editableCellsClass' : 'nonEditableCellsClass';
+                var classManager3Edit = q3Edit == true ? 'editableCellsClass' : 'nonEditableCellsClass';
+                var classManager4Edit = q4Edit == true ? 'editableCellsClass' : 'nonEditableCellsClass';
+                jQuery(document).ready(function(){
+                    loadManufacturer();
+                    loadRetail();
+                    calculateManufacturerTotals();
+                    calculateRetailTotals();
+                });
+                function loadManufacturer(){ 
+                    jQuery("#Manufacturer").jqGrid({
+                        data: {!gstrManufacturer},
+                        datatype: 'local',
+                        colNames:['','Q1','Q2','Q3','Q4','Q1','Q2','Q3','Q4'],
+                        colModel :[ 
+                            {name:'rowName',index:'rName',sortable:false,resizable:false,classes:'nonEditableCellsClass'},
+                            {name:'teamQ1',index:'teamQ1',align:"right",resizable:false,editable:salesQ1Edit,classes:classRep1Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'teamQ2',index:'teamQ2',align:"right",resizable:false,editable:salesQ2Edit,classes:classRep2Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'teamQ3',index:'teamQ3',align:"right",resizable:false,editable:salesQ3Edit,classes:classRep3Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'teamQ4',index:'teamQ4',align:"right",resizable:false,editable:salesQ4Edit,classes:classRep4Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},                        
+                            {name:'q1',index:'q1',hidden:isHidden,align:"right",resizable:false,editable:qlEdit,classes:classManager1Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'q2',index:'q2',hidden:isHidden,align:"right",resizable:false,editable:q2Edit,classes:classManager2Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'q3',index:'q3',hidden:isHidden,align:"right",resizable:false,editable:q3Edit,classes:classManager3Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'q4',index:'q4',hidden:isHidden,align:"right",resizable:false,editable:q4Edit,classes:classManager4Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}}
+                        ],
+                        rowNum:5,
+                        caption: 'Manufacturer Estimate',
+                        height:'100%',
+                        cellEdit:true,
+                        cellsubmit:'clientArray',
+                        hidegrid:false,
+                        autowidth:true,
+                        footerrow:true,
+                        afterSaveCell: function(rowid,colname,data){
+                            calculateManufacturerTotals();
+                            jQuery("#Manufacturer").jqGrid('setCell',rowid,colname,data,{'font-weight':'bold','color':'red','background-color':''});
+                            saveFlag = true;
+                        },
+                        beforeEditCell: function(rowid,cellname,value,iRow,iCol){
+                            rowNum = iRow;
+                            colNum = iCol;
+                        }
+                    });
+                    if(!isHidden){
+                        jQuery("#Manufacturer").jqGrid('destroyGroupHeader');
+                        jQuery("#Manufacturer").jqGrid('setGroupHeaders', {
+                            useColSpanStyle: false,
+                            groupHeaders:[
+                                {startColumnName: 'teamQ1', numberOfColumns: 4, titleText: '<center>Team</center>'},
+                                {startColumnName: 'q1', numberOfColumns: 4, titleText: '<center>Override</center>'}
+                            ] 
+                        });
+                    }
+                } 
+            
+                function loadRetail(){
+                    jQuery("#Retail").jqGrid({
+                        data: {!gstrRetail},
+                        datatype: 'local',
+                        colNames:['','Q1','Q2','Q3','Q4','Q1','Q2','Q3','Q4'],
+                        colModel :[ 
+                            {name:'rowName',index:'rName',sortable:false,resizable:false,classes:'nonEditableCellsClass'},
+                            {name:'teamQ1',index:'teamQ1',align:"right",resizable:false,editable:salesQ1Edit,classes:classRep1Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'teamQ2',index:'teamQ2',align:"right",resizable:false,editable:salesQ2Edit,classes:classRep2Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'teamQ3',index:'teamQ3',align:"right",resizable:false,editable:salesQ3Edit,classes:classRep3Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'teamQ4',index:'teamQ4',align:"right",resizable:false,editable:salesQ4Edit,classes:classRep4Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},                        
+                            {name:'q1',index:'q1',hidden:isHidden,align:"right",resizable:false,editable:qlEdit,classes:classManager1Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'q2',index:'q2',hidden:isHidden,align:"right",resizable:false,editable:q2Edit,classes:classManager2Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'q3',index:'q3',hidden:isHidden,align:"right",resizable:false,editable:q3Edit,classes:classManager3Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}},
+                            {name:'q4',index:'q4',hidden:isHidden,align:"right",resizable:false,editable:q4Edit,classes:classManager4Edit,sortable:false,formatter:'currency',formatoptions:{thousandsSeparator:",",decimalPlaces: 0,prefix:"{!$Label.CurrencySymbol}",defaultValue: '{!$Label.CurrencySymbol}0'}}
+                        ],
+                        rowNum:5,
+                        caption: '{!$Label.Retail_Estimate}',
+                        height:'100%',
+                        cellEdit:true,
+                        cellsubmit:'clientArray',
+                        hidegrid:false,
+                        autowidth:true,
+                        footerrow:true,
+                        afterSaveCell: function(rowid,colname,data){
+                            calculateRetailTotals();
+                            jQuery("#Retail").jqGrid('setCell',rowid,colname,data,{'font-weight':'bold','color':'red','background-color':''});
+                            saveFlag = true;
+                        },
+                        beforeEditCell: function(rowid,cellname,value,iRow,iCol){
+                            rowNum = iRow;
+                            colNum = iCol;
+                        }
+                    });
+                    if(!isHidden){
+                        jQuery("#Retail").jqGrid('destroyGroupHeader');
+                        jQuery("#Retail").jqGrid('setGroupHeaders', {
+                            useColSpanStyle: false,
+                            groupHeaders:[
+                                {startColumnName: 'teamQ1', numberOfColumns: 4, titleText: '<center>Team</center>'},
+                                {startColumnName: 'q1', numberOfColumns: 4, titleText: '<center>Override</center>'}
+                            ] 
+                        });
+                    }
+                }
+            
+                //Functions to calculate the totals
+                function calculateManufacturerTotals(){
+                    var q1TeamTotal = jQuery("#Manufacturer").jqGrid('getCol','teamQ1',false,'sum');
+                    var q2TeamTotal = jQuery("#Manufacturer").jqGrid('getCol','teamQ2',false,'sum');
+                    var q3TeamTotal = jQuery("#Manufacturer").jqGrid('getCol','teamQ3',false,'sum');
+                    var q4TeamTotal = jQuery("#Manufacturer").jqGrid('getCol','teamQ4',false,'sum');
+                    var q1Total = jQuery("#Manufacturer").jqGrid('getCol','q1',false,'sum');
+                    var q2Total = jQuery("#Manufacturer").jqGrid('getCol','q2',false,'sum');
+                    var q3Total = jQuery("#Manufacturer").jqGrid('getCol','q3',false,'sum');
+                    var q4Total = jQuery("#Manufacturer").jqGrid('getCol','q4',false,'sum');
+                    jQuery("#Manufacturer").jqGrid('footerData','set',{rowName:'Total',teamQ1:q1TeamTotal,teamQ2:q2TeamTotal,teamQ3:q3TeamTotal,teamQ4:q4TeamTotal,q1:q1Total,q2:q2Total,q3:q3Total,q4:q4Total});
+                }
+                
+                function calculateRetailTotals(){
+                    var q1TeamTotal = jQuery("#Retail").jqGrid('getCol','teamQ1',false,'sum');
+                    var q2TeamTotal = jQuery("#Retail").jqGrid('getCol','teamQ2',false,'sum');
+                    var q3TeamTotal = jQuery("#Retail").jqGrid('getCol','teamQ3',false,'sum');
+                    var q4TeamTotal = jQuery("#Retail").jqGrid('getCol','teamQ4',false,'sum');
+                    var q1Total = jQuery("#Retail").jqGrid('getCol','q1',false,'sum');
+                    var q2Total = jQuery("#Retail").jqGrid('getCol','q2',false,'sum');
+                    var q3Total = jQuery("#Retail").jqGrid('getCol','q3',false,'sum');
+                    var q4Total = jQuery("#Retail").jqGrid('getCol','q4',false,'sum');
+                    jQuery("#Retail").jqGrid('footerData','set',{rowName:'Total',teamQ1:q1TeamTotal,teamQ2:q2TeamTotal,teamQ3:q3TeamTotal,teamQ4:q4TeamTotal,q1:q1Total,q2:q2Total,q3:q3Total,q4:q4Total});
+                }
+            
+                //Function to create the save strings
+                function saveData() {
+                    //Save all of the cells and add the saved values to the save string
+                    var strSave = '';
+                    //Save each cell to exit edit mode and get the edited value
+                    try{
+                        jQuery("#Manufacturer").saveCell(rowNum,colNum);
+                    } catch(err) {}
+                    try{
+                        jQuery("#Retail").saveCell(rowNum,colNum);
+                    } catch(err) {}
+                    for(var i=1;i<5;i++){
+                        for(var j=1;j<9;j++){       
+                            var manuCellValue = jQuery("#Manufacturer").getCell(i,j);
+                            var retailCellValue = jQuery("#Retail").getCell(i,j);
+                            strSave += manuCellValue + ":" + retailCellValue + ":";
+                        }
+                    }
+                    strSave = strSave.substring(0,strSave.length-1);
+                    //Call an apex action function to pass the save string to the controller
+                    saveBestGuess(strSave);
+                    saveFlag = false;
+                    return false;
+                }
+            </script>
+    
+            <!-- Manufacturer details section -->
+            <apex:outputpanel rendered="{!AND(showTableMan,IF(bestGuessType == 'user', true, false))}">
+                <apex:pageBlockSection columns="1" id="TheManDetails" rendered="{!isGridManufacturer }" collapsible="false">
+                    <apex:facet name="header">
+                        <span style="color:black">Manufacturer Details</span>
+                    </apex:facet>  
+                </apex:pageBlockSection>
+                
+                <div align="left">
+                    <apex:outputLabel value="Delivery Channel" style="color:#4a4a56;font-size:91%;font-weight:bold;font-family:Arial,Helvetica,sans-serif;"/>&nbsp;&nbsp;
+                    <apex:selectList value="{!selDeliveryChannel}" size="1">
+                        <apex:selectOptions value="{!deliveryChannel}"/>
+                        <apex:actionSupport event="onchange" action="{!searchRevenue}" rerender="manTableOP"/>  
+                    </apex:selectList>     
+                </div>
+                
+                <!--#########Manufacturing Table here###########-->
+                <apex:outputpanel id="manTableOP">
+                    <apex:outputpanel rendered="{!IF(selDeliveryChannel <> 'All',True,False)}">
+                        <table style="width:70%" align="center" class="list">
+                            <tr class="headerRow">
+                                <th scope="col" style="width:25%;text-align:center;"><apex:outputlabel value=""></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q1"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q2"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q3"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q4"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Total"></apex:outputlabel></th>
+                            </tr>                
+                            <tr>
+                                <td class="rowText"><b>{!selDeliveryChannel} Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!selDeliveryChannel} Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1BookedWgt}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!selDeliveryChannel} Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedFullTotal}"/></apex:outputText></td>
+                            </tr>   
+                        </table><br></br>       
+                    </apex:outputpanel>       
+
+                    <apex:outputpanel rendered="{!IF(selDeliveryChannel == 'All',True,False)}">
+                        <table style="width:70%" align="center" class="list">
+                            <tr class="headerRow">
+                                <th scope="col" style="width:25%;text-align:center;"><apex:outputlabel value=""></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q1"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q2"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q3"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q4"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Total"></apex:outputlabel></th>
+                            </tr>                
+                            <tr>
+                                <td class="rowText"><b>Total Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>Total Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1BookedWgt}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>Total Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedFullTotal}"/></apex:outputText></td>
+                            </tr>
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[0].dChannel} Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[0].dChannel} Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedWgtQ1}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedWgtQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedWgtQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedWgtQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[0].dChannel} Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedFullQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedFullQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedFullQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedFullQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedFullTotal}"/></apex:outputText></td>
+                            </tr>                
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[1].dChannel} Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[1].dChannel} Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedWgtQ1}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedWgtQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedWgtQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedWgtQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[1].dChannel} Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedFullQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedFullQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedFullQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedFullQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedFullTotal}"/></apex:outputText></td>
+                            </tr>                
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[2].dChannel} Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[2].dChannel} Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedWgtQ1}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedWgtQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedWgtQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedWgtQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[2].dChannel} Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedFullQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedFullQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedFullQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedFullQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedFullTotal}"/></apex:outputText></td>
+                            </tr>                
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[3].dChannel} Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[3].dChannel} Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedWgtQ1}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedWgtQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedWgtQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedWgtQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[3].dChannel} Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedFullQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedFullQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedFullQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedFullQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedFullTotal}"/></apex:outputText></td>
+                            </tr>                
+                        </table><br></br>       
+                    </apex:outputpanel>
+                </apex:outputpanel>    
+            </apex:outputpanel>       
+            <apex:pageMessages ></apex:pageMessages>
+        
+            <!-- display the top save button -->
+            <table width="100%">
+                <tr>
+                    <td width="70%" align="center">
+                        <apex:commandButton value="Save" onClick="return saveData();" style="width:100px;" status="Saving" rendered="{!showTableMan}" reRender="historicalPanel"/>
+                    </td>
+                </tr>
+            </table>
+        
+            <apex:pageBlockSection columns="1" rendered="{!showTableMan}">
+                <table id="Manufacturer"></table>
+            </apex:pageBlockSection>
+        
+            <!-- Retail details section -->
+            <apex:outputpanel rendered="{!!isGridManufacturer}">
+                <apex:pageBlockSection columns="1" id="TheRetDetails" rendered="{!!isGridManufacturer}" collapsible="false">
+                    <apex:facet name="header">
+                        <span style="color:black">{!$Label.Retail_Details}</span>
+                    </apex:facet>  
+                </apex:pageBlockSection>        
+            
+                <div align="left">
+                    <apex:outputLabel value="Delivery Channel" style="color:#4a4a56;font-size:91%;font-weight:bold;font-family:Arial,Helvetica,sans-serif;"/>&nbsp;&nbsp;
+                    <apex:selectList value="{!selDeliveryChannel}" size="1">
+                        <apex:selectOptions value="{!deliveryChannel}"/>
+                        <apex:actionSupport event="onchange" action="{!searchRevenue}" rerender="retTableOP"/>  
+                    </apex:selectList>     
+                </div>
+
+                <!--#########Retail Table here###########-->
+                <apex:outputpanel id="retTableOP">
+                    <apex:outputpanel rendered="{!IF(selDeliveryChannel <> 'All',True,False)}">
+                        <table style="width:70%" align="center" class="list">
+                            <tr class="headerRow">
+                                <th scope="col" style="width:25%;text-align:center;"><apex:outputlabel value=""></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q1"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q2"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q3"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q4"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Total"></apex:outputlabel></th>
+                            </tr>                
+                            <tr>
+                                <td class="rowText"><b>{!selDeliveryChannel} Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!selDeliveryChannel} Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1BookedWgt}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!selDeliveryChannel} Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedFullTotal}"/></apex:outputText></td>
+                            </tr>   
+                        </table><br></br>       
+                    </apex:outputpanel>       
+
+                    <apex:outputpanel rendered="{!IF(selDeliveryChannel == 'All',True,False)}">
+                        <table style="width:70%" align="center" class="list">
+                            <tr class="headerRow">
+                                <th scope="col" style="width:25%;text-align:center;"><apex:outputlabel value=""></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q1"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q2"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q3"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Q4"></apex:outputlabel></th>
+                                <th scope="col" style="width:15%;text-align:center;" class="header1"><apex:outputlabel value="Total"></apex:outputlabel></th>
+                            </tr>                
+                            <tr>
+                                <td class="rowText"><b>Total Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4Booked}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>Total Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1BookedWgt}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4BookedWgt}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>Total Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q1BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q2BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q3BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!q4BookedFull}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!bookedFullTotal}"/></apex:outputText></td>
+                            </tr>
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[0].dChannel} Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[0].dChannel} Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedWgtQ1}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedWgtQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedWgtQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedWgtQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[0].dChannel} Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedFullQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedFullQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedFullQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedFullQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[0].bookedFullTotal}"/></apex:outputText></td>
+                            </tr>                
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[1].dChannel} Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[1].dChannel} Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedWgtQ1}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedWgtQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedWgtQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedWgtQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[1].dChannel} Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedFullQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedFullQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedFullQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedFullQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[1].bookedFullTotal}"/></apex:outputText></td>
+                            </tr>                
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[2].dChannel} Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[2].dChannel} Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedWgtQ1}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedWgtQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedWgtQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedWgtQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[2].dChannel} Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedFullQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedFullQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedFullQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedFullQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[2].bookedFullTotal}"/></apex:outputText></td>
+                            </tr>                
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[3].dChannel} Booked</b> </td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[3].dChannel} Booked + Wgt</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedWgtQ1}"/></apex:outputText></td>                    
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedWgtQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedWgtQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedWgtQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedWgtTotal}"/></apex:outputText></td>
+                            </tr>   
+                            <tr>
+                                <td class="rowText"><b>{!delChannelWrapperLst[3].dChannel} Booked + Full</b></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedFullQ1}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedFullQ2}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedFullQ3}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedFullQ4}"/></apex:outputText></td>
+                                <td style="text-align:right;"><apex:outputText value="{0, number,$###,###,##0}"><apex:param value="{!delChannelWrapperLst[3].bookedFullTotal}"/></apex:outputText></td>
+                            </tr>                
+                        </table><br></br>       
+                    </apex:outputpanel>
+                </apex:outputpanel>
+            </apex:outputpanel>       
+            
+            <!-- display the bottom save button -->
+            <table width="100%">
+                <tr>
+                    <td width="70%" align="center">
+                        <apex:commandButton id="bottomSave" rendered="{!!isGridManufacturer}" value="{!$Label.Save}" onClick="return saveData();" style="width:100px;" status="Saving" reRender="historicalPanel"/>
+                    </td>
+                </tr>
+            </table>
+            
+            <apex:pageBlockSection columns="1" rendered="{!!isGridManufacturer}">
+                <table id="Retail"></table>
+            </apex:pageBlockSection>   
+        </apex:pageBlock>
+
+        <!-- Historical Best Guess -->    
+        <apex:outputpanel id="historicalPanel"  rendered="{!IF(AND(bestGuessType == 'user',gstrUserId!='null'), true, false)}">
+            <apex:pageBlock id="TheHistorical" rendered="{!showHistorical}">
+                <apex:pageBlockSection columns="1" id="HistoricalBestGuess" collapsible="false">
+                    <apex:facet name="header">
+                        <span style="color:black">{!$Label.Historical_Best_Guess}</span>
+                    </apex:facet>  
+                </apex:pageBlockSection>
+        
+                <apex:pageBlockSection >
+                    <apex:pageBlockSectionItem rendered="{!showTeamMembers}">
+                        <apex:outputLabel value="{!$Label.Team_Member}"/>
+                        <apex:selectlist value="{!gstrTeamMemberId}" size="1" >
+                            <apex:selectOptions value="{!team}"/>
+                            <apex:actionSupport event="onchange" action="{!setTypeTeam}" reRender="tablePanel, historicalPanel, historicalDeliveryType"/>  
+                        </apex:selectlist>
+                    </apex:pageBlockSectionItem>
+        
+                    <apex:pageBlockSectionItem rendered="{!!showTeamMembers}">
+                        <apex:outputLabel value="Sales Rep Best Guess"/>
+                        <apex:outputlink value=""></apex:outputlink>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem id="historicalDeliveryType">
+                        <apex:outputLabel value="{!$Label.Delivery_Type}"/>
+                        <apex:selectlist value="{!deliveryType}" size="1" >
+                            <apex:selectOptions value="{!deliveryTypes}"/>
+                            <apex:actionSupport event="onchange" action="{!setDeliveryTypes}" reRender="tablePanel, historicalPanel"/> 
+                        </apex:selectlist>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:outputPanel id="tablePanel">
+                    <table width="60%" id="HistoricalBG" class="list" align="center">
+                        <tr class="headerRow">
+                            <th scope="col"><apex:outputlabel value=""></apex:outputlabel></th>
+                            <th scope="col" class="header1"><apex:outputlabel value="{!$Label.Best_Guess}"></apex:outputlabel></th>
+                            <th scope="col" class="header1"><apex:outputlabel value="{!$Label.Previous_Best_Guess}"></apex:outputlabel></th> 
+                            <th scope="col" class="header2"><apex:outputlabel value="{!$Label.Difference}"></apex:outputlabel></th>
+                            <th scope="col" class="header1"><apex:outputlabel value="{!$Label.Booked_Amount}"></apex:outputlabel></th>
+                            <th scope="col" class="header1"><apex:outputlabel value="{!$Label.Previous_Booked_Amount}"></apex:outputlabel></th>
+                            <th scope="col" class="header2"><apex:outputlabel value="{!$Label.Difference}"></apex:outputlabel></th>
+                        </tr>
+                        <apex:repeat var="bg" value="{!bestGuessList}">
+                            <tr> 
+                                <td class="rowText"><b><apex:outputText value="{!bg.name}"></apex:outputText></b></td>
+                                <td><apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!bg.bestGuess}"/></apex:outputText></td>
+                                <td><apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!bg.histBestGuess}"/></apex:outputText></td>
+                                <td class="diff"><apex:outputText style="{!IF(bg.BGDifference<0, 'color:RED', 'color: BLACK')}" value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!bg.BGDifference}"/></apex:outputText></td>
+                                <td><apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!bg.bookedAmount}"/></apex:outputText></td>
+                                <td><apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!bg.histBookedAmount}"/></apex:outputText></td> 
+                                <td class="diff"><apex:outputText style="{!IF(bg.BookedDifference<0, 'color:RED', 'color: BLACK')}, background-color: #E0F2F7" value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!bg.BookedDifference}"/></apex:outputText></td>
+                            </tr>
+                        </apex:repeat>
+                        <tr style="{!IF(!showTeamMembers,'visibility:hidden','')}">
+                            <td><b><apex:outputText value="Total"></apex:outputText></b></td>
+                            <td><apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!sumBestGuess}"/></apex:outputText></td>
+                            <td><apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!sumHistBestGuess}"/></apex:outputText></td>
+                            <td class="diff"><apex:outputText style="{!IF(sumDiffBestGuess<0, 'color:RED', 'color: BLACK')}" value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!sumDiffBestGuess}"/></apex:outputText></td>
+                            <td><apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!sumBookedAmount}"/></apex:outputText></td>
+                            <td><apex:outputText value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!sumHistBookedAmount}"/></apex:outputText></td> 
+                            <td class="diff"><apex:outputText style="{!IF(sumDiffBookedAmount<0, 'color:RED', 'color: BLACK')}" value="{0, number,{!$Label.CurrencySymbol}###,###,##0}"><apex:param value="{!sumDiffBookedAmount}"/></apex:outputText></td>
+                        </tr>                                                                   
+                    </table>
+                </apex:outputPanel>   
+            </apex:pageBlock>  
+        </apex:outputpanel>
+
+        <!--copy best guess-->
+        <apex:outputpanel id="accBestGuess">
+            <apex:outputpanel rendered="{!IF(AND(bestGuessType=='user',gstrUserId!='null',!isGridManBestGuess,$User.Id==gstrUserId,!q4Edit),true,false)}">
+                <apex:actionStatus startText="Copying..." id="Copying"/> 
+                <apex:pageBlock id="AccBGPB" rendered="{!showHistorical}">
+                    <apex:pageBlockSection columns="1" collapsible="false">
+                        <apex:facet name="header">
+                            <span style="color:black">Copy to Account Best Guess</span>
+                        </apex:facet>  
+                    </apex:pageBlockSection> 
+                
+                    <apex:pageBlockSection columns="2">
+                        <apex:pageBlockSectionItem id="AccFLXBOXPBSI">
+                            <apex:outputLabel >Account</apex:outputLabel>
+                            <apex:panelGroup id="AccFLEXPG">
+                                <div id="AccFLEXBOX"/>
+                                <script>
+                                    j$(function() {
+                                        var source = {!AccountsList};
+                                        j$('#AccFLEXBOX').flexbox(source,{
+                                            maxVisibleRows:10,
+                                            width:380,
+                                            showArrow: false,
+                                            watermark: 'Enter account name',
+                                            onSelect:function(){
+                                                setAcc(j$('#AccFLEXBOX_hidden').val());
+                                            }
+                                        });
+                                        j$('#AccFLEXBOX_input').change(function(){
+                                            var exist = false;
+                                            var id;
+                                            for(var item in source.results){
+                                                if(source.results[item].name == j$('#AccFLEXBOX_hidden').val()){
+                                                    exist = true;
+                                                    id = source.results[item].id;
+                                                }
+                                            }    
+                                            if(!exist){
+                                                j$('#AccFLEXBOX_hidden').val(null);
+                                                j$('#AccFLEXBOX_input').val(null);
+                                                setAcc(null);
+                                            } else {
+                                                setAcc(id);
+                                            }
+                                        });
+                                    });
+                                </script>
+                            </apex:panelGroup>
+                        </apex:pageBlockSectionItem>
+                    
+                        <apex:pageBlockSectionItem >
+                            <apex:commandButton id="MainSearch" value="Copy" onclick="javascript:copyAccBGSConfirm();return false;" style="width=100px;"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>                 
+                </apex:pageBlock>  
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:pageBlock> 
+    </apex:form>
+</apex:page>

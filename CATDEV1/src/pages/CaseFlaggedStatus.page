@@ -1,0 +1,5 @@
+<apex:page standardController="Case">
+<div style="{!IF(ISNULL(Case.Flagged_IP_Address__c),'margin-top:15px;font-weight:bold;background-color:green;','margin-top:15px;background-color:red;font-weight:bold;')}">
+    <apex:outputField value="{!Case.Flagged_Status__c}" /> <apex:outputText style="font-size:15px;color:white;position:relative;top:-11px;" escape="false" value="&nbsp;&nbsp;&nbsp;{!IF(ISNULL(Case.Flagged_IP_Address__c),'Consumer IP Clear','Flagged IP Address')}" />
+</div>
+</apex:page>

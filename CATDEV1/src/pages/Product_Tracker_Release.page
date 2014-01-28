@@ -1,0 +1,21 @@
+<apex:page standardController="Release__c" extensions="ProductTrackerCls">
+<style>
+.fewerMore { display: none;}
+</style>
+<apex:form >
+
+<apex:detail relatedList="true" ></apex:detail>
+
+<apex:pageBlock title="Release-Features">
+<apex:pageblockButtons location="top">
+<apex:commandButton value="New Release-Feature" action="{!newRecords}" rerender="hiddenBlock">
+<apex:param name="productFeatureName" value="{!Release__c.Name}" assignTo="{!prodReleaseFeatureNameParam}"/>
+<apex:param name="objectName" value="Release_Feature__c_Release__c" assignTo="{!objNameParam}"/>
+</apex:commandButton>
+</apex:pageblockButtons>
+<apex:pageBlock id="hiddenBlock" rendered="false"></apex:pageBlock>
+<c:ProductTrackerComponent object="Release_Feature__c" objId="{!$CurrentPage.parameters.Id}" rType="" cField="Release__c"/>
+</apex:pageBlock>
+
+</apex:form>
+</apex:page>

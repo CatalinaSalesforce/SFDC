@@ -1,0 +1,633 @@
+<apex:page controller="ReportLandingController" id="page">
+<apex:sectionHeader title="Reports & Dashboards"/>
+   <apex:form id="frm">
+      
+<apex:pageMessage summary="You do not have access to report landing page. Only SR1, SR2, SR3, SM1, SM2, EVP, IT Administration and System Administrator profiles can access this page. Please contact SFDC.Feedback@catalinamarketing.com for assistance." severity="info" strength="3" rendered="{!AND(IF(salesLandingIcons ==false, true, false), IF(executiveLandingIcons ==false, true, false), IF(adminLandingIcons ==false, true, false))}"/>
+        <apex:pageblock mode="maindetail" title="" rendered="{!AND(If(isfavReport ==false, true, false),If(isdashboard ==false, true, false))}">
+            <apex:pageMessages />
+            <apex:pageblocksection columns="3" rendered="{!IF(salesLandingIcons ==true, true, false)}" >
+
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}"> 
+                                <apex:param name="firstParam" assignTo="{!reporttype}" value="fav" />
+                                <apex:image url="{!$Resource.Favorites}" title="Favorites" width="90" height="90" style="image-align:center;" /> 
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;padding-left: 11px;">Favorites</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>    
+                
+                <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="thirdParam" assignTo="{!reporttype}" value="AccManagement" />
+                                <apex:image url="{!$Resource.AccountManagement}" title="Account Management" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Account Management</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="fourthParam" assignTo="{!reporttype}" value="AccManagementDetailed" />
+                                <apex:image url="{!$Resource.AccountManagementDetailed}" title="Account Management Detailed" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Account Management Detailed</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="fifthParam" assignTo="{!reporttype}" value="Forecasting" />
+                                <apex:image url="{!$Resource.Forecasting}" title="Forecasting" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                         
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Forecasting</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                            
+                    </apex:pageblock>               
+                </apex:pageblocksectionItem>                                
+           
+                <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="sixthParam" assignTo="{!reporttype}" value="PeopleManagement" />
+                                <apex:image url="{!$Resource.PeopleManagement}" title="People Management" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">People Management</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="seventhParam" assignTo="{!reporttype}" value="Renewals" />
+                                <apex:image url="{!$Resource.Renewals}" title="Renewals" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Renewals</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>                
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem > 
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="secondParam" assignTo="{!reporttype}" value="Quota" />
+                                <apex:image url="{!$Resource.QuotaManagement}" title="Quota Management" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Quota Management</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="ninthParam" assignTo="{!reporttype}" value="salesDashboard" />    
+                                <apex:image url="{!$Resource.Dashboard}" title="Dashboards" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Dashboards</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>                 
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="thirdParam" assignTo="{!reporttype}" value="GapManagement" />
+                                <apex:image url="{!$Resource.RetiredReport}" title="Gap Reports" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Gap Reports</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+            </apex:pageblocksection>
+            
+            <apex:pageblocksection columns="4" rendered="{!IF(executiveLandingIcons ==true, true, false)}">
+
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="firstParam" assignTo="{!reporttype}" value="fav" />
+                                <apex:image url="{!$Resource.Favorites}" title="Favorites" width="90" height="90" style="image-align:center;" /> 
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;padding-left: 11px;">Favorites</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="seventhParam" assignTo="{!reporttype}" value="Executive" />
+                                <apex:image url="{!$Resource.ExecutiveReport}" title="Executive Reports" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                     
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Executive Reports</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                                    
+                     </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="ninthParam" assignTo="{!reporttype}" value="salesDashboard" />    
+                                <apex:image url="{!$Resource.Dashboard}" title="Dashboards" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Dashboards</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>                 
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="seventhParam" assignTo="{!reporttype}" value="Renewals" />
+                                <apex:image url="{!$Resource.Renewals}" title="Renewals" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Renewals</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>                
+                </apex:pageblocksectionItem>    
+                
+                <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="sixthParam" assignTo="{!reporttype}" value="PeopleManagement" />
+                                <apex:image url="{!$Resource.PeopleManagement}" title="People Management" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">People Management</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>                
+                
+                <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="thirdParam" assignTo="{!reporttype}" value="AccManagement" />
+                                <apex:image url="{!$Resource.AccountManagement}" title="Account Management" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Account Management</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="fourthParam" assignTo="{!reporttype}" value="AccManagementDetailed" />
+                                <apex:image url="{!$Resource.AccountManagementDetailed}" title="Account Management Detailed" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Account Management Detailed</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="fifthParam" assignTo="{!reporttype}" value="Forecasting" />
+                                <apex:image url="{!$Resource.Forecasting}" title="Forecasting" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                         
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Forecasting</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                            
+                    </apex:pageblock>               
+                </apex:pageblocksectionItem>                                
+                                                          
+                <apex:pageblocksectionItem > 
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="secondParam" assignTo="{!reporttype}" value="Quota" />
+                                <apex:image url="{!$Resource.QuotaManagement}" title="Quota Management" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Quota Management</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+        
+            <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="thirdParam" assignTo="{!reporttype}" value="GapManagement" />
+                                <apex:image url="{!$Resource.RetiredReport}" title="Gap Reports" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Gap Reports</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+            </apex:pageblocksection>
+            
+            <apex:pageblocksection columns="7" rendered="{!IF(adminLandingIcons ==true, true, false)}">
+
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}">
+                                <apex:param name="firstParam" assignTo="{!reporttype}" value="fav" />
+                                <apex:image url="{!$Resource.Favorites}" title="Favorites" width="90" height="90" style="image-align:center;" /> 
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;padding-left: 11px;">Favorites</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>    
+                
+                <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="thirdParam" assignTo="{!reporttype}" value="AccManagement" />
+                                <apex:image url="{!$Resource.AccountManagement}" title="Account Management" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Account Management</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="fourthParam" assignTo="{!reporttype}" value="AccManagementDetailed" />
+                                <apex:image url="{!$Resource.AccountManagementDetailed}" title="Account Management Detailed" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Account Management Detailed</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="fifthParam" assignTo="{!reporttype}" value="Forecasting" />
+                                <apex:image url="{!$Resource.Forecasting}" title="Forecasting" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                         
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Forecasting</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                            
+                    </apex:pageblock>               
+                </apex:pageblocksectionItem>                                
+           
+                <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="sixthParam" assignTo="{!reporttype}" value="PeopleManagement" />
+                                <apex:image url="{!$Resource.PeopleManagement}" title="People Management" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">People Management</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="seventhParam" assignTo="{!reporttype}" value="Renewals" />
+                                <apex:image url="{!$Resource.Renewals}" title="Renewals" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Renewals</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>                
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem > 
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="secondParam" assignTo="{!reporttype}" value="Quota" />
+                                <apex:image url="{!$Resource.QuotaManagement}" title="Quota Management" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Quota Management</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+       
+            <apex:pageblocksectionItem >    
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="thirdParam" assignTo="{!reporttype}" value="GapManagement" />
+                                <apex:image url="{!$Resource.RetiredReport}" title="Gap Reports" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Gap Reports</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>
+                </apex:pageblocksectionItem>
+            
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="ninthParam" assignTo="{!reporttype}" value="AdminReport" />    
+                                <apex:image url="{!$Resource.AdministrativeReport}" title="Administrative Reports" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Administrative Reports</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>                
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="seventhParam" assignTo="{!reporttype}" value="Executive" />
+                                <apex:image url="{!$Resource.ExecutiveReport}" title="Executive Reports" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                     
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Executive Reports</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                                    
+                     </apex:pageblock>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="ninthParam" assignTo="{!reporttype}" value="DashboardReport" />    
+                                <apex:image url="{!$Resource.DashboardReport}" title="Dashboard Reports" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Dashboard Reports</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>                
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="ninthParam" assignTo="{!reporttype}" value="salesDashboard" />    
+                                <apex:image url="{!$Resource.Dashboard}" title="Dashboards" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Dashboards</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>                 
+                </apex:pageblocksectionItem>
+
+                <apex:pageblocksectionItem >
+                    <apex:pageblock mode="maindetail">
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <apex:commandlink action="{!goToReportDashboardDisplay}" rerender="frm">
+                                <apex:param name="ninthParam" assignTo="{!reporttype}" value="RetiredReport" />    
+                                <apex:image url="{!$Resource.RetiredReport}" title="Retired Reports" width="90" height="90" />
+                            </apex:commandlink>
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                        
+                        <apex:pageblocksection >
+                        <apex:pageblocksectionItem >
+                            <span style="text-align:center;">Retired Reports</span>  
+                        </apex:pageblocksectionItem>
+                        </apex:pageblocksection>                    
+                    </apex:pageblock>                
+                </apex:pageblocksectionItem>
+            </apex:pageblocksection>            
+        </apex:pageblock>
+<!--          
+        <apex:pageblock rendered="{!OR(If(isfavReport ==true, true, false),If(isdashboard ==true, true, false))}"> 
+        
+            <apex:pageBlockButtons rendered="{!OR(If(isfavReport ==true, true, false),If(isdashboard ==true, true, false))}" location="Top" >
+                <apex:commandButton value="Back" action="{!redirectToBack}" />    
+            </apex:pageBlockButtons>  
+            
+            <apex:pageBlockTable rendered="{!If(isfavReport ==true, true, false)}" value="{!report}" var="rep1" >
+                <apex:column width="5%">
+                    <apex:facet name="header">Action</apex:facet>
+                    <apex:outputLink title="" value="/{!rep1.id}/e?retURL=/apex/{!$CurrentPage.Name}">Edit</apex:outputLink>
+                </apex:column>                
+                <apex:column >
+                    <apex:facet name="header">Name</apex:facet>
+                    <apex:outputLink value="/{!rep1.Id}">{!rep1.Name}</apex:outputLink>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Description</apex:facet>
+                    <apex:outputText value="{!rep1.Description}"/>
+                </apex:column>                
+            </apex:pageBlockTable>
+            
+            <apex:pageBlockTable rendered="{!If(isdashboard ==true, true, false)}" value="{!dashboards}" var="das" >
+                <apex:column width="5%">
+                    <apex:facet name="header">Action</apex:facet>
+                    <apex:outputLink title="" value="/{!das.id}/e?retURL=/apex/{!$CurrentPage.Name}">Edit</apex:outputLink>
+                </apex:column>                
+                <apex:column >
+                    <apex:facet name="header">Name</apex:facet>
+                    <apex:outputLink value="/{!das.Id}">{!das.Title}</apex:outputLink>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Description</apex:facet>
+                    <apex:outputText value="{!das.Description}"/>
+                </apex:column>                
+            </apex:pageBlockTable>  
+         
+        </apex:pageblock>
+-->
+    </apex:form>
+</apex:page>

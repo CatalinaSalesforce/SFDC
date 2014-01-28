@@ -1,0 +1,411 @@
+<apex:page controller="C62ReportChartsController" id="page" sidebar="false" tabStyle="Report">
+    
+    <!-- Library Includes -->
+    <apex:includeScript value="{!URLFOR($Resource.jqGrid,'/js/jquery-1.9.0.min.js')}"/>
+    <!-- Flexbox API inclusion -->
+    <apex:includeScript value="{!URLFOR($Resource.FlexBox, '/FlexBox/js/jquery.flexbox.min.js')}"/>
+    <!-- Google API inclusion -->
+    <apex:includeScript id="a" value="https://www.google.com/jsapi"/>
+
+    <!-- Stylings -->
+    <apex:stylesheet value="{!URLFOR($Resource.FlexBox, '/FlexBox/css/jquery.flexbox.css')}"/>
+    
+    <!-- Script tag -->  
+    <script>
+        var j$ = jQuery.noConflict();
+    </script>
+    
+    <!-- Action Status --> 
+    <apex:actionstatus id="Searching">
+        <apex:facet name="start">
+            <div class="waitingSearchDiv" style="background-color:#000;height:100%;opacity:0.5;width:100%;"></div>
+            <div class="waitingSearchDiv" style="z-index:999;width:100%"> 
+                <div class="waitingHolder" style="z-index:999;opacity:1.0;top:175px;left:20px;width:150px;height:25px;background-color:#fff;border:1px solid black;border-radius:5px;padding-top:10px;color:#000;">
+                    <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                    <span class="waitingDescription" style="color:#000; opacity:1.0;">Loading...</span>
+                </div>
+            </div> 
+        </apex:facet>
+    </apex:actionstatus>
+    
+    <!-- Form -->    
+    <apex:form id="form">
+        <!-- Action Functions -->
+        <apex:actionFunction name="setAcc" rerender="AccFLEXBOX" immediate="true">
+            <apex:param value="" name="p1" assignTo="{!congId}"/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="setOwner" rerender="OwnFLEXBOX" immediate="true">
+            <apex:param value="" name="p1" assignTo="{!ownerId}"/>
+        </apex:actionFunction>
+        
+        <!-- PageBlock -->  
+        <apex:pageBlock id="pb1">
+            <!-- PageMessage -->
+            <apex:pagemessages />
+            
+            <!-- Search Button -->
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Search" action="{!send}" status="Searching" reRender="opScript,pb2" oncomplete="displayGoogleChart();"/>
+            </apex:pageBlockButtons>
+            
+            <!-- Filters Section -->
+            <apex:pageBlockSection id="pbs1" title="Filters">                
+                <apex:pageBlockSectionItem id="OwnFLXBOXPBSI">
+                    <apex:outputLabel >Opportunity Owner</apex:outputLabel>
+                    <apex:panelGroup id="OwnFLEXPG">
+                        <div id="OwnFLEXBOX"/>
+                        <script>
+                            j$(function() {
+                                var source = {!OwnersList};
+                                j$('#OwnFLEXBOX').flexbox(source,{
+                                    maxVisibleRows:10,
+                                    width:300,
+                                    showArrow: false,
+                                    onSelect:function(){
+                                        setOwner(j$('#OwnFLEXBOX_hidden').val());
+                                    }
+                                });
+                                j$('#OwnFLEXBOX_input').change(function(){
+                                    var exist = false;
+                                    var id;
+                                    for(var item in source.results){
+                                        if(source.results[item].name == j$('#OwnFLEXBOX_hidden').val()){
+                                            exist = true;
+                                            id = source.results[item].id;
+                                        }
+                                    }    
+                                    if(!exist){
+                                        j$('#OwnFLEXBOX_hidden').val(null);
+                                        j$('#OwnFLEXBOX_input').val(null);
+                                        setOwner(null);
+                                    } else {
+                                        setOwner(id);
+                                    }
+                                });
+                            });
+                        </script>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!opp.Start_Date__c}" required="true" label="Start Close Date"/>
+                
+                <apex:pageBlockSectionItem id="AccFLXBOXPBSI">
+                    <apex:outputLabel >Conglomerate</apex:outputLabel>
+                    <apex:panelGroup id="AccFLEXPG">
+                        <div id="AccFLEXBOX"/>
+                        <script>
+                            j$(function() {
+                                var source = {!AccountsList};
+                                j$('#AccFLEXBOX').flexbox(source,{
+                                    maxVisibleRows:10,
+                                    width:300,
+                                    showArrow: false,
+                                    onSelect:function(){
+                                        setAcc(j$('#AccFLEXBOX_hidden').val());
+                                    }
+                                });
+                                j$('#AccFLEXBOX_input').change(function(){
+                                    var exist = false;
+                                    var id;
+                                    for(var item in source.results){
+                                        if(source.results[item].name == j$('#AccFLEXBOX_hidden').val()){
+                                            exist = true;
+                                            id = source.results[item].id;
+                                        }
+                                    }    
+                                    if(!exist){
+                                        j$('#AccFLEXBOX_hidden').val(null);
+                                        j$('#AccFLEXBOX_input').val(null);
+                                        setAcc(null);
+                                    } else {
+                                        setAcc(id);
+                                    }
+                                });
+                            });
+                        </script>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!opp.End_Date__c}" required="true" label="End Close Date"/> 
+                
+                <apex:selectList value="{!selVP}" label="VP" size="1" multiselect="false">
+                    <apex:selectOptions value="{!VP}"/>
+                </apex:selectList>               
+                
+                <apex:selectList value="{!selRecType}" label="Opportunity Record Type" size="1" multiselect="false">
+                    <apex:selectOptions value="{!RecordTypes}"/>
+                </apex:selectList>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:pageBlock id="pb2">   
+            <!-- Google Charts Section --> 
+            <apex:outputPanel rendered="{!IF(displayCharts==true,true,false)}">
+                
+                <div class="pbSubheader brandTertiaryBgr first tertiaryPalette"><h3>Opportunity Averages Charts</h3></div>
+                
+                <!-- Report2 link -->
+                <apex:outputLink value="{!strReport2}" target="_blank"><U>View Details</U></apex:outputLink>
+                <table>
+                    <tr>
+                        <!-- Google Charts will be drawn in these divs -->
+                        <td><div id="avgAmount"/></td>
+                        <td><div id="avgAge"/></td>
+                    </tr>
+                    <tr>
+                        <td><div id="avgWinRate"/></td>
+                    </tr>
+                </table>
+                
+                <br/>
+                
+                <div class="pbSubheader brandTertiaryBgr first tertiaryPalette"><h3>Opportunity Delivery Channels Charts</h3></div>
+                
+                <!-- Report1 link -->
+                <apex:outputLink value="{!strReport1}" target="_blank"><U>View Details</U></apex:outputLink>
+                <table>
+                    <tr>
+                        <!-- Google Charts will be drawn in these divs -->
+                        <td><div id="dcAmount"/></td>                   
+                        <td><div id="dcAge"/></td>
+                    </tr>
+                    <tr>
+                        <td><div id="dcRecType"/></td>
+                        <td><div id="dcWinRate"/></td>
+                    </tr>
+                </table>
+                                
+            </apex:outputPanel>
+        </apex:pageBlock>
+        
+        <!-- Script to display the google charts -->
+        <apex:outputPanel id="opScript">
+            <script type="text/javascript"> 
+                //calculate the google chart section offset width to set the google chart widths
+                var pageWidth = document.getElementById('{!$Component.page:form:pb2}').offsetWidth/2-20;       
+                
+                //Load the Visualization API and the piechart package.  
+                google.load('visualization', '1.0', {'packages':['corechart']});       
+                
+                //function to display the google charts
+                function displayGoogleChart(){
+                    drawDcAmountChart();
+                }
+                
+                //draw the Amount Chart
+                function drawDcAmountChart() {
+                    //we need a table to act as the datasource for the chart
+                    var data = new google.visualization.DataTable();
+                    
+                    //the table needs two columns
+                    data.addColumn('string', 'Delivery Type');
+                    data.addColumn('number', 'Average');    
+                    
+                    //add the rows of data which consist of a value
+                    <apex:repeat value="{!dcChartWrapperList}" var="a"> 
+                        data.addRow(['{!a.delType}', {v:{!a.amt}}]);
+                    </apex:repeat>
+                    
+                    //assign the chart to the appropriate div and draw the chart
+                    var chart = new google.visualization.ColumnChart(document.getElementById('dcAmount'));
+                    
+                    //format the labels
+                    var formatter = new google.visualization.NumberFormat({prefix:'$'});
+                    formatter.format(data, 1);
+    
+                    //sort the data
+                    data.sort([{column: 1, desc: true}]);
+                    
+                    //draw chart
+                    chart.draw(data, {width: pageWidth, height: 400, title:'Amount', legend:'none',
+                    vAxis: {minValue:0}, hAxis: {slantedTextAngle:45}});
+    
+                    //call drawDcAgeChart to draw Age Chart
+                    drawDcAgeChart();
+                }
+                
+                //draw the Age Chart
+                function drawDcAgeChart() {
+                    //we need a table to act as the datasource for the chart
+                    var data = new google.visualization.DataTable();
+                    
+                    //the table needs two columns
+                    data.addColumn('string', 'Delivery Type');
+                    data.addColumn('number', 'Average');    
+                    
+                    //add the rows of data which consist of a value
+                    <apex:repeat value="{!dcChartWrapperList}" var="a"> 
+                        data.addRow(['{!a.delType}', {v:{!a.age}}]);
+                    </apex:repeat>
+                    
+                    //assign the chart to the appropriate div and draw the chart
+                    var chart = new google.visualization.ColumnChart(document.getElementById('dcAge'));
+                    
+                    //sort the data
+                    data.sort([{column: 1, desc: true}]);
+                    
+                    //draw chart
+                    chart.draw(data, {width: pageWidth, height: 400, title:'Age', legend:'none',
+                    vAxis: {minValue:0}, hAxis: {slantedTextAngle:45}});
+                    
+                    //call drawDcRecTypeChart to draw Percentage of RecordType Total Chart
+                    drawDcRecTypeChart();
+                }
+                
+                //draw the Percentage of RecordType Total Chart
+                function drawDcRecTypeChart() {
+                    //we need a table to act as the datasource for the chart
+                    var data = new google.visualization.DataTable();
+                    
+                    //the table needs two columns
+                    data.addColumn('string', 'Delivery Type');
+                    data.addColumn('number', '# of Opportunities');    
+                    
+                    //add the rows of data which consist of a value
+                    <apex:repeat value="{!dcChartWrapperList}" var="a"> 
+                        var type = '{!a.delType}';
+                        if(type == ''){
+                           type = ' '; 
+                        }
+                        data.addRow([type, {v:{!a.recTypeTotal}}]);
+                    </apex:repeat>
+                    
+                    //assign the chart to the appropriate div and draw the chart
+                    var chart = new google.visualization.PieChart(document.getElementById('dcRecType'));
+                                    
+                    //sort the data
+                    data.sort([{column: 1, desc: true}]);
+                    
+                    //draw chart
+                    chart.draw(data, {width: pageWidth, height: 400, is3D:true, title:'# of Opportunities by Delivery Channel'});
+                    
+                    //call drawDcWinRateChart to draw WinRate Chart
+                    drawDcWinRateChart();
+                }
+                
+                //draw the WinRate Chart
+                function drawDcWinRateChart() {
+                    //we need a table to act as the datasource for the chart
+                    var data = new google.visualization.DataTable();
+                    
+                    //the table needs two columns
+                    data.addColumn('string', 'Delivery Type');
+                    data.addColumn('number', 'Average');    
+                    
+                    //add the rows of data which consist of a value
+                    <apex:repeat value="{!dcChartWrapperList}" var="a"> 
+                        data.addRow(['{!a.delType}', {v:{!a.winRate}}]);
+                    </apex:repeat>
+                    
+                    //assign the chart to the appropriate div and draw the chart
+                    var chart = new google.visualization.ColumnChart(document.getElementById('dcWinRate'));
+                    
+                    //format the labels
+                    var formatter = new google.visualization.NumberFormat({suffix:'%'});
+                    formatter.format(data, 1);
+                    
+                    //sort the data
+                    data.sort([{column: 1, desc: true}]);
+                    
+                    //draw chart
+                    chart.draw(data, {width: pageWidth, height: 400, title:'Win Rate', legend:'none',
+                    vAxis: {minValue:0}, hAxis: {slantedTextAngle:45}});
+                    
+                    //call drawAvgAmountChart draw Average Amount Chart
+                    drawAvgAmountChart();
+                }
+                
+                //draw the Average Amount Chart
+                function drawAvgAmountChart() {
+                    //we need a table to act as the datasource for the chart
+                    var data = new google.visualization.DataTable();
+                    
+                    //the table needs two columns
+                    data.addColumn('string', 'Delivery Type');
+                    data.addColumn('number', 'Average');    
+                    
+                    //add the rows of data which consist of a value
+                    <apex:repeat value="{!avgChartWrapperList}" var="a"> 
+                        data.addRow(['{!a.delType}', {v:{!a.amt}}]);
+                    </apex:repeat>
+                    
+                    //assign the chart to the appropriate div and draw the chart
+                    var chart = new google.visualization.ColumnChart(document.getElementById('avgAmount'));
+                    
+                    //format the labels
+                    var formatter = new google.visualization.NumberFormat({prefix:'$'});
+                    formatter.format(data, 1);
+                    
+                    //sort the data
+                    data.sort([{column: 1, desc: true}]);
+                    
+                    //draw chart
+                    chart.draw(data, {width: pageWidth, height: 400, title:'Average Program Amount', legend:'none',
+                    vAxis: {minValue:0}, hAxis: {slantedTextAngle:45}});
+                    
+                    //call drawAvgAgeChart draw Average Age Chart
+                    drawAvgAgeChart();
+                }
+                
+                //draw the Average Age Chart
+                function drawAvgAgeChart() {
+                    //we need a table to act as the datasource for the chart
+                    var data = new google.visualization.DataTable();
+                    
+                    //the table needs two columns
+                    data.addColumn('string', 'Delivery Type');
+                    data.addColumn('number', 'Average');    
+                    
+                    //add the rows of data which consist of a value
+                    <apex:repeat value="{!avgChartWrapperList}" var="a"> 
+                        data.addRow(['{!a.delType}', {v:{!a.age}}]);
+                    </apex:repeat>
+                    
+                    //assign the chart to the appropriate div and draw the chart
+                    var chart = new google.visualization.ColumnChart(document.getElementById('avgAge'));
+                    
+                    //sort the data
+                    data.sort([{column: 1, desc: true}]);
+                    
+                    //draw chart
+                    chart.draw(data, {width: pageWidth, height: 400, title:'Average Age', legend:'none',
+                    vAxis: {minValue:0}, hAxis: {slantedTextAngle:45}});
+                    
+                    //call drawAvgWinRateChart draw Average WinRate Chart
+                    drawAvgWinRateChart();
+                }
+                
+                //draw the Average WinRate Chart
+                function drawAvgWinRateChart() {
+                    //we need a table to act as the datasource for the chart
+                    var data = new google.visualization.DataTable();
+                    
+                    //the table needs two columns
+                    data.addColumn('string', 'Delivery Type');
+                    data.addColumn('number', 'Average');    
+                    
+                    //add the rows of data which consist of a value
+                    <apex:repeat value="{!avgChartWrapperList}" var="a"> 
+                        data.addRow(['{!a.delType}', {v:{!a.winRate}}]);
+                    </apex:repeat>
+                    
+                    //assign the chart to the appropriate div and draw the chart
+                    var chart = new google.visualization.ColumnChart(document.getElementById('avgWinRate'));
+                    
+                    //format the labels
+                    var formatter = new google.visualization.NumberFormat({suffix:'%'});
+                    formatter.format(data, 1);
+                    
+                    //sort the data
+                    data.sort([{column: 1, desc: true}]);
+                    
+                    //draw chart
+                    chart.draw(data, {width: pageWidth, height: 400, title:'Win Rate', legend:'none',
+                    vAxis: {minValue:0}, hAxis: {slantedTextAngle:45}});
+                }
+                
+            </script>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

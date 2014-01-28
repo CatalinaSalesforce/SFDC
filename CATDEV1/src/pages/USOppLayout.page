@@ -1,0 +1,115 @@
+<apex:page standardController="Opportunity" standardStylesheets="true" showHeader="true" sidebar="true" extensions="OppHistory,OppCategoryController">
+   <style>
+      .activeTab {background-color: #DDB929; color:white; background-image:none; font-weight:bold;}
+      .inactiveTab { background-color: lightgrey; color:black; background-image:none}
+   </style>    
+    <apex:form >
+        <apex:pageBlock id="mainblock" mode="inlineedit" title="{!IF(Opportunity.Proposal_Number__c==null,'New Opportunity',Opportunity.Pro_Con_Number__c)}  ">
+            <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!Save}" value="Save"/> 
+                <apex:commandButton action="{!Edit}" value="Edit"/> 
+                <apex:commandButton action="{!'/a1P/e?CF00NF0000008WPZG='+Opportunity.Name+'&CF00NF0000008WPZG_lkid='+Opportunity.Id+'&retURL='+Opportunity.Id}" value="Add Category"/>
+                <apex:commandButton action="{!'/apex/MyForecastPage?id='+Opportunity.Id}" value="Forecast"/>
+                <apex:commandButton rendered="{!IF($Profile.Name=='System Administrator',true,false)}" action="{!'/'+Opportunity.Id+'/e?nooverride=1'+'&retURL='+Opportunity.Id}" value="Admin Edit"/> 
+                <apex:commandButton rendered="{!IF($Profile.Name=='System Administrator',true,false)}" action="{!'/'+Opportunity.Id+'?nooverride=1'}" value="Admin View"/>                 
+            </apex:pageBlockButtons>
+                <apex:pageBlockSection showHeader="false" title="Opportunity Details" >
+<!-- Indicates the column and row for each field, i.e. L1 = Left Column, Row 1, R1 = Right Column, Row 1 -->
+<!-- L1 -->         <apex:outputField label="Owner" value="{!Opportunity.OwnerId}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:outputLink value="{!URLFOR($Action.Opportunity.ChangeOwner,Opportunity.id)}"><b>[Change Owner]</b></apex:outputLink></apex:outputField>
+<!-- R1 -->         <apex:outputField label="Proposal Number" value="{!Opportunity.Proposal_Number__c}"/>
+<!-- L2 -->         <apex:outputField label="Opportunity Name" value="{!Opportunity.Name}"/>
+<!-- R2 -->         <apex:outputField label="Account Name" value="{!Opportunity.AccountId}"/>
+<!-- L3 -->         <apex:outputField label="Stage" value="{!Opportunity.StageName}"/>
+<!-- L3 -->         <apex:outputField label="Agency" value="{!Opportunity.Agency__c}"/>
+                    <apex:outputField label="Type" value="{!Opportunity.Type}">
+                        <apex:actionSupport event="onchange" rerender="mainblock" status="status"/>
+                        <apex:actionStatus startText="applying value..." id="status"/>
+                    </apex:outputField>
+                    <apex:outputField label="Comments" value="{!Opportunity.Description}"/>
+                    <apex:outputField label="Product Type" value="{!Opportunity.Product_Type__c}"/>                    
+                </apex:pageBlockSection>
+                <apex:pageBlockSection showHeader="true" title="{!IF(Opportunity.Type == 'Addendum','Addendum Information',IF(Opportunity.Type == 'Renewal','Renewal Information',null))}" columns="2" rendered="{!IF(Opportunity.Type == 'Addendum' || Opportunity.Type == 'Renewal',true,false)}">
+<!-- Indicates the column and row for each field, i.e. L1 = Left Column, Row 1, R1 = Right Column, Row 1 -->
+<!-- L1 -->         <apex:outputField label="Renewal Parent Contract" rendered="{!IF(Opportunity.Type=='Addendum',true,false)}" value="{!Opportunity.Parent_Contract__c}"/>
+<!-- R1 -->         <apex:outputField label="Parent Contract Number" rendered="{!IF(Opportunity.Type=='Addendum',true,false)}" value="{!Opportunity.Parent_External_ID__c}"/>
+<!-- L2 -->         <apex:outputField label="Parent Contract" rendered="{!IF(Opportunity.Type=='Renewal',true,false)}" value="{!Opportunity.Related_Contract__c}"/>
+<!-- R2 -->         <apex:outputField label="Expiration Date" rendered="{!IF(Opportunity.Type=='Renewal',true,false)}" value="{!Opportunity.Renewal_Rights_Expiry_Date__c}"/>
+<!-- L3 -->         <apex:outputField label="Renewal Goal" rendered="{!IF(Opportunity.Type=='Renewal',true,false)}" value="{!Opportunity.Renewal_Goal_Amount__c}"/>
+<!-- R3 -->         <apex:outputField label="% Goal" rendered="{!IF(Opportunity.Type=='Renewal',true,false)}" value="{!Opportunity.Goal__c}"/>
+<!-- L4 -->         <apex:outputField label="Prior Year Amount" rendered="{!IF(Opportunity.Type=='Renewal',true,false)}" value="{!Opportunity.Prior_Year_Amount__c}"/>
+<!-- R4 -->         <apex:outputField label="+/- Goal" rendered="{!IF(Opportunity.Type=='Renewal',true,false)}" value="{!Opportunity.Plus_Minus_Goal__c}"/>
+<!-- L5 -->         <apex:outputField label="Renewal Comments" rendered="{!IF(Opportunity.Type=='Renewal',true,false)}" value="{!Opportunity.Renewal_Comments__c}"/>
+<!-- R5 -->         <apex:outputField label="At Risk Comments" rendered="{!IF(Opportunity.Type=='Renewal',true,false)}" value="{!Opportunity.At_Risk_Comments__c}"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection showHeader="true" title="Program Details">
+<!-- Indicates the column and row for each field, i.e. L1 = Left Column, Row 1, R1 = Right Column, Row 1 -->
+<!-- L1 -->         <apex:outputText label="Record Type" value="{!Opportunity.RecordType.Name}"/>
+<!-- R1 -->         <apex:outputField label="Billing Type" value="{!Opportunity.Account_Record_Type__c}"/>
+<!-- L2 -->         <apex:outputText rendered="{!IF(Opportunity.RecordType.Name == 'Contract',true,false)}" label="Contract Number" value="{!Opportunity.CATS_External_ID__c}"/>
+<!-- R2 -->         <apex:outputText rendered="{!IF(Opportunity.RecordType.Name == 'Contract',true,false)}" label="Contract Amount" value="USD{0, number, ###,##0.00}">
+                           <apex:param value="{!Opportunity.CATS_Contract_Amount__c}" />
+                    </apex:outputText>
+<!-- L3 -->         <apex:outputField label="Delivery Channel" value="{!Opportunity.Catalina_Business_Unit__c}"/>
+<!-- R3 -->         <apex:outputField label="Close Date" value="{!Opportunity.CloseDate}"/>
+<!-- L4 -->         <apex:outputField label="Amount" value="{!Opportunity.Amount}"/>
+<!-- R4 -->         <apex:outputField label="Start Date" value="{!Opportunity.Start_Date__c}"/>
+<!-- L5 -->         <br/>
+<!-- R5 -->         <apex:outputField label="End Date" value="{!Opportunity.End_Date__c}"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection showHeader="true" title="Revenue Details" >
+<!-- Indicates the column and row for each field, i.e. L1 = Left Column, Row 1, R1 = Right Column, Row 1 -->
+<!-- L1 -->         <apex:outputField label="Weighted Amount" value="{!Opportunity.Weighted_Amount__c}"/>
+<!-- R1 -->         <apex:outputField label="Booked Amount" value="{!Opportunity.Total_Amount__c}"/>
+<!-- L2 -->         <apex:outputField label="Total Forecast Amount" value="{!Opportunity.Total_Forecast_Amount__c}"/>
+<!-- R2 -->         <apex:outputField label="Variance" value="{!Opportunity.CATS_Variance__c}"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection showHeader="true" title="50 Cent Contest" >
+<!-- Indicates the column and row for each field, i.e. L1 = Left Column, Row 1, R1 = Right Column, Row 1 -->
+<!-- L1 -->         <apex:outputField label="Qualifies for CVC" value="{!Opportunity.Qualifies_for_CVC__c}"/>
+<!-- R1 -->         <apex:outputField label="Qualifies Untargeted LTC" value="{!Opportunity.Qualifies_for_Liquid_Offers__c}"/>
+<!-- L2 -->         <apex:outputField label="Mobile Commerce Pilot" value="{!Opportunity.Mobile_Commerce_Pilot__c}"/>
+<!-- R2 -->         <apex:outputField label="Number of Untargeted LTC" value="{!Opportunity.Number_of_Liquid_offers__c}"/>
+<!-- L3 -->         <apex:outputField label="Qualifies for Loyalty Rewards" value="{!Opportunity.Qualifies_for_Loyalty_Rewards__c}"/>
+<!-- R3 -->         <apex:outputField label="Number of Liquid Offers" value="{!Opportunity.Number_of_Liquid__c}"/>
+                </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+                <apex:relatedList rendered="{!IF(Opportunity.Programs__r = null,false,true)}" list="Programs__r" />
+                <apex:pageBlock title="Categories" rendered="{!IF(Opportunity.Category_Count__c > 0, true, false)}">
+                        <apex:pageBlockTable value="{!Opportunity.Opportunity_Category__r}" var="oc" id="octable">
+                            <apex:column headerValue="Category">
+                                <apex:outputLink value="{!URLFOR($Action.Opportunity_Category__c.View, oc.Id)}">{!oc.Name}</apex:outputLink>
+                            </apex:column>
+                            <apex:column headerValue="Category Name"  value="{!oc.Category__r.Name}"/>
+                            <apex:column headerValue="Category Description"  value="{!oc.Category_Description__c}"/>
+                            <apex:column headerValue="Category External Id"  value="{!oc.Category_External_ID__c}"/>
+                            <apex:column headerValue="Amount"  value="{!oc.Amount__c}"/>
+                        </apex:pageBlockTable>  
+                </apex:pageBlock>
+                <apex:tabPanel tabClass="activeTab" inactiveTabClass="inactiveTab" >
+                    <apex:tab label="Notes & Attachments">
+                        <apex:relatedList list="NotesAndAttachments" />                        
+                    </apex:tab>                
+                    <apex:tab label="Open Activities">
+                        <apex:relatedList list="OpenActivities" />                        
+                    </apex:tab>
+                    <apex:tab label="Activity History">
+                        <apex:relatedList list="ActivityHistories"/>                        
+                    </apex:tab>
+                    <apex:tab label="Stage History">
+                        <apex:relatedList list="OpportunityHistories" />                        
+                    </apex:tab>
+                    <apex:tab label="Field History">
+                        <apex:pageBlock title="Field History">
+                            <apex:pageBlockTable value="{!opphis}" var="h" first="0">
+                                <apex:column headerValue="Date"  value="{!h.createddate}"/>
+                                <apex:column headerValue="User"  value="{!h.CreatedBy.Name}"/>
+                                <apex:column headerValue="Field" value="{!h.field}"/>
+                                <apex:column headerValue="Old Value" value="{!h.oldvalue}"/>
+                                <apex:column headerValue="New Value" value="{!h.newvalue}"/>
+                            </apex:pageBlockTable>  
+                        </apex:pageBlock>                     
+                    </apex:tab>
+                </apex:tabPanel>                  
+</apex:page>

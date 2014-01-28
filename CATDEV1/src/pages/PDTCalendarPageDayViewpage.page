@@ -1,0 +1,78 @@
+<apex:page controller="PdtCalendarController" id="thePage" showHeader="true" sidebar="false">
+    <apex:sectionHeader title="{!strCalendarDay}の依頼一覧" />
+        <apex:pageMessages id="messagearea" showDetail="false" />
+            <apex:outputpanel id="searchresult">
+                <apex:pageBlock title="プログラム一覧" rendered="{!(allProgList.size == 0)}">
+                    該当するプログラムはありません
+                </apex:pageBlock>
+                
+                <apex:form id="ProgramList">
+                        <apex:pageBlock title="プログラム一覧" rendered="{!(allProgList.size > 0)}"> 
+                            <apex:pageblockTable id="result" value="{!allProgList}" var="program">
+                                <apex:column style="width:40px">
+                                    <apex:facet name="header"><apex:outputText value="リンク" /></apex:facet>
+                                    <apex:outputlink target="_blank" value="/{!program.id}"><apex:outputText value="詳細" /></apex:outputLink> 
+                                </apex:column>
+                                        
+                                <apex:column style="width:130px">
+                                    <apex:facet name="header"><apex:outputText value="期限" /></apex:facet>
+                                    <apex:outputText id="DueText" value="{!program.ReOrder1_del__c}" />
+                                </apex:column>
+                                        
+                                <apex:column style="width:80px">
+                                    <apex:facet name="header"><apex:outputText value="Prefix+Cycle" /></apex:facet>
+                                    <apex:outputText id="PreCycText" value="{!program.Prefix_Cycle__c}" />
+                                </apex:column>
+                                        
+                                <apex:column style="width:100px">
+                                    <apex:facet name="header"><apex:outputText value="プログラム担当者" /></apex:facet>
+                                    <apex:outputText id="programmer__c" value="{!program.programmer_PGM__c}" />
+                                </apex:column>
+
+                                <apex:column style="width:100px">
+                                    <apex:facet name="header"><apex:outputText value="ＰＤＴ担当者" /></apex:facet>
+                                    <apex:outputText id="PDTLastName__c" value="{!program.PDTName__c}" />
+                                </apex:column>
+                                        
+                                <apex:column style="width:100px">
+                                    <apex:facet name="header"><apex:outputText value="受領" /></apex:facet>
+                                    <apex:outputText id="PDrReq_app__c" value="{!program.req_app__c}" />
+                                </apex:column>
+                                        
+                                <apex:column style="width:190px">
+                                    <apex:facet name="header"><apex:outputText value="顧客名" /></apex:facet>
+                                    <apex:outputText id="manufacture__c" value="{!program.manufacture__c}" />
+                                </apex:column>
+                                        
+                                <apex:column style="width:170px">
+                                    <apex:facet name="header"><apex:outputText value="ブランド名" /></apex:facet>
+                                    <apex:outputText id="brand__c" value="{!program.brand__c}" />
+                                </apex:column>
+                                
+                                <apex:column style="width:50px">
+                                    <apex:facet name="header"><apex:outputText value="Wチェック１" /></apex:facet>
+                                    <apex:outputText id="WCheck1__c" value="{!program.WCheck1__c}" />
+                                </apex:column>
+                                
+                                <apex:column style="width:100px">
+                                    <apex:facet name="header"><apex:outputText value="チェック者" /></apex:facet>
+                                    <apex:outputText id="LastModifiedPerson__c" value="{!program.LastModifiedPerson__c}" />
+                                </apex:column>
+                                
+                                <apex:column style="width:50px">
+                                    <apex:facet name="header"><apex:outputText value="Wチェック２" /></apex:facet>
+                                    <apex:outputText id="WCheck2__c" value="{!program.WCheck2__c}" />
+                                </apex:column>
+                                
+                                <apex:column style="width:50px">
+                                    <apex:facet name="header"><apex:outputText value="Gene Flag(CycleDB)" /></apex:facet>
+                                    <apex:outputText id="GeneFlag__c" value="{!program.GeneFlag__c}" />
+                                </apex:column>
+                                
+                                
+                            </apex:pageblockTable>
+                        </apex:pageBlock>
+                </apex:form>
+        </apex:outputpanel>
+
+</apex:page>

@@ -1,0 +1,22 @@
+<apex:page controller="CustomAccountLookUpController" showHeader="false">
+	<apex:sectionHeader title="Lookup"/>
+	<apex:form >
+		<apex:pageBlock >
+			<apex:outputLabel value="Search "/>
+			<apex:inputText value="{!inputAcc}"/>
+			<apex:commandButton value="Go!" action="{!searchAccount}"/>
+			<div style="font-size: 15px;font-weight:bold;margin-top:20px;">Search Results</div>
+			<apex:pageBlockTable value="{!accountList}" var="acc">
+				<apex:column >
+					<apex:commandLink value="{!acc.Name}" onClick="closeWin('{!acc.Name}','{!acc.id}'); return false;"/>
+				</apex:column>
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+		<script>
+			function closeWin(accName, accId){
+				window.opener.getAccountParent(accName, accId);
+				window.close();
+			}
+		</script>
+	</apex:form>
+</apex:page>

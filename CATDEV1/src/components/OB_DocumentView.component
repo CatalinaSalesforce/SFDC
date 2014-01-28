@@ -1,0 +1,51 @@
+<apex:component >
+    <apex:attribute name="downlaodDocument"
+        description="The URL for the Downloadable Document" type="String"
+        required="true" />
+    <apex:attribute name="embededDocument"
+        description="The URL for the Embeded SWF Document" type="String"
+        required="true" />
+    <apex:attribute name="documentMessage"
+        description="A message under the document" type="String"
+        required="false" />
+
+    <div>
+        <apex:includeScript value="{!URLFOR($Resource.FlexPaperflashJS)}" />
+        <a id="viewerPlaceHolder"
+            style="width: 680px; height: 400px; display: block"></a>
+        <script type="text/javascript"> 
+                var fp = new FlexPaperViewer(   
+                         '{!URLFOR($Resource.FlexPaperViewer)}',
+                         'viewerPlaceHolder', { config : {
+                         SwfFile : escape('{!EmbededDocument}'),
+                         Scale : 0.6, 
+                         ZoomTransition : 'easeOut',
+                         ZoomTime : 0.5,
+                         ZoomInterval : 0.2,
+                         FitPageOnLoad : true,
+                         FitWidthOnLoad : true,
+                         PrintEnabled : true,
+                         FullScreenAsMaxWindow : false,
+                         ProgressiveLoading : false,
+                         MinZoomSize : 0.2,
+                         MaxZoomSize : 5,
+                         SearchMatchAll : false,
+                         InitViewMode : 'Portrait',
+                         
+                         ViewModeToolsVisible : true,
+                         ZoomToolsVisible : true,
+                         NavToolsVisible : true,
+                         CursorToolsVisible : true,
+                         SearchToolsVisible : true,
+                        
+                         localeChain: 'en_US'
+                         }});
+            </script>
+            {!documentMessage}
+    </div>
+
+    <br />
+    <a target="_HROBdownload_"  href="{!downlaodDocument}">Click here to Download this document</a>
+    <br />
+    <br />
+</apex:component>

@@ -1,0 +1,211 @@
+<apex:page showHeader="false" sidebar="false" controller="WuFoo" id="thePage">
+    <body onload="body_onload();">
+    <apex:form id="theForm">
+        <apex:outputPanel id="theQuestion" rendered="{!NOT(OR( OR(showForm1,showForm2),showForm3))}">
+        <img id="imgLoad2" src="/img/loading32.gif" style="visibility:visible; position:absolute; z-index:999;"/>
+        <script>
+            function body_onload(){
+                var loader = document.getElementById('imgLoad2');
+                loader.style.visibility = "hidden";
+                return false; 
+            }
+        </script>
+            <apex:selectList styleClass="fix" size="1" value="{!selected}" style="width:80%;" id="select" >
+               <apex:actionSupport action="{!showiFrame}" reRender="frames" event="onchange" onsubmit="showloader();" />
+                <apex:selectOption itemValue="1" itemLabel="Sélectionnez l’objet de votre demande"/>
+                <apex:selectOption itemValue="1" itemLabel="Je ne parviens pas à imprimer"/>
+                <apex:selectOption itemValue="2" itemLabel="Il manque des données sur le coupon imprimé"/>
+                <apex:selectOption itemValue="3" itemLabel="J’ai des problèmes avec mon imprimante ou ses paramètres"/>
+                <apex:selectOption itemValue="4" itemLabel="Je ne parviens pas à utiliser les coupons dans mon commerce"/>
+                <apex:selectOption itemValue="5" itemLabel="Je ne trouve pas de coupon correspondant à ma marque/mon commerce préféré"/>
+                <apex:selectOption itemValue="6" itemLabel="Mon enseigne n’est pas proposée / Je n’ai pas de carte de fidélité"/>
+                <apex:selectOption itemValue="7" itemLabel="Je n’ai pas reçu mon remboursement"/>
+                <apex:selectOption itemValue="8" itemLabel="Mon achat n’a pas été validé"/>
+                <apex:selectOption itemValue="9" itemLabel="Le paiement du remboursement a été refusé"/>
+                <apex:selectOption itemValue="10" itemLabel="Je ne parviens pas à m’inscrire ou à m'identifier"/>
+                <apex:selectOption itemValue="11" itemLabel="J’ai perdu mon mot de passe d’identification"/>
+                <apex:selectOption itemValue="12" itemLabel="Mon navigateur ou mon système d’exploitation ne sont pas compatibles"/>
+                <apex:selectOption itemValue="13" itemLabel="Autres demandes"/>
+            </apex:selectList>
+            <br/>
+            
+            <apex:inputHidden id="hcookies" value="{!cookies}"/>
+            
+            <apex:inputHidden id="hbrowser" value="{!browser}"/>
+            <apex:inputHidden id="hos" value="{!os}"/>
+          <!--  <apex:commandButton action="{!showiFrame}" value="Go"/> -->
+            
+            
+            
+            
+            <script>
+            var BrowserDetect = {
+                init: function () {
+                    this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
+                    this.version = this.searchVersion(navigator.userAgent)
+                        || this.searchVersion(navigator.appVersion)
+                        || "an unknown version";
+                    this.OS = this.searchString(this.dataOS) || "an unknown OS";
+                },
+                searchString: function (data) {
+                    for (var i=0;i<data.length;i++) {
+                        var dataString = data[i].string;
+                        var dataProp = data[i].prop;
+                        this.versionSearchString = data[i].versionSearch || data[i].identity;
+                        if (dataString) {
+                            if (dataString.indexOf(data[i].subString) != -1)
+                                return data[i].identity;
+                        }
+                        else if (dataProp)
+                            return data[i].identity;
+                    }
+                },
+                searchVersion: function (dataString) {
+                    var index = dataString.indexOf(this.versionSearchString);
+                    if (index == -1) return;
+                    return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+                },
+                dataBrowser: [
+                    {
+                        string: navigator.userAgent,
+                        subString: "Chrome",
+                        identity: "Chrome"
+                    },
+                    {   string: navigator.userAgent,
+                        subString: "OmniWeb",
+                        versionSearch: "OmniWeb/",
+                        identity: "OmniWeb"
+                    },
+                    {
+                        string: navigator.vendor,
+                        subString: "Apple",
+                        identity: "Safari",
+                        versionSearch: "Version"
+                    },
+                    {
+                        prop: window.opera,
+                        identity: "Opera",
+                        versionSearch: "Version"
+                    },
+                    {
+                        string: navigator.vendor,
+                        subString: "iCab",
+                        identity: "iCab"
+                    },
+                    {
+                        string: navigator.vendor,
+                        subString: "KDE",
+                        identity: "Konqueror"
+                    },
+                    {
+                        string: navigator.userAgent,
+                        subString: "Firefox",
+                        identity: "Firefox"
+                    },
+                    {
+                        string: navigator.vendor,
+                        subString: "Camino",
+                        identity: "Camino"
+                    },
+                    {       // for newer Netscapes (6+)
+                        string: navigator.userAgent,
+                        subString: "Netscape",
+                        identity: "Netscape"
+                    },
+                    {
+                        string: navigator.userAgent,
+                        subString: "MSIE",
+                        identity: "Explorer",
+                        versionSearch: "MSIE"
+                    },
+                    {
+                        string: navigator.userAgent,
+                        subString: "Gecko",
+                        identity: "Mozilla",
+                        versionSearch: "rv"
+                    },
+                    {       // for older Netscapes (4-)
+                        string: navigator.userAgent,
+                        subString: "Mozilla",
+                        identity: "Netscape",
+                        versionSearch: "Mozilla"
+                    }
+                ],
+                dataOS : [
+                    {
+                        string: navigator.platform,
+                        subString: "Win",
+                        identity: "Windows"
+                    },
+                    {
+                        string: navigator.platform,
+                        subString: "Mac",
+                        identity: "Mac"
+                    },
+                    {
+                           string: navigator.userAgent,
+                           subString: "iPhone",
+                           identity: "iPhone/iPod"
+                    },
+                    {
+                        string: navigator.userAgent,
+                        subString: "Android",
+                        identity: "Android"
+                    },
+                    {
+                        string: navigator.platform,
+                        subString: "Linux",
+                        identity: "Linux"
+                    }
+                ]
+            
+            };
+            BrowserDetect.init();
+
+            </script>
+            <script>
+
+            
+                document.getElementById("{!$Component.hcookies}").value = navigator.cookieEnabled;
+                document.getElementById("{!$Component.hos}").value = BrowserDetect.OS;
+                document.getElementById("{!$Component.hbrowser}").value = (BrowserDetect.browser + ' ' + BrowserDetect.version);
+            </script>
+            
+            
+        </apex:outputPanel>
+        <apex:outputPanel id="frames">
+         
+            <apex:outputText value="Votre demande: {!response}" style="font-family: 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, sans-serif;font-size: 21px;font-style: normal;font-weight: normal;height: 25px;letter-spacing: normal;margin-bottom: 5px;" rendered="{!OR(showForm1,OR(showForm2,showForm3))}" />
+            <br/>
+            
+            <img id="imgLoad" src="/img/loading32.gif" style="visibility:hidden;"/>
+            <script>
+                function showloader(){
+                    var loader1 = document.getElementById('imgLoad');
+                    loader1.style.visibility = "visible";
+                    var select2 = document.getElementById('thePage:theForm:select');
+                    select2.style.visibility = "hidden";
+                    
+                    return false;
+                    
+                }
+                 function iframe_onload(){
+                    var loader = document.getElementById('imgLoad');
+                    loader.style.visibility = "hidden";
+                    return false;                 
+                 }
+                 
+             </script>
+            <apex:outputPanel id="Form3" rendered="{!showForm3}">
+                <iframe onload="iframe_onload();" height="1000" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="https://catalinamarketing.wufoo.com/embed/q7x2x3/def/header=hide&Field9={!useragent}&Field12={!ipaddress}&Field11={!parentToSave}&Field10={!cookies}&Field16={!UserID}&Field18={!Priority}&Field23={!os}&Field22={!browser}&Field20={!selected}"></iframe>
+            </apex:outputPanel>
+            <apex:outputPanel id="Form2" rendered="{!showForm2}">
+                <iframe onload="iframe_onload();" height="1020" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="https://catalinamarketing.wufoo.com/embed/m7x3q1/def/header=hide&Field17={!useragent}&Field19={!ipaddress}&Field18={!parentToSave}&Field20={!cookies}&Field24={!UserID}&Field26={!Priority}&Field139={!os}&Field138={!browser}&Field136={!selected}"></iframe>
+            </apex:outputPanel>
+            <apex:outputPanel id="Form1" rendered="{!showForm1}">
+                <iframe onload="iframe_onload();" id="frame1" height="1000" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="https://catalinamarketing.wufoo.com/embed/z7x3p9/def/header=hide&Field5={!useragent}&Field6={!ipaddress}&Field7={!parentToSave}&Field8={!cookies}&Field13={!UserID}&Field15={!Priority}&Field20={!os}&Field19={!browser}&Field17={!selected}"></iframe>    
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+   </body>
+</apex:page>
