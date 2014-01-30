@@ -1,0 +1,6 @@
+Hi,
+
+Article "{!KM_KnowledgeArticle__c.Name}:{!KM_KnowledgeArticle__c.Title__c}" is due for review by {!KM_KnowledgeArticle__c.Review_Date__c}.
+
+Regards,
+Remedyforce

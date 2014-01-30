@@ -1,0 +1,5 @@
+<apex:page standardController="BMCServiceDesk__BroadcastHistory__c" sidebar="false" showHeader="false" standardStylesheets="false">
+<apex:form >
+    <iframe id="broadcastHistoryFrame" frameborder="0" src="/apex/BroadcastHistoryPage?editStandardLayout=true&isLookup=true&id={!$CurrentPage.parameters.id}"  height="600px" width="100%"></iframe>
+</apex:form>  
+</apex:page>

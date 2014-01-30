@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Base Relationship</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Base Relationships</value>
+    </caseValues>
+    <fields>
+        <label><!-- AccountID --></label>
+        <name>AccountID__c</name>
+    </fields>
+    <fields>
+        <label><!-- AssignedTo --></label>
+        <name>AssignedTo__c</name>
+    </fields>
+    <fields>
+        <label><!-- AttributeDataSourceList --></label>
+        <name>AttributeDataSourceList__c</name>
+    </fields>
+    <fields>
+        <label><!-- CMDBRowLevelSecurity --></label>
+        <name>CMDBRowLevelSecurity__c</name>
+    </fields>
+    <fields>
+        <label><!-- CMDBWriteSecurity --></label>
+        <name>CMDBWriteSecurity__c</name>
+    </fields>
+    <fields>
+        <label><!-- CMDB_Class --></label>
+        <name>CMDB_Class__c</name>
+        <relationshipLabel><!-- BMC_BaseRelationships --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the ID of the class whose instance is being created. --></help>
+        <label><!-- Class ID --></label>
+        <name>ClassId__c</name>
+    </fields>
+    <fields>
+        <label><!-- ClassName --></label>
+        <name>ClassName__c</name>
+    </fields>
+    <fields>
+        <label><!-- DatasetId --></label>
+        <name>DatasetId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Destination.ClassId --></label>
+        <name>Destination_ClassId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Destination.ClassName --></label>
+        <name>Destination_ClassName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Destination.DatasetId --></label>
+        <name>Destination_DatasetId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Destination.InstanceId --></label>
+        <name>Destination_InstanceId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Destination.InstanceName --></label>
+        <name>Destination_InstanceName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Destination.ReconciliationIdentity --></label>
+        <name>Destination_ReconciliationIdentity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Destination --></label>
+        <name>Destination__c</name>
+        <relationshipLabel><!-- BMC_BaseRelationships (Destination) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- HasImpact --></label>
+        <name>HasImpact__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the impact direction of the relationship. --></help>
+        <label><!-- Type --></label>
+        <name>ImpactDirection__c</name>
+        <picklistValues>
+            <masterLabel>All Related</masterLabel>
+            <translation><!-- All Related --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Component</masterLabel>
+            <translation><!-- Component --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Dependency</masterLabel>
+            <translation><!-- Dependency --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Destination-Source</masterLabel>
+            <translation><!-- Destination-Source --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Has Impact</masterLabel>
+            <translation><!-- Has Impact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Member of Collection</masterLabel>
+            <translation><!-- Member of Collection --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Service-Offering</masterLabel>
+            <translation><!-- Service-Offering --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Service-Subservice</masterLabel>
+            <translation><!-- Service-Subservice --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Source-Destination</masterLabel>
+            <translation><!-- Source-Destination --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- ImpactPropagationModel --></label>
+        <name>ImpactPropagationModel__c</name>
+    </fields>
+    <fields>
+        <label><!-- ImpactWeight --></label>
+        <name>ImpactWeight__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the GUID that is automatically generated as an Relationship ID for the relationship. --></help>
+        <label><!-- Instance ID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the user who last modified the relationship. --></help>
+        <label><!-- Last Modified By --></label>
+        <name>LastModifiedByName__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if you want to mark this relationship as soft deleted. --></help>
+        <label><!-- Mark As Deleted --></label>
+        <name>MarkAsDeleted__c</name>
+    </fields>
+    <fields>
+        <label><!-- Relationship Name --></label>
+        <name>Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- ReconciliationIdentity --></label>
+        <name>ReconciliationIdentity__c</name>
+    </fields>
+    <fields>
+        <label><!-- RequestId --></label>
+        <name>RequestId__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter a description of the relationship. The description should indicate which instance is the source member and which is the destination member of the relationship. --></help>
+        <label><!-- Description --></label>
+        <name>ShortDescription__c</name>
+    </fields>
+    <fields>
+        <label><!-- Source.ClassId --></label>
+        <name>Source_ClassId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Source.ClassName --></label>
+        <name>Source_ClassName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Source.DatasetId --></label>
+        <name>Source_DatasetId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Source.InstanceId --></label>
+        <name>Source_InstanceId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Source.InstanceName --></label>
+        <name>Source_InstanceName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Source.ReconciliationIdentity --></label>
+        <name>Source_ReconciliationIdentity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Source --></label>
+        <name>Source__c</name>
+        <relationshipLabel><!-- BMC_BaseRelationships --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>0</masterLabel>
+            <translation><!-- 0 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>1</masterLabel>
+            <translation><!-- 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>10</masterLabel>
+            <translation><!-- 10 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>11</masterLabel>
+            <translation><!-- 11 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>12</masterLabel>
+            <translation><!-- 12 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>13</masterLabel>
+            <translation><!-- 13 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>14</masterLabel>
+            <translation><!-- 14 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>15</masterLabel>
+            <translation><!-- 15 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>16</masterLabel>
+            <translation><!-- 16 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>17</masterLabel>
+            <translation><!-- 17 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>18</masterLabel>
+            <translation><!-- 18 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>19</masterLabel>
+            <translation><!-- 19 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2</masterLabel>
+            <translation><!-- 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>20</masterLabel>
+            <translation><!-- 20 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>21</masterLabel>
+            <translation><!-- 21 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>22</masterLabel>
+            <translation><!-- 22 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>23</masterLabel>
+            <translation><!-- 23 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>24</masterLabel>
+            <translation><!-- 24 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>25</masterLabel>
+            <translation><!-- 25 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>26</masterLabel>
+            <translation><!-- 26 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>27</masterLabel>
+            <translation><!-- 27 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>28</masterLabel>
+            <translation><!-- 28 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>29</masterLabel>
+            <translation><!-- 29 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>3</masterLabel>
+            <translation><!-- 3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>30</masterLabel>
+            <translation><!-- 30 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>31</masterLabel>
+            <translation><!-- 31 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>32</masterLabel>
+            <translation><!-- 32 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>33</masterLabel>
+            <translation><!-- 33 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>34</masterLabel>
+            <translation><!-- 34 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>35</masterLabel>
+            <translation><!-- 35 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>36</masterLabel>
+            <translation><!-- 36 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>37</masterLabel>
+            <translation><!-- 37 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>38</masterLabel>
+            <translation><!-- 38 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>39</masterLabel>
+            <translation><!-- 39 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>4</masterLabel>
+            <translation><!-- 4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>40</masterLabel>
+            <translation><!-- 40 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>41</masterLabel>
+            <translation><!-- 41 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>42</masterLabel>
+            <translation><!-- 42 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>43</masterLabel>
+            <translation><!-- 43 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>44</masterLabel>
+            <translation><!-- 44 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>45</masterLabel>
+            <translation><!-- 45 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>46</masterLabel>
+            <translation><!-- 46 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>47</masterLabel>
+            <translation><!-- 47 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>48</masterLabel>
+            <translation><!-- 48 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>49</masterLabel>
+            <translation><!-- 49 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>5</masterLabel>
+            <translation><!-- 5 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>6</masterLabel>
+            <translation><!-- 6 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>7</masterLabel>
+            <translation><!-- 7 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>8</masterLabel>
+            <translation><!-- 8 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>9</masterLabel>
+            <translation><!-- 9 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Submitter --></label>
+        <name>Submitter__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- The selected Impact Direction is not valid. The valid Impact Direction is Service-Offering for this relationship. --></errorMessage>
+        <name>Restrict_Impact_Direction_update</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The selected Impact Direction is not valid. The valid Impact Direction is Other, Unknown, Source-Destination, or Destination-Source for this relationship. --></errorMessage>
+        <name>Restrict_Impact_Direction_update1</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The selected Impact Direction is not valid. The valid Impact Direction is Service-Subservice for this relationship. --></errorMessage>
+        <name>Restrict_Impact_Direction_update2</name>
+    </validationRules>
+</CustomObjectTranslation>

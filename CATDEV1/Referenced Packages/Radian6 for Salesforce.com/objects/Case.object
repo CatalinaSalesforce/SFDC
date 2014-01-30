@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <businessProcesses>
+        <fullName>SocialMedia</fullName>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed - Fulfillment Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed - Fulfillment Denied</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Escalated</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+    </businessProcesses>
+    <fields>
+        <fullName>InitialPostId__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>This is the ID of the post that spawned this case.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The social media post that raised this issue.</inlineHelpText>
+        <label>Initial Post</label>
+        <referenceTo>SocialPost</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>MediaIconResource__c</fullName>
+        <deprecated>false</deprecated>
+        <description>A formula used by the media icon. Should not be made visible.</description>
+        <externalId>false</externalId>
+        <formula>IF(CONTAINS(UPPER(MediaProvider__c), &apos;TWITTER&apos;), &apos;/resource/R6Service__Twitter_Logo&apos;, 
+IF(CONTAINS(UPPER(MediaProvider__c), &apos;FACEBOOK&apos;), &apos;/resource/R6Service__Facebook_Logo&apos;, 
+IF(CONTAINS(UPPER(MediaProvider__c), &apos;YOUTUBE&apos;), &apos;/resource/R6Service__MediaTypeYouTubeIcon&apos;, 
+CASE(UPPER(MediaType__c), 
+&apos;BLOGS&apos;, &apos;/resource/R6Service__MediaTypeBlogIcon&apos;, 
+&apos;VIDEOS&apos;, &apos;/resource/R6Service__MediaTypeVideoIcon&apos;, 
+&apos;IMAGES&apos;, &apos;/resource/R6Service__MediaTypeImageIcon&apos;, 
+&apos;MAINSTREAM NEWS&apos;, &apos;/resource/R6Service__MediaTypeNewsIcon&apos;, 
+&apos;MICROMEDIA&apos;, &apos;/resource/R6Service__MediaTypeMicromediaIcon&apos;, 
+&apos;FORUM&apos;, &apos;/resource/R6Service__MediaTypeForumIcon&apos;, 
+&apos;COMMENTS&apos;, &apos;/resource/R6Service__MediaTypeCommentIcon&apos;, 
+&apos;/resource/R6Service__DefaultChannelLogo&apos; 
+))))</formula>
+        <label>Media Icon Resource</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MediaIcon__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The icon that represents the medium that initiated the case. This will be the provider&apos;s logo for common providers, or generic media type logos for less popular providers.</description>
+        <externalId>false</externalId>
+        <formula>IMAGE(MediaIconResource__c, MediaType__c +&quot;/&quot; + MediaProvider__c, 48, 48)</formula>
+        <inlineHelpText>The media provider or media type of the post that initiated the case.</inlineHelpText>
+        <label>Media Icon</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MediaProvider__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The media provider of the post that initiated this case.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The social network of the post that initiated this case. For example: Facebook, Twitter, Youtube or Myspace.</inlineHelpText>
+        <label>Media Provider</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MediaType__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The media type for the post that initiated this case.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The media type of the media provider. For example: Youtube is a &quot;video&quot; media type while Twitter is &quot;micromedia&quot;.</inlineHelpText>
+        <label>Media Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PersonaAvatar__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Profile picture of the persona for whom the case was created, if the picture can be found.</description>
+        <externalId>false</externalId>
+        <formula>IF(ISBLANK(SocialPersona__c), InitialPostId__r.Persona.Avatar__c, SocialPersona__r.Avatar__c)</formula>
+        <inlineHelpText>User&apos;s profile picture, if it can be found.</inlineHelpText>
+        <label>Avatar</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SM_Persona__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>DO NOT USE. This field relates to an object that is no longer supported.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>DO NOT USE. This field relates to an object that is no longer supported.</inlineHelpText>
+        <label>(DO NOT USE) Persona</label>
+        <referenceTo>Persona__c</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SocialPersona__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the SocialPerson that made the post that generated the case.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The Social Persona that generated the case.</inlineHelpText>
+        <label>Social Persona</label>
+        <referenceTo>SocialPersona</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <listViews>
+        <fullName>Aggregator_Case</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>MediaIcon__c</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>NAME</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>MediaType__c</field>
+            <operation>equals</operation>
+            <value>Aggregator</value>
+        </filters>
+        <label>Aggregator</label>
+    </listViews>
+    <listViews>
+        <fullName>Blogs_Case</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>MediaIcon__c</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>NAME</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>MediaType__c</field>
+            <operation>equals</operation>
+            <value>Blogs</value>
+        </filters>
+        <label>Blogs</label>
+    </listViews>
+    <listViews>
+        <fullName>Comments_Case</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>MediaIcon__c</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>NAME</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>MediaType__c</field>
+            <operation>equals</operation>
+            <value>Comments</value>
+        </filters>
+        <label>Comments</label>
+    </listViews>
+    <listViews>
+        <fullName>Facebook_Case</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>MediaIcon__c</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>NAME</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>MediaType__c</field>
+            <operation>equals</operation>
+            <value>Facebook</value>
+        </filters>
+        <label>Facebook</label>
+    </listViews>
+    <listViews>
+        <fullName>Forums_Case</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>MediaIcon__c</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>NAME</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>MediaType__c</field>
+            <operation>equals</operation>
+            <value>Forums,Forum Replies</value>
+        </filters>
+        <label>Forums</label>
+    </listViews>
+    <recordTypes>
+        <fullName>SocialMedia</fullName>
+        <active>true</active>
+        <businessProcess>SocialMedia</businessProcess>
+        <label>Social Media</label>
+        <picklistValues>
+            <picklist>Origin</picklist>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Priority</picklist>
+            <values>
+                <fullName>High</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Low</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Medium</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reason</picklist>
+            <values>
+                <fullName>Account Disabled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <webLinks>
+        <fullName>SendMessage</fullName>
+        <availability>online</availability>
+        <description>When a user clicks on this a page will pop up allowing him to send a message to Facebook/Twitter</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Reply to Last Post</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/support/console/23.0/integration.js&quot;)};
+
+var isTwitter = {! CONTAINS(LOWER(Case.MediaProvider__c), &apos;twitter&apos;)};
+var isFacebook = {! CONTAINS(LOWER(Case.MediaProvider__c), &apos;facebook&apos;)};
+var isSupportedProvider = isTwitter || isFacebook;
+
+var isConsole = typeof(srcUp) == &quot;function&quot;;
+
+if(isSupportedProvider) {
+    if(isConsole) {
+        srcUp(&quot;/apex/R6Service__CaseSendMessageRedirect?id={!Case.Id}&amp;isdtp=vw&quot;);
+    } else {
+        window.open(&quot;/apex/R6Service__CaseSendMessageRedirect?id={!Case.Id}&quot;,  &quot;_self&quot;);
+    }
+} else {
+    window.open(&quot;/apex/R6Service__CaseSendMessageRedirect?id={!Case.Id}&quot;,  &quot;_blank&quot;);
+}</url>
+    </webLinks>
+</CustomObject>

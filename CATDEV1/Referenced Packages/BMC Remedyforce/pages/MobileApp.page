@@ -1,0 +1,117 @@
+<apex:page docType="html-5.0" controller="BMCServiceDesk.MobileAppController" showHeader="false" standardStylesheets="false" >
+<html>
+    <head>
+        <title>Remedyforce</title>
+        <meta charset="UTF-8" />
+		<apex:stylesheet value="{!URLFOR($Resource.BMCServiceDesk__SenchaTouch)}/sencha-touch.css"  />
+        <apex:stylesheet value="{!URLFOR($Resource.BMCServiceDesk__MobileApp)}/css/main.css"  />
+    </head>
+    <body>
+        <!-- An animated image that displays while loading -->
+        <div id="appLoadingIndicator">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+		
+		<!-- JS Block -->
+		
+		<script>
+            var funOpenIncidents = {!$RemoteAction.MobileAppController.OpenIncidents};
+            var funApprovals = {!$RemoteAction.MobileAppController.Approvals};
+            var funClosedIncidents = {!$RemoteAction.MobileAppController.ClosedIncidents};
+            var funPopularRequests = {!$RemoteAction.MobileAppController.PopularRequests};
+			var funRequestDefinitions = {!$RemoteAction.MobileAppController.RequestDefinitions};  
+			var funKnowledgeArticles = {!$RemoteAction.MobileAppController.KnowledgeArticles};           
+			var funAdd = {!$RemoteAction.MobileAppController.Add};
+            var funEdit = {!$RemoteAction.MobileAppController.Edit};
+            var funDestroy = {!$RemoteAction.MobileAppController.Destroy};
+            var funNameGiveIncidentDetail = '{!$RemoteAction.MobileAppController.GiveIncidentDetail}';
+            var funNameCreateNewIncident = '{!$RemoteAction.MobileAppController.CreateNewIncident}';
+            var funNameUpdateIncident = '{!$RemoteAction.MobileAppController.UpdateIncident}';
+			var funNameGetRequestDefinitionDetail = '{!$RemoteAction.MobileAppController.GetRequestDefinitionDetail}';
+			var funGetRequestDetailIncidentDetail = '{!$RemoteAction.MobileAppController.GetRequestDetailIncidentDetail}';
+			var funCloseRequestDetailIncident = '{!$RemoteAction.MobileAppController.CloseRequestDetailIncident}'; 
+			var funReopenRequestDetailIncident = '{!$RemoteAction.MobileAppController.ReopenRequestDetailIncident}'; 
+			var funRefreshRequestDefinitionDetail = '{!$RemoteAction.MobileAppController.RefreshRequestDefinitionDetail}'; 
+			var funNameSaveRequestDefinitionDetail = '{!$RemoteAction.MobileAppController.SaveRequestDefinitionDetail}'; 
+			var funNameApprovalsDetail = '{!$RemoteAction.MobileAppController.ApprovalsDetail}';
+            var funNameApproveReject = '{!$RemoteAction.MobileAppController.ApproveReject}';
+            var funNameGetKnowledgeArticleDetail = '{!$RemoteAction.MobileAppController.KnowledgeArticleDetails}';
+			var funNameLookUpSearch = '{!$RemoteAction.MobileAppController.LookUpSearch}';
+            var helpUrl = '{!URLFOR($Resource.MobileApp)}/html/help.htm';
+            var aboutUrl = '{!$Page.aboutus}'+'?mob=true';
+            var Categories = {!Categories};
+            
+           	var TilesData = {!TilesData};
+			var hideHomeButton = false;
+        </script>
+		
+		<c:MobileApp />
+		
+		<script src="{!URLFOR($Resource.MobileApp)}/js/phonegap/jquery-1.8.3.min.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/phonegap/cordova-2.3.0.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/phonegap/SFHybridApp.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/phonegap/SalesforceOAuthPlugin.js"  ></script>
+        
+        <script src="{!URLFOR($Resource.SenchaTouch)}/sencha-touch-all.js"  ></script> 
+        
+        
+        <script src="{!URLFOR($Resource.MobileApp)}/js/views/KnowledgeArticleListView.js"  ></script>
+        <script src="{!URLFOR($Resource.MobileApp)}/js/views/KnowledgeArticleEditorView.js"  ></script>
+        <script src="{!URLFOR($Resource.MobileApp)}/js/views/KnowledgeArticleHomeView.js"  ></script>
+        
+        
+        <script src="{!URLFOR($Resource.MobileApp)}/js/views/ApprovalListView.js"  ></script>
+        <script src="{!URLFOR($Resource.MobileApp)}/js/views/ApprovalEditorView.js"  ></script>
+        <script src="{!URLFOR($Resource.MobileApp)}/js/views/ApprovalHomeView.js"  ></script>
+        
+        <script src="{!URLFOR($Resource.MobileApp)}/js/views/MobileOpenIncidentList.js"  ></script>
+        <script src="{!URLFOR($Resource.MobileApp)}/js/views/MobileClosedIncidentList.js"  ></script>
+        <script src="{!URLFOR($Resource.MobileApp)}/js/views/MobileTopRequestList.js"  ></script>
+        
+        <script src="{!URLFOR($Resource.MobileApp)}/js/views/RequestDefinitionEditorView.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/views/RequestDefinitionListView.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/views/RequestDefinitionQAView.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/views/RequestDefinitionHomeView.js"  ></script>
+		
+		<script src="{!URLFOR($Resource.MobileApp)}/js/components/BackToHomeButton.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/components/Multiselect.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/components/SearchSelect.js"  ></script>
+		
+		<script src="{!URLFOR($Resource.MobileApp)}/js/views/IncidentEditor.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/views/MyRequestsTab.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/views/MyRequests.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/views/AppInfo.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/views/Main.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/views/Home.js"  ></script>
+				
+		<script src="{!URLFOR($Resource.MobileApp)}/js/models/MobileIncident.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/models/ApprovalModel.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/models/RequestDefinitionModel.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/models/RequestDetailModel.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/models/KnowledgeArticleModel.js"  ></script>
+		
+		
+		<script src="{!URLFOR($Resource.MobileApp)}/js/stores/KnowledgeArticleStore.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/stores/RequestDefinitionStore.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/stores/MobileClosedIncidents.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/stores/MobileOpenIncidents.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/stores/MobileTopRequests.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/stores/ApprovalStore.js"  ></script>
+		
+		<script src="{!URLFOR($Resource.MobileApp)}/js/controllers/Main.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/controllers/MobileIncident.js"  ></script>
+		<script src="{!URLFOR($Resource.MobileApp)}/js/controllers/AppInfoController.js"  ></script>
+        <script src="{!URLFOR($Resource.MobileApp)}/js/controllers/ApprovalController.js"  ></script>
+        <script src="{!URLFOR($Resource.MobileApp)}/js/controllers/HomeController.js"  ></script>
+        <script src="{!URLFOR($Resource.MobileApp)}/js/controllers/KnowledgeArticleController.js"  ></script>
+        <script src="{!URLFOR($Resource.MobileApp)}/js/controllers/RequestDefinitionController.js"  ></script>
+		
+		<script src="{!URLFOR($Resource.MobileApp)}/js/app.js"  ></script>
+		
+		<!-- JS Block -->
+		
+    </body>
+</html>
+</apex:page>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>BIOS要素</value>
+    </caseValues>
+    <fields>
+        <label>BIOSの特性</label>
+        <name>Bios_Characteristics__c</name>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>プライマリBIOS</label>
+        <name>Primary_BIOS__c</name>
+    </fields>
+    <fields>
+        <label>プライマリOS</label>
+        <name>Primary_OS__c</name>
+    </fields>
+    <nameFieldLabel>BIOS要素名</nameFieldLabel>
+</CustomObjectTranslation>

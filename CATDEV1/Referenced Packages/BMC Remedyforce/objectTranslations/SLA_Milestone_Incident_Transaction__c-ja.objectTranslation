@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SLAマイルストーンインシデントトランザクション</value>
+    </caseValues>
+    <fields>
+        <label>CC</label>
+        <name>Cc__c</name>
+    </fields>
+    <fields>
+        <label>実行時間</label>
+        <name>Execution_Time__c</name>
+    </fields>
+    <fields>
+        <label>インシデントのサービス目標</label>
+        <name>FKIncident_Service_Target__c</name>
+        <relationshipLabel>SLAマイルストーンインシデントトランザクション</relationshipLabel>
+    </fields>
+    <fields>
+        <label>インシデント</label>
+        <name>FKIncident__c</name>
+        <relationshipLabel>SLAマイルストーンインシデントトランザクション</relationshipLabel>
+    </fields>
+    <fields>
+        <label>SLAマイルストーンアクション</label>
+        <name>FKSLA_Milestone_Action__c</name>
+        <relationshipLabel>SLAマイルストーンインシデントトランザクション</relationshipLabel>
+    </fields>
+    <fields>
+        <label>SLAマイルストーン</label>
+        <name>FKSLA_Milestone__c</name>
+        <relationshipLabel>SLAマイルストーンインシデントトランザクション</relationshipLabel>
+    </fields>
+    <fields>
+        <label>アグリーメント</label>
+        <name>FKSLA__c</name>
+        <relationshipLabel>SLAマイルストーンインシデントトランザクション</relationshipLabel>
+    </fields>
+    <fields>
+        <label>SLAマイルストーンタイプ</label>
+        <name>SLA_Milestone_Type__c</name>
+    </fields>
+    <fields>
+        <label>ステータス</label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Fail</masterLabel>
+            <translation><!-- Fail --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Processed</masterLabel>
+            <translation><!-- Not Processed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pass</masterLabel>
+            <translation><!-- Pass --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>宛先</label>
+        <name>To__c</name>
+    </fields>
+    <fields>
+        <label>ユーザ参照ID</label>
+        <name>User_Ref_ID__c</name>
+    </fields>
+    <nameFieldLabel><!-- SLA Milestone Incident Transaction ID --></nameFieldLabel>
+</CustomObjectTranslation>

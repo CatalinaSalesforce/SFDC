@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>ストレージエクステント</value>
+    </caseValues>
+    <fields>
+        <label>空き容量</label>
+        <name>Available_Capacity__c</name>
+    </fields>
+    <fields>
+        <label>ブロックサイズ</label>
+        <name>Block_Size__c</name>
+    </fields>
+    <fields>
+        <label>接続の種類</label>
+        <name>Connection_Type__c</name>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>ブロック数</label>
+        <name>Number_Of_Blocks__c</name>
+    </fields>
+    <nameFieldLabel>ストレージエクステント名</nameFieldLabel>
+</CustomObjectTranslation>

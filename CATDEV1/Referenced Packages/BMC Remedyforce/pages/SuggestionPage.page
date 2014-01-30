@@ -1,0 +1,259 @@
+<apex:page controller="BMCServiceDesk.SuggestionPageController" showHeader="false" sidebar="false"> 
+    <head>
+    <link rel="stylesheet" type="text/css" href="{!$Resource.BMCRFSDEFStyles}/Images" />
+    <link rel="stylesheet" type="text/css" href="{!$Resource.BMCRFSDEFStyles}/SuggestionPage.css" />
+    </head>                      
+    <body onresize="setResultListHeightJS();">
+        <apex:form id="suggestObjectForm"> 
+            <apex:actionFunction action="{!first}" name="firstPage"  rerender="genPgBlock,messagePanel" oncomplete="onLoad();setResultListHeightJS();" />
+            <apex:actionFunction action="{!previous}" name="previousPage"  rerender="genPgBlock,messagePanel" oncomplete="onLoad();setResultListHeightJS();" />
+            <apex:actionFunction action="{!next}" name="nextPage"  rerender="genPgBlock,messagePanel" oncomplete="onLoad();setResultListHeightJS();" >
+            </apex:actionFunction>  
+            <apex:actionFunction action="{!last}" name="lastPage"  rerender="genPgBlock,messagePanel" oncomplete="onLoad();setResultListHeightJS();" />
+            <apex:actionFunction action="{!fetchPage}" name="fetchPage" rerender="genPgBlock,messagePanel" oncomplete="onLoad();setResultListHeightJS();">
+                <apex:param assignTo="{!pageSize}" name="pageSize" value=""/> 
+            </apex:actionFunction>
+            <apex:actionFunction action="{!goToPage}" name="goToPageJS" rerender="genPgBlock,messagePanel" oncomplete="onLoad();setResultListHeightJS();">                                         
+                <apex:param assignTo="{!currPage}" name="currPage" value=""/>              
+            </apex:actionFunction>
+            <apex:actionFunction action="{!searchStaffs}" name="searchStaffsJS" rerender="genPgBlock,messagePanel" oncomplete=" exceptionOccured='{!exceptionOccured}'; staffResultSize = '{!staffResultSize}';onLoad();setResultListHeightJS();">            
+                <apex:param assignTo="{!searchString}" name="searchString" value=""/>
+                <apex:param assignTo="{!pageSize}" name="pageSize" value=""/>    
+            </apex:actionFunction>
+            <apex:outputPanel id="messagePanel" styleClass="messageContainer" >            
+                <apex:pageMessages id="pageMessage" />            
+            </apex:outputPanel>
+            <div id='topdiv'>
+                <table style="display:{!if (ownerType=='STAFF','block','none')}" id='searchBlock'>
+                    <tr>
+                        <td class="top10pxPadding"></td>                
+                    </tr>
+                    <tr>   
+                        <td class="leftright10pxPadding">   
+                            <apex:outputLabel value="{!$Label.bmcservicedesk__SSSearch}" styleClass="searchClass"></apex:outputLabel>
+                            <apex:inputText id="searchField" value="{!searchString}" title="" onkeypress="return searchOnKeyPress(event)"/>
+                        </td>
+                        <td class="goBtnClass">
+                            <input type="button" class="btn" value="{!$Label.Go}" id="goButton" onclick="searchStaff();" />
+                        </td>
+                        <td class="leftright10pxPadding">
+                            <a id="clearLink" href="#" style="display:none;"  onclick="clearText();" >{!$Label.Clear}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bottom10pxPadding"></td>                
+                    </tr>
+                </table>
+                <table style="display:{!if (ownerType=='STAFF'||ownerType=='QUEUE','none','block')}">  
+                    <tr>
+                        <td class="top10pxPadding"></td>                
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:outputLabel id="suggestedLbl" value="{!$Label.bmcservicedesk__Suggested}" styleClass="searchClass" for="selectOwnerType"></apex:outputLabel>
+                        </td>
+                        <td>
+                            <input type="radio" id="staffRdBtn" name="selectOwnerType" value="STAFF" onclick="displayPanels('STAFF','');setResultListHeightJS();" >{!$Label.StaffWindowHeaderSearchPage}</input>
+                            <input type="radio" id="queueRdBtn" name="selectOwnerType" value="QUEUE" onclick="displayPanels('QUEUE','');setResultListHeightJS();" >{!$Label.Queue}</input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bottom10pxPadding"></td>                
+                    </tr>
+                </table>
+            </div>
+            <apex:pageBlock id="genPgBlock">
+                <style>
+                    body .bPageBlock .pbHeader {margin: 5px;}
+                </style>
+                <apex:facet name="header">                       
+                    <apex:outputLabel value="{!resultTitle} [{!resultSetSize}]" id="pageBlockTitle" styleclass="pageTitle"></apex:outputLabel>
+                </apex:facet>
+                 &nbsp;&nbsp;  
+                <apex:outputPanel id="queueMemMsgPanel" style="display:none;">
+                	<apex:outputLabel id="queueMemMsg" value="" styleClass="searchClass"></apex:outputLabel>
+                </apex:outputPanel>
+                 &nbsp;&nbsp; 
+                <apex:outputPanel id="tableOutputpanel" layout="block" styleclass="container" style="display:none;"> 
+                    <apex:pageBlockTable id="thepageBlockTable" value="{!suggestedList}" var="s">                        
+                        <apex:column >
+                            <apex:facet name="header">                       
+                                <apex:outputLabel value="{!firstColumnName}" styleClass="searchClass" ></apex:outputLabel>
+                            </apex:facet>                       
+                            <a class="" onclick="updateParentObject2('{!s.sObj.Id}')" href="#">{!s.sName}</a>
+                        </apex:column>
+                        <apex:repeat value="{!dynamicFields}" var="f">                  
+                            <apex:column value="{!s.sObj[f]}"/>  
+                        </apex:repeat>    
+                    </apex:pageBlockTable>
+                    </apex:outputPanel>
+                <apex:outputPanel id="genOutPanel" layout="block" style="margin-top:10px;overflow:auto;display:none;"> 
+                    <apex:pageBlockTable id="genBlockTable" value="{!suggestedList}" var="s">
+                    	<apex:column >
+                            <apex:facet name="header">                       
+                                <apex:outputLabel value="{!firstUserColumnName}" styleClass="searchClass" ></apex:outputLabel>
+                            </apex:facet>
+                            <a class="" onclick="assignSuggestedOwnerJS('STAFF','{!s.sObj.Id}','{!JSENCODE(s.sName)}',{!s.isOutOfOffice})" href="#">{!s.sName}</a>  
+                        </apex:column>
+                        <apex:repeat value="{!dynamicUserFields}" var="f">                  
+                            <apex:column value="{!s.sObj[f]}" ondblclick="assignSuggestedOwnerJS('STAFF','{!s.sObj.Id}','{!JSENCODE(s.sName)}',{!s.isOutOfOffice})" ></apex:column>  
+                        </apex:repeat>    
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+                <apex:outputPanel id="queueOutPanel" layout="block" style="overflow:auto;display:none;">
+                    <apex:pageBlockTable id="queueBlockTable" value="{!queueList}" var="queueRec" >
+                        <apex:actionSupport event="onRowClick" action="{!displayQueueMembers}" rerender="queueMemPanel" immediate="true" onComplete="hideDisplayElement(messagePanelId,'none');queueMemResultSize = '{!queueMemResultSize}';displayQueueMemPanel('','{!queueRec.QueueId}','{!JSENCODE(queueRec['Queue.Name'])}');setResultListHeightJS();disableRadioBtns(false);">
+                            <apex:param name="qId" value="{!queueRec.QueueId}" assignTo="{!queueId}"/>
+                        </apex:actionSupport>
+                        <apex:column onclick="disableRadioBtns(true);">
+                            <apex:facet name="header">                       
+                                <apex:outputLabel value="{!queueFirstColumnName}" styleClass="searchClass" ></apex:outputLabel>
+                            </apex:facet>
+                            <a class="" onclick="assignSuggestedOwnerJS('QUEUE','{!queueRec.QueueId}','{!JSENCODE(queueRec['Queue.Name'])}')" href="#">{!queueRec['Queue.Name']}</a>
+                        </apex:column>
+                        <apex:column value="{!queueRec['Queue.Email']}" ondblclick="assignSuggestedOwnerJS('QUEUE', '{!queueRec['QueueId']}','{!JSENCODE(queueRec['Queue.Name'])}')" ></apex:column>
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+                 &nbsp;&nbsp;  
+                <apex:outputPanel id="queueMemHeaderPanel" style="display:none;">
+                	<apex:outputLabel id="queueMemHeader" value="" styleClass="searchClass"></apex:outputLabel>
+                </apex:outputPanel>
+                <apex:outputPanel id="queueMemPanel" layout="block" style="margin-top:10px;overflow:auto;display:none"> 
+                    <apex:pageBlockTable id="queueMemBlockTable" value="{!queueMemList}" var="qMemRec" >
+                        <apex:column >
+                            <apex:facet name="header">                       
+                                <apex:outputLabel value="{!firstUserColumnName}" styleClass="searchClass" ></apex:outputLabel>
+                            </apex:facet>                       
+                            <a class="" onclick="assignSuggestedOwnerJS('STAFF','{!qMemRec.sObj.Id}','{!JSENCODE(qMemRec.sName)}',{!qMemRec.isOutOfOffice})" href="#">{!qMemRec.sName}</a>
+                        </apex:column>
+                        <apex:repeat value="{!dynamicUserFields}" var="f">                  
+                            <apex:column value="{!qMemRec.sObj[f]}" ondblclick="assignSuggestedOwnerJS('STAFF','{!qMemRec.sObj.Id}','{!JSENCODE(qMemRec.sName)}',{!qMemRec.isOutOfOffice})" ></apex:column>  
+                        </apex:repeat>
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+                 &nbsp;&nbsp;  
+                <div id="toolbarDiv" class="border1px"  style="display:{!if (resultSize == 0,'none','block')}">
+                    <div id="innertoolbar" align="center" class="padding5px">           
+                        <span class="leftClass">
+                            <apex:selectList id="choosePageSize" value="{!pageSize}" size="1" onchange="fetchPageJS(this.value)" >
+                                <apex:selectOptions value="{!availablePageSizes}"/>
+                            </apex:selectList> 
+                            {!$Label.Records_per_page}
+                        </span> 
+                        <span class="paginatorClass">                                  
+                            <span>
+                                <apex:outputPanel rendered="{!IF(hasPrevious == true,true,false)}">
+                                    <img class="firstPageEnableClass" title="{!$Label.FirstPage}" src="/s.gif"  onClick="first();"/> 
+                                    <span class="prevClass" onClick="return previous();">
+                                        <img class="previousPageEnableClass" title="{!$Label.PreviousPage}" src="/s.gif"/>                                                                                                                           
+                                        <apex:outputText value="{!$Label.bmcservicedesk__Previous}" styleclass="prevLinkEnableClass"/> 
+                                    </span>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hasPrevious == false,true,false)}">
+                                    <span>
+                                        <img class="firstPageDisableClass" title="{!$Label.FirstPage}" src="/s.gif"  onClick="first();"/> 
+                                        <img class="previousPageDisableClass" title="{!$Label.PreviousPage}" src="/s.gif"/>                                                                                               
+                                        <apex:outputText value="{!$Label.bmcservicedesk__Previous}" styleClass="prevLinkDisableClass"/> 
+                                    </span>
+                                </apex:outputPanel>
+                            </span>
+                        &nbsp;&nbsp;                    
+                            <span>
+                                <apex:outputPanel rendered="{!IF(hasNext == true,true,false)}">
+                                    <span class="nextClass" onClick="return next();">                                                                                                                                                           
+                                        <apex:outputText value="{!$Label.bmcservicedesk__Next}" styleclass="nextLinkEnableClass"/> 
+                                        <img class="nextPageEnableClass" title="{!$Label.NextPage}" src="/s.gif"/>
+                                    </span>
+                                    <img class="lastPageEnableClass" title="{!$Label.LastPage}" src="/s.gif"  onClick="last();"/> 
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hasNext == false,true,false)}">
+                                    <span>                                
+                                        <apex:outputText value="{!$Label.bmcservicedesk__Next}" styleClass="nextLinkDisableClass"/> 
+                                        <img class="nextPageDisableClass" title="{!$Label.NextPage}" src="/s.gif"/> 
+                                        <img class="lastPageDisableClass" title="{!$Label.LastPage}" src="/s.gif"  onClick="last();"/> 
+                                    </span>
+                                </apex:outputPanel>
+                            </span> 
+                        </span>                        
+                        <span  class="rightClass">                
+                            {!$Label.Page}<input id="currPage" type="text" name="currentpage" value="{!currentpage}" maxlength="4" size="1" class="left2pxPadding" onkeypress="return goOnKeyPress(event,this.value);"/> {!$Label.Of} {!totalNumberOfPages}
+                        </span >
+                    </div>
+                </div>   
+            </apex:pageBlock>
+        </apex:form>
+    </body>
+    <script>
+        window.document.title = '{!JSENCODE(windowTitle)}';
+        var parentObjectId = '{!parentObjectId}';   
+        var parentObjectName = '{!parentObjectName}';
+        var suggestObjectName = '{!suggestObjectName}';
+        var param = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.tableOutputpanel)}';
+        var isCalledfromConsole='{!$CurrentPage.parameters.iscalledFromConsole}';
+        function updateParentObject2(resultRowId){                        
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.SuggestionPageController.updateParentObject}',resultRowId,parentObjectId,parentObjectName,suggestObjectName,closeWindow);
+        }          
+        var fromInciOwnerLkup = '{!fromInciOwnerLkup}';
+        var titleId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.pageBlockTitle)}';
+        var genPanelId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.genOutPanel)}';
+        var queuePanelId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.queueOutPanel)}';
+        var queueMemPanelId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.queueMemPanel)}';
+        var mainPageBlockId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock)}';
+        var queueResultSize = '{!queueResultSize}';
+        var queueMemResultSize = '{!queueMemResultSize}';
+        var staffResultSize = '{!staffResultSize}';
+        var btnPanelId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.buttonPanel)}';
+        var searchResultLabel = '{!JSENCODE($Label.searchResult)}';
+        var noRecsFoundMsg = '{!JSENCODE($Label.MsgNoRecordFoundSearchPage)}';
+        
+        var messagePanelId = '{!JSENCODE($Component.suggestObjectForm.messagePanel)}';
+        var suggestedLblId = '{!JSENCODE($Component.suggestObjectForm.suggestedLbl)}';
+        var searchFldId = '{!JSENCODE($Component.suggestObjectForm.searchField)}';
+        var pageSizeId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.choosePageSize)}';  
+        var queuMemMsgPanelId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.queueMemMsgPanel)}';
+        var queuMemMsgId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.queueMemMsg)}';
+        var queueMemHeaderPanelId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.queueMemHeaderPanel)}';
+        var queueMemHeaderId = '{!JSENCODE($Component.suggestObjectForm.genPgBlock.queueMemHeader)}';
+                
+        var staffLabel = '{!JSENCODE($Label.StaffWindowHeaderSearchPage)}';
+        var queueLabel = '{!JSENCODE($Label.Queue)}';      
+        var ownerType = '{!ownerType}';
+        var noQMemMsg = '{!JSENCODE($Label.OWNER_NoMemberError)}';
+        var memsOfQueueMsg = '{!JSENCODE($Label.OWNER_QueueMember)}';
+        var exceptionOccured = 'false';
+        
+        if(suggestObjectName == 'Suggested_Owner_Mapping__c' || ownerType == 'STAFF' || ownerType == 'OWNER' || ownerType == 'QUEUE'){
+        	var msgPanel = document.getElementById(messagePanelId);
+        	if(typeof(msgPanel) != 'undefined' && msgPanel != null)
+        		msgPanel.style.display = 'none'; 
+       	}
+        
+        function assignSuggestedOwnerJS(ownerType, resultRowId, staffName, isOutOfOffice){
+        	if(isOutOfOffice){
+        		var conf = confirm('{!JSENCODE($Label.OutOfOfficeConfirmationMsg)}');
+        		if(!conf)
+        			return;
+        	}
+            if(typeof(fromInciOwnerLkup) != 'undefined' && fromInciOwnerLkup != null && fromInciOwnerLkup == 'true' 
+                && typeof(ownerType) != 'undefined' && ownerType != null && ownerType != ''){
+                if(resultRowId !=''){
+                    captureStaffQueueId(ownerType, resultRowId, staffName);
+                }
+                window.opener.assignOwnerfields(suggestedQueueId, suggestedQueueName, suggestedStaffId, suggestedStaffName);
+                window.close();
+            }
+            else{
+                captureStaffQueueId(ownerType, resultRowId, '');
+                Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.SuggestionPageController.assignSuggestedOwner}', suggestedStaffId, suggestedQueueId, parentObjectId,ownerType,
+                function(result, event){
+                    if (event.status) {
+                        closeWindow();
+                    } else if (event.type === 'exception') {
+                        alert(event.message);
+                    }
+                });
+            }
+        }
+    </script>
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__BMCRFCommonJS}/SuggestionPage.js"/>                 
+</apex:page>

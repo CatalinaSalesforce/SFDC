@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Catégorie</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Catégories</value>
+    </caseValues>
+    <fields>
+        <help><!-- Use this field to enter a short label that you want to assign to the category. When you create charts or reports, you can represent a category record by displaying this field in the chart or report. --></help>
+        <label>Abréviation</label>
+        <name>Abbreviation__c</name>
+    </fields>
+    <fields>
+        <label>Disponible pour les incidents</label>
+        <name>AvailableForIncidents__c</name>
+    </fields>
+    <fields>
+        <label>Disponible pour le catalogue de services</label>
+        <name>AvailableForServiceCatalog__c</name>
+    </fields>
+    <fields>
+        <label>Contient des catégories enfant Incident</label>
+        <name>Contains_Incident_children_categories__c</name>
+    </fields>
+    <fields>
+        <label>Contient des catégories enfant SR</label>
+        <name>Contains_SR_children_categories__c</name>
+    </fields>
+    <fields>
+        <label>Afficher dans Libre service</label>
+        <name>Display_In_SelfService__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the category type. Category type is used to group related categories which are commonly used for reporting purposes. --></help>
+        <label>Type de catégorie</label>
+        <name>FKCategoryType__c</name>
+        <relationshipLabel>Catégories</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the category that should be designated as the parent category. When a parent category is selected, the current category automatically becomes a child category to the selected parent category. --></help>
+        <label>Catégorie parent</label>
+        <name>FKParentCategory__c</name>
+        <relationshipLabel>Catégories</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the urgency you want to assign when creating an incident with the category. The system administrator would assign a level of urgency to the category depending on the importance of the category. --></help>
+        <label>Urgence</label>
+        <name>FKUrgency__c</name>
+        <relationshipLabel>Catégories</relationshipLabel>
+    </fields>
+    <fields>
+        <label>A des enfants</label>
+        <name>HasChildren__c</name>
+    </fields>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the category type. Category type is used to group related categories which are commonly used for reporting purposes. --></help>
+        <label>Type de catégorie~</label>
+        <name>categoryType_Id__c</name>
+    </fields>
+    <fields>
+        <label>Enfants</label>
+        <name>children__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter the number of hours after an incident is closed that a follow-up should begin. This information is automatically added to the closing data of an incident assigned with the current category. --></help>
+        <label>Après</label>
+        <name>followUpAfter__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the category record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label>Inactif</label>
+        <name>inactive__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the category that should be designated as the parent category. When a parent category is selected, the current category automatically becomes a child category to the selected parent category. --></help>
+        <label>Catégorie parent~</label>
+        <name>parentCategory_Id__c</name>
+    </fields>
+    <fields>
+        <label>Arborescence parent</label>
+        <name>parentTree__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to designate incidents for follow-up when the current category is assigned to an incident. These incidents are followed-up when the incident is closed. The follow-up time is specified in the After Hours field. --></help>
+        <label>Suivi</label>
+        <name>requireFollowUp__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the urgency you want to assign when creating an incident with the category. The system administrator would assign a level of urgency to the category depending on the importance of the category. --></help>
+        <label>Urgence~</label>
+        <name>urgency_Id__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel>Catégorie</nameFieldLabel>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une catégorie active.</informationalMessage>
+        <name>nf_01I90000000WgEmEAK_00N9000000283K2EAI</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une catégorie active pour l&apos;incident ou la demande de service.</informationalMessage>
+        <name>nf_01I90000000WgEyEAK_00N9000000283LUEAY</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une catégorie active.</informationalMessage>
+        <name>nf_01I90000000WgF3EAK_00N9000000283MgEAI</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une catégorie active.</informationalMessage>
+        <name>nf_01I90000000WgFlEAK_00N9000000283R9EAI</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une catégorie active.</informationalMessage>
+        <name>nf_01I90000000lPUsEAM_00N900000031qciEAA</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>Sélectionner une catégorie active</informationalMessage>
+        <name>nf_01IA0000001KADEMA4_00NA0000008rKoCMAU</name>
+    </namedFilters>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage>Veuillez saisir une catégorie.</errorMessage>
+        <name>CategoryId_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Il existe déjà un enregistrement avec cette catégorie. Saisissez une catégorie unique.</errorMessage>
+        <name>Unique_Category_Id</name>
+    </validationRules>
+</CustomObjectTranslation>

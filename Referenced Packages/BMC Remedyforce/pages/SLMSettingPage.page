@@ -1,0 +1,642 @@
+<apex:page cache="true" showHeader="false" standardStylesheets="false" controller="BMCServiceDesk.SLMSettings" contentType="{!contentTypeForIE}">
+    <c:CommonIncludes />
+    <script type="text/javascript" src="{!$Resource.SDEFExtJS}/ex/ux/Spinner.js"></script>
+    <script type="text/javascript" src="{!$Resource.SDEFExtJS}/ex/ux/SpinnerField.js"></script>
+    <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFExtJS}/ex/ux/css/Spinner.css" />
+     <link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/Knowledge.css" />
+   <style>
+   .WarningsHeader{
+        padding-left: 10px;
+        width: 98%;
+        width /*\**/:98%\9;
+        *width:100%;
+        margin: 0px;
+        line-height: 2em;
+        padding: 0 0 0 10px;
+    }
+     
+   
+   #SLMGridId{
+        border: 1px solid #aebac1;
+    } 
+    #ToolBarPanel{
+        width:100%!important ;
+    }
+    .x-panel-header{
+        background:none;
+    }
+    .x-panel-body, .x-panel-body-noheader, .x-panel-header-noborder{
+        border:none !important;
+    }
+    #GridPanel{
+        width: 100% !important ;
+    }
+    #durationTextFieldId{
+        width: 75%;
+        height: 13px;
+        *height: 19px;
+        font-family: Tahoma, MS Sans Serif;
+        font-size: 11px;
+        color: #665454;       
+    }
+    .clsAppliesToLabel{
+        padding-right:0px !important;
+        width:22%;
+        float:left;
+        width /*\**/:200px\9;
+        *width:200px;
+        white-space: normal;
+        word-wrap:break-word;
+    }
+    .clsAllCombo{
+        width:20%;
+        float:left;
+    }
+    .clsPriorityLabel{
+        padding-right:0px !important;
+        width:19.3%;
+        float:left;
+        white-space: normal;
+        word-wrap:break-word;
+    }
+    #PriorityTD  {
+       width /*\**/:172px\9;
+       *width:177px;
+    }
+    .clspriorityCheckbox{
+        padding-right:0px !important;
+        width:2%;
+        float:left;
+        padding-left:5px !important;
+    }
+    
+    .clsTargetType{
+        padding-right:0px !important;
+        width:22%;
+        float:left;
+        width /*\**/:200px\9;
+        *width:200px;
+        white-space: normal;
+        word-wrap:break-word;
+    }
+    
+    .clsequalLabel{
+        padding-right:0px !important;
+        margin-left:22px !important;
+        width:2%;float:left;
+        *margin-left:10px;
+    }
+    .clsTimeRemaininglabel{
+        padding-right:0px !important;
+        width:22%;float:left;
+        width /*\**/:200px\9;
+        *width:200px;
+    }
+    .clsTimeremainingField{
+        width:22%;
+        float:left;
+    }
+    .clspercentdateLabel{
+        width:6%;
+        width /*\**/:6%\9;
+        *width:7%;
+        float:left;
+    }
+    .clsdatetimeLabel{
+        width:10.5%;
+        width /*\**/:10.5%\9;
+        *width:8.5%;
+         float:left;
+    }
+    .clsdayLabel{
+        width:10.5%;
+        *width:8.5%;
+        float:left;
+    }
+    
+    .clspercentdateField{
+        padding:4px 0 0 0 !important;
+        width:auto;
+        float:left;
+    }
+    .clsmilestonedateField{
+        padding:4px 0 0 0 !important;
+        width: 35px;
+        float:left;
+    }
+    .clsInputtextlabel{
+        padding-right:0px !important;
+        width:52.4%;
+        width /*\**/:61.5%\9;
+        *width:57%;
+        /*width:34.5%;*/
+    
+        float:left;
+    }
+    .clsInputtextbox{
+        width:32%;
+        width /*\**/:40%\9;
+        *width:41%;
+        float:left;
+        
+    }
+    .clsprocessMilestonelabel{
+    	float:left;
+    	width:27%;
+    	width /*\**/:26.5%\9;
+    	*width:200px;
+        white-space: normal;
+        word-wrap:break-word;
+    }
+    #GridPanel .x-grid3-scroller{
+    	*width:720px !important;
+    }
+    .clsdeleteprocessorLabel{
+    	float:left;
+    	width:27%;
+    	width /*\**/:27%\9;
+    	*width:200px;
+        white-space: normal;
+    	word-wrap:break-word;
+    }
+    .TD5pxHeightCls{height: 5px;}
+    .TD10pxHeightCls{height: 10px;}
+    #SLCLableId, #WSTLableId{
+    	 width /*\**/:100%\9;
+        *width:100%;
+        color:#004376;
+        font-size:13px;
+        font-weight: bold;
+        font-family:tahoma,arial,helvetica,sans-serif !important;
+        white-space: normal;
+        word-wrap:break-word;
+    }
+    #defaultTimeRemaining, #defaultAssignTo, #defaultPriorityTo, #defaultTargetType{
+        height: 15px;
+        *height: 22px;
+        font-family: tahoma !important;
+        font-size: 11px;
+        color: #000000;
+        margin: 0px;
+        padding-bottom: 2px; 
+        *padding-bottom: 3px; 
+        width:145px;
+    }
+    
+    .x-form-spinner-splitter{
+        overflow:hidden !important;
+        height: 0px !important;
+    }
+    #priorityCheckboxId{
+        margin-left:5px;
+    }
+   
+   #perLabelId{
+      margin-left: 10px;
+   }
+     #dayLabelId, #minLabelId, #hourLabelId{
+        margin-left: 5px;
+    }
+    #ServiceTargetContext{
+        margin-top:10px;
+    } 
+    #durationTextFieldTD{
+        width /*\**/:200px\9;
+        
+    }
+   
+    //#slmPanelDiv{height:550px;}
+    #milestonehourFieldId{
+        text-align:right;
+    }
+    #milestonedayFieldId{
+        text-align:right;
+    }
+    #milestoneminuteFieldId{
+        text-align:right;
+    }
+    #PercentageFieldId{
+        text-align:right;
+    }
+    #hourFieldId{
+        text-align:right;
+    }
+    #dayFieldId{
+        text-align:right;
+    }
+    #minuteFieldId{
+        text-align:right;
+    }
+    #milestonebutton{
+        font-family: tahoma !important;
+        font-size: 11px;
+    }
+    .clsmilestonebtnLabelTD{
+        vertical-align: top;
+        font-family: Tahoma, MS Sans Serif;
+        color: #000000;
+        padding-right: 35px;
+        margin: 0px;
+        width: 3%;
+        float:left;
+        font-size: 11px;
+        white-space: nowrap;
+        padding-top: 1px;
+        padding-left: 10px;
+    }
+    .x-combo-list-inner{
+    width:161px !important;
+   }
+   .x-ie-shadow{
+    width:161px !important;
+   }
+   .x-combo-list {
+     width:161px !important;
+   }
+   .x-combo-list-item x-combo-selected{
+   width:161px !important;
+   }
+   .x-form-field-wrap .x-form-trigger{
+     height:20px !important;   
+    *height:21px !important;
+   }
+   .ext-safari .x-form-field-wrap .x-form-trigger{
+      right:auto !important;
+   }
+    .x-grid3-scroller{
+      height:275px;
+   }
+    .x-item-disabled{
+     filter:none !important ;
+    }
+    .clsComboStyle .x-form-text{
+     margin :0px !important ;
+    }
+    </style> 
+    <script type="text/javascript">
+    var startbuttontext='{!JSENCODE($Label.StartMilestoneButton)}';
+    var stopbuttontext='{!JSENCODE($Label.StopMilestoneButton)}';
+    var milestonedefaulthourvalue = '{!milestonehours}';
+    var milestonedefaultminutevalue = '{!milestoneminutes}';
+    var milestonedefaultdayvalue = '{!JSENCODE(milestonedays)}';
+    var wherelabel =' '+'{!JSENCODE($Label.SLM_Where_Priority)}'+' ';
+    var store;
+    var MilestonehourField;
+    var milestoneminuteField;
+    var milestonedayField;
+    var milestoneButton;
+    var addClickedFlag = 0;
+    var Assignto1; 
+    var WarningPercentage1;
+    var TargetType1; 
+    var WarningDuration1;
+    var Priority1;
+    var selectedId;
+    var TimeRemaining;
+    var serviceTarget; 
+    var warningStatus;        
+    var SLMgrid;
+    var hiddendata;
+    var Assignto2; 
+    var WarningPercentage2;
+    var TargetType2; 
+    var WarningDuration2;
+    var Priority2;
+    var AssignCombo1 = new Array();   
+    var duration = new Array();     
+    var PrioCombo1 = new Array();
+    var TarGet1 = new Array();
+    var IdArray1 = new Array();
+    var Warning = new Array();
+    var minuteWarning = new Array();
+    var labelWarning = new Array();
+    var record ;
+    var gridstring;
+    var prioChk = false;
+    var cnt = 0;
+    var cnt2 = 0;
+    var update = 0;
+     var resolution ='{!Sky_ResolutionTime}';
+    var response = '{!Sky_ResponseTime}';
+    var completion ='{!Sky_CompletionTime}';
+    var initiation = '{!Sky_InitiationTime}';
+    var change = '{!Sky_Change}';
+    var inc = '{!Sky_Incident}';
+    var prob = '{!Sky_Problem}';
+    var prio;
+    var buttontext='{!jobrunnningflag}';
+    var jobstatusflag='{!jobstatus}';   
+    var ctimejs = '{!JSENCODE(enCompletionTime)}'; 
+    var resptimejs = '{!JSENCODE(enResponseTime)}'; 
+    var resotimejs = '{!JSENCODE(enResolutionTime)}'; 
+    var inittimejs = '{!JSENCODE(enInitiationTime)}'; 
+    var incLabel = '{!JSENCODE(incidentLabel)}';
+    var changeLabel = '{!JSENCODE(changeRequestLabel)}';
+    var problemLabel = '{!JSENCODE(problemLabel)}';
+          
+            Ext.ns("SLMSettingPage"); 
+            SLMSettingPage.Labels = {
+                Service_Target:'{!JSENCODE($Label.SLM_Service_Target_Context)}',
+                Warning_Status:'{!JSENCODE($Label.SLM_Warning_Status_Trigger)}',
+                AppliesTo: '{!JSENCODE($ObjectType.RemedyforceSLMSettings__c.fields.AppliesToObject__c.label)}',
+                TargetType:'{!JSENCODE($ObjectType.RemedyforceSLMSettings__c.fields.TargetType__c.label)}',
+                Priority:'{!JSENCODE($ObjectType.RemedyforceSLMSettings__c.fields.Priority__c.label)}',
+                Incident:'{!JSENCODE($ObjectType.Incident__c.label)}',
+                Change:'{!JSENCODE($ObjectType.Change_Request__c.label)}',
+                Where:'{!JSENCODE($Label.SLM_Where_Priority)}',
+                EqualTo:'{!JSENCODE($Label.SLM_Equal_To)}',
+                AND: '{!JSENCODE($Label.SLM_AND)}',
+                Days:'{!JSENCODE($Label.Days)}',
+                HHMM:'{!JSENCODE($Label.HHMM)}',
+                HoursLabel:'{!JSENCODE($Label.HoursLabel)}',
+                Minutes: '{!JSENCODE($Label.MinutesLabel)}',
+                Percent_of_Time_Remaining: '{!JSENCODE($Label.SLM_Percent_Time_Remaining)}',
+                Time_Remaining: '{!JSENCODE($Label.SLM_Time_Remaining)}',
+                Record_Exists:'{!JSENCODE($Label.SLM_Record)}',
+                Add:'{!JSENCODE($Label.Add)}',
+                Remove:'{!JSENCODE($Label.Remove)}',
+                Cancel:'{!JSENCODE($Label.Cancel)}',
+                Update:'{!JSENCODE($Label.Update)}',
+                ResponseTime:'{!JSENCODE($Label.ResponseTime)}',
+                ResolutionTime:'{!JSENCODE($Label.ResolutionTime)}',
+                CompletionTime:'{!JSENCODE($Label.CompletionTime)}',
+                InitiationTime:'{!JSENCODE($Label.InitiationTime)}',
+                EnterPercentage:'{!JSENCODE($Label.milestonePercentageMandatory)}',
+                EnterTime:'{!JSENCODE($Label.milestoneTimeMandatory)}',
+                EnterDays:'{!JSENCODE($Label.EnterDays)}'
+            }
+        
+      
+      </script>
+   		 <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/SLMSettingPage.js"/>
+       <script>
+       eval('{!AppliesToType}');
+       eval('{!Priority}');
+        eval('{!TargetTypeForIncident}'); 
+        eval('{!TargetTypeForChangeRequest}');
+        eval('{!TargetTypeForProblem}');
+        eval('{!TimeRemaining}');
+         function dbvalues(){
+         var AssignObj;
+         var Tartype;
+             <apex:repeat value="{!SLMdetails}" var="slm" >
+                  IdArray1[cnt] = '{!slm.id}';
+                  AssignObj = '{!slm.AppliesToObject__c}';
+                  if(AssignObj == inc){
+                 	 AssignCombo1[cnt] = inc;
+                  }else if(AssignObj == change){
+                  	AssignCombo1[cnt] = change;
+                  }else if(AssignObj == prob){
+                  	AssignCombo1[cnt] = prob;
+                  }
+                  prio = '{!slm.Priority__c}';
+                  if(prio==''){
+                  PrioCombo1[cnt]='';
+                  }
+                  else{
+                  PrioCombo1[cnt] = parseInt(prio);  
+                  }
+                 
+                  Tartype=  '{!slm.TargetType__c}';
+                  if(Tartype == response){
+                    TarGet1[cnt] = response;
+                  }
+                  else if(Tartype ==resolution){
+                     TarGet1[cnt] = resolution;
+                  }
+                   else if(Tartype ==initiation){
+                     TarGet1[cnt] = initiation;
+                  }
+                   else{
+                    TarGet1[cnt] = completion;
+                   }        
+                  Warning[cnt] = parseInt('{!slm.WarningPercentage__c}');                 
+                  minuteWarning[cnt] = parseInt('{!slm.WarningDuration__c}');
+                 if(minuteWarning[cnt]!= -1.00){
+                        var numberOfDays = ((minuteWarning[cnt]) / 1440); 
+                        var numOfDays = parseInt(numberOfDays);
+                        var remainingmin = (minuteWarning[cnt] - (numOfDays * 1440))
+                        var numberOfHours = remainingmin/ 60;
+                        var numOfHours = parseInt(numberOfHours);
+                        var numOfMinutes =parseInt( minuteWarning[cnt] - (numOfDays * 1440) - (numOfHours * 60));
+                        duration[cnt] = padNumberToTwodigit(numOfDays) +' '+SLMSettingPage.Labels.Days+' ' +padNumberToTwodigit(numOfHours)+':'+padNumberToTwodigit(numOfMinutes)+' '+SLMSettingPage.Labels.HHMM;
+                    }
+                  if(Warning[cnt] == -1.00){    
+                        
+                    labelWarning[cnt] = SLMSettingPage.Labels.Time_Remaining;
+                  }
+                  if(minuteWarning[cnt] == -1.00){                                    
+                    labelWarning[cnt] = SLMSettingPage.Labels.Percent_of_Time_Remaining;
+                    duration[cnt] = -1;
+                  } 
+                  cnt++;
+             </apex:repeat>
+            
+            cnt--;
+       }
+       function padNumberToTwodigit(number) {
+             return (number < 10 ? '0' : '') + number;
+        }
+       dbvalues();
+    function SLMWarningSaveHandler(){ 
+       	        
+         var storeCSSData = '';
+        var milestoneInetervalData = 0;
+        var milestoneDeleteData = 0;
+        var milestonehour ;
+        var milestonemin ;
+        var milestoneday ;
+            for (var i=0; i<store.data.length; i++)
+            {
+                //Assumption is that data is always validated.                
+                    storeCSSData += String.format('{0},{1},{2},{3},{4},{5};', hiddendata.getAt(i).get('Id'),hiddendata.getAt(i).get('AppliesToObject'),hiddendata.getAt(i).get('Priority'),hiddendata.getAt(i).get('TargetType'),hiddendata.getAt(i).get('WarningPercentage'),hiddendata.getAt(i).get('WarningDuration'));
+               
+            }          
+            if(MilestonehourField.getValue()=== '' ){
+              window.parent.Ext.MessageBox.show({ msg:SLMSettingPage.Labels.EnterTime , buttons: Ext.MessageBox.OK});
+               return false;
+              }  
+            else{             
+               milestonehour = MilestonehourField.getValue();
+             }
+             if(milestoneminuteField.getValue()=== '' ){
+                  window.parent.Ext.MessageBox.show({ msg:SLMSettingPage.Labels.EnterTime , buttons: Ext.MessageBox.OK});
+                  return false;
+             }  
+            else{ 
+               milestonemin = milestoneminuteField.getValue();
+             }
+             if(milestonedayField.getValue()=== '' ||milestonedayField.getValue()== 0){
+          
+               window.parent.Ext.MessageBox.show({ msg:SLMSettingPage.Labels.EnterDays , buttons: Ext.MessageBox.OK});
+               return false;
+             
+             }  
+            else{ 
+               milestoneday = milestonedayField.getValue();
+             }
+            if (MilestonehourField.getValue()== 0 && milestoneminuteField.getValue()== 0){
+               window.parent.Ext.MessageBox.show({ msg:SLMSettingPage.Labels.EnterTime , buttons: Ext.MessageBox.OK});
+               return false;
+              }
+           
+          /*  milestonehour = MilestonehourField.getValue();
+            milestonemin = milestoneminuteField.getValue();
+            milestoneday = milestonedayField.getValue();*/
+            milestoneInetervalData  = (parseInt(milestonehour)*60) + parseInt(milestonemin);
+            milestoneDeleteData     = parseInt(milestoneday);
+           
+            
+            SaveSLMData(storeCSSData,milestoneInetervalData,milestoneDeleteData);
+            return true;
+          
+       	}
+    </script>
+    <apex:outputPanel id="statusPanel">
+     <script>
+     
+    	jobstatusflag='{!jobstatus}';
+    	
+    	function onCompleteStart(){
+    	  if(jobstatusflag=='false'){
+				Ext.MessageBox.show({ msg:'{!JSENCODE($Label.Scheduled_Job_Exception)}' , buttons: Ext.MessageBox.OK});
+		  }
+		  Ext.getCmp('milestonebutton').setDisabled(false);
+		}
+		
+		function onCompleteStop(){
+			Ext.getCmp('milestonebutton').setDisabled(false);
+		}
+    	
+    </script>		 
+    </apex:outputPanel>
+    <body oncontextmenu="return false;">   
+     <apex:form >  
+ 	
+ 	<apex:actionFunction name="SaveSLMData" action="{!globalSave}" reRender="" oncomplete="parent.window.isComplete();">
+        <apex:param assignTo="{!storeSLMWarningData}" name="storeCSSData" value=""/>
+        <apex:param assignTo="{!milestoneInterval}" name="milestoneInetervalData" value=""/>
+        <apex:param assignTo="{!milestoneDeleteInterval}" name="milestoneDeleteData" value=""/>
+    </apex:actionFunction>
+	
+ 	<apex:actionfunction name="ScheduleJob" action="{!scheduleJobhelpermethod}" reRender="statusPanel" oncomplete="onCompleteStart()"/>
+ 	<apex:actionfunction name="StopJob" action="{!stopJobhelpermethod}" reRender="statusPanel" oncomplete="onCompleteStop()"/>    
+ 
+ 
+ <apex:panelBar headerClass="clsRowBlueBgPanel" switchType="ajax" id="pbarId">
+    
+   <apex:panelBarItem label="{!$Label.bmcservicedesk__SLM_Service_Target_Milestones}" expanded="true" id="ServiceTargetMilestonespanel" contentClass="panelContent" headerClass="WarningsHeader">
+       <div id = "slmPanelDiv" style="width:645px;height:100px;">
+        <table style="width:auto;*width:645px;"> 
+                <tr>
+                    <td class="TD10pxHeightCls"></td>
+                </tr>
+                
+                <tr>
+                    <td colspan="6">
+                        <div id="processMilestone" class="clsInputLabelTD clsprocessMilestonelabel">{!$Label.Process_Milestone_Every}</div>
+                        <div class="clsComboStyle clsdatetimeLabel" id="milestonehourFieldTD"></div>
+                        <div id="milestonehourLabelTD" class="clsInputLabelTD clsmilestonedateField" style="width:8%;">{!$Label.HoursLabel}</div>
+                    
+                        <div class="clsComboStyle clsdatetimeLabel" id="milestoneminuteFieldTD"></div>
+                        <div id="milestoneminLabelTD" class="clsInputLabelTD clsmilestonedateField" style="width:8%;">{!$Label.MinutesLabel}</div>
+                   
+                        <div id="milestoneButtonTD" class="clsmilestonebtnLabelTD"></div>    
+                     
+                    </td>
+                </tr>
+                <tr>
+                    <td class="TD10pxHeightCls"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="deleteprocessor" class="clsInputLabelTD clsdeleteprocessorLabel">{!$Label.Delete_Processor_History_Every}</div>
+                        <div class="clsComboStyle clsdayLabel" id="milestonedayFieldTD"></div>
+                        <div id="milestonedayLabelTD" class="clsInputLabelTD clsmilestonedateField" >{!$Label.Days}</div>
+                    </td>
+                </tr>
+            </table>
+          </div>  
+     </apex:panelBarItem>
+     <apex:panelBarItem label="{!$Label.bmcservicedesk__SLM_Service_Target_Warnings}"  id="changedetail" headerClass="WarningsHeader" contentClass="panelContent">   
+    <div id = "slmPanelDiv" style="width:645px;">
+        <table id="SLMTable1" class="clsTable" cellspacing="0" cellpadding="0" >            
+            <tr>
+                <td class="clsInputLabelTD" id="SLCLableId">{!$Label.SLM_Service_Target_Context}</td>
+            </tr>
+            <tr>
+                <td class="TD15pxHeightCls"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="clsInputLabelTD clsAppliesToLabel" id="AppliesTotd"></div>
+                    <div  id="AppliesToCombotd" class="clsComboStyle clsAllCombo"></div>
+                </td>  
+            </tr>
+            <tr>
+                <td class="TD5pxHeightCls">  </td>
+            </tr>
+            <tr>
+                <td colspan="3" >
+                    <div id="priorityCheckboxTD" class="clsInputLabelTD clspriorityCheckbox"></div>
+                    <div class="clsInputLabelTD clsPriorityLabel" id="PriorityTD" style ="padding-left/*\**/:20px\9;*padding-left:20px;"></div>
+                    <div class="clsComboStyle clsAllCombo" id="PriorityComboTD" ></div>
+                </td> 
+            </tr>
+            <tr>
+                <td class="TD15pxHeightCls"></td>
+            </tr>
+            <tr>
+                <td class="clsInputLabelTD" id="WSTLableId">{!$Label.SLM_Warning_Status_Trigger}</td>
+            </tr>
+            <tr>
+                <td class="TD10pxHeightCls">  </td>
+            </tr>
+            <tr>
+                <td colspan="2" >
+                    <div id="TargetTypeTD" class="clsInputLabelTD clsTargetType"></div>
+                    <div class="clsComboStyle clsAllCombo" id="TargetTypeComboTD"></div>
+                </td> 
+            </tr>
+            <tr>
+                <td class="TD5pxHeightCls">  </td>
+            </tr>
+            <tr>
+                <td colspan="11" >
+                    <div id="TimeRemainingTD" class="clsInputLabelTD clsTimeRemaininglabel"></div>
+                    <div class="clsComboStyle clsTimeremainingField" id="TimeRemainingComboTD"></div>
+                    
+                    <div id="equalLabelTD" class="clsInputLabelTD clsequalLabel"></div>
+                    <div class="clsComboStyle clspercentdateLabel" id="percentageFieldTD" ></div>
+                    <div id="perLabelTD" class="clsInputLabelTD clspercentdateField"></div>   
+                                    
+                    <div class="clsComboStyle clspercentdateLabel" id="dayFieldTD" ></div>
+                    <div id="dayLabelTD" class="clsInputLabelTD clspercentdateField" ></div>   
+                                    
+                    <div class="clsComboStyle clspercentdateLabel" id="hourFieldTD" style = "padding-left: 4px;"></div>
+                    <div id="hourLabelTD" class="clsInputLabelTD clspercentdateField" ></div>
+                   
+                   
+                    <div class="clsComboStyle clspercentdateLabel" id="minuteFieldTD" style = "padding-left: 4px;"></div>
+                    <div id="minLabelTD" class="clsInputLabelTD clspercentdateField"></div>   
+                </td> 
+            </tr>
+            <tr>
+                <td class="TD5pxHeightCls"></td>
+            </tr>   
+           <tr>
+                <td colspan="11" >
+                    <div class="clsInputTextBoxTD clsInputtextlabel"  id="durationTDId"></div>
+                    <div class="clsInputTextBoxTD clsInputtextbox" id="durationTextFieldTD" style="border:none;"></div>
+                </td>
+            </tr>       
+        </table>                   
+    </div>  
+    <div id="ToolBarPanel" ></div>
+    <div id="GridPanel" ></div>
+   </apex:panelBarItem>
+   </apex:panelBar>
+    
+    </apex:form>    
+     </body>
+    </apex:page>

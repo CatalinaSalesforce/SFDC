@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Stockage de bases de données</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Stockages de bases de données</value>
+    </caseValues>
+    <fields>
+        <label>ID instance</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>Est une zone système</label>
+        <name>Is_System_Area__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Heure de la dernière sauvegarde</label>
+        <name>Last_Backup_Time__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Nom de stockage de bases de données</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

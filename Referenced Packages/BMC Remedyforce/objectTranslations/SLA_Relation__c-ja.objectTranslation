@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SLA関係</value>
+    </caseValues>
+    <fields>
+        <label>一次SLA</label>
+        <name>PrimarySLA__c</name>
+        <relationshipLabel>SLA関係(一次SLA)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>関連SLA</label>
+        <name>RelatedSLA__c</name>
+        <relationshipLabel>SLA関係</relationshipLabel>
+    </fields>
+    <nameFieldLabel><!-- SLA Relation Name --></nameFieldLabel>
+</CustomObjectTranslation>

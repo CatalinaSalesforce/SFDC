@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>SLA_Milestone_Change_Txn_History__c.Action_Performed__c</field>
+    </columns>
+    <columns>
+        <field>SLA_Milestone_Change_Txn_History__c.Created_Date__c</field>
+    </columns>
+    <columns>
+        <field>SLA_Milestone_Change_Txn_History__c.SLA_Milestone_Condition__c</field>
+    </columns>
+    <columns>
+        <field>SLA_Milestone_Change_Txn_History__c.SLA_Milestone_Value__c</field>
+    </columns>
+    <columns>
+        <field>SLA_Milestone_Change_Txn_History__c.Status__c</field>
+    </columns>
+    <columns>
+        <field>SLA_Milestone_Change_Txn_History__c.Error__c</field>
+    </columns>
+    <description>Lists all milestones and actions that have been performed when the milestone occurs for change request records and groups them by each change request.</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>SLA_Milestone_Change_Txn_History__c.FKChange__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>SLA Milestone History- Changes</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$SLA_Milestone_Change_Txn_History__c</reportType>
+    <scope>user</scope>
+    <showDetails>true</showDetails>
+    <timeFrameFilter>
+        <dateColumn>SLA_Milestone_Change_Txn_History__c.Created_Date__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

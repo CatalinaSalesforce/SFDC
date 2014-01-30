@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>セルフサービスの画像</value>
+    </caseValues>
+    <fields>
+        <label>有効</label>
+        <name>Active__c</name>
+    </fields>
+    <fields>
+        <label>テーマ</label>
+        <name>FKTheme__c</name>
+        <relationshipLabel>セルフサービスの画像</relationshipLabel>
+    </fields>
+    <fields>
+        <label>イメージキー</label>
+        <name>Image_Key__c</name>
+        <picklistValues>
+            <masterLabel>Background</masterLabel>
+            <translation><!-- Background --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>BannerHeader</masterLabel>
+            <translation><!-- BannerHeader --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>LoginHeader</masterLabel>
+            <translation><!-- LoginHeader --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Logo</masterLabel>
+            <translation><!-- Logo --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>MainApplication Logo</masterLabel>
+            <translation><!-- MainApplication Logo --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>イメージ タイプ</label>
+        <name>Image_Type__c</name>
+    </fields>
+    <fields>
+        <label>シーケンスID</label>
+        <name>Sequence__c</name>
+    </fields>
+    <nameFieldLabel><!-- Image Name --></nameFieldLabel>
+</CustomObjectTranslation>

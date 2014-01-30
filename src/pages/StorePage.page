@@ -1,0 +1,7 @@
+<apex:page cache="true" contentType="application/vnd.ms-excel;charset=shift_jis#StoreList.csv" controller="StoreSearch" showHeader="false">
+チェーン番号,チェーン名称,店舗番号,店舗名称,屋号,都道府県名,旧屋号,酒販,発券開始日,設置日,開店ステータス
+<apex:repeat value="{!rsslist}" var="rssDto" >
+{!rssDto.rss.Chain_Excel__c}　,{!rssDto.rss.ChainName_Excel__c}　,{!rssDto.rss.StoreNo__c}　,{!rssDto.rss.StoreName__c}　,{!rssDto.rss.Yago__c}　,{!rssDto.rss.PrefectureName__c}　,{!rssDto.rss.OldShopName__c}　,{!rssDto.rss.Liquor__c}　,{!rssDto.rss.StartDay_Excel__c}　,{!rssDto.rss.InstallationDate_Excel__c}　,{!rssDto.rss.OpenStatus__c}
+</apex:repeat>
+ 
+</apex:page>

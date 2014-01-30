@@ -1,0 +1,77 @@
+<apex:component controller="BMCServiceDesk.RecordsListCon">
+<apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/TabOutComponent.js" />
+<script>
+var taboutservertime = '';
+var tstart = '{!tstarttime}';
+var fieldList;
+var firstRecordId = ''; 
+			Ext.ns("TaboutComponent");
+            TaboutComponent.Labels = {
+            	NoRecordsFound: '{!JSENCODE($Label.NoRecordsFound)}'
+            }
+</script>
+<script>
+	function getStrnameiddEleId(){
+		return document.getElementById('{!$Component.strname_id}');
+	}
+	function setStrnameIdEleId(val){
+		document.getElementById('{!$Component.strname_id}').value = val;
+	}
+	function getHiddenTextEle(){
+		return document.getElementById('{!$Component.hiddenText}');
+	}	
+	function setStrObjectIdEleVal(val){
+		document.getElementById('{!$Component.strObject_id}').value = val;
+	}
+	function setStrFieldToSearchIdEleVal(val){
+		document.getElementById('{!$Component.strFieldToSearch_id}').value = val;
+	}
+	function setStrValueIdEleVal(val){
+		document.getElementById('{!$Component.strValue_id}').value = val;
+	}
+	function setWhereClauseIdEleVal(val){
+		document.getElementById('{!$Component.whereClause_id}').value = val;
+	}
+</script>
+
+			
+            <apex:actionRegion >
+                  <apex:inputText value="{!strObject}" id="strObject_id" style="display:none"/>
+                  <apex:inputText value="{!strFieldToSearch}" id="strFieldToSearch_id" style="display:none"/>
+                  <apex:inputText value="{!strValue}" id="strValue_id" style="display:none"/>
+                  <apex:inputText value="{!whereClause}" id="whereClause_id" style="display:none"/>
+                  <apex:outputText id="hiddenText"></apex:outputText>
+                  <apex:inputText value="{!strname}" id="strname_id" style="display:none"/>
+                  <apex:actionFunction name="showdata" action="{!produceData}" reRender="id_populate" oncomplete="">
+                  	<apex:param name="clientIdforSrm" value=""/>
+                  	<apex:param name="catIdForSrd" value=""/>
+                  </apex:actionFunction>
+                  <apex:actionFunction name="setSelectedValue">
+                        <apex:param assignTo="{!strname}" value=""/>
+                  </apex:actionFunction>
+                 
+              <apex:outputPanel id="id_populate">
+                  <apex:outputPanel rendered="true">
+				   <script>
+				   		firstRecordId  = '{!firstRecordId}';
+				   		tempnames = '{!fieldsList}';
+				   		objId = '{!JSENCODE(strObject)}';
+				   		popupId = "{!JSENCODE(strPopupId)}";
+				   		searchField = "{!JSENCODE(strFieldToSearch)}";
+				   		fieldValue = "{!JSENCODE(strValue)}";
+				   		boolMultipleRecords = {!boolCheckSize};
+				   		checkFieldExists = {!isNotAvailable};
+				   		searchElementJS();
+				   </script>
+              </apex:outputPanel>
+           </apex:outputPanel>
+               <script>
+                  	
+                  twindownameflag ='';
+               </script>                            
+            </apex:actionRegion>
+<script>
+var tend = '{!tlendtime}';
+taboutservertime = tend- tstart;
+</script>
+</apex:component>

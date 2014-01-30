@@ -1,0 +1,13 @@
+<apex:component id="loginHeaderComponent" controller="BMCServiceDesk.SSThemeImagesComponentController">
+	<a onclick="openWindow();" target="_blank" title="{!URLTipText}" style="{!IF(companyURL!='','cursor:pointer','cursor:default')}" id="bmcLink">
+		<apex:image value="{!URLFOR($Resource.BMCServiceDesk__Themes,theme.BMCServiceDesk__Resource_File_Name__c+'/SDEFimages/login_title_RemedyForce.png')}" rendered="{!NOT (customLoginHeaderImageVisible)}"/>
+        <apex:image url="/servlet/servlet.FileDownload?file={!loginHeaderId}" rendered="{!customLoginHeaderImageVisible}" width="148" height="19"/>
+	</a>
+	<script>
+	function openWindow(){
+		var url ='{!companyURL}';
+		if(url!=null && url!='')
+		window.open(url);
+	}
+	</script>
+</apex:component>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Element Location</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Element Locations</value>
+    </caseValues>
+    <fields>
+        <label><!-- ElementLocation --></label>
+        <name>ElementLocation__c</name>
+    </fields>
+    <fields>
+        <label><!-- InstanceID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

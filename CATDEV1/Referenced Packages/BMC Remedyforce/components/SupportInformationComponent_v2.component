@@ -1,0 +1,771 @@
+<apex:component controller="BMCServiceDesk.DetailSectionCont" allowDML="true">
+    <script>
+    var composeEmailPageHeaderLabel ='{!JSENCODE($Label.ComposeEmailPageHeader)}';
+    var composeEmailChangePageHeaderLabel = '{!JSENCODE($Label.ComposeEmailChangePageHeader)}';
+    var composeEmailProblemPageHeaderLabel = '{!JSENCODE($Label.ComposeEmailProblemPageHeader)}';
+    var composeEmailTaskPageHeaderLabel = '{!JSENCODE($Label.ComposeEmailTaskPageHeader)}';
+    var siservertime = '';
+    var sistart = '{!sistarttime}';    
+   	var RecordCount = '{!JSENCODE($Label.Record_Count)}';
+    var changeRequestLabelPlural = '{!JSENCODE($Label.Navigator_ChangeRequests)}';
+    var changeRequestLabel = '{!JSENCODE($ObjectType.Change_Request__c.Label)}';     
+    var changeAssessmentLabelPlural = '{!JSENCODE($Label.Navigator_ChangeAssessments)}';
+    var changeAssessmentLabel = '{!JSENCODE($ObjectType.Change_Assessment__c.Label)}';       
+    var changeApprovalsCustLabel = '{!JSENCODE($Label.Navigator_ChangeApprovals)}';
+    var approvalLabel = '{!JSENCODE($Label.Approvals)}';   
+    var incidentLabelPlural = '{!JSENCODE($Label.Navigator_Incidents)}';
+    var incidentLabel = '{!JSENCODE($ObjectType.Incident__c.Label)}';       
+    var taskLabelPlural = '{!JSENCODE($Label.Navigator_Tasks)}';
+    var taskLabel = '{!JSENCODE($ObjectType.Task__c.Label)}';    
+    var problemLabelPlural = '{!JSENCODE($Label.Navigator_Problems)}';
+    var problemLabel = '{!JSENCODE($ObjectType.Problem__c.Label)}';
+    var clientCustLabelPlural = '{!JSENCODE($Label.Navigator_Clients)}';
+    var clientCustLabel = '{!JSENCODE($Label.ClientWindowHeaderSearchPage)}';         
+    var broadcastLabelPlural = '{!JSENCODE($Label.Navigator_Broadcasts)}';  
+    var broadcastLabel = '{!JSENCODE($ObjectType.Broadcasts__c.Label)}';      
+    var categoryLabel = '{!JSENCODE($Label.Navigator_Category)}';       
+    var accountLabelPlural = '{!JSENCODE($Label.Navigator_Accounts)}';
+    var accountLabel = '{!JSENCODE($ObjectType.Account.Label)}';    
+    var standardDescriptionLabel = '{!JSENCODE($Label.Navigator_StandardDescription)}';    
+    var actionLabelPlural = '{!JSENCODE($Label.Navigator_Action)}';    
+    var actionLabel = '{!JSENCODE($ObjectType.Action__c.Label)}';    
+	var lableAddDocumentation = '{!JSENCODE($Label.Add_Documentation)}';		
+	var labelSupportingInformation = '{!JSENCODE($Label.SupportingInformation)}';
+	var labelLinkedTemplates = '{!JSENCODE($Label.LinkedTemplates)}';
+	var labelSupporting_Hide = '{!JSENCODE($Label.Supporting_Hide)}';
+	var labelComments = '{!JSENCODE($Label.Comments)}';
+	var slaLabelPlural = '{!JSENCODE($Label.Navigator_SLA)}';
+    var slaLabel = '{!JSENCODE($ObjectType.ServiceLevelAgreement__c.Label)}';   
+	var labelMinimize = '{!JSENCODE($Label.TooltipMinimize)}';
+	var labelRestore = '{!JSENCODE($Label.TooltipRestore)}';
+	var labelMaximize = '{!JSENCODE($Label.TooltipMaximize)}';
+	var hasSTs = {!hasSTs};
+	var labelFile = '{!JSENCODE($Label.Setpicklistincustomattach)}';
+	function getTabId(){
+   		var actTabEle = Ext.getCmp('grptabpanel').getActiveTab();
+   		var eleId = actTabEle.id;
+   		return eleId.substring(eleId.indexOf('__')+2); 
+    }
+    </script> 
+    <c:CommonIncludes ></c:CommonIncludes>
+     <!-- overrides to base library -->
+    <link rel="stylesheet" type="text/css" href="{!$Resource.ExtJSUX}/ex/ux/css/Portal.css" />
+    <link rel="stylesheet" type="text/css" href="{!$Resource.ExtJSUX}/ex/ux/css/GroupTab.css" />
+    <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/SIStyleSheet.css"/>
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/GroupTabPanel.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/GroupTab.js" />    
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/Portal.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/PortalColumn.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/Portlet.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/portal/sample-grid.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/SupportInformationComponent_v2.js"/>
+    <apex:attribute name="objectName" assignTo="{!strObject}"
+        description="" required="true" type="String" />
+    <apex:attribute name="fKeyValue" assignTo="{!strValue}" description=""
+        type="string" required="true" />
+    <apex:attribute name="filterClause" assignTo="{!filterClause}" description=""
+        type="string" />
+    <apex:attribute name="multiSelectOption" assignTo="{!multiSelectOption}" description=""
+        type="boolean"/>
+         <apex:attribute name="urlForStaticResource" assignTo="{!urlForStaticResource}" description=""
+        type="string"  />
+      <apex:inputtext value="{!myId}"  id="str_id" style="display:none"/>  
+      <apex:inputtext value="{!closeCheck}"  id="str_CloseId" style="display:none"/>  
+   
+<apex:actionFunction name="getIncidentHistoryRenderer" rerender="incidentHistoryIdsArrayPanel" onComplete="reloadSupportInfo();"/>
+
+<apex:actionFunction name="refreshProfile" action="{!populateSelectedProfiles}" rerender="profileId"/>
+    <apex:actionFunction name="initializeResultSet"
+        action="{!initResultSet}" rerender="wholePage">
+        <apex:param name="tabid" value="" assignTo="{!tabId}" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="allFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="openFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="updateResultSet" rerender="wholePage"></apex:actionFunction>
+
+    <apex:actionFunction name="acknowledgedFilter"
+        action="{!initResultSet}" rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="inProgressFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="closedFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="userEntriesFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="systemEntriesFilter"
+        action="{!initResultSet}" rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="allEntriesFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="tabReload" action="{!initResultSet}"
+        rerender="wholePage,divpanelid">
+        <apex:param name="childObj" value="" />
+        <apex:param name="parId" value="" /> 
+    </apex:actionFunction>
+    <apex:actionFunction name="tabReloadOnStart" action="{!initResultSet}"
+        rerender="wholePage,divpanelid" onComplete="afterResetSI()">
+        <apex:param name="childObj" value="" />
+        <apex:param name="parId" value="" /> 
+    </apex:actionFunction>
+    <apex:actionFunction name="initPage" action="{!initializePage}"
+        rerender="wholePage,divpanelid" onComplete="changeFlag();">
+        <apex:param name="childObj" value="" />
+        <apex:param name="parId" value="" /> 
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkToInc" action="{!linkBroadcastInc}"
+        rerender="errorMsgPanel"  onComplete="showLinkError();tabReload(childObject);"> 
+        <apex:param name="incId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkStaffToCategory" action="{!linkStaffCategory}"
+         onComplete="tabReload(childObject);">
+        <apex:param name="clntId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkStaffCategory" action="{!unLinkStaffCategory}"
+         onComplete="tabReload(childObject);">
+        <apex:param name="unlinkClntId"  value="" />
+    </apex:actionFunction>
+    <apex:actionFunction name="linkTemplateToParent" action="{!linkToParent}"
+        rerender="wholePage" onComplete="showLinkError();">
+        <apex:param name="childTemplateId" value="" />
+        <apex:param name="parentTemplateId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkCITask" action="{!linkCITask}" reRender="attpanel"
+        onComplete="tabReload(childObject); AlterCIExpBtnStatus();">
+        <apex:param name="ciId" value="" />
+        <apex:param name="newTaskId" value="" assignTo="{!currentTaskId}"/>
+    </apex:actionFunction>
+
+<apex:actionFunction name="linkCIIncident" action="{!linkCIIncident}"
+        reRender="attpanel"
+        onComplete="tabReload(childObject); AlterCIExpBtnStatus();">
+        <apex:param name="ciId" value="" />
+        <apex:param name="newIncidentId" value="" assignTo="{!currentIncidentId}" />
+    </apex:actionFunction>
+    
+     <apex:actionFunction name="linkCIChange" action="{!linkCIChange}" reRender="attpanel"
+        onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);AlterCIExpBtnStatus();updateSTBtn();">
+        <apex:param name="ciId" value="" />
+    </apex:actionFunction>
+    
+     <apex:actionFunction name="linkCIProblem" action="{!linkCIProblem}"  rerender="attpanel"
+        onComplete="tabReload(childObject); AlterCIExpBtnStatus();showErrorMsg('{!errorMsg}');">
+        <apex:param name="ciId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkKAToCI" action="{!linkKAToCI}"  rerender="attpanel"
+        onComplete="tabReload(childObject); AlterCIExpBtnStatus();showErrorMsg('{!errorMsg}');">
+        <apex:param name="kaId" value="" />
+    </apex:actionFunction>
+	
+	<apex:actionFunction name="unlinkKAToCI" action="{!unlinkKAToCI}"  rerender="attpanel"
+        onComplete="tabReload(childObject); AlterCIExpBtnStatus();showErrorMsg('{!errorMsg}');">
+        <apex:param name="kaId" value="" />
+    </apex:actionFunction>
+	
+    <apex:actionFunction name="unLinkTemplateFromParent" action="{!UnLinkFromParent}"
+         onComplete="tabReload(childObject);">
+        <apex:param name="childTemplateId" value="" />
+        <apex:param name="parentTemplateId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkCITask" action="{!unLinkCITask}" rerender="attpanel"
+        onComplete="tabReload(childObject); AlterCIExpBtnStatus();">
+        <apex:param name="ciId" value="" />
+        <apex:param name="newTaskId" value="" assignTo="{!currentTaskId}"/>
+    </apex:actionFunction>
+    
+ <apex:actionFunction name="unLinkCIIncident" action="{!unLinkCIIncident}" rerender="attpanel"
+        onComplete="tabReload(childObject); AlterCIExpBtnStatus();">
+        <apex:param name="ciId" value="" />
+        <apex:param name="newIncidentId" value="" assignTo="{!currentIncidentId}"/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkCIChange" action="{!unLinkCIChange}" rerender="attpanel"
+        onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject); AlterCIExpBtnStatus();">
+        <apex:param name="ciId" value="" />
+    </apex:actionFunction>
+    <apex:actionFunction name="unLinkCIProblem" action="{!unLinkCIProblem}" rerender="attpanel"
+        onComplete="tabReload(childObject);AlterCIExpBtnStatus();showErrorMsg('{!errorMsg}');">
+        <apex:param name="ciId" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="deleteThisFile" action="{!deleteThisAttachment}"
+        rerender="wholePage" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="delId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="openAttachId" action="{!openAttchment}"
+        rerender="attpanel,errorMsgPanel" onComplete="openAttach();">
+        <apex:param name="selectedRowId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="checkAutoModify" action="{!addHistoryData}"
+        rerender="wholePage" onComplete="afterModifyCheckFunction(); showErrorMsg();">
+        <apex:param name="actionId" assignTo="{!actionId}" value="" />
+        <apex:param name="tabid" value="" />
+        <apex:param name="childObj" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkIncident" action="{!unLinkIncident}" rerender="errorMsgPanel"
+         onComplete="showLinkError();tabReload(childObject);">
+        <apex:param name="incidentIdtobeUnlinked"  value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkIncidentToChange" action="{!linkIncidentToChange}"
+        onComplete="tabReload(childObject);showErrorMsg('{!errorMsg}');">
+        <apex:param name="incId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkIncidentChange" action="{!unLinkIncidentChange}"
+        rerender="errorMsgPanel" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="incId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkProblemToChange" action="{!linkProblemToChange}"
+        onComplete="tabReload(childObject);">
+        <apex:param name="probId" value="" />
+    </apex:actionFunction>
+      <apex:actionFunction name="linkChangeToProblem" action="{!linkChangeToProblem}"
+        onComplete="tabReload(childObject);">
+        <apex:param name="probId" value="" />
+    </apex:actionFunction>
+    <apex:actionFunction name="unLinkProblemChange" action="{!unLinkProblemChange}"
+        rerender="errorMsgPanel" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="probId" value="" />
+    </apex:actionFunction>
+    <apex:actionFunction name="unLinkChangeProblem" action="{!unLinkChangeProblem}"
+       rerender="errorMsgPanel" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="probId" value="" />
+    </apex:actionFunction>
+         <apex:actionFunction name="linkIncidentToProblem" action="{!linkIncidentToProblem}"
+        onComplete="tabReload(childObject);">
+        <apex:param name="incId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkIncidentProblem" action="{!unLinkIncidentProblem}" 
+        onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="incId" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="doNothing" action="{!assignId}" oncomplete="tabReload(childObject);"/>
+    <apex:actionFunction name="doNothingOnSave" action="{!assignId}" oncomplete="tabReloadOnStart(childObject);"/>
+    
+     <apex:actionFunction name="handleResize" action="{!handleresize}" oncomplete="tabReload(childObject);" reRender="">
+        <apex:param name="gridHeight" value="" assignTo="{!gridHeight}"/>
+        <apex:param name="handleResizeCalled" value="" assignTo="{!handleResizeCalled}" />
+    </apex:actionFunction>
+    <apex:actionFunction name="handleColumnClick" action="{!handleColumnClick}" reRender="dataPanel,statePanel,wholePage,divpanelid">
+        <apex:param name="sortColumn" value="" assignTo="{!sortColumn}"/>
+        <apex:param name="sortDirection" value="" assignTo="{!sortDirection}"/>
+        <apex:param name="childObj" value="" />
+    </apex:actionFunction>
+        
+    <apex:actionFunction action="{!handleNextClick}" name="doNext" oncomplete="tabReload(childObject);" reRender=""/>
+    <apex:actionFunction action="{!handlePreviousClick}" name="doPrevious" oncomplete="tabReload(childObject);" reRender=""/>
+    <apex:actionFunction name="fetchData" action="{!fetchData}" reRender="accessPanel" oncomplete="edit(editLink,selectedId);">
+        <apex:param name="pagename" value="" assignTo="{!pagename}"/>
+        <apex:param name="objid" value="" assignTo="{!objid}" />
+    </apex:actionFunction>
+    <apex:actionFunction name="submitCR_ForApproval" action="{!submitCR_ForApproval}" reRender="" oncomplete="showErrorMsg('{!errorMsg}');tabReload(childObject);resetCR();">
+        <apex:param name="comments"  value="" />
+    </apex:actionFunction>
+   <apex:actionFunction name="recallCR_ApprovalRequest" action="{!recallCR_ApprovalRequest}" reRender="" oncomplete="showErrorMsg('{!errorMsg}');tabReload(childObject);resetCR();">
+        <apex:param name="comments"  value="" />
+    </apex:actionFunction>
+    <apex:actionFunction name="LinkCRToIncident" action="{!linkCRtToInc}" onComplete="tabReload(childObject);">
+        <apex:param name="changeId" value="" />
+    </apex:actionFunction>
+    <apex:actionFunction name="unLinkIncidnetFromCR" action="{!unLinkCRFromIncidnet}" rerender="errorMsgPanel" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="changeId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkCRtoCIJS" action="{!linkCRToCI}" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="changeId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkReleaseToCIJS" action="{!linkReleaseToCI}" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="releaseId" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="unLinkReleaseFromCI" action="{!unLinkReleaseFromCI}" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="releaseId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkCRFromCI" action="{!unLinkCRFromCI}" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="changeId" value="" />
+    </apex:actionFunction>
+    <apex:actionFunction name="linkPrbtoCI" action="{!linkPrbtoCI}" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="prbId" value="" />
+    </apex:actionFunction>
+    <apex:actionFunction name="unLinkPrbFromCI" action="{!unLinkPrbFromCI}" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="prbId" value="" />
+    </apex:actionFunction>
+    <apex:actionFunction name="linkAcctoCI" action="{!linkAcctoCI}" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="accId" value="" />
+    </apex:actionFunction>
+   <apex:actionFunction name="unLinkAccFromCI" action="{!unLinkAccFromCI}" onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="accId" value="" />
+    </apex:actionFunction>
+   
+    <apex:actionFunction name="linkIncidentToCI" action="{!linkIncidentToCI}"
+        onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="incId" value="" />
+    </apex:actionFunction> 
+    <apex:actionFunction name="UnlinkIncidentToCI" action="{!UnlinkIncidentToCI}"
+        onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="incId" value="" />
+    </apex:actionFunction> 
+   
+    <apex:actionFunction name="linkClientToCI" action="{!linkClientToCI}"
+        onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="clientId" value="" />
+    </apex:actionFunction> 
+    <apex:actionFunction name="UnlinkClientToCI" action="{!UnlinkClientToCI}"
+        onComplete="showErrorMsg('{!errorMsg}');tabReload(childObject);">
+        <apex:param name="clientId" value="" />
+    </apex:actionFunction>
+    
+    <apex:outputPanel id="attpanel" rendered="true">
+    
+        <script>  
+        var linkRecordFlag = '{!linkRecord}';
+        var attId = '{!selectedAttacmentId}';
+        hasSTs = {!hasSTs};
+        </script>  
+    </apex:outputPanel>
+        
+    <style>
+        {!enableWordWrap}
+    </style>
+   
+    <script>
+    var parentPageId = "{!strValue}",
+        pageName='{!strObject}',
+        isaccess = {!isAccessable},
+        sortColumn ="{!JSENCODE(sortColumn)}",
+        sortDirection ="{!JSENCODE(sortDirection)}",
+        sdeStyleResource = '{!$Resource.SDEFStyles}',
+        imgPathJS = '{!$Resource.SDEFStyles}/SDEFimages/Pin.png',
+        closeCheck = '{!JSENCODE(closeCheck)}',
+        imgPathAsc = '{!$Resource.SDEFStyles}/SDEFimages/arrow_sort_ascending.gif',
+        imgPathDsc = '{!$Resource.SDEFStyles}/SDEFimages/arrow_sort_descending.gif',
+        linkRecordJS = "{!linkRecord}",
+        cmpStr_id = '{!$Component.str_id}',
+        UserPermissionMsg = '{!JSENCODE($Label.UserPermissionMsg)}',
+        labelDelete = '{!JSENCODE($Label.Delete)}',
+        labelDelConfirm = '{!JSENCODE($Label.DeleteConfirmMessage)}',
+        labelLinkedTemp = '{!JSENCODE($Label.CreateLinkedTemplate)}',
+        labelEditTemp = '{!JSENCODE($Label.Editlinkedtemplate)}',
+        multiSelectOption = {!multiSelectOption},
+        RecNotAccesible = '{!JSENCODE($Label.recNotAccesible)}',
+        RecPermission = '{!JSENCODE($Label.MsgNoAccessPerm)}',
+        okLabel = '{!JSENCODE($Label.Ok)}',
+        cancelLabel = '{!JSENCODE($Label.Cancel)}',
+        recordExist = {!disableMenuItems};
+        
+        displayTitle(pageName);
+
+       function getSdeStyleResource(){
+              return '{!$Resource.SDEFStyles}';
+          }
+    
+      
+    </script>
+    
+     <apex:outputPanel id="accessPanel" rendered="true">
+        <script>  
+          isaccess = {!isAccessable};
+        </script>  
+    </apex:outputPanel>
+    <apex:outputPanel id="wholePage" rendered="true">
+	
+    <script>
+    closeCheck = '{!JSENCODE(closeCheck)}';    
+    historyPageName = "{!historyPageName}";
+    historyId = "{!historyId}";
+    historyActionId = "{!historyActionId}";
+    isModifiable = "{!isModifiable}";
+    function getStrGrpTabVal(){
+        var strGrpTabVal = <apex:outputtext value="{!strGrpTab}" escape="false"/>;
+        return strGrpTabVal;
+    }
+    function getunsortableCols(){
+        return {!unsortableCols};
+    }
+
+    function getStrItem(){
+        return {!strItem};
+    }
+    
+    function getIsMidifiable(){
+        return {!isModifiable};
+    }
+    function getHistoryId(){
+        return "{!historyId}";
+    }
+    function getHistoryPageName(){
+        return "{!historyPageName}";
+    }
+    function getHistoryActionId(){
+    return "{!historyActionId}";
+    }
+    
+    function getPatentPageId(){
+        return "{!strValue}";
+    }
+    function getCRName(){
+        return "{!JSENCODE(changeReqName)}";
+    }
+     function getIncidentName(){
+        return "{!JSENCODE(IncidentName)}";
+    }
+    function approvalComments(comments, okBtnHandler){
+        //alert('okBtnHandler : ' + okBtnHandler);
+        if(okBtnHandler != null && okBtnHandler != 'undefined')
+            okBtnHandler(comments);
+    }
+
+    var err = "{!errorMsg}",
+        selectedPro = "{!JSENCODE(selectedProfiles)}",
+        resultSet= new Array({!resultSet.size});  
+
+    processTabRecCount('{!tabRecCountMap}');
+    var j=0, k=0;
+    
+    function openAttach(){
+    	if(err == null || err == ''){
+    		filePopUp(attId);
+    	}else{
+    		showErrorMsg(err);
+    	}
+    }
+    </script>
+    <apex:repeat value="{!resultSet}" var="obj">
+            <script>k=0;colsSize={!obj.fields.size}; resultSet[j] = new Array(colsSize); </script>
+            <apex:repeat value="{!obj.fields}" var="objflds">
+                <script>
+                resultSet[j][k]="{!(objflds.value)}";
+                if(resultSet[j][k]=="")resultSet[j][k]="-";k++;
+                 
+                </script>
+            </apex:repeat>
+            <script>j++;</script>
+        </apex:repeat>
+   
+    <script>var idFld='fld0';
+    var colsHdrs = new Array();j=0;
+    </script>
+        <apex:repeat value="{!headers}" var="hdr">
+            <script>colsHdrs[j++]="{!hdr}";</script>
+        </apex:repeat>
+        <script>
+        var cols = new Array();j=0;</script>
+        <apex:repeat value="{!cols}" var="col">
+            <script>cols[j++]="{!col}";</script>
+        </apex:repeat>
+
+ <script>//Set columnn names
+    var colwidth = new Array();j=0;</script>
+        <apex:repeat value="{!columnWidth}" var="colwidth">
+            <script>colwidth[j++]=parseInt("{!colwidth}");</script>
+        </apex:repeat>
+
+        <script>
+            var parentPageId = "{!strValue}";
+            
+            function getParentPageId(){
+                return "{!strValue}";
+            }
+  if(parentPageId==null || parentPageId==''){
+      parentPageId = "{!JSENCODE(myId)}";
+  }
+    
+  var tabName = "{!tabName}";
+  columHdrsJS(cols);
+  tabElementJS();             
+    
+  hasNext = {!hasNext};
+  hasPrevious ={!hasPrevious};          
+    
+  function getHasNext(){
+        return {!hasNext};
+  }      
+    
+  handleNextPrevJS({!hasPrevious}, {!hasNext}, '{!JSENCODE(closeCheck)}');
+    
+            function AlterCIExpBtnStatus(){
+                AlterCIExpBtnStatusJS(linkRecordFlag);
+            }
+            function updateSTBtn() {
+            	if(hasSTs) {
+            		if(window.parent.document.getElementById('servicetargets')!=null && window.parent.document.getElementById('servicetargets').disabled) {
+            			if(typeof(window.parent.ChangeServiceTargetButtonState)!='undefined' && typeof(window.parent.ChangeServiceTargetButtonState) == 'function') {
+	            			window.parent.hasServiceTargets = hasSTs;
+	            			window.parent.ChangeServiceTargetButtonState();
+            			}
+            		}
+            	}
+            }
+    </script>
+    <apex:outputPanel id="incidentHistoryIdsArrayPanel">
+	    <script>
+		    if(pageName.toLowerCase() == 'incident__c' && tabName.toLowerCase() == 'history'){
+		    	var incidentHistoryRecords = '{!EmailIncidentHistoryRecIds}';
+	    	}
+	    	else if(pageName.toLowerCase() == 'change_request__c' && tabName.toLowerCase() == 'history'){
+		    	var changeHistoryRecords = '{!EmailChangeHistoryRecIds}';
+		    }
+		    else if(pageName.toLowerCase() == 'task__c' && tabName.toLowerCase() == 'history'){
+		    	var taskHistoryRecords = '{!EmailTaskHistoryRecIds}';
+		    }
+		    else if(pageName.toLowerCase() == 'problem__c' && tabName.toLowerCase() == 'history'){
+		    	var problemHistoryRecords = '{!EmailProblemHistoryRecIds}';
+		    } 
+         </script>            
+    </apex:outputPanel>
+    </apex:outputPanel>
+    <apex:outputPanel id="errorMsgPanel">
+		<script>
+			err = "{!errorMsg}";
+		</script>
+	</apex:outputPanel>
+    <script>
+    		function resetCR(){
+    			if(typeof(window.parent.resetChangeRequest)!= 'undefined' && typeof(window.parent.resetChangeRequest) == 'function'){
+    				window.parent.resetChangeRequest();
+    			}
+    		} 
+    		function handleTabLoad(){
+                    handleTabLoadJS({!hasNext});            
+            }
+            function disableAll(){
+
+                document.getElementById('{!$Component.str_closeId}').value = 'true';
+                tabReload(childObject);
+            }
+            
+            function enableAll(){
+                document.getElementById('{!$Component.str_closeId}').value = null;
+                    tabReload(childObject);
+            }
+            var AddHandler = function(button,event) {  add(addEditLink);}; 
+            var EditHandler = function(button,event) { beforeEdit(editLink,selectedId);};
+            var AllHandler = function(button,event) {  allFilter(childObject,'{!strAll}');};
+            var OpenHandler = function(button,event) {  openFilter(childObject,'{!strOpen}');};
+            var AcknowledgedHandler = function(button,event) {  acknowledgedFilter(childObject,'{!strAcknowledge}');};
+            var InProgressHandler = function(button,event) {  inProgressFilter(childObject,'{!strInProgress}');};
+            var ClosedHandler = function(button,event) {  closedFilter(childObject,'{!strClose}');};
+            var UserEntriesHandler = function(button,event) {userEntriesFilter(childObject,'false');};
+            var SystemEntriesHandler = function(button,event) {systemEntriesFilter(childObject,'true');};
+            var AllEntriesHandler = function(button,event) {allEntriesFilter(childObject,'all');};
+            var LinkHandler = function(button,event) {linkToIncident();};
+            var OpenFileHandler = function(button,event) {openAttachId(selectedId);};
+            var DeleteFileHandler = function(button,event) {confirmation(selectedId);};
+            var AssignSupportHandler = function(button,event) {assignSupportStaff();};
+            var UnassignSupportHandler = function(button,event) {unLinkToCategory(selectedId);};
+            var LinkTemplateHandler = function(button,event) {  linkTemplate();};
+            var UnlinkTemplateHandler = function(button,event) {  unLinkTemplate();};
+            var LinkCIHandler = function(button,event) {  linkCI();};
+            var LinkServiceHandler = function(){linkService();};
+			var LinkKAtoCIHandler = function(button,event) {  linkKnowledgeArticletoCI();};
+            var submitError;
+            var SubmitApprovalReqHandler = function(button,event){  
+            	var parentWindow = window.parent.parent.win2
+            	if(pageName.toLowerCase() =="change_request__c"){
+            		submitError = '{!JSENCODE($Label.SubmitApprovalChangeRequestError)}';
+            	}
+            	if(pageName.toLowerCase() == 'incident__c'){
+            		submitError = '{!JSENCODE($Label.ApprovalIncidentError)}';
+            	}
+            	window.parent.parent.handleApprovalSubmission(parentWindow, submitApprovalFromNavig,submitError);
+    		}
+            function submitApprovalFromNavig(){
+            	showTextEditor(null, labelComments, '255', okLabel, cancelLabel, 180, 350, submitCR_ForApproval);
+            }
+            function recallApprovalfromNavig(){
+            	showTextEditor(null, labelComments, '255', okLabel, cancelLabel, 180, 350, recallCR_ApprovalRequest);
+            }
+            var RecallApprocalReqHandler = function(button,event) {  
+            	var parentWindow = window.parent.parent.win2
+            	if(pageName.toLowerCase()=="change_request__c"){
+            		submitError = '{!JSENCODE($Label.SubmitApprovalChangeRequestError)}';
+            	}
+            	if(pageName.toLowerCase() == 'incident__c'){
+            		submitError = '{!JSENCODE($Label.ApprovalIncidentError)}';
+            	}
+            	window.parent.parent.handleApprovalSubmission(parentWindow, recallApprovalfromNavig,submitError);
+            	
+            } 
+            var UnlinkCIHandler = function(button,event) { 
+                    var newTaskId = "";
+                    if(pageName=="Task__c"){
+                        newTaskId = window.parent.AssignNewTaskId();
+                        unLinkCITask(selectedId, newTaskId);
+                    }else if(pageName=="Change_Request__c"){
+                        unLinkCIChange(selectedId);
+                    }else if(pageName=="Problem__c"){
+                        unLinkCIProblem(selectedId);
+                    }else if(pageName=="Incident__c"){
+                        unLinkCIIncident(selectedId,parent.getIncidentID());
+                    }
+                };
+				
+			var UnlinkKAFromCIHandler = function(button,event) { 
+                unlinkKAToCI(selectedId);
+			}
+			
+            var ChildTemplateOrderHandler = function(button,event) {setChildTemplateOrder();};
+            var NextBtnHandler = function(button,event) {
+                    if(parentPageId != null && parentPageId != 'null' && parentPageId != '' && hasNext){
+                                                         doNext();
+                                                         }
+                                                         }; 
+            var PreviousBtnHandler = function(button,event) { 
+                if((parentPageId != null || parentPageId != 'null') && hasPrevious){
+                    doPrevious();
+                }   
+            }; 
+            var UnLinkHandler = function(button,event) { unLinkIncident(selectedId);};
+        	var LinkIncidentToCR = function(button,event) {linkIncidentChange(); };
+            var UnLinkIncidentFromCR = function(button,event) {unLinkIncidentChange(selectedId); };
+            var LinkProblemToCR = function(button,event) {linkProblemChange(); };
+            var LinkCRToProblem = function(button,event) {linkChangeProblem(); };
+            var UnLinkCRFromProblem =function(button,event) {unLinkChangeProblem(selectedId);};
+            var UnLinkProblemFromCR = function(button,event) {unLinkProblemChange(selectedId); };
+            var LinkIncidentToProblem = function(button,event) {linkIncidentProblem(); };
+            var UnLinkIncidentFromProblem = function(button,event) {unLinkIncidentProblem(selectedId); };
+			var LinkCRToInc = function(button, event){linkCRtoIncident()};
+			var LinkIncToCI = function(button, event){linkIncidentToCIJS()};
+			var UnLinkIncFromCI = function(button, event){UnlinkIncidentToCI(selectedId)};
+			var UnLinkCRFromIncident = function(button, event){unLinkIncidnetFromCR(selectedId);}; 
+			var LinkCRToCI = function(button, event){linkCRtoCI()};
+			var UnLinkCRFromCI =function(button,event) {unLinkCRFromCI(selectedId);};
+			var LinkProblemToCI = function(button,event) {  LinkProblemToCIJS();};
+            var UnLinkPrbFromCI =function(button,event) {unLinkPrbFromCI(selectedId);};
+			var LinkAccountToCI = function(button,event) {  LinkAccountToCIJS();};
+            var UnLinkAccFromCI =function(button,event) {unLinkAccFromCI(selectedId);};
+			var UnLinkReleaseFromCI = function(button,event) {unLinkReleaseFromCI(selectedId);};
+			
+			var LinkClientHandler  = function(button, event){LinkClientHandlerJS();};
+			var UnlinkClientHandler  = function(button, event){UnlinkClientToCI(selectedId);};
+            var parentWid = "{!JSENCODE($CurrentPage.parameters.wid)}";
+            
+            function openNewTabTemplate(url, oncompletefunction, title) {                       
+                if("{!JSENCODE($CurrentPage.parameters.wid)}" != null && "{!JSENCODE($CurrentPage.parameters.wid)}" != ''){
+                    url = url + '&parentWid=' + "{!JSENCODE($CurrentPage.parameters.wid)}";
+                }
+                openPageForTemplate(url, oncompletefunction, title,title);                
+            }
+            getModuleNameJS();
+            
+            function add(pageName){
+                var strFormId;
+                var popupTitle ='';
+                var parentName = "{!strObject}";
+                addJS(pageName, parentName);
+            }
+                
+            function linkTemplate(){        
+                linkTemplateJS('{!JSENCODE($Label.Templatetolink)}');                
+            }
+                
+            function setChildTemplateOrder(){   
+                setChildTemplateOrderJS('{!JSENCODE($Label.TaskTemplateExecutionOrder)}');                
+            }
+            function setBoolVar(isCreatable){
+                disableAdd = isCreatable;
+            }
+  </script>
+         <div id="itemSelector" class="x-hide-display">
+         <apex:outputPanel id="profilePanel">
+                  <table border="0">
+                <tr><td>
+                <apex:inputTextArea value="{!selectedProfiles}" id="profileId" cols="50" rows="8" disabled="true" styleClass="clsTextAreaDetailSection" />
+               </td><td valign="bottom" class="btnProfile">
+                <apex:commandbutton onClick="openProfilePopup();" value="Profiles" styleClass="bgBtnGrey" rerender="profileId,wholepage"/>
+              </td>
+                </tr>
+                </table>
+         </apex:outputPanel>
+          </div>
+        <div id="my-tabs" class="x-hide-display">  
+        <input type="hidden" id="urlForStaticResourceId" name="urlForStaticResourceId" value="{!urlForStaticResource}" />       
+        <apex:outputPanel id="divpanelid">        
+            <table class="detailSectionAuditTable">
+                    <tr>
+                        <td class="detailSectionAuditingInputLabelTD">{!$Label.Created}</td>
+                        <td class="detailSectionAuditingTextBoxTD">
+                            <apex:inputText value="{!creationDate}" disabled="true" styleClass="clsTextDetailSection" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="detailSectionAuditingInputLabelTD">{!$Label.CreatedBy}</td>
+                         <td class="detailSectionAuditingTextBoxTD">
+                            <apex:inputText value="{!createdby}" disabled="true" styleClass="clsTextDetailSection"/>
+                         </td>
+                    </tr>
+                    <tr>
+                        <td class="detailSectionAuditingInputLabelTD">{!$Label.LastModified}</td>
+                        <td class="detailSectionAuditingTextBoxTD">
+                            <apex:inputText value="{!modificationDate}" disabled="true" styleClass="clsTextDetailSection"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="detailSectionAuditingInputLabelTD" >{!$Label.LastModifiedBy}</td>
+                        <td class="detailSectionAuditingTextBoxTD">
+                            <apex:inputText value="{!modifiedby}" disabled="true" styleClass="clsTextDetailSection"/>
+                        </td>
+                    </tr>
+                </table>
+       </apex:outputPanel>
+        </div>
+    <div id="detailsDiv"></div>
+    <script>
+    function reloadSupportInfo(){
+        reloadData();
+    }
+    </script>
+    <script>
+    var siend = '{!siendtime}';
+    
+    siservertime = (siend - sistart);
+    
+    </script>
+</apex:component>

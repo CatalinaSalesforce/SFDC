@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Vue Graphique de la vue rapide</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Vue Graphique de la vue rapide</value>
+    </caseValues>
+    <fields>
+        <label>Champ de données graphiques FK</label>
+        <name>ChartDataField__c</name>
+        <relationshipLabel>Vues Graphique QV Sys</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Type de graphique</label>
+        <name>ChartType__c</name>
+    </fields>
+    <fields>
+        <label>Demande QV SYS FK</label>
+        <name>FKSYSQVQuery__c</name>
+        <relationshipLabel>Vues Graphique QV Sys</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Limite de lignes en pourcentage</label>
+        <name>LinesLimitAsPercent__c</name>
+    </fields>
+    <fields>
+        <label>Lignes (limite inférieure)</label>
+        <name>LinesLowerLimit__c</name>
+    </fields>
+    <fields>
+        <label>Lignes (limite supérieure)</label>
+        <name>LinesUpperLimit__c</name>
+    </fields>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Tri</label>
+        <name>Sorting__c</name>
+    </fields>
+    <fields>
+        <label>Type de valeur</label>
+        <name>ValueType__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel><!-- QVChart Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

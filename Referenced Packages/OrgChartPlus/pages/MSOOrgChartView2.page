@@ -1,0 +1,128 @@
+<apex:page sidebar="false" showHeader="false" standardController="Opportunity" extensions="OrgChartPlus.VisualforceFlashBugWorkaround">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+    <head>
+        <style type="text/css">
+            html, body	{ height:100%; width:100%; margin:0px; padding:0px; overflow:hidden }
+			.bannerTable        { background-color:#0099FF; border-collapse:collapse; }
+			.bannerTable h1     { font-family:'Verdana', 'Geneva', sans-serif; color:#fff; font-size:91%; padding-top:2px; margin-top:0px; margin-bottom:0px; display:inline }
+			.bannerTable h1 a:link		{color:#fff }
+			.bannerTable h1 a:visited	{color:#fff }
+			.bannerTable h1 a:hover		{color:#000 }
+			.bannerTable h2     { font-family:'Verdana', 'Geneva', sans-serif; color:#fff; font-size:112%; font-weight:bold; padding-top:2px; margin-top:0px; margin-bottom:0px; display:inline }
+			.bannerTable td		{ padding:0; margin:0; vertical-align:top }
+			.bannerTable th		{ padding:1px }
+			.bannerTable img	{ padding:2px; background-color:#0099FF; margin:1px 2px 0px 2px; border:0 }
+			.MSOHelpLink		{ color:#fff; font-family:'Arial', 'Helvetica', sans-serif; font-size:91%; text-decoration:none }
+			.MSOHelpLink .MSOHelpText	{ text-decoration:underline; padding-right:5px }
+			.MSOHelpLink img	{ vertical-align:middle; padding:2px; margin:0 }
+        </style>
+
+	    <script type="text/javascript">
+	        function showHelpPage(helpurl)
+	        {
+	            win = window.open(helpurl, '_blank', 'width=800,height=800,resizable=yes,toolbar=yes,status=no,scrollbars=yes,menubar=yes,directories=no,location=no', false);
+	            win.focus();
+	        }
+	    </script>
+    </head>
+
+    <body onload="OnResizeFlash()" onresize="OnResizeFlash()" onbeforeunload="return OnFlexBeforeUnload()">
+
+        <div style="padding:0; margin:0; width:100%; font-size:75%" id="bannerDiv">
+		    <table class="bannerTable" style="width:100%" border="0" cellpadding="0" cellspacing="0">
+		        <tr>
+		            <td width="140px" align="center">
+	              		<apex:image value="{!$Resource.OrgChartPlus__BannerOCP}" alt="OrgChartPlus" style="padding-top:3px" width="125" height="35"/>
+		            </td>
+		
+		            <td>
+		                <div style="padding-top:5px">
+		                    <h1>
+		                        <apex:outputLink value="{!URLFOR($Action.Opportunity.View, Opportunity.Id)}">Opportunity</apex:outputLink>
+		                        &nbsp;»&nbsp;OrgChartPlus
+		                    </h1>
+		                </div>
+		                <div style="padding-top:3px; padding-bottom:5px">
+		                    <h2>
+		                        <apex:outputText value="{!Opportunity.Name}"/>
+		                    </h2>
+		                </div>
+		            </td>
+
+		            <td width="120px" align="right">
+		                <a href="#" class="MSOHelpLink" onclick="showHelpPage('{!$Resource.HelpZip}/OCPMainFrame.html'); return false;">
+		                    <span class="MSOHelpText">Help for this page</span>
+		                    <apex:image value="{!$Resource.OrgChartPlus__HelpIcon}" width="16" height="16"/>
+		                </a>
+		            </td>
+		        </tr>
+		    </table>
+        </div>
+  
+        <div style="width:100%; height:95%" id="flashDiv">
+
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="OrgChartPlus" width="100%" height="100%" codebase="https://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+				<param name="movie" value="{!$Resource.SMOrgChart}" />
+				<param name="quality" value="high" />
+				<param name="bgcolor" value="#869ca7" />
+				<param name="allowScriptAccess" value="sameDomain" />
+	            <param name="allowFullScreen" value="true" />
+	            <param name="scale" value="noscale"/>
+				<param name="flashvars" value="userId={!$User.Id}&session_id={!MySessionId}&server_url={!$Api.Partner_Server_URL_150}&OppId={!Opportunity.Id}&isADP=0&isOCP=1&contactPage={!URLFOR('/apex/OrgChartPlus__SMAcceptNewContact')}&authPage={!URLFOR('/apex/OrgChartPlus__SMAuthSession')}" />
+				<embed src="{!$Resource.SMOrgChart}" bgcolor="#869ca7"
+					width="100%" height="100%" name="OrgChartPlus" align="middle"
+					play="true"
+					loop="false"
+					flashvars="userId={!$User.Id}&session_id={!MySessionId}&server_url={!$Api.Partner_Server_URL_150}&OppId={!Opportunity.Id}&isADP=0&isOCP=1&contactPage={!URLFOR('/apex/OrgChartPlus__SMAcceptNewContact')}&authPage={!URLFOR('/apex/OrgChartPlus__SMAuthSession')}"
+					quality="high"
+					allowScriptAccess="sameDomain"
+					allowFullScreen="true"
+					scale="noscale"
+					type="application/x-shockwave-flash"
+					pluginspage="http://www.adobe.com/go/getflashplayer">
+				</embed>
+			</object>
+
+            <script type="text/javascript" >
+        
+				function FlexApp()
+                {
+                    if (navigator.appName.indexOf("Microsoft") != -1 && typeof (window["OrgChartPlus"].flashMethod) == 'function') return window["OrgChartPlus"]; else return document["OrgChartPlus"];
+                }
+        
+                function OnFlexBeforeUnload()
+                {
+					var flash = FlexApp();
+					if ( flash )
+						if ( 1 == flash.GetReadWriteState() )
+							return "You have unsaved changes in OrgChartPlus. You must save or cancel the check-out before leaving the page.";
+                }
+
+				function OnResizeFlash()
+				{
+					var ban = document.getElementById('bannerDiv');
+					var flash = document.getElementById('flashDiv');
+					
+					flash.style.height = (document.body.offsetHeight - ban.clientHeight) + "px";
+				}
+		        
+		        function SMNewContact(contactId)
+		        {
+					var flash = FlexApp();
+					if ( flash )
+						flash.AddNewContact(contactId);
+		        }
+		        
+		        function SMAcceptSessionId(userId, sessionId)
+		        {
+					var flash = FlexApp();
+					if ( flash )
+						flash.AcceptSessionId(userId, sessionId);
+		        }
+            </script> 
+        </div>
+
+    </body>
+</html>
+</apex:page>

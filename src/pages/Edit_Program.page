@@ -1,0 +1,90 @@
+<!--  2012-12-20 - Edit by Anjana - Changed brands to be a single drop down(Brand__c) instead of multi picklist(Brands_List__c). -->
+<!-- 2013-07-22 - JBettio - added lines 14 - 19, page block rendered for admins only to allow the edit of Start Date, End Date, Start Cycle and End Cycle -->
+<apex:page standardController="Program__c" extensions="ProgramController">
+    
+    <apex:form >
+        <apex:sectionHeader title="{!$ObjectType.Program__c.label} Edit" subtitle="{!progIn.name}"/>
+        <apex:pageBlock title="{!$ObjectType.Program__c.label} Edit" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save"/>
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+
+            <apex:pageBlockSection rendered="{!IF($Profile.Name !='System Administrator', false, true)}" title="Admin Fields">
+                <apex:inputField value="{!progIn.Start_Date__c}"/>
+                <apex:inputField value="{!progIn.End_Date__c}"/>
+                <apex:inputField value="{!progIn.Start_Cycle__c}"/>
+                <apex:inputField value="{!progIn.End_Cycle__c}"/>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Information">
+                <apex:inputField value="{!progIn.Name}" required="true"/>
+                <!-- <apex:inputField value="{!progIn.Start_Date__c}"/> -->
+                <apex:inputField value="{!progIn.Opportunity__c}"/>
+                <!-- <apex:inputField value="{!progIn.End_Date__c}"/> -->
+                <apex:inputField value="{!progIn.Account_Type__c}" required="true"/>
+                <apex:outputField value="{!progIn.RecordTypeId}"/>
+                <apex:inputTextarea value="{!progIn.Description__c}"/>
+                <apex:inputField value="{!progIn.Program_Amount__c}"/>
+                <apex:inputField value="{!progIn.Delivery_Type__c}"/>
+                <apex:pageblockSectionItem />
+                <apex:inputField value="{!progIn.Product_Type__c}"/>
+                <apex:pageblockSectionItem />
+                <apex:inputField value="{!progIn.Unique_ID__c}"/>
+                <apex:inputField value="{!progIn.Number_of_Offers__c}"/>
+                <apex:inputField value="{!progIn.Specialist__c}"/>
+                <apex:inputField value="{!progIn.Initiative__c}"/>
+                <apex:pageblockSectionItem />
+                <apex:inputField value="{!progIn.Auto_Sync_With_Cats__c}"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Custom Details">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Start Cycle"/>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!strStartCycle}" size="1" required="true" styleClass="">
+                            <apex:selectOptions value="{!Periods}"/>
+                        </apex:selectList>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!NOT(hideBrands)}">
+
+
+                    <apex:outputLabel value="Brand"/>
+
+                    <apex:selectList value="{!strBrand}" size="1">
+                        <apex:selectOptions value="{!Brands}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="End Cycle"/>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!strEndCycle}" size="1" required="true" styleClass="">
+                            <apex:selectOptions value="{!Periods}"/>
+                        </apex:selectList>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>                
+
+                <apex:pageBlockSectionItem rendered="{!NOT(hideBrands)}">
+                    <apex:outputLabel value="Division"/>
+                    <apex:selectList value="{!strDivision}" size="1">
+                        <apex:selectOptions value="{!Divisions}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="System Information">
+                <apex:inputField value="{!progIn.External_ID__c}"/>
+            </apex:pageBlockSection>          
+
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

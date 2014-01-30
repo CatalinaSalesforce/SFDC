@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>メディア</value>
+    </caseValues>
+    <fields>
+        <label>機能</label>
+        <name>Capabilities__c</name>
+    </fields>
+    <fields>
+        <label>圧縮方式</label>
+        <name>CompressionMethod__c</name>
+    </fields>
+    <fields>
+        <label>デフォルトのブロックサイズ</label>
+        <name>DefaultBlockSize__c</name>
+    </fields>
+    <fields>
+        <label>ドライブSCSIターゲットID</label>
+        <name>DriveSCSITargetID__c</name>
+    </fields>
+    <fields>
+        <label>ドライブサイズ</label>
+        <name>DriveSize__c</name>
+    </fields>
+    <fields>
+        <label>ドライバインターフェイスタイプ</label>
+        <name>DriverInterfaceType__c</name>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>最大ブロックサイズ</label>
+        <name>MaxBlockSize__c</name>
+    </fields>
+    <fields>
+        <label>最大メディアサイズ</label>
+        <name>MaxMediaSize__c</name>
+    </fields>
+    <fields>
+        <label>メディアタイプ</label>
+        <name>MediaType__c</name>
+        <picklistValues>
+            <masterLabel>Fixed hard disk</masterLabel>
+            <translation><!-- Fixed hard disk --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Removable media</masterLabel>
+            <translation><!-- Removable media --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>最小ブロックサイズ</label>
+        <name>MinBlockSize__c</name>
+    </fields>
+    <fields>
+        <label>サポートされているメディア数</label>
+        <name>NumberOfMediaSupported__c</name>
+    </fields>
+    <nameFieldLabel><!-- BMC_Media Name --></nameFieldLabel>
+</CustomObjectTranslation>

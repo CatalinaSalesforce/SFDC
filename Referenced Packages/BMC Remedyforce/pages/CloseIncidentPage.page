@@ -1,0 +1,308 @@
+<apex:page showHeader="false" controller="BMCServiceDesk.CloseIncidentController" standardStylesheets="false">
+<c:CommonIncludes />
+ <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/closeIncidentPage.js" />
+ <apex:includeScript value="{!$Resource.BMCServiceDesk__BMCRFCommonJS}/StdLayoutCommon.js" />
+<style>
+	.clsInputTextBox,
+	.clsInputTextBoxReadOnly
+	{
+		*height:13px !important;
+	}
+	.clsTemplateSelectList {
+	    font-family: Tahoma,MS Sans Serif;
+	    font-size: 11px;
+	    width: 205px;
+	}
+</style>
+    <script> 
+    	 Ext.ns("closeIncidentPage");
+         closeIncidentPage.Labels = {
+         	labelCloseByEmpty :'{!JSENCODE($Label.CloseByEmpty)}',    
+         	labelCloseIncident:'{!JSENCODE($Label.CloseIncident)}',
+         	labelSave : '{!JSENCODE($Label.Save)}',
+         	labelIncidentCloseError : '{!JSENCODE($Label.IncidentCloseError)}',
+         	isUpdateable : {!isUpdateable},
+        	insufficentPrivilegeMsg : '{!JSENCODE($Label.InsufficentPrivilegeToAccess)}',
+        	TextAreaOverflow: '{!JSENCODE($Label.TextAreaOverflow)}'
+     		}
+         closeIncidentPage.ComponentVars={
+    	 	closedByusername:'{!$Component.incidentCloseForm.User_id_username}',
+    	 	followUp : '{!$Component.incidentCloseForm.followUp}',
+    	 	followUpDateTime: '{!$Component.incidentCloseForm.followUpDateTime}',
+    	 	incidentResolution:'{!$Component.incidentCloseForm.incidentResolution}',
+    	 	incidentDescription:'{!$Component.incidentCloseForm.incidentDescription}',
+    	 	closeTasks : '{!$Component.incidentCloseForm.closeTasks}',
+    	 	Description: '{!JSENCODE($ObjectType.Incident__c.fields.incidentDescription__c.label)}',
+            Resolution: '{!JSENCODE($ObjectType.Incident__c.fields.incidentResolution__c.label)}'
+     	}
+     	var msgvalue='';
+         //Code By Manasi
+        var stdFormValue = getUrlParameter('standardLayout');
+        //End Of Code
+        
+        // nakul ---------
+        var showPopupHeader = getUrlParameter('popupHeader');
+        var isIncidentConsole = getUrlParameter('isIncidentConsole');
+              
+       if(stdFormValue || (isIncidentConsole!=null && isIncidentConsole)){           
+            document.title='{!JSENCODE($Label.CloseIncident)}';
+        }
+        var url = document.URL;
+    
+    </script>
+
+     <style>
+     .checkLabel label
+     {
+        font-family: Tahoma, MS Sans Serif;
+        font-size: 11px;
+     }
+     .checkBoxL {
+        font-family: Tahoma, MS Sans Serif;
+        font-size: 11px;
+        padding-left:10px;
+     }
+     </style>
+           <apex:form onmouseover="diableCheckboxes();" id="incidentCloseForm">
+                <c:TabOutComponent />
+                
+               <apex:outputPanel id="Varpanel">
+                    <script>
+                        var incidentId = '{!inc.id}';
+                        var errorString = '{!JSENCODE(messageString)}';
+                    
+                    </script>
+                </apex:outputPanel>
+                 <apex:outputPanel id="Varpanelforfollowup">
+                    <script>
+                        var follwupdatetimeval = "{!followupbydatetime}";
+                    </script>
+                </apex:outputPanel>
+                <script>
+   		          window.onload = disableFDT;
+		        </script>
+                <c:ValidationComponent errorMsgList="{!messageString}" id="validationComponent"></c:ValidationComponent>
+                
+                <apex:actionFunction id="closeIncident" name="closeIncident" action="{!save}" reRender="errorMsgPanel,validationComponent,Varpanel"  oncomplete="assignApexErrorMessage();refreshRelatedPortlets();validateAndCloseWindow(); disableSIMenues();"/>
+                <apex:actionFunction name="setSelectedClosedBy" action="{!setSelectedClosedBy}" reRender="User_id_username" onComplete="javascript:reRenderUserId();"> 
+                    <apex:param assignTo="{!closedByUserId}" name="selectedClosedByUserId" value=""/>
+                </apex:actionFunction>
+                <apex:actionFunction name="reRenderUserId"  reRender="User_id_username"/>
+                <!--  this part of code is not in use and commented by Ram -->
+                <apex:actionFunction name="setCategoryNext" action="{!setSelectedCategory}" reRender="Category__c_id_name,Category__c_id_categorydescription__c,Varpanelforfollowup,followUp" onComplete="javascript:reRenderCategory();toggleFollowUpDateTime(); "> 
+                    <apex:param assignTo="{!categoryId}" name="selectedCatId" value=""/>
+                </apex:actionFunction>
+                <apex:actionFunction name="reRenderCategory"  reRender="Category__c_id_name" onComplete="javascript:reRenderCategoryDesc();"/>
+                <apex:actionFunction name="reRenderCategoryDesc"  reRender="Category__c_id_categorydescription__c" />
+                <apex:actionFunction name="reRenderReqired"  reRender="Status__c_id_name"/> 
+                <apex:actionFunction name="setStatusNext" action="{!setSelectedStatus}" reRender="Status__c_id_name" onComplete="javascript:reRenderReqired();"> 
+                    <apex:param assignTo="{!statusId}" name="selectedStatusId" value=""/>
+                </apex:actionFunction>
+                
+                <!--  Action Functions For Onblur Event -->
+                <apex:actionFunction name="setSelectedCategoryNext" action="{!setSelectedCategoryNext}" reRender="Category__c_id_name,Category__c_id_categorydescription__c,Varpanelforfollowup,followUp" onComplete="javascript:reRenderCategory();toggleFollowUpDateTime();"> 
+                    <apex:param assignTo="{!categoryId}" name="selectedBlurCatId" value=""/>
+                </apex:actionFunction>
+                <apex:actionFunction name="setSelectedStatusNext" action="{!setSelectedStatusNext}" reRender="Status__c_id_name" onComplete="javascript:reRenderReqired();"> 
+                    <apex:param assignTo="{!statusId}" name="selectedBlurStatusId" value=""/>
+                </apex:actionFunction>
+                <apex:actionFunction name="setSelectedClosedByNext" action="{!setSelectedClosedByNext}" reRender="user_id_username" onComplete="javascript:reRenderUserId();"> 
+                    <apex:param assignTo="{!closedByUserId}" name="selectedBlurClosedByUserId" value=""/>
+                </apex:actionFunction>
+                <apex:outputPanel id="dummy"> 
+                </apex:outputPanel>
+                 
+                 
+                <div id="capsule">
+                    <table class="clsMainTable2">
+                        
+                        <tr class="clsRowGreyBg">
+                            <td>
+                                <div id="btnToolbar"></div>
+                                <div >
+                                <apex:commandButton value="{!$Label.bmcservicedesk__Save}" action="{!save}" rendered="Status__c_id_name" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <table class="clsTable" cellspacing="0" cellpadding="0"> 
+                                    <tr>
+                                        <td class="clsTD80">
+                                             <table class="clsTable" cellspacing="0" cellpadding="0"> 
+                                             <tr>
+                                                <td>
+                                                    <div class="div5pxVspacing"></div>
+                                                </td>
+                                            </tr>
+                                                <tr>
+                                                    <td class="clsInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKClosedBy__c.label}" /><span class="clsRequiredBlack">&nbsp;*</span></td>
+                                                   <td styleClass="clsInputTextBoxTDHistory">
+                                                        <!-- apex:inputField value="{!inc.FKClosedBy__c}" styleClass="clstextbox"/-->
+                                                        <apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKClosedBy__c.inlineHelpText}" id="User_id_username" value="{!closedByUserName}" onblur="showalldata(event,setSelectedClosedByNext,escape('IsStaffUser__c=true'));" styleClass="clsInputTextBox"/>
+                                                        </td>
+                                                        <td class="lookupIconTD">
+                                                         <div class="lookUpIconDiv">
+                                                        <apex:commandbutton id="userIdLookup" rerender="dummy" onClick="if(!inProgress) {openPopupWithTitle('SearchPage?popupId=Client&isLookup=true&filterClause='+escape('IsStaffUser__c=true'),setSelectedClosedBy,'',307, 560);}" styleClass="lookupIconOn"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                   <div class="div5pxVspacing"></div>
+                                                    </td>
+                                                    </tr>
+                                                <tr>
+                                                    <td class="clsInputLabelTD" ><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__closeDateTime__c.label}" /><span class="clsRequiredBlack">&nbsp;*</span></td>
+                                                    <td Class="clsInputTextBoxTD"     title="{!$ObjectType.Broadcasts__c.fields.closeDateTime__c.inlineHelpText}">
+                                                        <apex:inputField id="compCloseDateId"  value="{!inc.BMCServiceDesk__closeDateTime__c}" styleClass="clsInputTextBoxReadOnly"/>
+                                                        <script>                                                        	
+                                                        	document.getElementById('{!$Component.compCloseDateId}').disabled = true;
+                                                        </script>
+                                                    </td>
+                                                </tr>
+                                                                                               
+                                                <tr>
+                                                    <td class="clsInputLabelTD" ><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKStatus__c.label}" /></td>
+                                                    <td styleClass="clsInputTextBoxTD">
+                                                        <apex:inputText title="{!$Label.bmcservicedesk__Tooltip_Closeform_Status}" id="Status__c_id_name" value="{!statusName}" onblur="showalldata(event,setSelectedStatusNext,escape('state__c=false'))" styleClass="clsInputTextBox"/>
+                                                         </td>
+                                                        <td class="lookupIconTD">
+                                                        <div class="lookUpIconDiv">
+                                                        <apex:commandButton id="statusIdLookup"  reRender="dummy" onclick="if(!inProgress) {openPopupWithTitle('SearchPage?popupId=Status&isLookup=true&filterClause='+escape('state__c=false and appliestoincident__c = true and inactive__c = false'),setStatusNext,'',307, 560);}" styleClass="lookupIconOn"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                   <div class="div5pxVspacing"></div>
+                                                    </td>
+                                               </tr>                                                
+                                                <tr>
+                                                    <td class="clsInputLabelTD" ><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__ClosureCategory__c.label}" /></td>
+                                                    <td styleClass="clsInputTextBoxTD">
+                                                        <apex:inputfield id="ClosureCategoryId" value="{!inc.BMCServiceDesk__ClosureCategory__c}" styleClass="clsTemplateSelectList"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                   <div class="div5pxVspacing"></div>
+                                                    </td>
+                                               </tr>
+                                                <tr>
+                                                    <td>
+                                                   <div class="div5pxVspacing"></div>
+                                                    </td>
+                                               </tr>
+                                               <tr>
+                                                    <td class="checkBoxL">
+                                                        <apex:inputCheckbox title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__followUp__c.inlineHelpText}" id="followUp" value="{!inc.BMCServiceDesk__followUp__c}" onclick="toggleFollowUpDateTime();" styleClass="clsCheckboxInc"/>
+                                                        <apex:outputLabel styleClass="checkLabel" value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__followUp__c.label}"/>
+                                                    </td>                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                   <div class="div5pxVspacing"></div>
+                                                    </td>
+                                                    </tr> 
+                                                <tr>
+                                                    <td class="clsInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__followUpDateTime__c.label}" /></td>
+                                                    <td class="clsInputTextBoxTD" title="{!$ObjectType.Incident__c.fields.followUpDateTime__c.inlineHelpText}">
+                                                        <apex:inputField value="{!inc.BMCServiceDesk__followUpDateTime__c}" id="followUpDateTime" styleclass="clsInputTextBox"/>
+                                                    </td>
+                                                </tr>
+                                               <tr style="{!categoryShowStyle}">
+                                                    <td class="clsInputLabelTD" ><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKCategory__c.label}" /></td>
+                                                    <td styleClass="clsInputTextBoxTD">
+                                                        <apex:inputText id="Category__c_id_name" title="{!$Label.bmcservicedesk__Tooltip_Closeform_Category}" value="{!categoryName}" onblur="showalldata(event,setSelectedCategoryNext)" styleClass="clsInputTextBox"/>
+                                                        <apex:inputhidden id="incCategory"/>
+                                                         </td>
+                                                        <td class="lookupIconTD">
+                                                        <div class="lookUpIconDiv">
+                                                        <apex:commandButton id="categoryIdLookup"  reRender="dummy" onclick="if(!inProgress) {openPopupWithTitle('SearchPage?popupId=Category&isLookup=true',setCategoryNext,'',307, 560);}" styleClass="lookupIconOn"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </table>
+                                                      
+                                                <table class="clsTable" cellspacing="0" cellpadding="0">
+                                                <tr>
+                                           <td>
+                                            <div class="div14pxVspacing"></div>
+                                             </td>
+                                          </tr>
+                                                
+                                                </table>
+                                                
+                                                <table class="clsTable" cellspacing="0" cellpadding="0">
+                                                <tr>
+                                                    <td class="clsInputBoldLabelTableFirstRowTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__incidentResolution__c.label}" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                    <td class="clsInputTextAreaTD clsRightPadTD" colspan="3">
+                                                    <div class="clsRelativePosition">
+                                                    <apex:inputTextArea id="incidentResolution" value="{!inc.BMCServiceDesk__incidentResolution__c}" styleClass="clsInputTextArea" title="{!$Label.bmcservicedesk__TooltipIncidentCloseResolution}"/>
+                                                    <apex:inputhidden id="incidentDescription" value="{!inc.BMCServiceDesk__incidentDescription__c}"/>
+                                                    </div>
+                                                    </td>
+                                                    <td class="lookupIconTD" style="vertical-align:top;">
+														<input type="button" id="inputTxtAreaButton" class="TextboxPopupIcon" style="display:inline" onclick="showTextEditor('{!$Component.incidentCloseForm.incidentResolution}', '{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__incidentResolution__c.label}', '32000', '{!JSENCODE($Label.OK)}', '{!JSENCODE($Label.Cancel)}',350,500);"/>
+													</td>
+                                                </tr>
+                                                </table>
+                                                <table class="clsTable" cellspacing="0" cellpadding="0">
+                                                
+                                                <tr>
+                                                    <td colspan="2"></td>
+                                                </tr>
+                                                   <tr><td><div class="div13pxVspacing"></div></td></tr>
+                                                              <tr>   <td class="checkBox" colspan="2" >
+                                                                    <apex:selectCheckboxes value="{!updateDescRes}" onclick="changeDescCheckboxStatus();" id="stdDescResChecks" layout="pageDirection" styleClass="checkLabel">
+                                                                        <apex:selectOptions value="{!updateList}" />
+                                                                    </apex:selectCheckboxes>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                               <td class="checkBoxL" colspan="2">
+                                                                    <apex:inputCheckbox title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__closeTasks__c.inlineHelpText}" id="closeTasks" value="{!inc.BMCServiceDesk__closeTasks__c}" styleClass="clsCheckboxInc"/>
+                                                                    <apex:outputLabel styleClass="checkLabel" value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__closeTasks__c.label}"/> 
+                                                                </td>                                                    
+                                                            </tr>
+                                                            <tr>
+                                                               <td class="checkBoxL" colspan="2">
+                                                                    <apex:inputCheckbox id="closechildrenincidents" value="{!closeRelatedIncident}" styleClass="clsCheckboxInc"/>
+                                                                    <apex:outputLabel styleClass="checkLabel" value="{!$Label.bmcservicedesk__CloseLinkedIncidents}"/> 
+                                                                </td>                                                    
+                                                            </tr>
+                                                            <tr>
+                                                    <td>
+                                                   <div class="div5pxVspacing"></div>
+                                                    </td>
+                                               </tr> 
+                                                             </table>
+                                </td>
+                                <td class="clsTD80">
+                                 
+                                </td>
+                            </tr>
+                            </table>
+                            </td>
+                        </tr>
+                        <tr><td><div class="div5pxVspacing"></div></td></tr>
+                    </table>
+                </div>  
+  
+      <apex:outputPanel id="errorMsgPanel"> <!-- Page body in this panel -->
+        <div id="testPanelDiv" style="display:none;">
+        <apex:messages /> 
+        </div>
+     </apex:outputPanel>  
+    </apex:form>
+	
+	<script>
+	  	if(Ext.isIE){
+	  		                  document.getElementById('{!$Component.incidentCloseForm.incidentResolution}').focus();
+	  	}
+	</script>
+	
+</apex:page>

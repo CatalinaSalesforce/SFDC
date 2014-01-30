@@ -1,0 +1,460 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="true"  controller="BMCServiceDesk.FulfillmentInputDetailController"  >
+<c:CommonIncludes />
+<link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/CustomViews.css" />
+<link rel="stylesheet" type="text/css" href="{!$Resource.SDEFExtJS}/ex/ux/css/Spinner.css" />
+
+<style>
+
+.x-grid3-row .x-grid-row-checker {
+	width: 18px;
+}
+.x-grid3-row-checker, .x-grid3-hd-checker {
+    width: 20px;
+}
+.separatorTDCls label{
+	padding-right: 15px;
+	vertical-align: top;
+}
+.separatorTDCls input[type='radio']{
+	margin-top:-1px;
+}
+
+.clsRuleSelectList {
+    border: 1px solid grey;
+    color: #000000;
+    height: 19px;
+    margin-right: 0;
+    vertical-align: top;
+    font-family: Tahoma, MS Sans Serif;
+    font-size: 11px;
+}
+
+
+.clsRuleLabel {
+    color: #000000;
+    font-family: Tahoma,MS Sans Serif;
+    font-size: 11px;
+    padding-left: 10px;
+    padding-right: 5px;
+    
+}
+
+.clsHidden
+{
+ display:none;
+}
+
+#OkBtn,#CancelBtn{
+background:transparent  url({!$Resource.SDEFStyles}/SDEFimages/grey_bg.gif) repeat;
+	border-top:1px solid #cccccc;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #666666;
+	border-bottom:1px solid #666666;
+}
+#searchId{
+background-image:none;
+background-color:#DEE0E0;
+border:none;
+}
+
+.x-window-header-text{
+    padding-left: 0px !important;
+}
+.x-window-bc {
+    background-image: url("{!$Resource.SDEFExtJS}/resources/images/default/window/top-bottom.png")!important;
+}
+.x-window-tl{
+border-color:#999999 !important;
+}   
+.clsInputTextBoxTDNew{
+	width:230px !important;
+	padding-bottom: 7px;
+} 
+.clsInputTextBoxTDForLKP{
+	width:265px !important;
+	padding-bottom: 7px;
+}
+.rf-lookup-emptyText
+{
+    color:#EE3B3B;
+    font-family: Tahoma,MS Sans Serif;
+    font-size: 11px;
+    padding: 20% 0 0 30%;
+}
+
+</style>
+<apex:outputPanel id="dataPanel">
+    <script>
+        var listData = [];                     
+        var picklistData = [];             
+    </script>
+</apex:outputPanel>
+<script> 
+	var inputId='{!inputBean.inputObj.Id}';
+	var inputPrompt='{!JSINHTMLENCODE(inputBean.inputObj.Prompt__c)}';
+	var EF = 'ф';
+	var PE ='П';
+	var conditionString='';
+	var isCustomPage=true;
+	var errorStr ='';
+	var reqId= '{!JSENCODE($CurrentPage.parameters.requestId)}';
+	var FulfillmentInputDisplayedValue = '{!JSENCODE($Label.FulfillmentInputDisplayedValue)}';
+	var FulfillmentInputStoredValue = '{!JSENCODE($Label.FulfillmentInputStoredValue)}';
+	var FulfillmentInputConditionHeader ='{!JSENCODE($Label.FulfillmentInputConditionformTitle)}';
+	var lblTitle = '{!JSENCODE($Label.FulfillmentInputControlProcessInvoke)}';
+    var FulfillmentInputDisplayedValueValidationMsg = '{!JSENCODE($Label.FulfillmentInputDisplayedValueValidationMsg)}';
+    var FulfillmentInputStoredValueValidationMsg = '{!JSENCODE($Label.FulfillmentInputStoredValueValidationMsg)}';
+	var isConditinal ={!inputBean.inputObj.BMCServiceDesk__Conditional__c} ;
+	var isControlProcess ={!inputBean.inputObj.BMCServiceDesk__ControlProcess__c}; 
+	var isInputCreateable = '{!JSENCODE($CurrentPage.parameters.isInputCreateable)}';
+	var isInputUpdateable = '{!JSENCODE($CurrentPage.parameters.isInputUpdateable)}';
+	var fulfillmentInputEmptyPicklistValidationMsg = '{!JSENCODE($Label.FulfillmentInputPicklistValidationMsg)}';
+	var fulfillmentInputPicklistDefaultValueValidationMsg = '{!JSENCODE($Label.FulfillmentInputPicklistDefaultValueValidationMsg)}';
+	var defaultVal = '{!JSENCODE($Label.DefaultValue)}';
+	var saveMessage= "{!JSENCODE($Label.SavedSuccessfully)}";
+	var fulfillmentInputLabel = '{!JSENCODE($Label.FulfillmentInput)}';
+	var saveandNewClicked= false;
+	Ext.ns("InputPageComp");
+    InputPageComp.ComponentVars = {
+    	displayValue: '{!$Component.inputDetailForm.displayValue_id}',
+		storedValue : '{!$Component.inputDetailForm.storedValue_id}',
+		responseType :'{!$Component.inputDetailForm.input_id_ResponseType__c}',
+		inputValue : '{!$Component.inputDetailForm.inputValue_id}',
+		picklistValue : '{!$Component.inputDetailForm.picklistValue_id}',
+		referenceType: '{!$Component.inputDetailForm.reference_id}',
+        referenceBtn: 'Lookup_Id',
+        referenceValue_id: '{!$Component.inputDetailForm.referenceValue_id}',
+		condition_id :'{!$Component.inputDetailForm.condition_id}',
+		conditionPostfix_id :'{!$Component.inputDetailForm.conditionPostfix_id}',
+		controlProcess : '{!$Component.inputDetailForm.ControlProcess}',
+		requiredInput : '{!$Component.inputDetailForm.requiredInput}',
+		radioInputSection: '{!$Component.inputDetailForm.radioInputSection}',
+		picklistInputSection: '{!$Component.inputDetailForm.picklistInputSection}',
+		inputStoredValue: '{!$Component.inputDetailForm.storedValue_id}',
+		inputDisplayValue: '{!$Component.inputDetailForm.displayvalue_Id}',
+		groupInput:'{!$Component.inputDetailForm.groupInput}',
+		hiddenInput : '{!$Component.inputDetailForm.hiddenInput}',
+		ConditionalInput : '{!$Component.inputDetailForm.ConditionalInput}',
+		controlProcess : '{!$Component.inputDetailForm.controlProcess}',
+		secondColumnInput : '{!$Component.inputDetailForm.secondColumnInput}',
+		validationInput : '{!$Component.inputDetailForm.validationInput}',
+		validationRule :'{!$Component.inputDetailForm.validationRule}',
+		dateType :'{!$Component.inputDetailForm.dateType}',
+        cbMultiSelectInput : '{!$Component.inputDetailForm.cbMultiSelectInput}',
+        warningTitle :'{!JSENCODE($Label.WarningTitleSearchPage)}',
+        SearchCharErrormSG: '{!JSENCODE($Label.ValidateMinimumCharsSearchPage)}',
+        SearchLabel : '{!JSENCODE($Label.search)}',
+		OkLabel :'{!JSENCODE($Label.OK)}',
+		CancelLabel :'{!JSENCODE($Label.Cancel)}',
+        LookupWindowTitle : '{!JSENCODE($Label.SelectFromLookupObjects)}',
+        noResultsLabel :'{!JSENCODE($Label.SS_NoResultsFound)}'
+	}
+	function getSDFStylesResPath(){
+          return '{!$Resource.SDEFStyles}';
+    }
+    var rType ='{!JSENCODE(inputBean.inputObj.ResponseType__c)}';
+    reqId = '{!JSENCODE(inputBean.inputObj.FKRequestDefinition__c)}';
+    var radioInputValues = '{!inputBean.radioInputvalue}';
+    var picklistInputValues = Ext.util.Format.htmlEncode('{!inputBean.picklistInputvalue}');
+   
+    var srValidationRuleNumberErrorMsg = '{!JSENCODE($Label.SRValidationRuleNumberErrorMsg)}';
+    var srValidationRulePicklistErrorMsg = '{!JSENCODE($Label.SRValidationRulePicklistErrorMsg)}';
+    var numberOfOptions = 0;
+	var maxNumberOfOptions = 999;
+</script>
+<apex:outputPanel id="lookupPanel">
+<script>
+   storedata = {!ObjectList};
+   function afterSearch(){
+     storedata.sort();
+     Ext.getCmp('ObjLkpSelect').store.loadData(storedata,false);
+	 waitMsg.hide();
+   }
+</script>
+</apex:outputPanel>
+<apex:outputPanel id="btnPanel">
+<script>
+	inputId='{!inputBean.inputObj.Id}';
+	errorStr= '{!JSENCODE(inputBean.messageString)}';
+	isConditinal ={!inputBean.inputObj.BMCServiceDesk__Conditional__c} ;
+	isControlProcess ={!inputBean.inputObj.BMCServiceDesk__ControlProcess__c};
+	inputPrompt = '{!JSINHTMLENCODE(inputBean.inputObj.Prompt__c)}';
+var savedInputId = '{!inputBean.inputObj.id}';
+</script>
+</apex:outputPanel>
+<apex:outputPanel >
+ <apex:form id="inputDetailForm">
+    <c:ValidationComponent errorMsgList="{!inputBean.messageString}" id="vComponent"></c:ValidationComponent>
+    <apex:actionFunction name="save" action="{!save}" reRender="vComponent,btnPanel" oncomplete="waitMsg.hide();showErrorMsg(); clearParentVar();updateWinTitle(); setCProcessVisbility();window.parent.updateInputList();" />
+	<apex:actionFunction name="resetForm" action="{!resetForm}" reRender="btnPanel,dataPanel,inputDetailFormPanel" oncomplete="clearParentVar();showTable();setData();picklistMinimumNumberSpinner();hideUnhidePanel();buttonValidator();updateWinTitle();setCProcessVisbility(); window.parent.infixCondition ='';window.parent.postfixCondition = ''; resetValidationRuleData();"/>
+    <apex:actionFunction name="fetchObjectList" action="{!fetchObjectList}" reRender="lookupPanel" oncomplete="openLookupObject();"/>
+    
+    <apex:actionFunction name="doSearch" action="{!doSearch}" reRender="lookupPanel" oncomplete="afterSearch();">
+        <apex:param assignTo="{!searchText}" name="seachText" value=""/>
+    </apex:actionFunction>
+	<apex:inputHidden id="conditionPostfix_id"  value="{!inputBean.inputObj.BMCServiceDesk__ConditionsPostfix__c}"/>
+    <apex:inputHidden id="condition_id"  value="{!inputBean.inputObj.BMCServiceDesk__Condition__c}"/>
+    <apex:inputHidden id="validationRule"  value="{!inputBean.inputObj.BMCServiceDesk__ValidationRule__c}"/>
+    <apex:outputPanel id="inputDetailFormPanel">
+    
+    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+        <tr>
+          <td>
+	          <table  class="clsTable" cellspacing="0" cellpadding="0">  
+	          	  <tr>
+                      <td colspan="3">
+                          <div class="div15pxVspacing"></div>
+                      </td>
+                  </tr>
+			      <tr>
+				      <td class="clsInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__ResponseType__c.Label}" /><span class="clsRequiredBlack">&nbsp;*</span>
+				      </td>
+				      <td class="clsInputTextBoxTDNew">
+				      	 <apex:selectList value="{!inputBean.inputObj.BMCServiceDesk__ResponseType__c}" size="1" title="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__ResponseType__c.inlineHelpText}" id="input_id_ResponseType__c" styleClass="clsTemplateSelectList" style="font-family: Tahoma, MS Sans Serif;font-size: 11px;" onchange="handleResponseTypeChange(this);">
+		                    <apex:selectOptions value="{!responseType}"/>
+		                 </apex:selectList>
+		                    
+		                    <script> 
+		                    	if(inputId != null && inputId != ''){
+	                                document.getElementById('{!$Component.input_id_ResponseType__c}').disabled = true;
+	                            }
+		                    </script>
+		              </td>
+		              <td  class="clsInputTextBoxTDForLKP">
+                        
+                        
+                        <apex:inputText title="" id="reference_id" value="{!inputBean.refenceValue}" StyleClass="clsIdInputTextBoxReadOnly" disabled="true" style="display:none;"/> 
+                        <apex:inputhidden id="referenceValue_id" value="{!inputBean.refenceOption}" /> 
+                        
+                        <input type="button" class="lookupIconOn" id="Lookup_Id" onclick="disableButton();" style="display:none;"/>
+                        
+                      </td>
+			      </tr>
+			      <tr>
+				      <td class="clsInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Prompt__c.Label}" /><span class="clsRequiredBlack">&nbsp;*</span></td>
+                      <td class="clsInputTextBoxTD" colspan="2"><apex:inputText title="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Prompt__c.InlineHelpText}" value="{!inputBean.inputObj.BMCServiceDesk__Prompt__c}" id="input_id_Prompt__c" StyleClass="clsInputTextBox" style="width:90%;" /></td>
+			      </tr>
+		      </table>
+		  </td>
+		</tr>
+		<tr>
+			<td><apex:outputPanel id="responceDetail" >
+				<div id="rediodetaildiv" style="display:none;">
+				<table cellpadding="0" cellspacing="0"  class="clsTable">
+			       <tr>
+				      <td class="clsInputBoldLabelTD">
+				      	<apex:outputLabel value="{!$Label.bmcservicedesk__FulfillmentInputRadioBtnSection}"  style="{!IF(LOWER(inputBean.inputObj.BMCServiceDesk__ResponseType__c) == 'radio button', 'display:block','display:none')}" id="radioInputSection"/>
+				      	<apex:outputLabel value="{!$Label.bmcservicedesk__FulfillmentInputPicklistSection}"  style="{!IF(LOWER(inputBean.inputObj.BMCServiceDesk__ResponseType__c) == 'picklist', 'display:block','display:none')}" id="picklistInputSection"/>
+				      </td>
+				      <td> </td>
+			       </tr>
+			       <tr>
+				      <td class="clsInputLabelTD"><apex:outputLabel value="{!$Label.bmcservicedesk__FulfillmentInputDisplayedValue}" /><span class="clsRequiredBlack">&nbsp;*</span></td>
+				      <td class="clsInputTextBoxTD"><apex:inputText title="" id="displayvalue_Id" value="{!inputBean.displayValue}" StyleClass="clsInputTextBox" />
+				      </td>
+			       </tr>
+			       <tr>
+				      <td class="clsInputLabelTD"><apex:outputLabel value="{!$Label.bmcservicedesk__FulfillmentInputStoredValue}" /><span class="clsRequiredBlack">&nbsp;*</span>
+				      </td>
+				      <td class="clsInputTextBoxTD"><apex:inputText title="" id="storedValue_id" value="{!inputBean.storedValue}" StyleClass="clsInputTextBox" />
+		              </td>
+			       </tr>
+			       <tr>
+				      <td class="clsInputLabelTD">
+				      	<input type="button" style="background-color:#dee0e0" id="addbtn_id" onclick="addDataJs();buttonValidator();" value="{!$Label.Add}" class="clsButtonStyle clsPrvBtn bgBtnGrey" />
+				      	<input type="button" style="background-color:#dee0e0" id="updatebtn_id" onclick="updateData();buttonValidator();" value="{!$Label.Update}" class="clsButtonStyle clsPrvBtn bgBtnGrey" />
+				      </td>
+				      <td class="clsInputTextBoxTD">
+				      <apex:inputhidden value="{!inputBean.radioInputvalue}" id="inputValue_id"/>
+				      <!-- new response type 'Picklist' related changes -->
+				      <apex:inputhidden value="{!inputBean.picklistInputvalue}" id="picklistValue_id"/>
+				      </td>
+			       </tr>
+			       <tr> 
+				      <td colspan="2"><div class="div15pxVspacing"></div>
+				      </td> 
+			       </tr>
+		  
+		      	</table>
+		      	</div>
+		    	</apex:outputPanel>
+		       	<div id="extGridPanel"> </div>
+			</td>
+		
+		</tr>
+     	<tr>
+     		<td>
+     			<table cellpadding="0" cellspacing="0" class="clsTable">
+			       <tr>
+				      <td class="clsInputBoldLabelTD" ><apex:outputLabel value="{!$Label.bmcservicedesk__FulfillmentInputPrompProperties}" />
+				      </td>
+				     
+			       </tr>
+			       <tr>
+			      	  <td class="clsPanelInputCheckboxTDSA" ><apex:inputCheckbox title="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Required__c.InlineHelpText}" value="{!inputBean.inputObj.BMCServiceDesk__Required__c}" id="requiredInput" /> 
+                      	<apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Required__c.label}" styleClass="clsPanelCheckBoxLabel" />
+                      </td>
+                      <td class="clsPanelInputCheckboxTDSA" ><apex:inputCheckbox value="{!inputBean.inputObj.BMCServiceDesk__DisplayInSecondColumn__c}" title="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__DisplayInSecondColumn__c.InlineHelpText}" id="secondColumnInput"/> 
+                      	<apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__DisplayInSecondColumn__c.label}" styleClass="clsPanelCheckBoxLabel" />
+                      </td>
+			       </tr>
+			       <tr>
+				      <td class="clsPanelInputCheckboxTDSA" ><apex:inputCheckbox title="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Hidden__c.InlineHelpText}" value="{!inputBean.inputObj.BMCServiceDesk__Hidden__c}" id="hiddenInput" /> 
+                      	<apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Hidden__c.label}" styleClass="clsPanelCheckBoxLabel" />
+                      </td>
+				      <td class="clsPanelInputCheckboxTDSA" ><apex:inputCheckbox value="{!inputBean.inputObj.BMCServiceDesk__ControlProcess__c}" title="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__ControlProcess__c.InlineHelpText}" id="controlProcess"  onclick="displayCPLink(this)"/> 
+                      	<apex:outputLabel value="{!$Label.bmcservicedesk__InvokeTemplate}" styleClass="clsPanelCheckBoxLabel" /> <a  id="ControlProcessLink" href="#" style=" vertical-align: top; display:none;" class='clsCmdLink' onclick="conditionInvokeHandler();">{!$Label.FulfillmentInputControlProcessInvoke}</a>
+                      </td> 
+                      
+			       </tr>
+			       <tr>
+				      <td class="clsPanelInputCheckboxTDSA" ><apex:inputCheckbox value="{!inputBean.inputObj.BMCServiceDesk__Conditional__c}" id="ConditionalInput" onclick="displayConditionLink(this)" title="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Conditional__c.InlineHelpText}"/>  
+                     	<apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Conditional__c.label}" styleClass="clsPanelCheckBoxLabel" /> <a id="conditionalLink_id" href="JavaScript:void(0);"  onclick="openConditionPage();" style=" vertical-align: top; display:none;" class='clsCmdLink' >{!$Label.FulfillmentInputConditionalDisplayIf}</a>
+                      
+                      </td>
+                       <td class="clsPanelInputCheckboxTDSA">
+                       		<div id="scrollableInput" style="display:none;">
+                       			<apex:inputCheckbox title="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Scrollable__c.InlineHelpText}" value="{!inputBean.inputObj.BMCServiceDesk__Scrollable__c}" id="groupInput" /> 
+                      			<apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Scrollable__c.label}" styleClass="clsPanelCheckBoxLabel" />
+                      		</div>
+                      		<div id="multiSelectInput" style="display:none;">
+		                       	<apex:inputCheckbox value="{!inputBean.isMultiSelect}" disabled="{!inputBean.isMultiSelect}" title="{!$Label.bmcservicedesk__FulfillmentInputAllowMultipleSelectTooltip}" id="cbMultiSelectInput" onclick="checkPickListValidationRule()" /> 
+		                      	<apex:outputLabel value="{!$Label.bmcservicedesk__FulfillmentInputAllowMultipleSelect}" styleClass="clsPanelCheckBoxLabel"/>
+		                    </div>
+                      </td>
+			       </tr>
+			       <tr>
+				      <td class="clsPanelInputCheckboxTDSA" colspan="2">
+				      	<apex:inputCheckbox value="{!inputBean.inputObj.BMCServiceDesk__Validate__c}" title="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Validate__c.InlineHelpText}" id="validationInput"  onclick="displayValidationRule()"/> 
+                      	<apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_FulfillmentInputs__c.fields.BMCServiceDesk__Validate__c.label}" styleClass="clsPanelCheckBoxLabel" />
+                      </td>
+			       </tr>
+		      </table>
+     		
+     		</td>
+     	</tr>
+		<tr id="separatorLabel" style="display:none;">
+	      <td class="clsInputBoldLabelTD"><apex:outputLabel value="{!$Label.bmcservicedesk__Separator}"/>
+	      </td>
+       	</tr>
+      	<tr id="separatorInput" style="display:none;">
+          	<td class="separatorTDCls clsPanelInputCheckboxTDSA">
+      	  	  	<apex:selectRadio value="{!inputBean.separatorValue}" id="separatorType" styleClass="clsPanelCheckBoxLabel">
+			  		<apex:selectOption itemValue="0" itemLabel="{!$Label.bmcservicedesk__None}"/>
+		            <apex:selectOption itemValue="1" itemLabel="{!$Label.bmcservicedesk__Line}"/>
+		            <apex:selectOption itemValue="2" itemLabel="{!$Label.bmcservicedesk__Bar}"/>
+			  	</apex:selectRadio>
+			</td>
+        </tr>
+        <tr id="validationRuleSection" style="display:none;">
+	      <td>				
+				<table cellpadding="0" cellspacing="0" class="clsTable">
+			       <tr>
+				      <td class="clsInputBoldLabelTD" >
+				    		<apex:outputLabel value="{!$Label.bmcservicedesk__SRValidationRulelbl}" />
+				      </td>
+			       </tr>
+			       <tr id="validationRuleNumber">
+				      <td>
+				    		<table cellpadding="0" cellspacing="0" border="0" >
+	                            <tr>
+	                            	<td class="clsRuleLabel"><apex:outputLabel value="{!$Label.bmcservicedesk__SRValidationRuleNumberMinimumlbl}" /></td>
+	                            	<td>
+	                                	<input id="numberMinimum" type="text" class="clsInputTextBox" style="width:40px;" onkeypress="return validateNumber(event, this, true, false)" />
+	                                </td>
+	                                <td class="clsRuleLabel"><apex:outputLabel value="{!$Label.bmcservicedesk__SRValidationRuleNumberMaximumlbl}" /></td>
+	                                <td>
+	                                	<input id="numberMaximum" type="text" class="clsInputTextBox" style="width:40px;" onkeypress="return validateNumber(event, this, true, false)" />
+	                                </td>
+	                            </tr>
+	                       	</table>
+				      </td>
+			       </tr>
+			       <tr id="validationRuleDate">
+				      <td>
+				    		<table cellpadding="0px" cellspacing="0" border="0"  >
+	                            <tr>
+	                            	<td class="clsRuleLabel">
+	                                	<select id="dateOperator" class="clsRuleSelectList">
+	                                		<option>&lt;</option>
+	                                		<option>&gt;</option>
+	                                	</select>
+	                                </td>
+	                                <td class="clsRuleLabel">
+	                                	 <apex:selectList title="" size="1" id="dateType" styleClass="clsRuleSelectList" onchange="validationRuleDateTypeChange();" >
+		                    				<apex:selectOptions value="{!DateRuleFields}"/>
+		                 				</apex:selectList>
+	                                </td>
+	                                <td id="validationRuleDateDays" class="clsRuleLabel" style="width:140px" nowrap="nowrap" >
+	                                	<span style="padding-right:20px;">+</span><input id="dateDays" type="text" class="clsInputTextBox" style="width:40px;" maxlength="4" onkeypress="return validateNumber(event, this, false, true)" />&nbsp;<apex:outputLabel value="{!$Label.bmcservicedesk__Days}" />
+	                                </td>
+	                                <td id="validationRuleDateSpecific" class="clsRuleLabel">
+	                                	<apex:inputField value="{!objSRDefinition.BMCServiceDesk__StartDate__c}" styleClass="clsHidden"  />
+	                                	<div id="divSpecificDate">
+                                  			<input type="text" size="20"  id="dateSpecificDate" class="clsInputTextBox" style="width:100px;" onfocus="DatePicker.pickDate(true, 'dateSpecificDate', true);" onkeypress="return validateDate(event)" />
+                                  		</div>
+	                                </td>
+	                            </tr>
+	                       	</table>
+				      </td>
+			       </tr>
+			       <tr id="validationRulePickList">
+				      <td>
+                       	<table cellpadding="0" cellspacing="0" border="0" >
+                            <tr>
+                            	<td class="clsRuleLabel"><apex:outputLabel value="{!$Label.bmcservicedesk__SRValidationRulePickLstOptMinlbl}" /></td>
+                                <td class="days-label-td" title="Minimum options">
+                                	<div id="options-ct" />
+                                </td>
+                            </tr>
+                       	</table>
+				      </td>
+			       </tr>
+			       <tr id="validationRuleText">
+				      <td>
+				    		<table cellpadding="0" cellspacing="0" border="0" >
+	                            <tr>
+	                            	<td class="clsRuleLabel"><apex:outputLabel value="{!$Label.bmcservicedesk__SRValidationRuleTextMinlbl}" /></td>
+	                                <td>
+	                                	<input id="textMinimumCharacters" type="text" class="clsInputTextBox" style="width:40px;" onkeypress="return validateNumber(event, this, false, false)" />
+	                                </td>
+	                            </tr>
+	                       	</table>
+				      </td>
+			       </tr>
+ 				</table>
+ 				<br />
+	      </td>
+       	</tr>
+     	<tr> 
+        	<td>
+        		<div style="background-color:#dee0e0" align="bottom" class="clsBottomDiv" >
+					<table>
+						<tr style="background-color:#dee0e0;height:35px; width:100%;" >
+							<td >
+								<input type="button" style="background-color:#dee0e0"  id="saveBtn" onclick="beforeSave()" value="{!$Label.Save}"  class="clsButtonStyle clsPrvBtn bgBtnGrey" />                                          
+								
+							</td>
+							<td >
+                                <input type="button" style="background-color:#dee0e0;width:auto;padding-left:5px;padding-right:5px;"  id="saveandnewBtn" onclick="saveandNewClicked = true;beforeSave()" value="{!JSENCODE($Label.saveAndNew)}"  class="clsButtonStyle clsPrvBtn bgBtnGrey" />                                          
+                                
+                            </td>
+							<td >
+								<input type="button" id="cancelButton" style="background-color:#dee0e0" onclick="window.parent.closeFulfillmentPopup();" value="{!$Label.Cancel}" class="clsButtonStyle clsPrvBtn bgBtnGrey"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+        	</td>
+        </tr>
+     </table>
+   </apex:outputPanel>
+ </apex:form>
+</apex:outputPanel>
+
+<apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS}/ex/ux/Spinner.js" />
+<apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS}/ex/ux/SpinnerField.js" />
+
+<script type="text/javascript" src="{!$Resource.SDEFCommonJS}/FulfillmentInputPage.js" />
+ <script type="text/javascript" src="{!$Resource.SDEFExtJS}/ex/ux/MultiSelect.js" id="ext-multi-js" /> 
+</apex:page>

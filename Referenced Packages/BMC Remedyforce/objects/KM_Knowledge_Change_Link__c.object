@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>StdFormHelpCommonLink</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Stores data that is required to link knowledge articles and change requests.</description>
+    <enableActivities>false</enableActivities>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>Change_Request__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Change #</label>
+        <referenceTo>Change_Request__c</referenceTo>
+        <relationshipLabel>Linked Knowledge Articles</relationshipLabel>
+        <relationshipName>Knowledge_Change_Links</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Knowledge_Article__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Knowledge Article #</label>
+        <referenceTo>KM_KnowledgeArticle__c</referenceTo>
+        <relationshipLabel>Linked Change Requests</relationshipLabel>
+        <relationshipName>Knowledge_Change_Links</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>true</writeRequiresMasterRead>
+    </fields>
+    <label>Knowledge Change Link</label>
+    <nameField>
+        <displayFormat>{0000000}</displayFormat>
+        <label>Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Knowledge Change Links</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <webLinks>
+        <fullName>New_Link</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Link to Change Request</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>var stdLayoutScreenWidth = 671;
+		var stdLayoutScreenHeight = 500;
+		function stdScreenLeft(){
+		return parseInt((screen.availWidth/2) - (stdLayoutScreenWidth/2));
+		}
+
+		function stdScreenTop(){
+		return parseInt((screen.availHeight/2) - (stdLayoutScreenHeight/2));
+		}
+
+	window.open(&quot;/apex/BMCServiceDesk__SearchAndLink?filterObjectId={!Change_Request__c.Id}&amp;parentName=Change_Request__c&amp;childName=KM_KnowledgeArticle__c&quot;,null,&quot;status = 1,height =&quot;+ stdLayoutScreenHeight+&quot;, width = &quot;+ stdLayoutScreenWidth+&quot;,left= &quot;+stdScreenLeft()+&quot;,top=&quot;+ stdScreenTop()+&quot;, resizable = 0,scrollbars=no&quot;);</url>
+    </webLinks>
+</CustomObject>

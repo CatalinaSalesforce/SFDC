@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Navigator Links</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Navigator Links</value>
+    </caseValues>
+    <fields>
+        <label><!-- Index --></label>
+        <name>Index__c</name>
+    </fields>
+    <fields>
+        <label>Niveau de noeud</label>
+        <name>Level__c</name>
+    </fields>
+    <fields>
+        <label>Navigateur FK</label>
+        <name>Navigator__c</name>
+        <relationshipLabel>Noeuds SYS</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Référence de page</label>
+        <name>PageReference__c</name>
+    </fields>
+    <fields>
+        <label>Nœud parent FK</label>
+        <name>Parent__c</name>
+        <relationshipLabel>Noeuds SYS</relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Section --></label>
+        <name>Section__c</name>
+        <picklistValues>
+            <masterLabel>Administration</masterLabel>
+            <translation><!-- Administration --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Workspaces</masterLabel>
+            <translation><!-- Workspaces --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Conseil</label>
+        <name>Tip__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>SYS Node Name</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

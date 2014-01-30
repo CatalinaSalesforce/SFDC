@@ -1,0 +1,74 @@
+<apex:component id="SSIncidentAttachments">
+ <apex:attribute name="attachData" description="Attachment Data" type="String" />
+ <apex:variable var="curAttachData" value="{!attachData}" />
+<apex:outputpanel > 
+   
+  <script>
+ 
+    Ext.onReady(function() {
+        Ext.QuickTips.init();
+        
+        var arrAttachCols = new Array(2);
+        
+        arrAttachCols[0] = {header: '{!JSENCODE($Label.SSAttachmentName)}', sortable: true, dataIndex: 'LastModifiedDate', width:150};
+        arrAttachCols[1] = {header: '{!JSENCODE($Label.SSFileUr)}', sortable: true, dataIndex: 'fileName__c', width:340};
+
+         //create the Grid
+        var docStore = new Ext.data.ArrayStore({
+                fields: ['LastModifiedDate','fileName__c','AttachmentId__c','type__c']
+            });
+            docStore.loadData([{!curAttachData}]);
+            
+        var docsGrid = new Ext.grid.GridPanel({
+            border: false,
+            renderTo:'divDocs',
+            store: docStore,
+            id: 'docData',
+            height: 102,
+           width:Ext.isIE ? 490: 490,
+            viewConfig: {scrollOffset: 0,forceFit: true},
+            columns: arrAttachCols, 
+            stripeRows: true,
+            listeners:{
+                rowdblclick: function(grid, rowIndex, e) {
+                    var attachId = grid.getSelectionModel().getSelected().get('AttachmentId__c');
+                    var type = grid.getSelectionModel().getSelected().get('type__c');
+
+                    if(type=='File')
+                    	window.open('/servlet/servlet.FileDownload?file='+attachId);
+                       // window.showModalDialog("/servlet/servlet.FileDownload?file="+attachId,"pageName","dialogWidth=700px; dialogHeight=700px; resizable=yes");
+                    else if(type=='Url'){
+                        var newUrl = grid.getSelectionModel().getSelected().get('fileName__c');
+                        if(newUrl != null){
+                            if(newUrl.match('http:')!=null || newUrl.match('https:')!=null)
+                                newUrl = newUrl;
+                            else
+                                newUrl = 'http://' + newUrl;
+
+                            window.open(newUrl,'','scrollbars=no,menubar=no,height=700,width=700,resizable=yes,toolbar=no,location=yes,status=no');
+                        }
+                    }
+                }
+            }
+        });
+        
+     });
+
+
+</script>
+<div id="divDocs" style="border:1px solid #bac3c8;width:490px; *width:490px; height:111px; margin-left:10px; margin-top:10px; margin-right:10px; margin-bottom:10px;"></div>
+
+</apex:outputpanel>     
+<style>
+  .clsContent1{
+  border:1px solid #bac3c8;
+  width:490px;
+  *width:470px;
+  height:111px;
+  margin-left:10px;
+  margin-top:10px;
+  margin-right:10px;
+  margin-bottom:10px;
+  }
+</style>
+</apex:component>

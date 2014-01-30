@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Ressource système</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Ressources système</value>
+    </caseValues>
+    <fields>
+        <label>ID instance</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>Propriétés</label>
+        <name>Properties__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Nom de ressource système</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

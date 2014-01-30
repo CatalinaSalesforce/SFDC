@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Incident Email Template 3 Version 2.0</name>
+    <style>none</style>
+    <subject>No action has been taken on Incident #{!Incident__c.Name}</subject>
+    <textOnly>No action has been taken on Incident #{!Incident__c.Name}, which has the following details:
+      Incident Number: {!Incident__c.Name} 
+      Incident Description: {!Incident__c.incidentDescription__c} 
+      Open Date: {!Incident__c.openDateTime__c} 
+      Due Date: {!Incident__c.dueDateTime__c} 
+      Category: {!Incident__c.Category_ID__c} 
+      Client Name: {!Incident__c.clientFirstName__c} {!Incident__c.clientLastName__c} 
+      Urgency: {!Incident__c.Urgency_ID__c} 
+      Impact: {!Incident__c.Impact_Id__c} 
+      Priority: {!Incident__c.Priority_ID__c}</textOnly>
+    <type>custom</type>
+</EmailTemplate>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>IP接続サブネット</value>
+    </caseValues>
+    <fields>
+        <label>アドレスタイプ</label>
+        <name>Address_Type__c</name>
+        <picklistValues>
+            <masterLabel>IPv4</masterLabel>
+            <translation><!-- IPv4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>IPv6</masterLabel>
+            <translation><!-- IPv6 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>検査日</label>
+        <name>Exploration_Date__c</name>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>プレフィックスの文字数</label>
+        <name>Prefix_Length__c</name>
+    </fields>
+    <fields>
+        <label>サブネットマスク</label>
+        <name>Subnet_Mask__c</name>
+    </fields>
+    <fields>
+        <label>サブネット番号</label>
+        <name>Subnet_Number__c</name>
+    </fields>
+    <nameFieldLabel>IP接続サブネット名</nameFieldLabel>
+</CustomObjectTranslation>

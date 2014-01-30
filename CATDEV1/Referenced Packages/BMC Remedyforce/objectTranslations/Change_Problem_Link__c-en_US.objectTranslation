@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Change Problem Link</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Change Problem Links</value>
+    </caseValues>
+    <fields>
+        <label><!-- Change --></label>
+        <name>FKChange__c</name>
+        <relationshipLabel><!-- Linked Problems --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Owner User --></label>
+        <name>FKProblem_Owner__c</name>
+        <relationshipLabel><!-- Change Problem Links --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Problem --></label>
+        <name>FKProblem__c</name>
+        <relationshipLabel><!-- Linked Change Requests --></relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>Remedyforce Change Problem Link</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label><!-- Create_Change_Request_and_Link_to_Problem --></label>
+        <name>Create_Change_Request_and_Link_to_Problem</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Link_Change_Request --></label>
+        <name>Link_Change_Request</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Link_Problem --></label>
+        <name>Link_Problem</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,29 @@
+<apex:page controller="OrgChartPlus.SM_Subscription" sidebar="false" tabStyle="SM_Config__tab">
+<!-- 
+    <head>
+
+	    <script type="text/javascript">
+	        function showSubsPage()
+	        {
+	            win = window.open('{!getSubscriptionURL}', '_blank', 'width=700,height=600,resizable=yes,toolbar=yes,status=yes,scrollbars=yes,menubar=yes,directories=no,location=no', false);
+	            win.focus();
+	        }
+	    </script>
+	</head>
+
+	<c:SMConfigBanner Title="Subscription" HelpURL="" Selection="su">	<!--{!$Resource.AdminHelpGuideSheetsZip}/AdminMainFrame.html?initial=hpf - ->
+	    <apex:form >
+	        <div style="margin-top:4px; margin-bottom:10px">
+	            <span style="color:#333">Manage your OrgChartPlus subscription below.</span>
+	        </div>
+
+			<apex:outputPanel layout="none" rendered="{!!getPermissionError}">
+		        <apex:iframe src="{!getSubscriptionURL}" scrolling="true" height="400px" width="600px"/>
+			</apex:outputPanel>
+
+			<apex:outputPanel layout="none" rendered="{!getPermissionError}">
+		        <p>Sorry. You must be a system administrator to manage your subscription.</p>
+			</apex:outputPanel>
+		</apex:form>
+	</c:SMConfigBanner> -->
+</apex:page>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>IPエンドポイント</value>
+    </caseValues>
+    <fields>
+        <label>アドレスタイプ</label>
+        <name>AddressType__c</name>
+        <picklistValues>
+            <masterLabel>IPv4</masterLabel>
+            <translation><!-- IPv4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>IPv6</masterLabel>
+            <translation><!-- IPv6 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pv4</masterLabel>
+            <translation><!-- Pv4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DNSホスト名</label>
+        <name>DNSHostName__c</name>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>管理アドレス</label>
+        <name>ManagementAddress__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>プレフィックスの文字数</label>
+        <name>PrefixLength__c</name>
+    </fields>
+    <fields>
+        <label>サブネットマスク</label>
+        <name>SubnetMask__c</name>
+    </fields>
+    <nameFieldLabel><!-- BMC_IPEndpoint Name --></nameFieldLabel>
+</CustomObjectTranslation>

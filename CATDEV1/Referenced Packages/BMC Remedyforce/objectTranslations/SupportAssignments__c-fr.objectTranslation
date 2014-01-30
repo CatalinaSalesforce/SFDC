@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Affectations de support</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Affectations de support</value>
+    </caseValues>
+    <fields>
+        <label>Catégorie</label>
+        <name>FKCategory__c</name>
+        <relationshipLabel>Affectations de support</relationshipLabel>
+    </fields>
+    <fields>
+        <label>ID personnel</label>
+        <name>FKUser__c</name>
+        <relationshipLabel>Affectations de support</relationshipLabel>
+    </fields>
+    <fields>
+        <label>ID de file d&apos;attente</label>
+        <name>QueueId__c</name>
+    </fields>
+    <fields>
+        <label>File d&apos;attente</label>
+        <name>QueueName__c</name>
+    </fields>
+    <fields>
+        <label>Catégorie~</label>
+        <name>categoryId__c</name>
+    </fields>
+    <fields>
+        <label>Inactif</label>
+        <name>inactive__c</name>
+    </fields>
+    <fields>
+        <label>Nom</label>
+        <name>recordTypeName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>recordType__c</name>
+    </fields>
+    <fields>
+        <label>ID personnel~</label>
+        <name>userId__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel><!-- Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SYSQVFieldInfo Name</value>
+    </caseValues>
+    <fields>
+        <label>FKSYSQVクエリー</label>
+        <name>FKSYSQVQuery__c</name>
+        <relationshipLabel>SYSQVフィールド情報</relationshipLabel>
+    </fields>
+    <fields>
+        <label>シーケンスID</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>列幅</label>
+        <name>columnWidth__c</name>
+    </fields>
+    <fields>
+        <label>表示ラベル</label>
+        <name>displayLabel__c</name>
+    </fields>
+    <fields>
+        <label>表示位置</label>
+        <name>displayPosition__c</name>
+    </fields>
+    <fields>
+        <label>表示</label>
+        <name>isDisplayed__c</name>
+    </fields>
+    <fields>
+        <label>折りたたみ可能</label>
+        <name>isWrappable__c</name>
+    </fields>
+    <fields>
+        <label>並び順</label>
+        <name>sortOrder__c</name>
+    </fields>
+    <fields>
+        <label>並べ替えタイプ</label>
+        <name>sortType__c</name>
+    </fields>
+    <nameFieldLabel><!-- SYSQVFieldInfo Name --></nameFieldLabel>
+</CustomObjectTranslation>

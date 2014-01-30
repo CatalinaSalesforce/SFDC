@@ -1,0 +1,15 @@
+<apex:component Controller="SDPYdateController" >
+    <apex:attribute name="sdpyyear" type="string" description="Year of SDPY" assignTo="{!sdpyDate}"/>
+  <style>
+   body {font-family: Helvetica MS;}
+   .companyName {
+     font-weight:bold;
+     font-size:50px;
+     color:black
+     }
+</style>
+<apex:outputText value="{!sdpyDate}" styleClass="companyName"/>
+ 
+  
+  <!-- End Default Content REMOVE THIS -->
+</apex:component>

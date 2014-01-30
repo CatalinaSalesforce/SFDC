@@ -1,0 +1,67 @@
+<apex:page standardController="JAN_CHANGE__c"  extensions="JanRequestExtension" sidebar="false">
+
+	<apex:pageMessages />
+
+	<apex:sectionHeader title="JAN変更申請" subtitle="{!JAN_CHANGE__c.Name}" />
+
+	<apex:form >
+		<apex:pageBlock title="JAN変更申請の詳細" mode="maindetail">
+			<apex:pageBlockButtons >
+				<apex:commandButton value="承認申請" action="{!approvalRequest}" onclick="if({!JAN_CHANGE__c.PreventCheck__c} == false && {!JAN_CHANGE__c.AttachedFile__c} == false ){if(confirm('JAN移動防止にチェックがついておりませんが宜しいですか？')){return true;};return false;}return true;"/>
+    	    	<apex:commandButton value="編集" action="{!edit}"/>
+        		<apex:commandButton value="削除" action="{!delete}" />
+     		</apex:pageBlockButtons>
+
+			<apex:pageBlockSection title="承認" columns="2">
+				<apex:outputField value="{!JAN_CHANGE__c.Iraisha__c}"/>
+				<apex:outputField value="{!JAN_CHANGE__c.Shinseibi__c}"/>
+
+				<apex:outputField value="{!JAN_CHANGE__c.Group__c}"/>
+				<apex:outputField value="{!JAN_CHANGE__c.VP__c}"/>
+
+				<apex:outputField value="{!JAN_CHANGE__c.Iraisha1__c}"/>
+				<apex:outputField value="{!JAN_CHANGE__c.Field1__c}"/>
+
+				<apex:outputField value="{!JAN_CHANGE__c.Iraisha2__c}"/>
+				<apex:outputField value="{!JAN_CHANGE__c.TorisageRiyu__c}"/>
+
+				<apex:outputField value="{!JAN_CHANGE__c.Comment__c}"/>
+				<apex:outputField value="{!JAN_CHANGE__c.Comment2__c}"/>
+
+        	</apex:pageBlockSection>
+
+			<apex:pageBlockSection title="新規記入欄" columns="2">
+				<apex:outputField value="{!JAN_CHANGE__c.Name}"/>
+				<apex:outputField value="{!JAN_CHANGE__c.Field2__c}"/>
+
+				<apex:outputField value="{!JAN_CHANGE__c.Client__c}"/>
+				<apex:outputField value="{!JAN_CHANGE__c.ShuseiKanryoKibobi__c}"/>
+
+				<apex:outputField value="{!JAN_CHANGE__c.ShinseiNaiyo__c}"/>
+				<apex:outputField value="{!JAN_CHANGE__c.PreventCheck__c}"/>
+
+        	</apex:pageBlockSection>
+
+			<apex:pageBlockSection title="システム担当者記入欄" columns="2">
+
+				<apex:outputField value="{!JAN_CHANGE__c.Shintyoku__c}"/>
+				<apex:outputField value="{!JAN_CHANGE__c.Kanryoubi__c}"/>
+
+        	</apex:pageBlockSection>
+     	</apex:pageBlock>
+    </apex:form>
+
+	<apex:relatedList list="NotesAndAttachments" />
+
+	<apex:pageBlock title="項目変更履歴">
+        <apex:pageBlockTable value="{!histories}" var="h">
+            <apex:column headerValue="日付"  value="{!h.thedate}"/>
+            <apex:column headerValue="ユーザー" value="{!h.who}"/>
+            <apex:column headerValue="アクション">
+                <apex:outputText escape="false" value="{!h.action}"/>
+            </apex:column>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+
+
+</apex:page>

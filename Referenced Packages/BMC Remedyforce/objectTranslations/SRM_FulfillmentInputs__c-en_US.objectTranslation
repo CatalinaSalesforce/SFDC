@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Fulfillment Input</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Fulfillment Inputs</value>
+    </caseValues>
+    <fields>
+        <label><!-- Additional Info --></label>
+        <name>AdditionalInfo__c</name>
+    </fields>
+    <fields>
+        <label><!-- Condition --></label>
+        <name>Condition__c</name>
+    </fields>
+    <fields>
+        <label><!-- Conditional --></label>
+        <name>Conditional__c</name>
+    </fields>
+    <fields>
+        <label><!-- Conditions Postfix --></label>
+        <name>ConditionsPostfix__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this check box if you want to create conditions that use the value of this field to invoke a template. --></help>
+        <label><!-- Control Process --></label>
+        <name>ControlProcess__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this check box if you want to display this field in the second column. --></help>
+        <label><!-- Display in Second Column --></label>
+        <name>DisplayInSecondColumn__c</name>
+    </fields>
+    <fields>
+        <label><!-- Request Definition --></label>
+        <name>FKRequestDefinition__c</name>
+        <relationshipLabel><!-- Fulfillment Inputs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Hidden --></label>
+        <name>Hidden__c</name>
+    </fields>
+    <fields>
+        <label><!-- Input Values --></label>
+        <name>InputValues__c</name>
+    </fields>
+    <fields>
+        <label><!-- Order --></label>
+        <name>Order__c</name>
+    </fields>
+    <fields>
+        <label><!-- Input/Prompt --></label>
+        <name>Prompt__c</name>
+    </fields>
+    <fields>
+        <label><!-- Required --></label>
+        <name>Required__c</name>
+    </fields>
+    <fields>
+        <label><!-- Response Type --></label>
+        <name>ResponseType__c</name>
+        <picklistValues>
+            <masterLabel>Check box</masterLabel>
+            <translation><!-- Check box --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Date</masterLabel>
+            <translation><!-- Date --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Date/Time</masterLabel>
+            <translation><!-- Date/Time --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Header Section</masterLabel>
+            <translation><!-- Header Section --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Lookup</masterLabel>
+            <translation><!-- Lookup --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Number</masterLabel>
+            <translation><!-- Number --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Picklist</masterLabel>
+            <translation><!-- Picklist --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Radio Button</masterLabel>
+            <translation><!-- Radio Button --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Text Area</masterLabel>
+            <translation><!-- Text Area --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Text Field</masterLabel>
+            <translation><!-- Text Field --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Displays fields in a fixed area with a scroll bar. --></help>
+        <label><!-- Scrollable --></label>
+        <name>Scrollable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this check box if you want to create validation rules for the value of this field. --></help>
+        <label><!-- Validate --></label>
+        <name>Validate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Create the validation rule for the value of this field. --></help>
+        <label><!-- Validation Rule --></label>
+        <name>ValidationRule__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,4 @@
+<apex:page controller="ProgramRecRedirect" id="thePage" showHeader="true" sidebar="false" action="{!redirect}" >
+    <apex:form id="theForm" >
+    </apex:form>
+</apex:page>

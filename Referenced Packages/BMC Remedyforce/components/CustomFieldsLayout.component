@@ -1,0 +1,43 @@
+<apex:component controller="BMCServiceDesk.CustomFieldsLayoutController"> 
+    <apex:attribute name="FieldNames" type="String" description="" required="true" AssignTo="{!pFieldNames}"/>
+    <apex:attribute name="ColumnSize" type="Integer" description="" required="true" AssignTo="{!pColumnSize}"/>    
+    <apex:attribute name="AttributeInfo" type="BMCServiceDesk.CMDBDisplayAttributes" required="true" description="" AssignTo="{!pAttribInfo}"/>
+    <apex:attribute name="RenderFlag" type="boolean" required="true" description="" AssignTo="{!pRenderFlag}"/>
+    <apex:attribute name="isRecDeleted" type="boolean" description="" required="true" AssignTo="{!isRecDeleted}"/>    
+    
+    <table border="0" cellpadding="0" cellspacing="0">
+    <apex:repeat var="lst" value="{!Section}">
+    <tr>
+        <apex:repeat var="attr" value="{!lst}">
+            
+            <td class="clsInputLabelTD ">
+                <apex:outputLabel id="ciLabel" StyleClass="x-form-item-label CMDB_FieldLabel {!attr.StyleClass}" for="ciInput" value="{!attr.DisplayLabel}" ></apex:outputLabel>
+                <apex:outputLabel id="ciLabelMandatory" StyleClass="x-form-item-label" for="ciInput" value="*" rendered="{!attr.Required}" ></apex:outputLabel>
+            </td> 
+            <td class="clsInputTextBoxTD ">
+                <c:CustomFieldsInput id="ciInput"  
+                            StyleClass="{!attr.StyleClass}"
+                            ToolTip="{!attr.ToolTip}" 
+                            PickListValues="{!attr.PickListValues}" 
+                            FieldType="{!attr.AttributeTypeString}" 
+                            Readonly="{!attr.Readonly}" 
+                            Required="{!attr.Required}" 
+                            ApiName="{!attr.ApiName}" 
+                            MaxLength="{!attr.MaxLength}" 
+                            HTMLGroupName="{!attr.HTMLGroupName}" 
+                            HTMLUniqueID="{!attr.HTMLUniqueID}" 
+                            value="{!attr.Value}" 
+                            MultiSelectValue="{!attr.multiPickListValues}"
+                            ObjectName="{!attr.objectName}"
+                            ReferenceValue="{!attr.ReferenceValue}"
+                            ReferenceTo="{!attr.referenceTo}"                         
+                            LocalName="{!attr.LocalName}">                    
+                </c:CustomFieldsInput> 
+            </td>
+            
+           
+        </apex:repeat>
+    </tr>
+    </apex:repeat>
+    </table>
+</apex:component>

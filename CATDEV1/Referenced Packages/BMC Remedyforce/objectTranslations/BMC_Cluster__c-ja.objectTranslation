@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>クラスタ</value>
+    </caseValues>
+    <fields>
+        <label>クラスタタイプ</label>
+        <name>ClusterType__c</name>
+        <picklistValues>
+            <masterLabel>ApplicationInstanceCluster</masterLabel>
+            <translation><!-- ApplicationInstanceCluster --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hardware Cluster</masterLabel>
+            <translation><!-- Hardware Cluster --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Software Cluster</masterLabel>
+            <translation><!-- Software Cluster --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SoftwareServerCluster</masterLabel>
+            <translation><!-- SoftwareServerCluster --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>インターコネクトアドレス</label>
+        <name>InterconnectAddress__c</name>
+    </fields>
+    <fields>
+        <label>インターコネクト</label>
+        <name>Interconnect__c</name>
+    </fields>
+    <fields>
+        <label>最大ノード数</label>
+        <name>MaxNumberOfNodes__c</name>
+    </fields>
+    <fields>
+        <label>タイプ</label>
+        <name>Types__c</name>
+    </fields>
+    <nameFieldLabel><!-- BMC_Cluster Name --></nameFieldLabel>
+</CustomObjectTranslation>

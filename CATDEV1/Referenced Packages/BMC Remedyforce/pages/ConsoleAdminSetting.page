@@ -1,0 +1,114 @@
+<apex:page controller="BMCServiceDesk.ConsoleAdminSettingController" id="consolePage" standardstylesheets="false" showheader="false">
+<link rel="stylesheet" href="{!$Resource.ExtJS4_1_3}/resources/css/ext-all.css" type="text/css" />
+<link rel="stylesheet" href="{!$Resource.SDEFStyles}/ConsoleAdminSetting.css" type="text/css" />
+<link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/HelpStyles.css" />
+ <apex:form >
+ <table id="tableCls" height="100%" width="100%" >
+    <tr>
+        <td colspan="3">
+        <div id="divTB"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="enableConsoleCls">
+			<apex:inputCheckbox value="{!enableConsole}"  id="checkBoxValue" onclick="showHideConfigure('{!$Component.checkBoxValue}');"/><apex:outputLabel value="{!JSENCODE($Label.bmcservicedesk__enableAndUseConsole)}" style="align:left;" />
+        </td>
+		 <td>
+              <div  id="helpDiv" class="clshelpDiv"></div>
+         </td>
+    </tr>
+    <tr >
+        <td id ="configureConsoleId" style="{!IF(enableConsole,'visibility:visible','visibility:hidden')};padding:15px;"  colspan="3" >
+           
+            <table width="100%" height="100%" class="configureTblCls">
+                <tr>
+                    <td colspan="3" class="configureTdClas">
+           
+                
+                        <apex:outputLabel value="{!JSENCODE($Label.bmcservicedesk__consoleAdminConfigure)}" />&nbsp;&nbsp;
+                            <select size="1" multiselect="false" onchange="getValue(this.id);" id="consoleId">
+                              <option value="Incident"> {!JSENCODE($Label.Incident_Console)}</option>
+                              <option value="Task"> {!JSENCODE($Label.Task_Console)}</option>
+                        </select>
+                    
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan="3" class="layoutClass">
+            <apex:outputLabel value="{!JSENCODE($Label.bmcservicedesk__consoleAdminConsoleLayout)}" />&nbsp;&nbsp;
+                        <select size="1" multiselect="false" id="columnCountId" name="columnCount">
+						  <option value="1">1 {!JSENCODE($Label.Column)}</option>
+						  <option value="2">2 {!JSENCODE($Label.Column)}</option>
+ 
+						</select>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <th class ="tblHeaderCls"> {!JSENCODE($Label.ForSelectedProfiles)} </th>
+                    <th class ="tblHeaderCls"> {!JSENCODE($Label.AvailableAction)} </th>
+                    <th class ="tblHeaderCls">{!JSENCODE($Label.AvailableAgentTools)} </th>
+                </tr>
+                <tr>
+                    <td class="tdgridCls">
+                    <div id="right-tab-header"/>
+                    </td>
+                    <td class="tdgridCls">
+                    <div id="actionId"/>
+                    </td>
+                    <td class="tdgridCls">
+                    <div id="agentToolsId"/>
+                    </td>
+                </tr>
+            </table>
+             
+        </td>
+
+ </tr>
+ </table>
+ 
+  <script>
+  var incidentActionsData ={!incidentActionsData};
+   var taskActionsData ={!taskActionsData};
+   var taskAgentsData={!taskAgentsData};
+   var incidentAgentsData ={!incidentAgentsData};
+   var consoleSelected='Incident';
+   var taskCount={!taskColumnCount};
+   var incidentCount ={!incidentColumnCount};
+   var incidentConsole='{!JSENCODE($Label.Incident_Console)}';
+   var taskConsole ='{!JSENCODE($Label.Task_Console)}';
+   var plist ={!profileData};
+   var saveLbl='{!JSENCODE($Label.Save)}';
+   var isChecked ={!enableConsole};
+   var actionGrid,agentGrid,profileGrid,messageString,rightSideTabStore;
+   var saveSuccess ='{!JSENCODE($Label.SavedSuccessfully)}';
+   var selectProfile='{!JSENCODE($Label.SelectProfile)}';
+   var actionslbl='{!JSENCODE($Label.Actions)}';
+   var agentslbl='{!JSENCODE($Label.consoleAdminAgents)}';
+   parent.addHelpOnPage(document.getElementById('helpDiv'),'console.htm'); 
+ 
+ 
+ </script>
+  <script type="text/javascript" src="{!$Resource.ExtJS4_1_3}/ext-all.js"></script> 
+  <script type="text/javascript" src="{!$Resource.SDEFCommonJS}/ConsoleAdminSetting.js"></script> 
+   
+ 
+<apex:outputPanel id="msgString">
+<script>
+messageString='{!JSENCODE(messageString)}';
+
+</script>
+</apex:outputPanel> 
+
+
+<apex:actionFunction action="{!saveConsoleSetting}" name="saveConsoleSetting" rerender="msgString" oncomplete="onCompleteSave();"/>
+ </apex:form>  
+ 
+ 
+ <script>
+ _RemotingActions={}
+ _RemotingActions.saveRecord= "{!$RemoteAction.ConsoleAdminSettingController.saveRecord}";
+ _RemotingActions.getSelectedActions= "{!$RemoteAction.ConsoleAdminSettingController.getSelectedActions}";
+ </script>
+ </apex:page>

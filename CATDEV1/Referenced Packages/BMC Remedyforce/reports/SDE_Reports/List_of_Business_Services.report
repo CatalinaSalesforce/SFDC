@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>BMC_BusinessService__c$Instance_Name__c</field>
+    </columns>
+    <columns>
+        <field>BMC_BusinessService__c$Description__c</field>
+    </columns>
+    <columns>
+        <field>BMC_BusinessService__c$FKBusinessService__c</field>
+    </columns>
+    <columns>
+        <field>BMC_BusinessService__c$Service_Owner__c</field>
+    </columns>
+    <columns>
+        <field>BMC_BusinessService__c$Start_Date__c</field>
+    </columns>
+    <columns>
+        <field>BMC_BusinessService__c$End_Date__c</field>
+    </columns>
+    <columns>
+        <field>BMC_BusinessService__c$Service_Review_Date__c</field>
+    </columns>
+    <columns>
+        <field>BMC_BusinessService__c$Inactive__c</field>
+    </columns>
+    <columns>
+        <field>BMC_BusinessService__c$Service_hours__c</field>
+    </columns>
+    <description>Lists all business services.</description>
+    <format>Tabular</format>
+    <name>List of Business Services</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>List_of_Business_Services__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <timeFrameFilter>
+        <dateColumn>BMC_BusinessService__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

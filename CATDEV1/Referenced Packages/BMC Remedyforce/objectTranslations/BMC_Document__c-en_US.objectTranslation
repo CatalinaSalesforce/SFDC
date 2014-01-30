@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Document</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Documents</value>
+    </caseValues>
+    <fields>
+        <label><!-- Author --></label>
+        <name>Author__c</name>
+    </fields>
+    <fields>
+        <label><!-- Document Date --></label>
+        <name>DocumentDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Document Size --></label>
+        <name>DocumentSize__c</name>
+    </fields>
+    <fields>
+        <label><!-- Document Status --></label>
+        <name>DocumentStatus__c</name>
+        <picklistValues>
+            <masterLabel>Draft</masterLabel>
+            <translation><!-- Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Obsolete</masterLabel>
+            <translation><!-- Obsolete --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pre-Released</masterLabel>
+            <translation><!-- Pre-Released --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Released</masterLabel>
+            <translation><!-- Released --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Document Type --></label>
+        <name>DocumentType__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Date --></label>
+        <name>EndDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- File Name --></label>
+        <name>FileName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Instance ID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Keywords --></label>
+        <name>Keywords__c</name>
+    </fields>
+    <fields>
+        <label><!-- Locale --></label>
+        <name>Locale__c</name>
+    </fields>
+    <fields>
+        <label><!-- Start Date --></label>
+        <name>StartDate__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Start date should be lesser than End date --></errorMessage>
+        <name>start_date_validation</name>
+    </validationRules>
+</CustomObjectTranslation>

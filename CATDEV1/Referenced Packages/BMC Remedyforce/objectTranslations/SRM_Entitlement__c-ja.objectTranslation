@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>使用資格</value>
+    </caseValues>
+    <fields>
+        <label>アカウント</label>
+        <name>FKAccount__c</name>
+        <relationshipLabel>使用資格</relationshipLabel>
+    </fields>
+    <fields>
+        <label>リクエスト定義</label>
+        <name>FKRequestDefinition__c</name>
+        <relationshipLabel>使用資格</relationshipLabel>
+    </fields>
+    <nameFieldLabel>使用資格番号</nameFieldLabel>
+</CustomObjectTranslation>

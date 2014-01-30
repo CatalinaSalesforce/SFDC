@@ -1,0 +1,687 @@
+﻿<apex:page showHeader="false" controller="BMCServiceDesk.DefaultSettingsController" action="{!getQueueObject}" standardStylesheets="false">
+ <c:CommonIncludes />
+  <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS}/ex/ux/SliderTip.js"/>
+  <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/JSTemplate.js"/>
+  <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/DefaultSettingsPage.js"/>
+  <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/DefaultSettingsPage.css" />
+  
+ <script>
+    var removeQuickLinkLabel='{!JSENCODE($Label.RemoveQuickLink)}';
+	var enablesavebtn = {!enablesavebutton};
+    var quickLinksDeleteConfirmationLabel='{!JSENCODE($Label.RemoveQuickLink)}';
+    var objName = "{!JSENCODE(objName)}";  
+    var invalidIntranetURLLabel='{!JSENCODE($Label.invalidIntranetURL)}';
+    var invalidSSURLLabel='{!JSENCODE($Label.invalidSelfServiceURL)}';
+    var invalidQuickLinkURLLabel='{!JSENCODE($Label.invalidQuickLinkURL)}';
+    var SSQuickLinkNameInvalidSizeLabel='{!JSENCODE($Label.SSQuickLinkNameInvalidSize)}';
+    var NameLabel='{!JSENCODE($Label.Name)}';
+    var UrlNameLabel='{!JSENCODE($Label.UrlName)}';
+    var URLLabel='{!JSENCODE($Label.URL)}';
+    var UrlLinkLabel='{!JSENCODE($Label.UrlLink)}';
+    var newLabel='{!JSENCODE($Label.new)}';
+    var deleteLabel='{!JSENCODE($Label.delete)}';
+	var quicklink='{!JSENCODE($Component.defaultForm.panel.quickLink.enableQuickLink)}';
+    var IconUpLabel='{!JSENCODE($Label.IconUp)}';
+    var IconDownLabel='{!JSENCODE($Label.IconDown)}';
+    var saveLabel='{!JSENCODE($Label.save)}';
+    var undoDefaultSettingPageLabel='{!JSENCODE($Label.undoDefaultSettingPage)}';
+    var limitClosedIncidentsvar ='{!JSENCODE($Component.defaultForm.panel.Incident.limitClosedIncidents)}';
+    var txtSSURLvar = '{!JSENCODE($Component.defaultForm.panel.Incident.txtSSURL)}';
+    var txturlvar='{!JSENCODE($Component.defaultForm.panel.search.txturl)}';
+    var enableIntranetvar ='{!JSENCODE($Component.defaultForm.panel.search.enableIntranet)}';
+    var assignValuevar='{!JSENCODE($Component.defaultForm.panel.Incident.assignValue)}';
+    var selectDaysvariable='{!JSENCODE($Component.defaultForm.panel.Incident.selectDays)}';
+    var PortalIdvalvar='{!JSENCODE($Component.defaultForm.panel.Mobile.PortalIdval)}';
+    var enableMobileAccessvar='{!JSENCODE($Component.defaultForm.panel.Mobile.enableMobileAccess)}';
+    var showcntctvar='{!JSENCODE($Component.defaultForm.panel.contactUs.showcntct)}';
+    var enableInternetvar='{!JSENCODE($Component.defaultForm.panel.search.enableInternet)}';
+    var dayList=  document.getElementById('{!JSENCODE($Component.defaultForm.panel.incident.incidentAssign)}');
+    var txtSearchEnginevar='{!JSENCODE($Component.defaultForm.panel.search.txtSearchEngine)}';
+    var closeIncidentvar='{!JSENCODE($Component.defaultForm.panel.incident.closeIncident)}';
+     var broadcastSpeedValue='{!JSENCODE($Component.defaultForm.broadcastspeedid)}';
+	  var pheaderId='{!JSENCODE($Component.defaultForm.panel.Miscellaneous.showPortalHeader)}';
+     var shwprofile=('{!JSENCODE($Component.defaultForm.panel.Miscellaneous.showProfile)}');
+     var shwBroadcast=('{!JSENCODE($Component.defaultForm.panel.Miscellaneous.showBroadcast)}');
+	var resourcesfilesvar='{!$Resource.SDEFStyles}';
+    var PE = 'П';// for comma separator
+    var EF = 'ф'; // for # separator
+    var grid;
+	var broadcastSpeedsavevar;
+	var defaultbroadcastSpeedValue;
+  </script>
+ 
+ 
+ 
+ 
+ 
+ <apex:outputPanel id="onReadyPanel">
+ <script type="text/javascript">
+ 
+    var objList;
+    Ext.onReady(function(){
+    // ---------------------------------code by Rajan------------------------------------------
+        onReadyPanelFunction();
+		enableMyProfileFunction();
+    var listData;
+    listData =[{!listData}];
+    store.loadData(listData);
+   if(listData.length==0){
+           // msgbox("No records found");
+   }
+         var dayArray=new Array("7","10","14");
+        if(document.getElementById(limitClosedIncidentsvar).checked){
+            document.getElementById(selectDaysvariable).disabled = false;
+         }else{
+            //document.getElementById('{!JSENCODE($Component.defaultForm.panel.Incident.selectDays)}').value = "7";
+            document.getElementById(selectDaysvariable).disabled = true;
+         }
+         
+              
+     
+      var val={!ssSetting.BMCServiceDesk__Enable_Intranet_Search_Portlet__c};
+      //alert(val);
+      if(val){
+      //alert('in if');
+         document.getElementById('{!JSENCODE($Component.defaultForm.panel.search.txturl)}').disabled = false;
+      }
+       else{
+       //alert('in else');
+         document.getElementById('{!JSENCODE($Component.defaultForm.panel.search.txturl)}').disabled = true;
+       }
+	   if(!enablesavebtn)
+		 {
+			
+			Ext.getCmp('saveId').setDisabled(true);
+		 } 
+	 var numOfrecord=listData.length;
+     var gridheight=200;
+     if(numOfrecord<8)
+         gridheight=200;
+      else
+         gridheight=numOfrecord*25; 
+      grid.setHeight(gridheight);
+    });
+             
+                
+ </script>
+ </apex:outputPanel>
+ <script>
+     
+ 	function replaceSpecialChars(){
+		strvalue = strvalue.replace(/</g,'&lt;');
+		strvalue = strvalue.replace(/>/g,'&gt;');
+ 	}
+	var isChecked;
+    var templateArea='{!JSENCODE($Component.defaultForm.panel.contactUs.templateName)}';
+    var contactUsMessageTextArea='{!JSENCODE($Component.defaultForm.panel.contactUs.contactUsMessageTextArea)}';
+ </script>
+ <apex:outputPanel id="resetPanel">
+  <script>
+    function resetFields(){
+     var val={!ssSetting.BMCServiceDesk__Enable_Intranet_Search_Portlet__c};
+      //alert(val);
+      if(val){
+      //alert('in if');
+         document.getElementById('{!JSENCODE($Component.defaultForm.panel.search.txturl)}').disabled = false;
+      }
+       else{
+      // alert('in else');
+         document.getElementById('{!JSENCODE($Component.defaultForm.panel.search.txturl)}').disabled = true;
+       }
+       val={!ssSetting.BMCServiceDesk__Allow_Internet_Search__c};
+        if(val){
+      //document.getElementById('{!JSENCODE($Component.defaultForm.panel.search.txtSearchEngine)}').disabled = false; 
+      }
+      else{
+      document.getElementById('{!JSENCODE($Component.defaultForm.panel.search.txtSearchEngine)}').disabled = true; 
+      }
+      createSlider(defaultbroadcastSpeedValue);
+    }
+    </script>
+  </apex:outputPanel>
+  <apex:outputPanel id="commitId">
+  <script>
+	//alert('inside ..commitId..');
+	//var listData;
+    listData =[{!listData}];
+	if(beforeSave == true){
+     	    store.loadData(listData);
+     	    Ext.getCmp('faqCategoryGrid').getStore().commitChanges();
+     	    Ext.getCmp('faqCategoryGrid').render('faqCategory-grid');
+	}
+ 	defaultbroadcastSpeedValue = (document.getElementById(broadcastSpeedValue) != null) ? document.getElementById(broadcastSpeedValue).value : 5 ;
+        
+  </script>
+  </apex:outputPanel>
+  <apex:outputPanel id="msgPanel">
+  <script>
+   function showErrorMsg(){
+                     var msg = new Array();
+                     msg = "{!JSENCODE(messageString)}";
+                     if(msg!=null && msg !=''){
+                         var message= msg;                          
+                            Ext.MessageBox.show({                                
+                                title: '{!JSENCODE($Label.SelfServiceSettingsWindowHeaderSearchPage)}',
+                                msg:message ,
+                                width:300,
+                                buttons: Ext.MessageBox.OK
+                            });
+                    }
+                }
+  </script>
+  </apex:outputPanel>
+    <apex:form id="defaultForm" >
+    <apex:inputhidden value="{!BroadcastSpeed}" id="broadcastspeedid"/>
+    <c:ValidationComponent errorMsgList="{!JSENCODE(messageString)}" id="validationComponent"></c:ValidationComponent>
+           <apex:outputPanel id="errorId">
+           <script>
+               
+               var errormsg = '{!JSENCODE(messageString)}';  
+                
+           </script>
+    </apex:outputPanel>
+     <apex:actionFunction action="{!templateQuery}" name="setTemplateNext" reRender="dummy,templateName" > 
+                <apex:param assignTo="{!savedId}" name="savedName" value=""/>
+            </apex:actionFunction>
+             <apex:actionFunction action="{!enabledValue}" name="enabledValue" reRender="dummy,selectRadio" /> 
+               <apex:actionFunction action="{!disabledValue}" name="disabledValue" reRender="dummy,selectRadio" /> 
+    <apex:actionFunction name="assignIncidentTOQueue" action="{!assignIncidentTOQueue}"  rerender="dummy,assignValue" > 
+                     <apex:param assignTo="{!savedID}" name="savedName" value=""/>
+              </apex:actionFunction>
+	          
+<!--               <apex:actionFunction name="AccountNext"  action="{!accountNext}" rerender="dummy,AccountId">
+             <apex:param assignTo="{!savedID}" name="savedName" value=""/>
+             </apex:actionFunction>-->
+               
+             <apex:actionFunction name="saveDefaults" action="{!save}" rerender="commitId,errorId,validationComponent,msgPanel" onComplete="waitMsg.hide();showErrorMsg();">
+            
+              </apex:actionFunction>
+              <apex:inputhidden id="assignToIncident" value="{!assignToIncident}" />
+               <apex:inputhidden id="selectIncident" value="{!selectIncident}" />
+              <apex:actionFunction name="reset" action="{!reset}" rerender="contentPanel,resetPanel, onReadyPanel, btnToolbarPanel" onComplete="resetFields();" />  
+             <apex:actionFunction name="updateObjList" action="{!updateQuickLink}"  rerender="commitId,dummypanel, validationComponent, errorId" oncomplete="waitMsg.hide();callsaveDefaults();"> 
+        <apex:param name="savedName" assignTo="{!quickObjList}"  value=""/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="deleteQuickLink" action="{!deleteQuickLink}"  rerender="dummypanel, validationComponent, errorId">
+        <apex:param name="deleteName" assignTo="{!savedID}"  value=""/>
+    </apex:actionFunction>
+       <table class="clsMainTable" cellspacing="0" cellpadding="0" width="100%" height="100%">
+         <tr class="clsRowGreyBg">
+                    <td >
+                        <apex:outputPanel id="btnToolbarPanel">
+                        <div id="btnToolbar"></div>
+                        </apex:outputPanel>
+                    </td>
+                    
+               </tr>
+          <tr>
+                <td>
+                    <div>
+                        <apex:outputPanel id="contentPanel">
+                            <apex:panelBar headerClass="clsRowBlueBgPanel" switchType="ajax" id="panel">
+                                <apex:panelBarItem label="{!$Label.bmcservicedesk__IncidentSettings}"   expanded="true" id="Incident" headerClass="panelHeader" contentClass="panelContent">
+                                    <table>
+                                        <tr>
+                                            <td><div class="div9pxVspacing"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table>
+                                                    <tr>
+                                                        <td class="clsInputLabelTD"><apex:outputLabel value="{!$Label.bmcservicedesk__IncidentAssignment}" /><span class="clsRequiredBlack">&nbsp;*</span></td>
+                                                     
+                                                        <td  class="clsInputTextBoxTD">
+                                                          <apex:inputText id="assignValue"  value="{! ssSetting.Assigned_Queue_to_Incident__c}" title="{!$Label.bmcservicedesk__IncidentDropButton}"  styleClass="clsInputTextBoxReadOnly" onmouseover="setReadOnly();"  style="background-color:white;"/>
+                                                          </td>
+                                                          <td class="lookupIconTD">
+                                                          <div class="lookUpIconDiv">
+                                                                 <apex:commandButton onclick="openQueueOnlyPopUp();"  reRender="dummy" styleClass="lookupIconOn" />
+                                                                 <script>
+                                                                 	function openQueueOnlyPopUp(){
+                                                                 		openPopup('SearchPage?popupId=Queue&isQueurorUser=true&isLookup=true&queueFor=Incident__c&isOnlyQueueList=true&filterClause='+escape("sobjectType='" + objName +"'"), openQueuePopup, 580,475);	
+                                                                 	}
+                                                                 </script> 
+                                                             
+                                                            </div>  
+                                                         </td>
+                                                      </tr>
+                                                    </table>
+                                                </td>
+                                                    
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table cellspacing="0" cellpadding="0" >
+                                                    <tr>
+                                                        <td class="clsInputCheckBox">
+                                                                <apex:inputField id="closeIncident" value="{!ssSetting.BMCServiceDesk__Allow_to_Close_Incident__c}" onClick="enableRadio();" />
+                                                                <apex:outputLabel value="{!$Label.bmcservicedesk__AllowUserToCloseIncident}" styleClass="clsInputCheckBoxLabel"/>
+                                                       
+                                                       
+                                                        </td>
+                                                           </tr>
+                                                           <tr>
+                                                           <td style="padding-left:10px;" class="checkLabelST" >
+                                                              <apex:selectRadio value="{!selectResolution}"  layout="pageDirection" styleClass="checkLabelST" id="selectRadio" disabled="{!disabled}" >
+                                                                <apex:selectOptions value="{!resolution}" />
+                                                                </apex:selectRadio>
+                                                           </td>
+                                                    
+                                                    </tr>
+                                       
+                                                   
+                                            
+                                                    <tr>
+                                                        <td class="clsInputCheckBox">
+                                                            <apex:inputField id="reopenIncident" value="{!ssSetting.BMCServiceDesk__Allow_to_Reopen_Incident__c}"/>
+                                                            <apex:outputLabel value="{!$Label.bmcservicedesk__AllowUserToReopenIncident}" styleClass="clsInputCheckBoxLabel"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr><td height="2"></td></tr>
+                                          			<tr> 
+                                                           <td class="clsInputCheckBox">
+                                                                <apex:inputField id="submitNewIncident" value="{!ssSetting.BMCServiceDesk__submit_Incident__c}"/>
+                                                                <apex:outputLabel value="{!$Label.bmcservicedesk__ShowNewServiceRequestButton}" styleClass="clsInputCheckBoxLabel"/>
+                                                        </td>
+                                                        </tr>
+													<tr><td height="2"></td></tr>
+                                                    <tr> 
+                                                           <td class="clsInputCheckBox">
+                                                                <apex:inputField id="showNoteField" value="{!ssSetting.BMCServiceDesk__Show_Note_field__c}"/>
+                                                                <apex:outputLabel value="{!$Label.bmcservicedesk__AllowUserToAddNotesToTheirIncidents}" styleClass="clsInputCheckBoxLabel"/>
+                                                        </td>
+                                                        </tr>
+                                                </table>
+                                            </td>    
+                                        </tr>
+                                         <tr>
+ 											<td>
+                                               <table cellspacing="0" cellpadding="0">
+                                                    <tr> 
+                                                        <td class="clsInputCheckBox" >
+                                                            
+                                                            <apex:inputField id="limitClosedIncidents" value="{!ssSetting.BMCServiceDesk__Limit_Closed_Incidents__c}" onClick="enableCloseIncidentDays()"/>
+                                                            <apex:outputLabel value="{!$Label.bmcservicedesk__IncidentHistory}" styleClass="clsInputCheckBoxLabel"/>
+                                                        </td>                                                            
+                                                        <td class="clsInputCheckBox" width="50px" style="padding-left:2px;">
+                                                            <apex:inputText id="selectDays" maxlength="18"  style="text-align:right;width:80%;" styleClass="clsInputTextBox" value="{!days}"/>
+                                                                </td>
+                                                         <td class="clsInputCheckBox" style="padding-top:1px; padding-left:2px;">
+                                                         <apex:outputLabel styleClass="clsInputCheckBoxLabel" style="padding-top:1px;" value="{!$Label.bmcservicedesk__IncidentHistoryDays}"/>
+                                                        </td>
+                                                   </tr>
+                                                  </table>
+                                              </td>
+                                          </tr>
+                                          <tr>
+ 											<td>
+                                               <table cellspacing="0" cellpadding="0">
+                                                    <tr> 
+                                                        <td class="clsInputCheckBox" >                                                           
+                                               				<apex:outputLabel value="{!$Label.bmcservicedesk__ssURL}" />
+                                                        </td>                                                            
+                                                        <td class="clsInputCheckBox" >
+																<apex:inputText id="txtSSURL"  style="width:350px"   styleClass="clsInputTextBox" value="{!ssSetting.BMCServiceDesk__SiteURL__c}"/>
+																
+                                                        </td>
+                                                   </tr>
+                                                  </table>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                            <td><div class="div15pxVspacing"/></td>
+                                        </tr>
+                                    </table>
+                                </apex:panelBarItem>
+								<!-- Service Requests accordian START-->
+                                <apex:panelBarItem label="{!$Label.bmcservicedesk__SSMyHelpRequests}"   expanded="true" id="Service_Requests" headerClass="panelHeader" contentClass="panelContent">
+                                	
+                                	<table>
+                                        <tr>
+                                            <td  ><div class="div10pxVspacing"/></td>
+                                        </tr>
+										<tr>
+                                         <td colspan="2">
+                                         <table >
+                                         <tr>
+                                             <td  class="defaultFont default-view-td"><apex:outputLabel value="{!$Label.bmcservicedesk__DefaultView}"/></td>
+                                             <td  class="radio-button-td">
+                                              <apex:selectRadio value="{!selectedDefaultView}" styleClass="defaultFont"  id="defaultview" >
+                                                <apex:selectOptions value="{!defaultView}"  />
+                                                </apex:selectRadio>
+                                           </td>
+                                          </tr>      
+                                        </table>
+                                        </td>          
+                                        </tr>
+                                        <tr>
+                                            <td class="clsInputCheckBox" width="5%">
+                                                 <apex:inputField id="serviceRequestList" value="{!ssSetting.BMCServiceDesk__IncidentandServiceRequestCombined__c}"/>
+                                            </td>
+                                            <td align="left">
+                                                <apex:outputLabel value="{!$Label.bmcservicedesk__IncidentandServiceRequestCombined}" styleClass="clsInputCheckBoxLabel"/>
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td class="clsInputCheckBox" width="5%">
+                                                 <apex:inputField id="KAPriority" value="{!ssSetting.BMCServiceDesk__KnowledgeArticlehasPriority__c}"/>
+                                            </td>
+                                            <td align="left">
+                                                <apex:outputLabel value="{!$Label.bmcservicedesk__KnowledgeArticlehasPriority}" styleClass="clsInputCheckBoxLabel"/>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td class="clsInputCheckBox" width="5%">
+                                                 <apex:inputField id="Enable_My_Cart" value="{!ssSetting.BMCServiceDesk__Enable_MyCart__c}"/>
+                                            </td>
+                                            <td align="left">
+                                                <apex:outputLabel value="{!$Label.bmcservicedesk__Enable_My_Cart}" styleClass="clsInputCheckBoxLabel"/>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td class="clsInputCheckBox" width="5%">
+                                            
+                                                 <apex:inputCheckbox id="Enable_SR_PopUp" value="{!enableSRPopUp}"/>
+                                            </td>
+                                            <td align="left">
+                                                <apex:outputLabel value="{!$Label.bmcservicedesk__Enable_Preview_of_Service_Request}" styleClass="clsInputCheckBoxLabel"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td  ><div class="div15pxVspacing"/></td>
+                                        </tr>
+                                       </table>
+                                        
+                                	
+                                </apex:panelBarItem>
+                                <!-- Service Requests accordian END-->
+                                 <apex:panelBarItem label="{!$Label.bmcservicedesk__ContactUsSettings}" expanded="true" id="contactUs" headerClass="panelHeader" contentClass="panelContent">
+                                    <table width="100%">
+                                        <tr>
+                                            <td colspan="2"><div class="div15pxVspacing"/></td>
+                                        </tr>
+										<tr>
+                                  
+                                         <td colspan="2">
+                                        <table>
+                                             <tr>
+                                                <td class="clsInputCheckBox">
+                                                <apex:inputField value="{!ssSetting.BMCServiceDesk__showContactUs__c}"  onClick="updatemsgtemplatesection(this)" id="showcntct"/>
+                                                </td> 
+                                                <td align="left" > 
+                                                <apex:outputLabel value="{!$Label.bmcservicedesk__DisplayContactUsLinkLabel}"  styleClass="clsInputCheckBoxLabel"/>
+                                                </td> 
+                                              </tr>
+                                         </table>  
+                                         </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="headerMessageOnContactUsPage"><apex:outputLabel value="{!$Label.bmcservicedesk__ContactUsMessage}"/></td>
+                                        </tr>
+                                        <tr>
+                                        	<td colspan="2" class="contactUsNewClsInputTextAreaTD"><apex:inputTextarea styleClass="contactUsNewClsInputTextArea" value="{!ssSetting.BMCServiceDesk__Contact_Us_Message__c}" disabled="{!NOT(ssSetting.BMCServiceDesk__showContactUs__c)}" id="contactUsMessageTextArea"/></td>
+                                        </tr> 
+                                        <tr>
+                                           <td colspan="2">
+                                            	<div class="contactUsNewClsInputLabelTD" style="float:left;width:235px;">
+                                            		<apex:outputLabel value="{!$Label.bmcservicedesk__ContactUsCategory}"/>
+                                            	</div>
+                                            	<div class="clsInputTextBoxTD" style="float:left; text-align:left;">
+                                            		<apex:inputText styleClass="contactUsNewClsInputTextBoxReadOnly" id="templateName" value="{!templateName}" disabled="true" style="background-color:white;"  />
+                                            	</div>
+                                            	<div style="float:left; margin-left:10px; *margin-left:5px; padding-bottom:4px; text-align:left;">
+                                            		<apex:commandButton onclick="templateName();"  reRender="dummy" styleClass="lookupIconOn" id="templateid" />
+                                            	</div>
+                                           </td>
+                                        </tr>                                                         
+                                        
+                                        <tr>
+                                            <td colspan="2"><div class="div15pxVspacing"/></td>
+                                        </tr>
+                                    </table>
+                                </apex:panelBarItem>
+                                <apex:panelBarItem label="{!$Label.bmcservicedesk__SearchSettings}" expanded="true" id="search" headerClass="panelHeader" contentClass="panelContent">
+                                    <table >
+                                        <tr>
+                                            <td colspan="3"><div class="div15pxVspacing"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width = "5%" class="clsInputCheckBox">
+                                                <apex:inputField id="enableIntranet" value="{!ssSetting.BMCServiceDesk__Enable_Intranet_Search_Portlet__c}" onClick="enableUrl();"/>
+                        </td> 
+                        <td align="left" colspan="2"> 
+                                                <apex:outputLabel value="{!$Label.bmcservicedesk__EnableIntranet}" styleClass="clsInputCheckBoxLabel"/>
+                        </td>            
+                                        </tr>
+                                        <tr>
+                                            <td width = "5%" class="clsInputCheckBox">&nbsp;</td>
+                                            <td align="left" class="SSclsInputLabelTD"><apex:outputLabel value="{!$Label.bmcservicedesk__IntranetURL}"/></td>
+                                            <td class="clsInputTextBoxTD">
+                                                <apex:inputText id="txturl" title="{!$Label.bmcservicedesk__IntranetSearch}" style="width:350px"   styleClass="clsInputTextBox" value="{!ssSetting.BMCServiceDesk__URL_of_Intranet_Search__c}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width = "5%" class="clsInputCheckBox">
+                                                <apex:inputField id="enableInternet" value="{!ssSetting.BMCServiceDesk__Allow_Internet_Search__c}" onClick="enableSearchEngine();" />                                            
+                                            </td> 
+                        <td align="left" colspan="2"> 
+                            <apex:outputLabel value="{!$Label.bmcservicedesk__EnableInternet}"  styleClass="clsInputCheckBoxLabel"/>
+                                            </td> 
+                                        </tr>
+                                        <tr>
+                        <td width = "5%" class="clsInputCheckBox">&nbsp;</td>                                        
+                                            <td class="SSclsInputLabelTD"><apex:outputLabel value="{!$Label.bmcservicedesk__SearchEngine}"/></td>
+                                            <td class="clsInputTextBoxTD">
+                                                <apex:inputText disabled="true"  id="txtSearchEngine" disabled="true" styleClass="clsInputTextBox" value="{!ssSetting.BMCServiceDesk__Available_Search_Engines__c}"/>
+                                            </td>
+                                        </tr>
+                                    <tr>
+                                    
+                                               <td width = "5%" class="clsInputCheckBox">
+                                            <apex:inputField id="enableRFKnowledgeSearch" value="{!ssSetting.BMCServiceDesk__Allow_RF_Knowledge__c}" onClick="" />          
+                                             </td> 
+                                        <td align="left" colspan="2"> 
+                				            <apex:outputLabel value="{!$Label.bmcservicedesk__SearchRFKnowledgeInSS}"  styleClass="clsInputCheckBoxLabel"/>     
+                                        </td>                                       
+                                            
+                                    </tr>
+                                    <tr>
+                                    
+                                        <td width = "5%" class="clsInputCheckBox">
+                                        <apex:inputField id="enableSFKnowledge" value="{!ssSetting.BMCServiceDesk__Allow_SF_Knowledge__c}" onClick="" />          
+                                         </td> 
+                                    <td align="left" colspan="2"> 
+				                        <apex:outputLabel value="{!$Label.bmcservicedesk__SearchSFKnowledgeInSS}"  styleClass="clsInputCheckBoxLabel"/>     
+                                    </td>
+                                   </tr> 
+									<tr>
+                                    	<td colspan="3"><div class="div15pxVspacing"/></td>
+                                    </tr>
+                                    </table>
+                                </apex:panelBarItem>
+                                  <apex:panelBarItem label="{!$Label.bmcservicedesk__QuickLinkSettings}" expanded="true" id="quickLink" headerClass="panelHeader" contentClass="panelContent" onleave="checkEmptyRow();">
+                                    <table width="100%">
+                                        <tr>
+                                            <td  ><div class="div15pxVspacing"/></td>
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                                <table>
+                                                    <tr>
+                                                        <td class="clsInputCheckBox" width="5%">
+                                                            <apex:inputField id="enableQuickLink" value="{!ssSetting.BMCServiceDesk__Enable_Quick_Link_Portlet__c}" onClick="enableDisableButtons();"/>
+                                                        </td>
+                                                        <td align="left">
+                                                             <apex:outputLabel value="{!$Label.bmcservicedesk__EnableQuicklink}" styleClass="clsInputCheckBoxLabel"/>
+                                                         </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                             <td class="cls5pxTopPadding" >
+                                                    <!-- <c:QuickLink />  -->    
+                                                    <div id="quickBtnToolbar"></div>
+                                                    <div id="faqCategory-grid"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td  ><div class="div15pxVspacing"/></td>
+                                        </tr>
+                                    </table>
+                                </apex:panelBarItem>
+                                <apex:panelBarItem label="{!$Label.bmcservicedesk__BannerConfiguration}" expanded="true" id="Miscellaneous" headerClass="panelHeader" contentClass="panelContent">
+                                    <table>
+                                        <tr>
+                                            <td  ><div class="div15pxVspacing"/></td>
+                                        </tr>
+										<tr>
+                                            <td class="clsInputCheckBox" width="5%">
+                                                 <apex:inputField id="showPortalHeader" value="{!ssSetting.BMCServiceDesk__Show_Hide_SSTopHeader__c}" onClick="enableMyProfileFunction()"/>
+                                            </td>
+                                            <td align="left" margin-left="-20px">
+                                                <apex:outputLabel value="{!$Label.bmcservicedesk__ShowApplicationBanner}" styleClass="clsInputCheckBoxLabel"/>
+                                            </td>
+                                            
+                                        </tr>
+<!--                                    <tr>
+                                        	<td colspan="2">
+                                        		<table>
+                                        			<tr>
+                                        				<td class="clsInputLabelTD"><apex:outputLabel value="{!$Label.PortalAccountID}" /><span class="clsRequiredBlack">&nbsp;*</span></td>
+                                             			<td class="clsInputTextBoxTD"> 
+                                                			<apex:inputText id="AccountId" value="{!account}" disabled="true" styleClass="clsInputTextBoxReadOnlyWithWhiteBG"/>
+                                             			</td>
+                                        	 			<td class="lookupIconTD">
+                                                 			<div class="lookUpIconDiv">
+                                                                <apex:commandButton onclick=" openPopupWithTitle('SearchPage?popupId=Organization&isLookup=true',AccountNext, '',400,600 );"  reRender="dummy" styleClass="lookupIconOn"/>
+                                                 			</div>  
+                                             			</td>
+                                        			</tr>
+                                        		</table>
+                                        	</td>
+                                        </tr>-->
+                                      <!-- <tr>
+                                            <td class="clsInputCheckBox" width="5%">
+                                                 <apex:inputField id="userRegistration" value="{!ssSetting.Show_New_User_Registration_Link__c}"/>
+                                            </td>
+                                            <td align="left"> 
+                                                <apex:outputLabel value="{!$Label.userRegistration}" styleClass="clsInputCheckBoxLabel"/>
+                                             </td>
+                                        </tr> -->
+                                        <tr>
+                                            <td class="clsInputCheckBox" width="5%">
+                                                 <apex:inputField id="showProfile" value="{!ssSetting.BMCServiceDesk__Show_My_Profile_Link__c}" onClick="enableAllowUserFunction()"/>
+                                            </td>
+                                            <td align="left">
+                                                <apex:outputLabel value="{!$Label.bmcservicedesk__ShowMyProfile}" styleClass="clsInputCheckBoxLabel"/>
+                                            </td>
+                                            
+                                        </tr>
+                                                               <tr>
+
+
+                                <td class="clsInputCheckBox" width="5%" >
+                                
+                                <apex:inputCheckBox id="showBroadcast" value="{!ssSetting.BMCServiceDesk__AllowSS_ConfigureBroadcastSpeed__c}"/>
+                                
+                                </td> 
+
+                                <td align="left" style="padding-left:-2px;">
+                                
+                                
+                                <apex:OutputLabel value="{!$Label.bmcservicedesk__AllowCB}" styleClass="clsInputCheckBoxLabel"/> 
+                                
+                                </td>
+
+
+                            </tr>
+							<tr>
+
+							
+							<td class="clsInputCheckBox" colspan="2">
+							<table> 
+							<tr>
+                            <td class="div5pxVspacing"></td>
+                            </tr>
+							 <tr>
+                               
+                               <td class="clsInputCheckBoxLabel" colspan="2"> {!$Label.defaulttickerspeed}</td>
+                            </tr>
+							<tr>
+                            <td class="div5pxVspacing"></td>
+                            </tr>
+							<tr>
+
+							<td align="left" > 
+							<apex:OutputLabel value="{!$Label.bmcservicedesk__Slow}" styleClass="clsInputCheckBoxLabel"/>
+							</td> 
+
+							<td > <div id="basic-slider" /> </td>
+							<td class="qvwidth5px"></td>
+							<td align="left" > 
+							<apex:OutputLabel value="{!$Label.bmcservicedesk__Fast}" styleClass="clsInputCheckBoxLabel"/>
+							</td> 
+
+							</tr>
+
+
+							</table> 
+
+							</td>
+
+
+
+							</tr>
+                                        <tr>
+                                            <td  ><div class="div15pxVspacing"/></td>
+                                        </tr>
+                                    </table>
+                                </apex:panelBarItem>
+                                <apex:panelBarItem label="{!$Label.bmcservicedesk__MobileConfiguration}" expanded="true" id="Mobile" headerClass="panelHeader" contentClass="panelContent">
+									<table border="0" style="width:100%">
+										<tr><td><div class="div15pxVspacing"/></td></tr>
+										<tr>
+                                        	<td class="clsInputCheckBox" style="padding-top:1px;" title="{!$Label.TooltipEnableMobileAccess}">
+                                            	<apex:inputField id="enableMobileAccess" value="{!ssSetting.BMCServiceDesk__Enable_Mobile_Access__c}" onClick="enableMobile()" style="padding-right:3px;"/>
+                                                <apex:outputLabel value="{!$Label.bmcservicedesk__EnableMobileAccess}" styleClass="clsInputCheckBoxLabel"/>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<table>
+		                                        	<tr>                                                            
+		                                            	<td class="clsInputLabelTD" style="padding-left:10px;">
+		                                                	<apex:outputLabel value="{!$Label.bmcservicedesk__OrganizationId}" styleClass="clsInputCheckBoxLabel"/>
+														</td>
+		                                                <td>
+		                                                	<input type="text" title="{!$Label.TooltipOrganizationID}" id="orgId" maxlength="18"  style="width:120px;" disabled="disabled" class="clsInputTextBox" value="{!$Organization.Id}"/>
+														</td>
+	                                                </tr>
+		                                            <tr><td style="padding-top:3px;"></td></tr>
+		                                            <tr>                                 
+		                                            	<td class="clsInputLabelTD" style="padding-left:10px;">
+		                                                	<apex:outputLabel value="{!$Label.bmcservicedesk__PortalId}" styleClass="clsInputCheckBoxLabel"/>
+														</td>
+		                                                  <td>
+		                                                	<apex:inputText id="PortalIdval" title="{!$Label.bmcservicedesk__TooltipEnterPortalId}" maxlength="18" style="width:120px;" styleClass="clsInputTextBox" value="{!portalId}"/>
+														</td>
+													</tr>
+	                                            </table>
+                                            </td>
+										</tr>
+										<tr><td><div class="div15pxVspacing"/></td></tr>
+									</table>
+								</apex:panelBarItem>
+                            </apex:panelBar>
+                        </apex:outputPanel>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </apex:form>
+</apex:page>

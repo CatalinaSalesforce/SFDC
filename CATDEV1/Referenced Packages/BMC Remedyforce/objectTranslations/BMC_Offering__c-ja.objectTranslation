@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>提供</value>
+    </caseValues>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>サービスのタイプ</label>
+        <name>OfferingType__c</name>
+        <picklistValues>
+            <masterLabel>Requestable</masterLabel>
+            <translation><!-- Requestable --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Service</masterLabel>
+            <translation><!-- Service --></translation>
+        </picklistValues>
+    </fields>
+    <nameFieldLabel><!-- BMC_Offering Name --></nameFieldLabel>
+</CustomObjectTranslation>

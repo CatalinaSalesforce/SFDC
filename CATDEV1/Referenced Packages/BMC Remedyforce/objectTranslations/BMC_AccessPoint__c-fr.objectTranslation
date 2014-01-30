@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Point d&apos;accès</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Points d&apos;accès</value>
+    </caseValues>
+    <fields>
+        <label>ID instance</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter the class of the system where the endpoint resides. This value is automatically propagated from the related instance. --></help>
+        <label>ID classe de système</label>
+        <name>SystemClassId__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter the name of the system where the endpoint resides. This value is automatically propagated from the related instance. --></help>
+        <label>Nom du système</label>
+        <name>SystemName__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- BMC_AccessPoint Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

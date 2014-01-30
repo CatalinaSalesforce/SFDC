@@ -1,0 +1,691 @@
+<apex:component allowDML="true" controller="BMCServiceDesk.NewsFeedController">
+<apex:attribute name="recordId" assignTo="{!recordId}" description="This is the value for the component." type="String" required="false"/>
+<apex:attribute name="recordType" assignTo="{!recordType}" description="This is the value for the component." type="String" required="false"/>
+
+<c:SelfServiceCommonIncludes />
+<style type="text/css">
+.hidden { display: none; } 
+.unhidden { display: block; } 
+.x-window .x-toolbar-left, .x-window .x-toolbar-cell {
+    background-color:#ced9e7 !important;
+}
+.panelHeader  {
+    height:100%;
+    line-height:2em;
+    margin:0;
+    padding:0 0 0 10px;
+    width:98%;
+}
+#contentPublisherSlideDown .chatterPublisherActionsContainer a {
+	display:block;
+	float:left;
+	font-size:1.1em;
+	padding:17px 0;
+	text-align:center;
+	text-decoration:none;
+	width:100%;
+}        
+
+.publishercontainer a.publisherattach3 img {
+    height: 16px;
+    width: 16px;
+    background:transparent url("/img/feeds/publisher_icon16.png") no-repeat scroll left bottom;
+}
+.publishercontainer .publishercontrols a.publisherattach3:hover span {
+    //text-decoration: underline;
+    color:#015BA7;
+}
+.publishercontainer a.publisherattach2 img {
+    height: 16px;
+    width: 16px;
+    background:transparent url("/img/feeds/publisher_icon16.png") no-repeat scroll left top;
+}
+.publishercontainer .publishercontrols a.publisherattach2:hover span {
+    //text-decoration: underline;
+    color:#015BA7;
+}
+A:hover span
+{
+    TEXT-DECORATION: underline;
+}
+A:hover img
+{
+    TEXT-DECORATION: none;
+}
+
+.btnShare{
+	-moz-border-radius:3px 3px 3px 3px;
+	background:url("/img/alohaSkin/btn_sprite.png") repeat-x scroll right top #E8E8E9;
+	border-color:#B5B5B5 #B5B5B5 #7F7F7F;
+	border-style:solid;
+	border-width:1px;
+	color:#333333;
+	font-size:0.9em;
+	font-weight:bold;
+	padding:2px 3px;
+float:right;
+margin:0 -10px 6px 0;
+}
+.x-toolbar-left, .x-toolbar-ct{
+	background-color: transparent;
+}
+.x-panel-bwrap {
+    background-color: transparent;
+}
+
+</style>
+ 
+	<apex:actionFunction name="refreshFeed" action="{!refresh}" reRender="allfeeds">
+		<apex:param name="recId" assignTo="{!recId}" value=""/>
+		<apex:param name="recType" assignTo="{!recType}" value=""/>
+	</apex:actionFunction> 
+
+    <apex:actionFunction name="selectedFeedId" action="{!selectedFeedId}" >
+        <apex:param name="firstParam" assignTo="{!feedID}" value="" />
+    </apex:actionFunction>
+    
+   <apex:actionFunction name="NewCommentValue" rerender="allfeeds"  action="{!AddComment}" oncomplete="waitMsg.hide();">
+        <apex:param name="newComment" assignTo="{!newComment}" value=""/>
+        <apex:param name="feedId" assignTo="{!feedId}" value=""/>
+   </apex:actionFunction>
+   
+   <apex:actionFunction name="share"  rerender="fullcomponentid" action="{!share}" oncomplete="waitMsg.hide();">
+        <apex:param name="newstatus" assignTo="{!newstatus}" value=""/>
+		<apex:param name="recId" assignTo="{!recType}" value=""/>
+		<apex:param name="recType" assignTo="{!recType}" value=""/>          
+   </apex:actionFunction>
+
+   <apex:actionFunction name="handleSubscription"  rerender="allfeeds" action="{!handleSubscriptions}">
+        <apex:param name="recordRef" assignTo="{!recordRef}" value=""/>
+   </apex:actionFunction>
+   
+   <apex:actionFunction name="deleteComment" reRender="errorId,allfeeds" action="{!DeleteComment}" oncomplete="waitMsg.hide();DisplayMsg();" >
+        <apex:param name="commentId" assignTo="{!commentId}" value=""/>
+		<apex:param name="createdById" assignTo="{!createdById}" value=""/>
+   </apex:actionFunction> 
+
+   <apex:actionFunction name="deleteFeed" reRender="errorId,allfeeds" action="{!deleteFeedPost}" oncomplete="waitMsg.hide();DisplayMsg();">
+        <apex:param name="feedpostId" assignTo="{!feedpostId}" value=""/>
+		<apex:param name="createdById" assignTo="{!createdById}" value=""/>
+   </apex:actionFunction> 
+
+   <apex:actionFunction name="addLink" action="{!attachLink}" rerender="fullcomponentid" oncomplete="waitMsg.hide();">
+    <apex:param name="newstatus" assignTo="{!newstatus}" value=""/>
+   	<apex:param name="linkurl" assignTo="{!linkurl}" value=""/>
+   	<apex:param name="linktitle" assignTo="{!linktitle}" value=""/>
+   </apex:actionFunction>
+    
+     <script type="text/javascript">
+		function DisplayMsg()
+   		{
+   			if((errormsg != null) && (errormsg != ''))
+     			Ext.MessageBox.show({ msg: errormsg, buttons: Ext.MessageBox.OK});
+   		}
+     	function AttachOnclick(fElem){
+     		var name = "";
+   			var id = "";
+   			var startPos = -1;
+     		if(fElem != null && typeof(fElem) != 'undefined'){
+  				startPos = fElem.href.indexOf("RemedyForce_PCGLink__");
+  				if(startPos > 0)
+   					id = fElem.href.substring(startPos).replace("RemedyForce_PCGLink__", "");
+   				else
+   					return true;
+   					
+   				if(Ext.isIE)
+ 					name = fElem.innerText.replace("{!$Label.CIExpIncidentLabel}", "").trim();
+				else
+					name = fElem.text.replace("{!$Label.CIExpIncidentLabel}", "").trim();
+   				OpenNewTab(id, "incident__c",name);
+   			}
+   			return false;
+     	}
+     	
+     	var tabOutImg = "{!$Resource.SDEFExtJS}/resources/images/default/shared/blue-loading.gif";
+     	function waitbox(timeout){ 
+			if(parseInt(timeout)>0) setTimeout("waitMsg.hide()", timeout);
+			waitMsg = new Ext.Window({ 
+				height:100, 
+				width:200, 
+				resizable:false, 
+				closable : false, 
+				header:false,
+				frame:false, 
+				modal:true,
+				shadow :false, 
+				items:[{ 
+					xtype:'panel', 
+					height:100, 
+					width:200, 
+					bodyStyle:'background-color:transparent;border:none;', 
+					html: '<div align="center"><img src="' +  tabOutImg +  '"/></div>' 
+				}] 
+			}); 
+			waitMsg.show();
+		}
+		var displayLink = false;
+     	var displayAttachFile = false;     
+		function refreshChatterFeed(id, type){
+			//alert(id);
+			//alert(type);
+			refreshFeed(id, type); 
+		}		       
+		var MODULENAME_INCIDENT ='incident__c';
+    	var MODULENAME_CHANGE ='change_request__c';
+    	var MODULENAME_PROBLEM ='problem__c';
+    	var MODULENAME_FAQ ='faq__c';
+ 		var MODULENAME_BROADCAST ='broadcasts__c';
+    	var MODULENAME_CI ='bmc_baseelement__c';
+    	
+        function OpenNewTab(recId, objRef, recName) {
+        	//alert(objRef);
+        	var title=encodeURIComponent("#"+recName);
+        	if (objRef.toLowerCase() == MODULENAME_BROADCAST) {
+        		var broadcastLabelPlural = '{!JSENCODE($Label.Navigator_Broadcasts)}';
+        		    
+            	window.parent.parent.addNewTab("BroadcastsPage", broadcastLabelPlural, "NavigatorPage?title="+title+"&target=BroadcastsPage?id="+recId);        	
+        	} else if (objRef.toLowerCase() ==  MODULENAME_FAQ) {
+        		var FAQLabelPlural = '{!JSENCODE($Label.Navigator_FAQs)}';
+            	window.parent.parent.addNewTab("FAQPage", FAQLabelPlural, "NavigatorPage?title="+title+"&target=FAQPage?id="+recId);        	
+        	} else if (objRef.toLowerCase() == MODULENAME_INCIDENT){
+        		var incidentLabelPlural = '{!JSENCODE($Label.Navigator_Incidents)}'; 
+            	window.parent.parent.addNewTab("IncidentPage", incidentLabelPlural, "NavigatorPage?title="+title+"&target=IncidentPage?id="+recId);        	
+        	} else if (objRef.toLowerCase() == MODULENAME_CHANGE){
+        		var changeRequestLabelPlural = '{!JSENCODE($Label.Navigator_ChangeRequests)}';
+            	window.parent.parent.addNewTab("ChangeRequestPage", changeRequestLabelPlural, "NavigatorPage?title="+title+"&target=ChangeRequestPage?id="+recId);        	
+        	} else if (objRef.toLowerCase() == MODULENAME_CI){
+        		window.parent.parent.CMDB_RecordID = recId;
+        		title=encodeURIComponent("{!JSENCODE($Label.ConfigurationItems)}");
+				var cmdwin = window.parent.parent.CMDBManagerWin;
+				if(cmdwin != null && cmdwin && cmdwin.CheckAndOpenInstance) {
+					cmdwin.CheckAndOpenInstance();
+				}
+				window.parent.parent.addNewTab("CMDBManager", "{!JSENCODE($Label.Navigator_ConfigurationItems)}","NavigatorPage?title=&tabName="+title+"&target=CMDBManager?id=1010");
+            	/*window.parent.parent.CMDB_RecordID = recId;
+        		title=encodeURIComponent("{!JSENCODE($Label.ConfigurationItems)}");
+            	window.parent.parent.addNewTab("CMDBManager", "{!JSENCODE($Label.Navigator_ConfigurationItems)}","NavigatorPage?tabName="+title+"&target=CMDBManager?id=1010");*/
+            	//window.parent.parent.addNewTab("CMDBManager", "{!JSENCODE($Label.ConfigurationItems)}","NavigatorPage?tabName=Configuration%20Items%C2%ACa1MA0000000ydwoMAA&title=Configuration%20Items&target=CMDBManager?id=1010&IID=123%26height=650%26InstanceID="+recId); 
+        	}
+            //window.parent.parent.addChatterLinkTab("IncidentsPage", "Incidents", "IncidentPage&title=Incidents&target=IncidentPage");
+        }
+
+            function unhide(divID) {
+                var item = document.getElementById(divID);
+                if (item) {
+                    item.className=(item.className.contains('hidden'))?'unhidden':'hidden';
+                }
+            }
+
+            function setDisplay(obj,id,value){ 
+                obj.style.display='none';
+                var item = document.getElementById(id);
+                item.style.display = value; 
+            }
+
+
+            function setDisplay2(id,value){ 
+                var item = document.getElementById(id);
+                item.style.display = value; 
+            }
+
+			function setOnClick(obj)
+			{
+				if(obj.style.height=='0pt'){
+					obj.style.height = '30pt';
+					obj.value = '';
+				}
+			}
+			function setOnBlur(obj,value)
+			{
+				if (obj.style.height=='30pt' && obj.value == ''){
+					obj.style.height = '0pt';
+					obj.value = value;
+				}
+				else if (obj.style.height=='30pt' && obj.value != '')
+					obj.style.height = '30pt';
+			}
+
+			function isLinkURLValid(linkURL)
+			{
+				var exp1 = new RegExp();
+				var exp2 = new RegExp();
+				var exp3 = new RegExp();
+				exp1.compile('^[A-Za-z]+://[A-Za-z0-9-_]+$'); //The URL can be https://google
+				exp2.compile('^[A-Za-z]+://[A-Za-z0-9-_]+\\.[A-Za-z0-9-_%&\?\/.=]+$'); //The URL can be https://google.com
+				exp3.compile('^([a-z0-9_-]+\.)*[a-z0-9_-]+(\.[a-z]{2,6}){1,2}$');
+				if (!exp1.test(linkURL) && !exp2.test(linkURL) && !exp3.test(linkURL)) {
+						return false;
+				}
+				return true;
+			}
+
+            function shareStatus(value, id, type){
+            	if(displayLink==true){
+            		var strURL = document.getElementById('url').value.trim();
+            		if(!isLinkURLValid(strURL))
+					{
+						Ext.MessageBox.show({
+		                msg: '{!JSENCODE($Label.ChatterInvalidLink)}', 
+		                buttons: Ext.MessageBox.OK});
+		                return;
+					}
+            		var strURLName = document.getElementById('urlName').value.trim();
+            		if((strURL == '') || (strURLName == null) || (strURL=="http://") || (strURL=="https://")){
+            			Ext.MessageBox.show({
+	                        msg: '{!JSENCODE($Label.BlankLinkError)}',
+	                        buttons: Ext.MessageBox.OK
+	                    }); 
+            		}else if((strURL.length > 255) || (strURLName.length > 255)){
+            			Ext.MessageBox.show({
+	                        msg: '{!JSENCODE($Label.TextURLOverflow)}',
+	                        buttons: Ext.MessageBox.OK
+	                    }); 
+            		}else{
+            			waitbox(0);
+	            		addLink(value, document.getElementById('url').value, document.getElementById('urlName').value);
+	            		displayLink = false;
+            		}
+            	}
+				else{
+					var strValue = value.trim();
+					if(strValue.length > 1000){
+						Ext.MessageBox.show({
+	                        msg: '{!JSENCODE($Label.TextAreaOverflowForChatter)}',
+	                        buttons: Ext.MessageBox.OK
+	                    }); 
+					}else{
+						waitbox(0);
+	                	share(value, id, type);
+	                	displayLink = false;
+					}
+				}	
+				return;
+            }
+
+            function createNewComment(feedId){
+                var item = document.getElementById(feedId);
+
+                var elSpan = item.getElementsByTagName('span')[0];
+                elSpan.style.display = 'none';
+
+                var inputtext = item.getElementsByTagName('textarea')[0]; 
+                var strComment = inputtext.value.trim();
+                if(inputtext.value == null || inputtext.value.trim().length <= 0)
+                {                	    
+                	elSpan.style.display = '';
+					Ext.MessageBox.show({
+                        msg: '{!JSENCODE($Label.EmptyValueForChatterComment)}',
+                        buttons: Ext.MessageBox.OK
+                    });
+					item.getElementsByTagName('textarea')[0].focus();
+				}
+				else if(strComment.length > 1000)
+				{
+					elSpan.style.display = '';
+					Ext.MessageBox.show({
+                        msg: '{!JSENCODE($Label.TextAreaOverflowForChatterComment)}',
+                        buttons: Ext.MessageBox.OK
+                    }); 
+				}else{
+					waitbox(0);
+	                NewCommentValue(inputtext.value,feedId);
+				}
+                return;
+            }
+
+            function deleteCommentFromFeed(commentID, createdByID){
+            	Ext.MessageBox.confirm('{!JSENCODE($Label.ConfirmHomePage)}', '{!JSENCODE($Label.ChatterDeleteComment)}', function(btn){
+                  	if(btn === 'yes'){
+                  		waitbox(0);
+                     	deleteComment(commentID, createdByID);
+                 	}
+                });	
+            }
+            function deleteFeedPost(feedPostID, createdByID){
+            	Ext.MessageBox.confirm('{!JSENCODE($Label.ConfirmHomePage)}', '{!JSENCODE($Label.ChatterDeletePost)}', function(btn){
+                  	if(btn === 'yes'){
+                  		waitbox(0);
+                     	deleteFeed(feedPostID, createdByID);
+                 	}
+                });	 
+            }            
+            
+            function handlePanelVisibility(panelId)
+			{
+				if(document.getElementById(panelId).className == "panel hidden"){
+					document.getElementById(panelId).className = "panel";
+					document.getElementById("contentButtonBar").style.visibility="hidden";
+					if(panelId == "chatterLinkPost"){
+						displayLink = true;
+						document.getElementById('url').focus();
+					}else if (panelId == "chatterFileStageOne")
+						displayAttachFile = true;
+				}
+				else{
+					document.getElementById(panelId).className = "panel hidden";
+					document.getElementById("contentButtonBar").style.visibility="visible";
+					displayLink = false;
+					displayAttachFile = false;
+				}
+			}
+        </script> 
+     
+        <apex:stylesheet value="{!$Resource.BMCServiceDesk__ChatterCSS}/chatter.css" />
+        <apex:stylesheet value="{!$Resource.BMCServiceDesk__ChatterCSS}/common.css" />
+        <apex:stylesheet value="{!$Resource.BMCServiceDesk__ChatterJS}/Chatter.js" />
+        <apex:stylesheet value="{!$Resource.BMCServiceDesk__ChatterJS}/functions.js" />
+        <apex:stylesheet value="{!$Resource.BMCServiceDesk__ChatterJS}/main.js" />
+<apex:outputPanel id="errorId">
+		        <script>
+		           errormsg = '{!JSENCODE(messageString)}';
+		        </script>
+		</apex:outputPanel>
+<apex:outputPanel id="fullcomponentid">
+        <div style="padding-left:10px;"> <!--  Start of First Div -->
+          <div style="padding-top:15px" id="statusId" class="subjectNameAndStatus">
+              <apex:outputLink value="javascript:void(0);" style="text-decoration:none;" onclick="refreshChatterFeed('{!JSENCODE(viewRecordId)}', '{!JSENCODE(viewRecordType)}');"><span style="display: inline;" class="subjectName">{!u.Name} </span></apex:outputLink>
+                   <span id="statusupdateId" style="display: inline;" class="statusContainer" id="headerCurrent
+                   StatusSection">
+                        <span class="currentStatus"> 
+                             
+                            <span class="myCurrentStatusControls">
+                                <span class="currentStatusLastUpdate"></span>
+                                <apex:commandlink title="{!$Label.bmcservicedesk__Clearcurrentstatus}" action="{!clearCurrentStatus}" styleClass="clearstatus" rendered="{!IF(!ISNULL(recordId),true,false)}" rerender="fullcomponentid">{!$Label.bmcservicedesk__Clear}</apex:commandlink>
+                               <span style="display: inline;" class="statusContainer" id="headerCurrentStatusSection">
+                               </span>
+                               <span style="display: none;" class="feeddata currentStatusUserId">{!u.id}</span>
+                           </span>
+                       </span>
+                   </span>
+           </div>
+            <div class="publishercontainer" style="background:transparent url('') no-repeat scroll right top;">
+                <div class="publisherrightcontainer">
+                    <div class="publishercontrols">
+                        <!-- apex:inputTextArea style="height: 0pt;" styleclass="publishertextarea" onclick="javascript:setElHeight(this,'')" onblur="javascript:setElHeight(this,'{!newStatus}');" cols="1000" id="publishertextarea" value="{!newStatus}"-->
+                        <apex:inputTextArea title="{!$Label.bmcservicedesk__TooltipShareNewsFeed}" style="height: 0pt;" styleclass="publishertextarea" onclick="javascript:setOnClick(this)" onblur="javascript:setOnBlur(this,'{!newStatus}');" cols="1000" id="publishertextarea" value="{!newStatus}">
+                        </apex:inputTextArea>
+                        <input id="publisherprompttext" name="publisherprompttext" value="{!$Label.Whatareyouworkingon}" type="hidden" />
+                        <div class="publishererrorcontainer" id="publishererrorcontainer" style="display: none;"></div>
+                        <div id="contentPublisherSlideDown">
+                            <div class="panel hidden" id="chatterFileStageOne">
+                                <div class="panelHeader">
+                                    <div class="panelTitle">
+                                            <img src="/s.gif" alt="{!$Label.AttachaFile}" class="contentPublisherTitleImage contentPublisherTitleImageFile" title="{!$Label.AttachaFile}"/>
+                                            <span class="contentPublisherTitle">{!$Label.AttachaFile}</span>
+                                    </div>
+                                    <div class="closeButtonContainer">
+                                        <a href="javascript: void(0);" class="closeButton" onclick="handlePanelVisibility('chatterFileStageOne')" title="{!$Label.Closethepublisher}">&nbsp;</a>
+                                    </div>
+                                </div>
+                                <div class="clear" style="height:90px">
+                                    <table>
+                                        <!--  <iframe id="chatterAttach" frameborder="0" src ="{!$Page.NewsFeedDocumentationPage}?groupID={!viewRecordId}" style="width:100%;height:100%;border:none"/>  -->
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="panel hidden" id="chatterFileStageTwo">
+                                <div class="panelHeader">
+                                    <div class="panelTitle">
+                                        <img src="/s.gif" alt="{!$Label.AttachaFile}" class="contentPublisherTitleImage contentPublisherTitleImageFile" title="{!$Label.AttachaFile}"/>
+                                            <span class="contentPublisherTitle">{!$Label.AttachaFile}</span>
+                                    </div>
+                                    <div class="closeButtonContainer">
+                                        <a href="javascript: void(0);" class="closeButton" onclick="chatter.getPublisher().closePublisherPanel(this)" title="{!$Label.Closethepublisher}">&nbsp;</a>
+                                    </div>
+                                </div>
+                                <div class="clear">
+                                </div>
+                            </div>
+                    
+                            <div class="panel hidden" id="chatterLinkPost">
+                                <div class="panelHeader">
+                                    <div class="panelTitle">
+                                        <img src="/s.gif" alt="{!$Label.AttachaLink}" class="contentPublisherTitleImage contentPublisherTitleImageLink" title="{!$Label.AttachaLink}"/>
+                                            <span class="contentPublisherTitle">{!$Label.AttachaLink}</span>
+                                    </div>
+                                    <div class="closeButtonContainer">
+                                        <a href="javascript: void(0);" class="closeButton" onclick="handlePanelVisibility('chatterLinkPost')" title="{!$Label.Closethepublisher}">&nbsp;</a>
+                                    </div>
+                                </div>
+                                <div class="clear">
+                                    <table class="postInput">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">
+                                                    <label for="url"><span class="requiredMark">*</span>{!$Label.LinkURL}</label>
+                                                </th>
+                                                <td>
+                                                    <div class="requiredInput">
+                                                        <div class="requiredBlock"></div>
+                                                            <input id="url" maxlength="260" name="url" size="20" title="{!$Label.LinkURL}" value="http://" type="text"/>
+                                                        <div class="errorMsg hidden"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <label for="urlName">{!$Label.LinkName}</label>
+                                                </th>
+                                                <td>
+                                                    <div>
+                                                        <input id="urlName" maxlength="260" name="urlName" size="20" title="{!$Label.Link}" value="" type="text"/>
+                                                        <div class="errorMsg hidden"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel hidden" id="chatterFileContent">
+                                <div class="panelHeader">
+                                    <div class="panelTitle">
+                                        <img src="/s.gif" alt="{!$Label.AttachaFile}" class="contentPublisherTitleImage contentPublisherTitleImageFile" title="{!$Label.AttachaFile}"/>
+                                            <span class="contentPublisherTitle">{!$Label.AttachaFile}</span>
+                                    </div>
+                                    <div class="closeButtonContainer">
+                                        <a href="javascript: void(0);" class="closeButton" onclick="chatter.getPublisher().closePublisherPanel(this)" title="{!$Label.Closethepublisher}">&nbsp;</a>
+                                    </div>
+                                </div>
+                                <div class="clear">
+                                    <div id="chatterExistContentInfo"></div>
+                                </div>
+                            </div>
+                        
+                        </div> <!--  End of contentPublisherSlideDown -->
+                    </div> <!-- End of publishercontrols -->
+					
+					<apex:commandButton rerender="fullcomponentid" onclick="shareStatus(document.getElementById('{!$Component.publishertextarea}').value); return false;" style="height:22px" styleClass="btnShare"   value=" {!$Label.bmcservicedesk__Share} "  id="publishersharebutton"   title="{!$Label.bmcservicedesk__Share}"  />
+					<!-- apex:outputLink value="javascript:void(0);"  onclick="shareStatus(document.getElementById('{!$Component.publishertextarea}').value, '{!viewRecordId}', '{!viewRecordType}');">
+						<apex:outputText style="color:#015BA7;font-weight:bold;font-size:13px;font-family:Tahoma,MS Sans Serif;height:18px;float:right;margin:0 -10px 6px 0;" value="{!$Label.bmcservicedesk__Share}" />
+					</apex:outputLink-->  
+
+                    <span class="cxcontentbuttonbar" id="contentButtonBar">
+                        <span class="publisherlabel">{!$Label.Attach}
+	                       	<!--  <a href="javascript: void(0);" class="publisherattach3" style="padding-left:10px;text-decoration: none;" id="publisherAttachFile" onclick="handlePanelVisibility('chatterFileStageOne')">
+	                           	<img src="/s.gif" alt="" class="publisherattachfile" title=""/>
+	                           	<span style="color:#015BA7;font-weight:bold;font-size:12px;">{!$Label.File}</span>
+	                        </a>-->
+	                        <a href="javascript: void(0);" class="publisherattach2" style="padding-left:10px;text-decoration: none;" id="publisherAttachLink" onclick="handlePanelVisibility('chatterLinkPost')">
+	                           	<img src="/s.gif" alt="" class="publisherattachlink" title=""/>
+	                           	<span style="color:#015BA7;font-weight:bold;font-size:12px;">{!$Label.Link}</span>
+	                        </a>
+                        </span>
+                    </span>
+                </div> <!-- End of  publisherrightcontainer  -->
+            
+            </div> <!-- End of publishercontainer -->
+        </div> <!--  End of First Div -->
+ 
+    <apex:outputPanel id="allfeeds" layout="block" styleClass="feedcontainer" style="{!overflowstyle}">
+         <apex:outputPanel layout="block" styleClass="lowerMainContent centerContent  cxfeedcontainer feed " id="feed">
+                
+                <apex:repeat id="repeatfeedid" value="{!allfeed}" var="f">
+                    <apex:outputPanel layout="block" styleClass="feedcontainer cxfeeditem feeditem cxfeedcontainer feed ">
+                        <apex:outputPanel layout="block" >
+                            <div>
+                                <div class="cxfeeditem feeditem">
+                                    <span>
+                                        <apex:outputLink value="javascript:void(0);" onclick="refreshChatterFeed('{!JSENCODE(viewRecordId)}', '{!JSENCODE(viewRecordType)}');">
+                                            <c:UserImageComponent styleClass="feeditemusericon" UID="{!f.feedItem.CreatedById}" width="45px" height="45px" />
+                                        </apex:outputLink>        
+                                     </span>
+                                    <div class="feeditemcontent cxfeeditemcontent"> 
+                                        <div >
+                                            <apex:outputText value="  " />
+                                            <apex:outputLink value="javascript:void(0);" onclick="OpenNewTab('{!JSENCODE(f.feedItem.ParentId)}','{!f.objectAPIName}','{!JSENCODE(f.feedItem.Parent.Name)}')" rendered="{!IF(f.displayLink,true,false)}" >
+                                                <apex:outputText value="{!f.ObjectDisplayPrefix}{!f.feedItem.Parent.Name}" />
+                                            </apex:outputLink>
+                                            <apex:outputText style="color:#333333;font-weight:bold" value="{!f.feedItem.Parent.Name}" rendered="{!IF(f.displayLink,false,true)}" />
+                                            <apex:outputText value=" - " />
+                                            <apex:outputText style="color:#333333;font-weight:bold" value="{!f.feedItem.CreatedBy.Name} " />
+                                            <apex:outputText value="  " />
+                                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'UserStatus', true, false)}">
+                                                <apex:outputText value="{!f.displayText}" />
+                                            </apex:outputPanel>                            
+                                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'TextPost', true, false)}">
+                                                <apex:outputText value="{!f.displayText}" />
+                                            </apex:outputPanel>
+                                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'TrackedChange', true, false)}">
+                                                <apex:outputText value=" {!f.displayText}" />
+                                            </apex:outputPanel>
+                                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'LinkPost', true, false)}">
+                                                <apex:outputText value="{!f.displayText}" />
+                                                <apex:outputPanel layout="block" styleClass="linkPostLinkContainer">
+                                                    <apex:outputLink id="feedLink" value="{!f.feedItem.FeedPost.LinkUrl}" styleClass="linkPostLink" target="_blank">
+                                                        <apex:outputText title="{!f.feedItem.FeedPost.LinkUrl}" value="{!f.feedItem.FeedPost.Title}" />
+                                                    </apex:outputLink>
+                                                    <script>
+                                                    	if(document.getElementById('{!$Component.feedLink}') != null && typeof(document.getElementById('{!$Component.feedLink}')) != 'undefined'){
+											     			document.getElementById('{!$Component.feedLink}').onclick = function(e) {
+												     			return AttachOnclick(document.getElementById('{!$Component.feedLink}'));
+											     			};
+										     			}
+                                                    </script>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'ContentPost', true, false)}">
+                                                <apex:outputText value="{!f.displayText}" />
+                                                <apex:outputPanel layout="block" styleClass="linkPostLinkContainer">
+                                                    <apex:outputLink value="" styleClass="linkPostLink" target="_blank">
+                                                         <img class="contentActionIcon" alt="" src="/sfc/images/download_16.png"/>
+                                                         <apex:outputText style="padding-left:7px;font-size: 11px;font-family:Tahoma,MS Sans Serif;font-weight:bold" value="{!f.feedItem.FeedPost.Title}" />
+                                                     </apex:outputLink>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </div>
+                                    <div class="feeditemfooter">
+                                            <span class="feeditemcontent">
+                                                <apex:outputText value="{!f.createdDate}" />
+                                                <apex:outputText value=" " />
+												<apex:outputLink value="javascript:void(0);" id="deleteLink" onclick="deleteFeedPost('{!JSENCODE(f.feedItem.FeedPost.Id)}', '{!f.feedItem.CreatedById}')" rendered="{!IF(f.feedItem.Type == 'TrackedChange', false, true)}" style="padding-left:15px" >
+													<apex:outputText style="font-size: 11px;font-family:Tahoma,MS Sans Serif" id="deleteTxt" value="{!$Label.bmcservicedesk__Delete}" />
+												</apex:outputLink>
+												<apex:outputText value=" " />
+                                               <apex:outputLink value="javascript:void(0);" id="commentLink" rendered="{!IF(f.isComments,'false','true')}"
+                                                   styleClass="feeditemactionlink cxaddcommentaction" 
+                                                   onclick="javascript:setDisplay2('{!f.feedItem.id}','block');">
+                                                   {!$Label.bmcservicedesk__Comment}
+                                               </apex:outputLink>	
+												<apex:outputText value=" " />
+                                               <apex:outputLink value="javascript:void(0);" id="unfollowLink" rendered="{!IF(f.displayLink,'true','false')}"
+                                                   styleClass="feeditemactionlink cxaddcommentaction" 
+                                                   onclick="javascript:handleSubscription('{!f.feedItem.ParentId}');">
+                                                   {!$Label.bmcservicedesk__Unfollow}
+                                               </apex:outputLink>	
+                                            </span>
+                                            <apex:outputPanel rendered="{!IF(f.isComments,'false','true')}">
+                                                 <span style="margin-left: 42px; padding-left:15px" class="feeditemcommentbody feedcommentuser">
+                                                    <div id="{!f.feedItem.id}"  style="background-color: #eff7fa;display:none" > 
+                                                          <div class=" feeditemcommentplaceholder feeditemcommentphotocontainer">
+															<apex:outputLink styleClass="feeditemcommentphoto" value="javascript:void(0);" onclick="refreshChatterFeed('{!JSENCODE(viewRecordId)}', '{!JSENCODE(viewRecordType)}');">
+																<c:UserImageComponent styleClass="feeditemusericon" UID="{!u.Id}" width="30px" height="30px" />
+															</apex:outputLink>                                                                      
+                                                           </div>
+                                                          <div id="testing" class="feeditemcommentnew">
+                                                              <textarea rows="2" class="foobar cxnewcommenttext cxiswired" id="extgen6" style="height: 32px;" title="{!$Label.TooltipChatterComment}"></textarea>
+                                                              <div style="display: none;" class="cxvalidationmessage newcommenterrorcontainer"></div>
+                                                               <apex:outputLink value="javascript:void(0);" onclick="createNewComment('{!f.feedItem.id}');">
+                                                                   <apex:outputText style="color:#015BA7;font-weight:bold;font-size: 11px;font-family:Tahoma,MS Sans Serif" value="{!$Label.bmcservicedesk__AddComment}" />
+                                                               </apex:outputLink>
+                                                        <div class="feedclearfloat"></div>
+                                                          </div>
+                                                    </div>
+                                                    </span>
+                                            </apex:outputPanel>
+                                    </div> <!-- End of  feeditemfooter -->
+                                   <div class="feeditemextras">
+                                        <apex:repeat value="{!f.feedCommentBeanList}" var="c">
+                                            <apex:outputPanel style="align-top;padding-left:15px" layout="block" styleClass="cxcomments feeditemcomments " >
+                                               <div>
+                                                    <span  class=" feeditemcomment cxfeedcomment feeditemcommentbody">
+														<apex:outputLink value="javascript:void(0);" onclick="refreshChatterFeed('{!JSENCODE(viewRecordId)}', '{!JSENCODE(viewRecordType)}');">
+															<c:UserImageComponent styleClass="feeditemcommentphoto" UID="{!c.createdById}" width="30px" height="30px" />
+														</apex:outputLink>                                                                
+                                                        <span class="feedcommentuser" style="margin-top:-10px">  
+                                                            <a><apex:outputText style="color:#333333" value=" {!c.createdByName} " /> </a> 
+                                                        </span>
+                                                        <span class="feedcommenttext">
+                                                            <apex:outputText value="{!c.commentBody}" />
+                                                        </span>
+                                                        <span class="feedcommentfooter">
+                                                          	<apex:outputText value="{!c.createdDate}" />
+                                                            <apex:outputLink value="javascript:void(0);" onclick="deleteCommentFromFeed('{!JSENCODE(c.commentId)}', '{!c.createdById}')" >
+                                                                <apex:outputText style="font-size: 11px;font-family:Tahoma,MS Sans Serif;padding-left:10px" value="{!$Label.bmcservicedesk__Delete}" />
+                                                            </apex:outputLink>  
+                                                        </span>
+                                                    </span>
+                                                     <script>
+                                                       function ShowComment(el){
+                                                        var parent=Ext.get(el).findParent(".cxfeeditem",50,true);
+                                                       }
+                                                       </script>
+                                                        <apex:outputpanel id="panelComment" style="display: none;">
+                                                            <apex:inputText id="commenttext" value="{!currentComment}" />
+                                                            <apex:commandLink onclick="javascript:saveComment('test comment','{!f.feedItem.Id}')">
+                                                            comment
+                                                            </apex:commandLink>
+                                                            <apex:actionFunction name="saveComment" action="{!comment}" >
+                                                                <apex:param assignTo="{!currentComment}" value="" name="one" ></apex:param> 
+                                                                <apex:param assignTo="{!currentFeed}" value="" name="two" ></apex:param>                            
+                                                            </apex:actionFunction>
+                                                        </apex:outputpanel>
+                                               </div>                           
+                                            </apex:outputPanel> 
+                                        </apex:repeat>
+                                        <apex:outputPanel rendered="{!IF(f.isComments,'true','false')}" >
+                                           <span style="margin-left: 42px; padding-left:15px" class="feeditemcommentbody feedcommentuser">
+                                                 <div id="{!f.feedItem.id}"  style="background-color: #eff7fa;display:none" > 
+                                                   <div class="feeditemcommentplaceholder feeditemcommentphotocontainer">
+														<apex:outputLink styleClass="feeditemcommentphoto" value="javascript:void(0);" onclick="refreshChatterFeed('{!JSENCODE(viewRecordId)}', '{!JSENCODE(viewRecordType)}');">
+															<c:UserImageComponent UID="{!u.id}" width="30px" height="30px" />
+														</apex:outputLink>                                                                
+                                                   </div>
+                                                    <div id="testing" class="feeditemcommentnew">
+                                                        <textarea rows="2" class="foobar cxnewcommenttext cxiswired" id="extgen6" style="height: 32px; padding-top:-2px"></textarea>
+                                                        <div style="display: none;" class="cxvalidationmessage newcommenterrorcontainer"></div>
+                                                        <apex:outputLink value="javascript:void(0);" onclick="createNewComment('{!f.feedItem.id}');">
+                                                            <apex:outputText style="color:#015BA7;font-weight:bold;font-size: 11px;font-family:Tahoma,MS Sans Serif" value="Add Comment" />
+                                                        </apex:outputLink>
+                                                        <div class="feedclearfloat"></div>
+                                                    </div>
+                                                 </div>
+                            
+                                                <div   class="feeditemcommentplaceholder cxcommentplaceholder" style="display: block;border-top-width: 0px;border-top-color:#eff7fa">
+                                                    <input  type="text" onclick="javascript:setDisplay(this,'{!f.feedItem.id}','block');"  class="cxcommentplaceholderaction" value="{!$Label.Writeacomment}" title="{!$Label.TooltipChatterComment}" readonly="true"></input>
+                                                </div>
+                                            </span>
+                                        </apex:outputPanel>
+                                    </div>  <!-- End of div feeditemextras -->
+                                </div> <!-- End of cxfeeditem feeditem -->
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:repeat> <!-- End of repeatfeedid -->
+            </apex:outputPanel> <!-- End of feed -->
+        </apex:outputPanel> <!-- End of  allfeeds -->
+</apex:outputPanel>
+</apex:component>

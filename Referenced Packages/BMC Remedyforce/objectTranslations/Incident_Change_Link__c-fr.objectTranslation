@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Lien de changement d&apos;incident</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Liens de changement d&apos;incident</value>
+    </caseValues>
+    <fields>
+        <label>Changement</label>
+        <name>FKChange__c</name>
+        <relationshipLabel>Liens de changement d&apos;incident</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Stores the client reference of the parent incident record when client is a user. --></help>
+        <label>Client - Utilisateur</label>
+        <name>FKClient__c</name>
+        <relationshipLabel>Liens de changement d&apos;incident</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Stores the client reference of the parent incident record when client is a contact. --></help>
+        <label><!-- Client - Contact --></label>
+        <name>FKContact__c</name>
+        <relationshipLabel>Liens de changement d&apos;incident</relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Incident --></label>
+        <name>FKIncident__c</name>
+        <relationshipLabel>Liens de changement d&apos;incident</relationshipLabel>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label>Créer et lier à l&apos;incident</label>
+        <name>Create_and_Link_Change_Request</name>
+    </webLinks>
+    <webLinks>
+        <label>Lier l&apos;incident à la demande de changement</label>
+        <name>Link_Incident</name>
+    </webLinks>
+    <webLinks>
+        <label>Lier la demande de changement à l&apos;incident</label>
+        <name>New_Change</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>組織</value>
+    </caseValues>
+    <fields>
+        <label>ビジネスカテゴリ</label>
+        <name>BusinessCategory__c</name>
+    </fields>
+    <fields>
+        <label>電子メール</label>
+        <name>Email__c</name>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label><!-- URI --></label>
+        <name>URI__c</name>
+    </fields>
+    <nameFieldLabel><!-- BMC_Organization Name --></nameFieldLabel>
+</CustomObjectTranslation>

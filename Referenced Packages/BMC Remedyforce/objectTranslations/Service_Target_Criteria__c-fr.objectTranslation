@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Critères de cible du service</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Critères de cible du service</value>
+    </caseValues>
+    <fields>
+        <label>Cible de niveau de service</label>
+        <name>FKService_Target__c</name>
+        <relationshipLabel>Cible de niveau de service</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Informations du champ de modèle</label>
+        <name>Field_Info__c</name>
+    </fields>
+    <fields>
+        <label>Opérateur de fusion</label>
+        <name>Grouping_Operator__c</name>
+    </fields>
+    <fields>
+        <label>Opérande</label>
+        <name>Operand__c</name>
+    </fields>
+    <fields>
+        <label>Opérateur</label>
+        <name>Operator__c</name>
+    </fields>
+    <fields>
+        <label>Index des commandes</label>
+        <name>Order_Index__c</name>
+    </fields>
+    <fields>
+        <label>Type de critère ST</label>
+        <name>ST_Criteria_Type__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- Service Target Criteria # --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,131 @@
+<apex:component >
+	<script>
+
+		_ServerMobileLabels = {}
+	
+		_ServerMobileLabels.Open = '{!JSENCODE($Label.Open)}';
+		_ServerMobileLabels.MobLoadingKnowledgeArticle = "{!JSENCODE($Label.MobLoadingKnowledgeArticle)}";
+		_ServerMobileLabels.MobLoadingRequestDefinition = "{!JSENCODE($Label.MobLoadingRequestDefinition)}";
+		_ServerMobileLabels.MobLoadingDetails = "{!JSENCODE($Label.MobLoadingDetails)}";
+		_ServerMobileLabels.SSDescriptionRequired = "{!JSENCODE($Label.SSDescriptionRequired)}";
+		_ServerMobileLabels.MobApproving = "{!JSENCODE($Label.MobApproving)}";
+		_ServerMobileLabels.WelcomeToSDE = "{!JSENCODE($Label.WelcomeToSDE)}";
+		_ServerMobileLabels.Approved = "{!JSENCODE($Label.Approved)}";
+		_ServerMobileLabels.MobRejecting = "{!JSENCODE($Label.MobRejecting)}";
+		_ServerMobileLabels.MobRejected = "{!JSENCODE($Label.MobRejected)}";
+		_ServerMobileLabels.SS_ValidationMsg = "{!JSENCODE($Label.SS_ValidationMsg)}";
+		_ServerMobileLabels.MobSaving = "{!JSENCODE($Label.MobSaving)}";
+		_ServerMobileLabels.MobReOpening = "{!JSENCODE($Label.MobReOpening)}";
+		_ServerMobileLabels.MobClosing = "{!JSENCODE($Label.MobClosing)}";
+		_ServerMobileLabels.Reopen = "{!JSENCODE($Label.Reopen)}";
+		_ServerMobileLabels.Error = "{!JSENCODE($Label.Error)}";
+		_ServerMobileLabels.MobFailed = "{!JSENCODE($Label.MobFailed)}";
+		_ServerMobileLabels.MobFailedUnknownReason = "{!JSENCODE($Label.MobFailedUnknownReason)}";
+		_ServerMobileLabels.EnterDescriptionEmptyText = "{!JSENCODE($Label.EnterDescriptionEmptyText)}";
+		_ServerMobileLabels.MobAppInfo = "{!JSENCODE($Label.MobAppInfo)}";
+		_ServerMobileLabels.CMDBBack = "{!JSENCODE($Label.CMDBBack)}";
+		_ServerMobileLabels.SSLogOut = "{!JSENCODE($Label.SSLogOut)}";
+		_ServerMobileLabels.TooltipHelp = "{!JSENCODE($Label.TooltipHelp)}";
+		_ServerMobileLabels.SSLoading = "{!JSENCODE($Label.SSLoading)}";
+		_ServerMobileLabels.MobFailedResponse = "{!JSENCODE($Label.MobFailedResponse)}";
+		_ServerMobileLabels.Approve = "{!JSENCODE($Label.Approve)}";
+		_ServerMobileLabels.Reject = "{!JSENCODE($Label.Reject)}";
+		_ServerMobileLabels.SSServiceRequestSubmitted = "{!JSENCODE($Label.SSServiceRequestSubmitted)}";
+		_ServerMobileLabels.Comments = "{!JSENCODE($Label.Comments)}";
+		_ServerMobileLabels.SSApprovals = "{!JSENCODE($Label.SSApprovals)}";
+		_ServerMobileLabels.MobLoadingApprovals = "{!JSENCODE($Label.MobLoadingApprovals)}";
+		_ServerMobileLabels.MobNoApprovalFound = "{!JSENCODE($Label.MobNoApprovalFound)}";
+		_ServerMobileLabels.SSCloseMsg = "{!JSENCODE($Label.SSCloseMsg)}";
+		_ServerMobileLabels.SSReopen = "{!JSENCODE($Label.SSReopen)}";
+		_ServerMobileLabels.MobMyRequests = "{!JSENCODE($Label.MobMyRequests)}";
+		_ServerMobileLabels.CIExpClose = "{!JSENCODE($Label.CIExpClose)}";
+		_ServerMobileLabels.Reopen = "{!JSENCODE($Label.Reopen)}";
+		_ServerMobileLabels.SSClose	= "{!JSENCODE($Label.SSClose)}";
+		_ServerMobileLabels.Save = "{!JSENCODE($Label.Save)}";
+		_ServerMobileLabels.AdminCategory = "{!JSENCODE($Label.AdminCategory)}";
+		_ServerMobileLabels.OpenDate = "{!JSENCODE($Label.OpenDate)}";
+		_ServerMobileLabels.SSApprovalStatus = "{!JSENCODE($Label.SSApprovalStatus)}";
+		
+		_ServerMobileLabels.ssTileOrderDescriptionCol = "{!JSENCODE($Label.ssTileOrderDescriptionCol)}";
+		_ServerMobileLabels.SSSolution = "{!JSENCODE($Label.SSSolution)}";
+		_ServerMobileLabels.MobNewRequest = "{!JSENCODE($Label.MobNewRequest)}";
+		_ServerMobileLabels.MobDescribeYourNeed = "{!JSENCODE($Label.MobDescribeYourNeed)}";
+		
+		_ServerMobileLabels.TopRequests = "{!JSENCODE($Label.TopRequests)}";
+		_ServerMobileLabels.knowledgeArticle = "{!JSENCODE($Label.SS_Articles)}";
+		_ServerMobileLabels.MobErrorDescription = "{!JSENCODE($Label.MobErrorDescription)}";
+		_ServerMobileLabels.MobRootCause = "{!JSENCODE($Label.MobRootCause)}";
+		
+		_ServerMobileLabels.SSRequestReopened = "{!JSENCODE($Label.SSRequestReopened)}";
+		_ServerMobileLabels.MobWorkaround = "{!JSENCODE($Label.MobWorkaround)}";
+		_ServerMobileLabels.FAQQuestions = "{!JSENCODE($Label.FAQQuestions)}";
+		_ServerMobileLabels.SSAnswer = "{!JSENCODE($Label.SSAnswer)}";
+		_ServerMobileLabels.Problem = "{!JSENCODE($Label.Problem)}";
+		_ServerMobileLabels.SS_TicketCloseMessage = "{!JSENCODE($Label.SS_TicketCloseMessage)}";
+		_ServerMobileLabels.SSTicket = "{!JSENCODE($Label.SSTicket)}";
+		_ServerMobileLabels.SSTicketSubmitted = "{!JSENCODE($Label.SSTicketSubmitted)}";
+		_ServerMobileLabels.MobKnowledgeArticles = "{!JSENCODE($Label.MobKnowledgeArticles)}";
+		_ServerMobileLabels.MobLoadingKnowledgeArticles = "{!JSENCODE($Label.MobLoadingKnowledgeArticles)}";
+		_ServerMobileLabels.Closed = "{!JSENCODE($Label.Closed)}";
+		_ServerMobileLabels.MobNoKnowledgeArticlesFound = "{!JSENCODE($Label.MobNoKnowledgeArticlesFound)}";
+		
+		_ServerMobileLabels.MobLoadingTopRequest = "{!JSENCODE($Label.MobLoadingTopRequest)}";
+		
+		_ServerMobileLabels.MobNoTopRequestFound = "{!JSENCODE($Label.MobNoTopRequestFound)}";
+		_ServerMobileLabels.MobRequestDefinition = "{!JSENCODE($Label.ServiceRequestLabel)}";
+		_ServerMobileLabels.RequestFor = "{!JSENCODE($Label.RequestFor)}";
+		
+		_ServerMobileLabels.Phone = "{!JSENCODE($Label.Phone)}";
+		_ServerMobileLabels.RequestDetailEmail = "{!JSENCODE($Label.RequestDetailEmail)}";
+		_ServerMobileLabels.RequestedBy = "{!JSENCODE($Label.RequestedBy)}";
+		_ServerMobileLabels.reqDefDateReq = "{!JSENCODE($Label.reqDefDateReq)}";
+		_ServerMobileLabels.Details = "{!JSENCODE($Label.Details)}";
+		
+		_ServerMobileLabels.reqDefExpectedCompletion = "{!JSENCODE($Label.reqDefExpectedCompletion)}";
+		_ServerMobileLabels.reqDefQuantity = "{!JSENCODE($Label.reqDefQuantity)}";
+		_ServerMobileLabels.SRUnitPrice = "{!JSENCODE($Label.SRUnitPrice)}";
+		_ServerMobileLabels.ManageRequestDefinitions = "{!JSENCODE($Label.SSMyHelpRequests)}";
+		
+		_ServerMobileLabels.MobLoadingRequestDefinitions = "{!JSENCODE($Label.MobLoadingRequestDefinitions)}";
+		_ServerMobileLabels.MobNoRequestDefinitionsFound = "{!JSENCODE($Label.MobNoRequestDefinitionsFound)}";
+		_ServerMobileLabels.Done = "{!JSENCODE($Label.Done)}";
+		_ServerMobileLabels.SSAbout = "{!JSENCODE($Label.SSAbout)}";
+		
+		_ServerMobileLabels.NoCategorySelected = "{!JSENCODE($Label.NoCategorySelected)}";	 
+		_ServerMobileLabels.ValidateDescription = "{!JSENCODE($Label.ValidateDescription)}";	 
+		_ServerMobileLabels.errorMsgResolutionReqd = "{!JSENCODE($Label.errorMsgResolutionReqd)}";	 
+		
+		_ServerMobileLabels.AddAttachments = "{!JSENCODE($Label.AddAttachments)}";	 
+		
+		_ServerMobileLabels.MobileLogout = "{!JSENCODE($Label.MobileLogout)}";	 
+		
+		_ServerMobileLabels.SubmittedDate = "{!JSENCODE($Label.Change_Approval_Submitted_Date)}";	 
+		
+		_ServerMobileLabels.Submitter = "{!JSENCODE($Label.SSApprovalListColumnHeaderSubmitter)}";	 
+		
+		_ServerMobileLabels.SavedSuccessfully = "{!JSENCODE($Label.SavedSuccessfully)}";	 
+		
+		_ServerMobileLabels.MyTicketsAndRequests = "{!JSENCODE($Label.MyTicketsAndRequests)}";
+		_ServerMobileLabels.GsErrorMsg = "{!JSENCODE($Label.GsErrorMsg)}";
+		
+		_ServerMobileLabels.SSContactUsSubmit = "{!JSENCODE($Label.SSContactUsSubmit)}";
+		_ServerMobileLabels.MsgNoRecordFoundSearchPage = "{!JSENCODE($Label.MsgNoRecordFoundSearchPage)}";
+		var strIncidentLabel = '{!JSENCODE($Label.Incident)}';
+		var strServiceRequestLabel = '{!JSENCODE($Label.ServiceRequestLabel)}';
+
+		_ServerMobileLabels.Home = '{!JSENCODE($Label.SSHome)}';	 
+            
+	var HomeScreenOptionLabels = {
+		MyTicketsAndRequests: "{!JSENCODE($Label.MyTicketsAndRequests)}",
+		SubmitTicket: "{!JSENCODE($Label.SubmitTicket)}",
+		RequestService: "{!JSENCODE($Label.RequestService)}",
+		ManageApprovals: "{!JSENCODE($Label.SS_ApprovalsHome)}",
+		SearchSelfHelp: "{!JSENCODE($Label.SearchSelfHelp)}",
+		Logout: "{!JSENCODE($Label.SDEHomeLogout)}",
+		Help: "{!JSENCODE($Label.SDEHomeHelp)}",
+		TopRequests: "{!JSENCODE($Label.TopRequests)}"
+	};
+
+
+</script>
+</apex:component>

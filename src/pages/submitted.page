@@ -1,0 +1,12 @@
+<apex:page StandardController="Case" >
+  <br/>
+  <h3>Thank you, your ticket has been successfully submitted.</h3><br/><br/>
+  <apex:form >
+      <apex:outputText value="Case Number: "/><h1><apex:outputField value="{!Case.CaseNumber}" /></h1><br/>
+      Please reference this number when requesting updates related to your Case.<br/><br/>
+      Sincerely,<br/>
+      Salesforce Support<br/>
+      SFDC.Feedback@catalinamarketing.com<br/><br/>
+      <apex:commandButton action="/apex/SFCreateCase" value="Go Back" />      
+  </apex:form>
+</apex:page>

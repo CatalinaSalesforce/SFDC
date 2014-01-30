@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SLAマイルストーンインシデントトランザクション履歴</value>
+    </caseValues>
+    <fields>
+        <label>アクションが実行されました</label>
+        <name>Action_Performed__c</name>
+    </fields>
+    <fields>
+        <label>作成日</label>
+        <name>Created_Date__c</name>
+    </fields>
+    <fields>
+        <label>エラー</label>
+        <name>Error__c</name>
+    </fields>
+    <fields>
+        <label>インシデントのサービス目標</label>
+        <name>FKIncident_Service_Target__c</name>
+        <relationshipLabel>SLAマイルストーンインシデントの履歴</relationshipLabel>
+    </fields>
+    <fields>
+        <label>インシデント</label>
+        <name>FKIncident__c</name>
+        <relationshipLabel>SLAマイルストーンインシデントの履歴</relationshipLabel>
+    </fields>
+    <fields>
+        <label>SLAマイルストーン条件</label>
+        <name>SLA_Milestone_Condition__c</name>
+        <picklistValues>
+            <masterLabel>Percent of Time Elapsed</masterLabel>
+            <translation><!-- Percent of Time Elapsed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Percent of Time Remaining</masterLabel>
+            <translation><!-- Percent of Time Remaining --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Percentage of Time Elapsed</masterLabel>
+            <translation><!-- Percentage of Time Elapsed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Percentage of Time Remaining</masterLabel>
+            <translation><!-- Percentage of Time Remaining --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Service Target Warning Occurs</masterLabel>
+            <translation><!-- Service Target Warning Occurs --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Service Target is Canceled</masterLabel>
+            <translation><!-- Service Target is Canceled --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Service Target is Met</masterLabel>
+            <translation><!-- Service Target is Met --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Service Target is Missed</masterLabel>
+            <translation><!-- Service Target is Missed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Time Elapsed</masterLabel>
+            <translation><!-- Time Elapsed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Time Remaining</masterLabel>
+            <translation><!-- Time Remaining --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>SLAマイルストーン値</label>
+        <name>SLA_Milestone_Value__c</name>
+    </fields>
+    <fields>
+        <label>ステータス</label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Fail</masterLabel>
+            <translation><!-- Fail --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pass</masterLabel>
+            <translation><!-- Pass --></translation>
+        </picklistValues>
+    </fields>
+    <nameFieldLabel><!-- History # --></nameFieldLabel>
+</CustomObjectTranslation>

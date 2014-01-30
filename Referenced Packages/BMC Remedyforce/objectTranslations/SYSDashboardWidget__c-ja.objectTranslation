@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Dashboard Widget</value>
+    </caseValues>
+    <fields>
+        <label>FKSYSQVクエリー</label>
+        <name>FKSYSQVQuery__c</name>
+        <relationshipLabel>SYSダッシュボードウィジェット</relationshipLabel>
+    </fields>
+    <fields>
+        <label>シーケンスID</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>状態</label>
+        <name>State__c</name>
+    </fields>
+    <fields>
+        <label>FKダッシュボード</label>
+        <name>dashboard__c</name>
+        <relationshipLabel>SYSダッシュボードウィジェット</relationshipLabel>
+    </fields>
+    <fields>
+        <label>高さ</label>
+        <name>height__c</name>
+    </fields>
+    <fields>
+        <label>幅</label>
+        <name>width__c</name>
+    </fields>
+    <fields>
+        <label><!-- XPos --></label>
+        <name>xPos__c</name>
+    </fields>
+    <fields>
+        <label><!-- YPos --></label>
+        <name>yPos__c</name>
+    </fields>
+    <nameFieldLabel><!-- Sequence --></nameFieldLabel>
+</CustomObjectTranslation>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Link-Unlink Histories</value>
+    </caseValues>
+    <fields>
+        <label>フィールド</label>
+        <name>Field__c</name>
+    </fields>
+    <fields>
+        <label>新しい値</label>
+        <name>NewClient__c</name>
+        <relationshipLabel>LinkUnlink_Histories (新しい値)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>古い値</label>
+        <name>OldClient__c</name>
+        <relationshipLabel>LinkUnlink_Histories (古い値)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>親</label>
+        <name>ParentId__c</name>
+        <relationshipLabel>履歴の_リンクおよびリンク解除</relationshipLabel>
+    </fields>
+    <nameFieldLabel>リンク-リンク解除の履歴#</nameFieldLabel>
+</CustomObjectTranslation>

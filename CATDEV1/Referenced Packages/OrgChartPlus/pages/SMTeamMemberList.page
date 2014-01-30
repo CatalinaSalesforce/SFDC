@@ -1,0 +1,136 @@
+<apex:page controller="OrgChartPlus.SM_TeamMemberList" sidebar="false" tabStyle="SM_Config__tab">
+	<c:SMConfigBanner Title="OrgChartPlus Non-Salesforce Team Members" HelpURL="" Selection="sn">	<!--  {!$Resource.AdminHelpGuideSheetsZip}/AdminMainFrame.html?initial=htm -->
+	    <apex:form >
+
+	        <script type="text/javascript" language="JavaScript">
+				function SMClickGo(e)
+				{
+					if (typeof e == 'undefined' && window.event) { e = window.event; }
+        			if (e.keyCode == 13)
+        			{
+                		document.getElementById('{!$Component.TeamMemberList.SearchButton}').click();
+                		return false;
+                	}
+                	return true;
+                }
+			</script>
+
+	        <div style="margin-top:4px; margin-bottom:10px">
+	            <span style="color:#333">OrgChartPlus diagrams can include sales team members who are not Salesforce users. These team members can either be stored as Contacts in a special Account or as entries in the custom object Non-SFDC Person.<br/><br/>Use this page to specify whether to use an account or custom object and to maintain the list of team members.</span>
+	        </div>
+
+	        <apex:pageBlock title="Configuration" id="PageBlock">
+				<table cellspacing="0" cellpadding="0" border="0" class="detailList">
+					<apex:outputPanel layout="none" rendered="{!useSFDCAccount}">
+						<tr>
+							<td class="labelCol first" style="width:50%">Non-Salesforce Team Members are being stored in the account</td>
+							<td class="data2Col first" style="width:50%"><apex:outputLink value="{!URLFOR($Action.Account.View, accountId)}">{!accountName}</apex:outputLink></td>
+						</tr>
+					</apex:outputPanel>
+
+					<apex:outputPanel layout="none" rendered="{!useNonSFDCPerson}">
+						<tr>
+							<td class="labelCol first" style="width:50%">Non-Salesforce Team Members are being stored in the custom object</td>
+							<td class="data2Col first" style="width:50%">OrgChartPlus__SM_NonSFUser__c</td>
+						</tr>
+					</apex:outputPanel>
+
+					<tr>
+						<td class="labelCol last" style="width:50%">To change the Account, pick a new Account and click Set Account</td>
+						<td class="data2Col last" style="width:50%"><apex:inputField value="{!newAccount.OrgChartPlus__Account__c}"/><apex:commandButton value="Set Account" action="{!SetAccount}"/></td>
+					</tr>
+
+					<tr>
+						<td class="labelCol last" style="width:50%">To use Non-SFDC Person objects, click Use Non-SFDC Person</td>
+						<td class="data2Col last" style="width:50%"><apex:commandButton value="Non-SFDC Person" action="{!UseNonSFDC}"/></td>
+					</tr>
+				</table>	            
+			</apex:pageBlock>
+
+			<div class="listViewport">
+		        <apex:pageBlock title="Team Members" id="TeamMemberList">
+		            <apex:pageMessages />
+	
+		            <apex:pageBlockButtons >
+		                <apex:commandButton value="New" action="{!URLFOR($Action.Contact.NewContact, null, [retURL=thisPageURL, accid=accountId])}" rendered="{!useSFDCAccount}"/>
+		                <apex:commandButton value="New" action="{!URLFOR($Action.SM_NonSFUser__c.New, null, [retURL=thisPageURL, accid=accountId])}" rendered="{!useNonSFDCPerson}"/>
+		            </apex:pageBlockButtons>
+		            
+		            <div>
+			            <div style="float:right;padding-bottom:2px">
+			            	<b>Search:</b>&nbsp;<apex:inputText value="{!search}" onkeypress="return SMClickGo(event);"/>&nbsp;<apex:commandButton value="Go!" reRender="TeamMemberList" status="TeamMemberStatus" id="SearchButton" action="{!Refresh}"/>
+			            </div>
+			            <div style="clear:both"/>
+					</div>
+
+					<div style="position:relative">
+			            <apex:pageBlockTable value="{!accountUsers}" var="user" rendered="{!useSFDCAccount}">
+			                <apex:column headerValue="Action" width="110" styleClass="actionColumn">
+			                    <apex:outputLink value="{!URLFOR($Action.Contact.Edit, user.Id, [retURL=thisPageURL])}" styleClass="actionLink">Edit</apex:outputLink>
+			                    |&nbsp;
+			                    <apex:outputLink value="{!URLFOR($Action.Contact.Delete, user.Id, [retURL=thisPageURL])}" styleClass="actionLink" onclick="return confirm('Are you sure?');">Del</apex:outputLink>
+			                </apex:column>
+			                <apex:column headerValue="Name">
+			                    <apex:outputLink value="{!URLFOR($Action.Contact.View, user.Id, [retURL=thisPageURL])}">{!user.Name}</apex:outputLink>
+			                </apex:column>
+			            </apex:pageBlockTable>
+	
+			            <apex:pageBlockTable value="{!nonSFUsers}" var="user" rendered="{!useNonSFDCPerson}">
+			                <apex:column headerValue="Action" width="110" styleClass="actionColumn">
+			                    <apex:outputLink value="{!URLFOR($Action.SM_NonSFUser__c.Edit, user.Id, [retURL=thisPageURL])}" styleClass="actionLink">Edit</apex:outputLink>
+			                    |&nbsp;
+			                    <apex:outputLink value="{!URLFOR($Action.SM_NonSFUser__c.Delete, user.Id, [retURL=thisPageURL])}" styleClass="actionLink" onclick="return confirm('Are you sure?');">Del</apex:outputLink>
+			                </apex:column>
+			                <apex:column headerValue="Name">
+			                    <apex:outputLink value="{!URLFOR($Action.SM_NonSFUser__c.View, user.Id, [retURL=thisPageURL])}">{!user.Name}</apex:outputLink>
+			                </apex:column>
+			            </apex:pageBlockTable>
+
+			            <apex:outputPanel layout="block" style="border-style:none solid solid; border-width:1px; border-color:#d4dadc; background-color:#FFFFFF" rendered="{!!hasUsers}">
+			            	<div style="padding:10px;color:gray">No records to display.</div>
+			            </apex:outputPanel>
+	
+						<apex:actionstatus id="TeamMemberStatus">
+				            <apex:facet name="start">
+	                			<div class="waitingSearchDiv" id="el_loading" style="background-color:#ffffff;height:100%;opacity:1;width:100%;"> 
+	                	    		<div class="waitingHolder" style="top:24px; width:91px">
+	                    	    		<img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+	                        			<span class="waitingDescription">Loading...</span>
+	                    			</div>
+	                			</div>
+							</apex:facet>
+	        			</apex:actionstatus>
+					</div>
+
+					<div class="bottomNav">
+						<div class="paginator">
+							<span class="left">{!IF( ResultSize>0,(PageNumber*PageSize)-PageSize+1, 0)}-{!IF( ResultSize>0, MIN(PageNumber*PageSize,ResultSize), 0)} of {!ResultSize}{!IF( ResultSize>=2000, "+", "" )}</span>
+				            <span class="prevNextLinks">
+				            	<apex:outputText rendered="{!!hasPrevious}">
+				            		<span class="prevNext"><img src="/s.gif" class="firstoff"/></span>
+				            		<span class="prevNext"><img src="/s.gif" class="prevoff"/>Previous</span>
+				            	</apex:outputText>
+			
+				            	<apex:outputText rendered="{!hasPrevious}">
+				            		<span class="prevNext"><apex:commandLink action="{!first}" rerender="TeamMemberList" status="TeamMemberStatus"><img src="/s.gif" class="first"/></apex:commandLink></span>
+				            		<span class="prevNext"><apex:commandLink action="{!previous}" rerender="TeamMemberList" status="TeamMemberStatus"><img src="/s.gif" class="prev"/>Previous</apex:commandLink></span>
+				            	</apex:outputText>
+				            	
+				            	<apex:outputText rendered="{!!hasNext}">
+				            		<span class="prevNext">Next<img src="/s.gif" class="nextoff"/></span>
+				            		<span class="prevNext"><img src="/s.gif" class="lastoff"/></span>
+				            	</apex:outputText>
+			
+				            	<apex:outputText rendered="{!hasNext}">
+				            		<span class="prevNext"><apex:commandLink action="{!next}" rerender="TeamMemberList" status="TeamMemberStatus">Next<img src="/s.gif" class="next"/></apex:commandLink></span>
+				            		<span class="prevNext"><apex:commandLink action="{!last}" rerender="TeamMemberList" status="TeamMemberStatus"><img src="/s.gif" class="last"/></apex:commandLink></span>
+				            	</apex:outputText>
+				            </span>
+							<span class="right">Page {!PageNumber} of {!ceiling(ResultSize/PageSize)}</span>
+						</div>
+					</div>
+		        </apex:pageBlock>
+	        </div>
+	    </apex:form>
+	</c:SMConfigBanner>
+</apex:page>

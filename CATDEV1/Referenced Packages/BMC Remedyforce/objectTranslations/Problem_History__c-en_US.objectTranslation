@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Problem History</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Problem Histories</value>
+    </caseValues>
+    <fields>
+        <help><!-- From the list of options, select the user-defined actions that are applicable to problems. User-defined actions are used to record details of the steps taken to complete the problem. --></help>
+        <label><!-- Action~ --></label>
+        <name>Action__c</name>
+    </fields>
+    <fields>
+        <label><!-- Created By~ --></label>
+        <name>Created_By__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- Duration --></label>
+        <name>Duration__c</name>
+    </fields>
+    <fields>
+        <label><!-- Email Addresses --></label>
+        <name>EmailConversationData__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the user-defined actions that are applicable to problems. User-defined actions are used to record details of the steps taken to complete the problem. --></help>
+        <label><!-- Action --></label>
+        <name>FKAction__c</name>
+        <relationshipLabel><!-- Problem Histories --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Staff Id --></label>
+        <name>FKCreated_By__c</name>
+        <relationshipLabel><!-- Problem Histories --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Problem --></label>
+        <name>FKProblem__c</name>
+        <relationshipLabel><!-- Action History --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Duration --></label>
+        <name>Formatted_Duration__c</name>
+    </fields>
+    <fields>
+        <label><!-- Inactive --></label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to provide details about what has been accomplished when you performed this action. The date and time is recorded for each new entry or update that you make in this field. --></help>
+        <label><!-- Note --></label>
+        <name>Note__c</name>
+    </fields>
+    <fields>
+        <label><!-- Reply --></label>
+        <name>Reply__c</name>
+    </fields>
+    <fields>
+        <label><!-- System --></label>
+        <name>System__c</name>
+    </fields>
+    <layouts>
+        <layout>Remedyforce Problem History</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Details --></label>
+            <section>Details</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Please enter Action. --></errorMessage>
+        <name>Action_ID_Required</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- New_Action --></label>
+        <name>New_Action</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- View_All_Notes --></label>
+        <name>View_All_Notes</name>
+    </webLinks>
+</CustomObjectTranslation>

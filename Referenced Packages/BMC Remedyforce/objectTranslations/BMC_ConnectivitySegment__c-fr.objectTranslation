@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Segment de connectivité</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Segments de connectivité</value>
+    </caseValues>
+    <fields>
+        <label>Type de connectivité</label>
+        <name>ConnectivityType__c</name>
+        <picklistValues>
+            <masterLabel>Ethernet</masterLabel>
+            <translation><!-- Ethernet --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>FC</masterLabel>
+            <translation><!-- FC --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>FDDI</masterLabel>
+            <translation><!-- FDDI --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>TokenRing</masterLabel>
+            <translation><!-- TokenRing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Nombre</label>
+        <name>Count__c</name>
+    </fields>
+    <fields>
+        <label>Fixe</label>
+        <name>Fixed__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>ID instance</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>ID réseau</label>
+        <name>NetworkID__c</name>
+    </fields>
+    <fields>
+        <label>Description du type Autre</label>
+        <name>OtherTypeDescription__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- BMC_ConnectivitySegment Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

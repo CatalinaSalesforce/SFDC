@@ -1,0 +1,117 @@
+<apex:page id="SSServiceRequestPreview" controller="BMCServiceDesk.SSRequestDefController" sidebar="false" showHeader="false" standardStyleSheets="true">
+<head>
+	<link rel="Stylesheet" type="text/css" href="{!$Resource.SSThemes}/{!staticResource}/SSServiceRequestPreview.css" />
+</head>
+<apex:form >
+	<div class="srpreview-tbar">
+		<div style="float:left;">
+			<table  height="100%" cellspacing="0" cellpadding="0">
+			<tr>
+	           	<td><input type="button" id="requestBtn-top" value="{!$Label.RequestNow}" class="ssBtnCls" onclick="requestNowHandler();"/></td>
+	           	<td width="10"/>
+	           	<apex:outputPanel rendered="{!showCartPortlet}">
+	           		<td><input type="button" id="cartBtn-top" value="{!$Label.saveToCart}" class="ssBtnCls" onclick="addToCart();"/></td>
+				</apex:outputPanel>
+			</tr>
+			</table>
+		</div>
+		<div style="float:right;">
+			<apex:outputPanel rendered="{!showRequestHelp}">
+				<table  height="100%" cellspacing="0" cellpadding="2">
+				<tr>
+		           	<td><apex:outputLabel value="{!$Label.bmcservicedesk__RequestHelpMessage}" styleClass="requestHelpCls"/></td>
+		           	<td width="5"/>
+		           	<td><apex:outputLabel value="{!$Label.bmcservicedesk__SS_IncidentHome}" styleClass="submitLinkCls" onclick="submitTicket();"/></td>
+		           	<td width="20"/>
+				</tr>
+				</table>
+			</apex:outputPanel>
+		</div>
+    </div>
+    <div id="srpreview-contents" class="srpreview-contents">
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr><td colspan="2" height="5"/></tr>
+			<tr>
+				<td colspan="2">
+			    	<img class="ssImageCls" src="{!IF(imageUrl!='DEFAULT',imageUrl,URLFOR($Resource.SSThemes,'SSDefaultTheme/SDEFicons/ServiceRequestDefault32.png'))}"/> 
+					<div class="rf-sr-infotd">
+				    	<apex:outputLabel styleClass="srHeaderCls" value="{!requestDef.Name}"/>
+					</div>
+				</td>
+			</tr>
+			<apex:outputPanel rendered="{!isTurnAround}">
+				<tr><td colspan="2" height="15"/></tr>
+				<tr>
+					<td width="10%">
+				    	<apex:outputLabel styleClass="boldFontCls" value="{!$Label.bmcservicedesk__reqDefTurnaroundTime}: "/>
+				    </td>
+				    <td>
+					    <apex:outputText value="{!turnaroundTime}"/>
+					</td>
+				</tr>
+			</apex:outputPanel>
+			<apex:outputPanel rendered="{!isPrice}">
+				<tr><td colspan="2" height="10"/></tr>
+				<tr>
+					<td width="10%">
+						<apex:outputLabel styleClass="boldFontCls" value="{!$Label.bmcservicedesk__reqDefPrice}: "/>
+					</td>
+					<td>
+				    	<apex:outputText value="{!customerPrice}"/>
+					</td>
+				</tr>
+			</apex:outputPanel>
+			<tr><td colspan="2" height="15"/></tr>
+			<tr>
+				<td colspan="2">
+					<apex:outputField value="{!requestDef.BMCServiceDesk__Description__c}" rendered="{!NOT(showRTFDescription)}"/>
+					<apex:outputField value="{!requestDef.BMCServiceDesk__Description_Rich_Text__c}" rendered="{!showRTFDescription}"/>
+				</td>
+			</tr>
+		</table>
+	</div>
+    <div class="srpreview-bbar">
+		<div style="float:left;">
+			<table  height="100%" cellspacing="0" cellpadding="0">
+			<tr>
+	           	<td><input type="button" id="requestBtn-bottom" value="{!$Label.RequestNow}" class="ssBtnCls" onclick="requestNowHandler();"/></td>
+	           	<td width="10"/>
+	           	<apex:outputPanel rendered="{!showCartPortlet}">
+	           		<td><input type="button" id="cartBtn-bottom" value="{!$Label.saveToCart}" class="ssBtnCls" onclick="addToCart();"/></td>
+				</apex:outputPanel>
+			</tr>
+			</table>
+		</div>
+		<div style="float:right;"></div>
+	</div>
+    <apex:actionFunction name="addToCart" action="{!addToCart}" rerender="" oncomplete="updateParentCartIcon();parent.closeTabLater(tabID);"/>
+</apex:form> 	
+<script>
+	var tabTitle = '{!JSENCODE($Label.ServiceRequestLabel)}'+': '+'{!JSENCODE(requestDef.Name)}';
+	var requestId = '{!JSENCODE($CurrentPage.parameters.reqDefId)}';
+	var serviceRequestForm = '{!$Page.SelfServiceIncidentCustom}';
+	parent.changeTabTitle('SRPRE'+requestId,tabTitle);
+     var activeTab = window.frameElement.getAttribute("id");
+	
+    var tabID = activeTab.slice(7);
+	//TODO: all button functionality to go here
+	function requestNowHandler(){
+		var tabUrl = serviceRequestForm+'?isServiceRequest=true&reqDefId='+requestId;
+		parent.addNewTab(true,'SR'+requestId+Math.random(),tabTitle,tabUrl);
+		parent.closeTab('SRPRE'+requestId);
+	}
+	
+	function submitTicket(){
+		parent.openIncidentTab();
+	}
+	function updateParentCartIcon() {
+	    parent.cartItemCount= parent.cartItemCount+1;
+	    parent.updateCartIcon();
+	}
+	
+	if(Sarissa._SARISSA_IS_IE && (navigator.userAgent.indexOf("Trident/6")>-1)){  
+		window.XMLSerializer = function(){};      
+		window.XMLSerializer.prototype.serializeToString=function(oNode){return oNode.xml;}    
+    }
+</script>
+</apex:page>

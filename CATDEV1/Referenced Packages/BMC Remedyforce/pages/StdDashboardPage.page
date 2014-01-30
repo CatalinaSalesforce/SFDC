@@ -1,0 +1,5 @@
+<apex:page showHeader="true" action="{!updateRFIds}" controller="BMCServiceDesk.SelfServiceSettingsController" tabStyle="Remedyforce_Dashboard__tab" sidebar="false" title="{!JSENCODE($Label.bmcservicedesk__Remedyforce_Dashboard)}">
+<apex:form style="height:730px">
+    <iframe id="myFrame" frameborder="0" src="/apex/StdCatalogPage?standardLayout=true" height="100%" width="100%"></iframe>
+</apex:form>    
+</apex:page>

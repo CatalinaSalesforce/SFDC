@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Urgence</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Urgences</value>
+    </caseValues>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the urgency record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label>Inactif</label>
+        <name>inactive__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel><!-- Urgency --></nameFieldLabel>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une valeur d&apos;urgence active.</informationalMessage>
+        <name>nf_01I90000000WgEmEAK_00N9000000283K9EAI</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une valeur d&apos;urgence active.</informationalMessage>
+        <name>nf_01I90000000WgEyEAK_00N9000000283LcEAI</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une valeur d&apos;urgence active.</informationalMessage>
+        <name>nf_01I90000000WgF3EAK_00N9000000283MlEAI</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une valeur d&apos;urgence active.</informationalMessage>
+        <name>nf_01I90000000WgFlEAK_00N9000000283RKEAY</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une valeur d&apos;urgence active.</informationalMessage>
+        <name>nf_01I90000000lPUsEAM_00N900000031qcpEAA</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>Sélectionner une valeur d&apos;urgence active</informationalMessage>
+        <name>nf_01IA0000001KADEMA4_00NA0000008rKWsMAM</name>
+    </namedFilters>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage>Il existe déjà un enregistrement d&apos;urgence avec cette valeur d&apos;urgence. Entrez une valeur d&apos;urgence unique.</errorMessage>
+        <name>UniqueUrgencyCheck</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Veuillez saisir une valeur d&apos;urgence.</errorMessage>
+        <name>UrgencyID_required</name>
+    </validationRules>
+</CustomObjectTranslation>

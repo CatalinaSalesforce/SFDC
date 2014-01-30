@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Projected Service Outage</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Projected Service Outages</value>
+    </caseValues>
+    <fields>
+        <help><!-- From the list of options, select the services that are affected by the projected service outage. --></help>
+        <label><!-- Affected Service --></label>
+        <name>Affected_Service__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if you want to prevent change requests from being created or modified during the projected service outage. --></help>
+        <label><!-- Blackout period --></label>
+        <name>Blackout__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Date --></label>
+        <name>End_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Configuration Item --></label>
+        <name>FKConfiguration_Item__c</name>
+        <relationshipLabel><!-- Outages --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the Projected Service Outage record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label><!-- Inactive --></label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <label><!-- Start Date --></label>
+        <name>Start_Date__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>IP Connectivity Subnet</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>IP Connectivity Subnet</value>
+    </caseValues>
+    <fields>
+        <label><!-- Address Type --></label>
+        <name>Address_Type__c</name>
+        <picklistValues>
+            <masterLabel>IPv4</masterLabel>
+            <translation><!-- IPv4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>IPv6</masterLabel>
+            <translation><!-- IPv6 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Exploration Date --></label>
+        <name>Exploration_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Instance ID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Prefix Length --></label>
+        <name>Prefix_Length__c</name>
+    </fields>
+    <fields>
+        <label><!-- Subnet Mask --></label>
+        <name>Subnet_Mask__c</name>
+    </fields>
+    <fields>
+        <label><!-- Subnet Number --></label>
+        <name>Subnet_Number__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

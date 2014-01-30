@@ -1,0 +1,22 @@
+<apex:component controller="BMCServiceDesk.StdLayoutTickerController">
+
+    <script>
+        var msg = '{!tickerString}';
+        msg = decodeURIComponent(msg);
+    </script>
+    <script type="text/javascript" src="{!$Resource.BMCRFCommonJS}/StdLayoutTickerPage.js"/>
+   
+     
+    
+    <marquee direction="left" id="marqueeId" style="background:#334f67;height:22px;" behavior="scroll" onBounce="onBounceHandler(this);">
+    <b>
+        <span id="tickerdiv" class="tickerClass"></span>
+    </b>    
+        <span id="tickerdiv1" class="tickerClass1"></span>
+    </marquee>
+	<script>
+	var broadCastSpeed={!broadCastSpeed}; 
+    var marobj=document.getElementById('marqueeId');
+    marobj.scrollAmount=broadCastSpeed;
+	</script>
+</apex:component>

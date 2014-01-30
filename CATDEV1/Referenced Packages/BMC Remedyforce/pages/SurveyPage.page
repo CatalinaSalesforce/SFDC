@@ -1,0 +1,139 @@
+<apex:page standardStylesheets="false" showHeader="false" sidebar="false" Standardcontroller="BMCServiceDesk__Survey__c" cache="false" extensions="BMCServiceDesk.SurveyController" language="{!ClientLanguage}">
+    
+    <link rel="Stylesheet" type="text/css" href="{!$Resource.SSThemes}/{!staticResource}/SSLandingPage.css" />
+    <link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/SurveyPage.css" />
+    <apex:form >
+   
+                <div>
+                         <apex:outputPanel styleClass="rf-top-banner-div" layout="block">
+                            <a onclick="openWindow();" title="{!URLTipText}" style ="cursor:pointer" id="bmcLink" target="_blank">
+                                <apex:image value="{!URLFOR($Resource.BMCServiceDesk__SSThemes,staticResource+'/SDEFimages/remedyforce-standard-logo.gif')}" rendered="{!NOT(customBannerHeaderImageVisible)}"/>
+                                <apex:image url="/servlet/servlet.FileDownload?file={!bannerHeaderId}" rendered="{!customBannerHeaderImageVisible}" />
+                            </a>   
+                             
+                         </apex:outputPanel>  
+                </div> 
+             
+                <apex:outputPanel id="mainPanel" >
+                <apex:outputPanel rendered="{!NOT(isSubmit)}" >
+                        <div >
+                                <table id="rf-ticker"  class="rf-ticker-div tableWidth">
+                                	<tr><td class="rf-banner-link description" >
+	                                    {!JSENCODE($Label.survey_Title)}
+	                                </td></tr>
+                                </table>
+                                <div class = "verticalDistance15px"></div>
+                                <div class = "ssDefaultFontCls marginLeft" >
+                                    {!JSENCODE($Label.survey_Description)}
+                                </div>
+                                <div class = "verticalDistance10px"></div>
+                        </div> 
+                        
+                        <div>	<div  class = "errormessage">
+                                	<apex:pageMessages />
+                                </div>
+                                <table  class= "marginLeft">
+                                    
+                                    <apex:variable var="index" value="{!0}" />
+                                    <apex:repeat value="{!IF(ServiceRequest == false ,$ObjectType.BMCServiceDesk__Survey__c.FieldSets.BMCServiceDesk__Incident_Survey,$ObjectType.BMCServiceDesk__Survey__c.FieldSets.BMCServiceDesk__ServiceRequest_Survey)}" var="survey" id="fieldset">
+                                        <tr>
+                                            <td class = "ssDefaultFontCls" align="right">
+                                                <apex:variable var="index" value="{!index+1}"/>  
+                                                <apex:outputText value="{!FLOOR(index)}"/>. 
+                                            </td>
+                                            <td class = "ssDefaultFontCls">
+                                                
+                                                <apex:outPutPanel rendered="{!NOT(DisplayHelpText)}" >
+                                                    {!JSENCODE(survey.Label)}
+                                                </apex:outPutPanel>
+                                                <apex:outPutPanel rendered="{!DisplayHelpText}" >
+                                                    {!JSENCODE($ObjectType.BMCServiceDesk__Survey__c.fields[survey].InlineHelpText)}
+                                                </apex:outPutPanel>
+                                                <apex:outPutPanel rendered="{!OR(survey.required, survey.dbrequired)}" >
+                                                    <font style = "color:#c00">*</font>
+                                                </apex:outPutPanel>
+                                                <apex:outputPanel rendered="{!CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'boolean')}" >
+                                                    <apex:inputField value="{!BMCServiceDesk__Survey__c[survey]}"  styleclass="marginLeft"/>
+                                                </apex:outputPanel>
+                                            
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <td class = "verticalDistance1px">
+                                            </td>
+                                        </tr>
+                                       <tr>
+                                            <td></td>
+                                             <td >
+                                             	 <apex:outputPanel rendered="{!CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'picklist')}" >
+                                                       <apex:inputField value="{!BMCServiceDesk__Survey__c[survey]}" required="{!OR(survey.required, survey.dbrequired)}" />
+                                                 </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'double')}" >
+                                                        <apex:inputfield value="{!BMCServiceDesk__Survey__c[survey]}" required="{!OR(survey.required, survey.dbrequired)}" style="width:120px" />
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'percent')}" >
+                                                     <apex:inputfield value="{!BMCServiceDesk__Survey__c[survey]}" required="{!OR(survey.required, survey.dbrequired)}" style="width:25px" />  %
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!OR(CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'textarea'),CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'string'))}" >
+                                                     <apex:inputField value="{!BMCServiceDesk__Survey__c[survey]}" required="{!OR(survey.required, survey.dbrequired)}" style="width:240px"  />  
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!NOT(OR(CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'picklist'),CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'double'),CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'textarea'),CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'boolean'),CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'percent'),CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'string')))}" >
+                                                     <apex:inputField value="{!BMCServiceDesk__Survey__c[survey]}" required="{!OR(survey.required, survey.dbrequired)}"  />  
+                                                </apex:outputPanel>
+                                             </td>
+                                      </tr>
+                                      <apex:outputPanel rendered="{!NOT(CONTAINS($ObjectType.BMCServiceDesk__Survey__c.fields[survey].type,'boolean'))}" >
+                                       <tr >
+                                            <td class = "verticalDistance5px">
+                                                
+                                            </td>
+                                        </tr>
+                                        </apex:outputPanel>
+                                    </apex:repeat>
+                                </table>
+                        </div>
+                        <div class = "ssDefaultFontCls marginLeft" >
+                             {!JSENCODE($Label.survey_Note_Of_Thanks)}
+                        </div>
+                        <div class = "verticalDistance15px" />
+                        <div class= "marginLeft">
+                      
+                        <apex:commandButton value="{!$Label.bmcservicedesk__SSContactUsSubmit}" action="{!save}"  reRender="mainPanel,afterSubmitBtn,msg" disabled="{!IF($CurrentPage.parameters.ispreview == 'true' ,true,false)}" />
+                                
+                        </div>
+                      
+                </apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel id="afterSubmitBtn">
+               
+                <apex:outputPanel rendered="{!isSubmit}" >
+                        <div >
+                        <br /><br />
+                            
+                            <center>
+                                    <apex:outputText value="{!messages}" styleclass="title" id="msg" />
+                            </center>
+                        </div>
+                        <div class = "verticalDistance5px"></div>
+                        <div>
+                            <center>
+                                    <input type = "button" onclick ="JavaScript:window.open('', '_self', '');window.close();" value="{!$Label.CIExpClose}"  />
+                            </center>
+                        </div>
+                </apex:outputPanel> 
+                </apex:outputPanel>         
+    </apex:form>
+    
+     <script>
+        function save(){
+            SaveAction();
+        }
+        var url ='{!companyURL}';
+        function openWindow(){
+			if(url!='')
+				window.open(url);
+		}
+       
+    </script>
+    
+</apex:page>

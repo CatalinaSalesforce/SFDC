@@ -1,0 +1,30 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+<c:CommonIncludes />
+
+<style>
+	html,body{
+		height: 100%;
+		width: 100%;
+	}
+</style>
+
+<link rel="stylesheet" type="text/css" href="{!$Resource.BMCRFSDEFStyles}/AddNote.css" />
+<apex:includeScript value="{!$Resource.BMCServiceDesk__BMCRFCommonJS}/AddNoteEditor.js" id="AddNoteEditor"/>
+<script>
+var noteFldId = '{!JSENCODE($CurrentPage.parameters.noteFldId)}';
+var VALID_LENGTH = 32000;
+</script>
+	<table class="clsNoteEditorMainTable">
+			<tr height="100%" >
+				<td style="padding:0px 0px 0px 0px;" width="100%">
+					<textarea title="{!$Label.TooltipNote}" id="noteEditor" style="width:99%;height:100%"></textarea>
+				</td>
+			</tr>
+			<tr style="height:40px;">
+				<td style="padding:0px 0px 0px 0px;">	
+					<input type="button" value="{!JSENCODE($Label.Ok)}" class="AddButton" id="okBtn" style="padding:4px;padding-top:2px;" onclick="CopyTextInParent();" />
+	 				<input type="button" value="{!JSENCODE($Label.Cancel)}" class="AddButton" id="cancelBtn" style="padding:4px;padding-top:2px;" onclick="window.close();" />
+		 		</td>
+			</tr>
+		</table>	
+</apex:page>

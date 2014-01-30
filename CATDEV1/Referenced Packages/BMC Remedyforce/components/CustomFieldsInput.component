@@ -1,0 +1,103 @@
+<apex:component controller="BMCServiceDesk.CFInputController">
+    <apex:attribute name="ApiName" type="String" assignTo="{!pApiName}" description="ToolTip"/>
+    <apex:attribute name="DisplayLabel" type="string" assignTo="{!pDisplayLabel}" description="ToolTip"/>
+    <apex:attribute name="ToolTip" type="String" assignTo="{!pToolTip}" description="ToolTip"/>
+    <apex:attribute name="Value" type="String" assignTo="{!pValue}" description="ToolTip"/>
+    <apex:attribute name="MultiSelectValue" type="String[]" assignTo="{!pMultiSelectValue}" description="ToolTip"/>
+    <apex:attribute name="FieldType" type="String" assignTo="{!pFieldType}" description="ToolTip" required="true" />
+    <apex:attribute name="PickListValues" type="BMCServiceDesk.PickListInfo" assignTo="{!pPickListValues}" description="ToolTip" />
+    <apex:attribute name="Required" type="boolean" assignTo="{!pRequired}" description="ToolTip" />
+    <apex:attribute name="Readonly" type="boolean" assignTo="{!pReadonly}" description="ToolTip" />
+    <apex:attribute name="HTMLUniqueID" type="String" assignTo="{!pHTMLUniqueID}" description="ToolTip"/>
+    <apex:attribute name="HTMLGroupName" type="String" assignTo="{!pHTMLGroupName}" description="ToolTip"/>
+    <apex:attribute name="StyleClass" type="String" description="ToolTip"/>
+    <apex:attribute name="ReferenceValue" type="String" assignTo="{!pReferenceValue}" description="ToolTip"/>
+    <apex:attribute name="ReferenceTo" type="String" assignTo="{!pReferenceTo}" description="ToolTip"/>
+    <apex:attribute name="ObjectName" type="String" assignTo="{!pObjectName}" description="ToolTip"/>
+    <apex:attribute name="LocalName" type="String" assignTo="{!pLocalName}" description="ToolTip"/>
+    <apex:attribute name="MaxLength" type="Integer" description="ToolTip"/>
+   
+    <table cellpadding="0" cellspacing="0">
+	    <tr>
+	    	<td>    
+			    <apex:inputText maxlength="50" id="cmdbinputDate" styleClass="clsInputTextBox {!StyleClass} {!setReadonly}" rendered="{!IsDateTime}"  value="{!Value}" title="{!ToolTip}" />
+			    <apex:inputText maxlength="50" id="custominputDate" styleClass="clsInputTextBox {!StyleClass} {!setReadonly}" rendered="{!IsDate}"  value="{!Value}" title="{!ToolTip}" />
+			    
+			    <apex:inputText maxlength="{!MaxLength}" id="cmdbinputText" styleClass="clsInputTextBox {!StyleClass} {!setReadonly}" rendered="{!IsTextBox}" value="{!Value}" title="{!ToolTip}" />
+			    <apex:inputCheckbox id="cmdbinputCheckBox" styleClass="clsInputCheckBox {!StyleClass} {!setReadonly}" rendered="{!IsCheckBox}" value="{!Value}" title="{!ToolTip}" />
+			    <apex:inputTextarea id="cmdbinputTextArea" styleClass="single-line-textarea {!StyleClass} {!setReadonly}" rendered="{!IsTextArea}" value="{!Value}" title="{!ToolTip}" />
+			    <apex:selectList id="cmdbinputDDList" styleClass="clsComboStyle {!StyleClass} {!setReadonly}" value="{!Value}" rendered="{!IsPickList}" multiselect="false" size="1" title="{!ToolTip}">
+			        <apex:selectOptions value="{!PickListValues.OptionValues }"/> 
+			    </apex:selectList> 
+			
+			    <apex:selectList id="cmdbinputMultiSelectList" styleClass="customMultiselect {!StyleClass} {!setReadonly}" value="{!MultiSelectValue}" rendered="{!IsMultiPickList}" multiselect="true" size="3" title="{!ToolTip}" >
+			        <apex:selectOptions value="{!PickListValues.OptionValues }"/> 
+			    </apex:selectList> 
+			    
+			    <apex:inputText id="lookupTextVar" styleClass="clsInputTextBox {!StyleClass}" rendered="{!IsLookup}" onblur="removeHiddenValue(this); showalldata(event,'','');" value="{!ReferenceValue}" title="{!ToolTip}" />
+			    <input type="text"  value="{!Value}" id="lookupHiddenVar1" style="display:none"/> 
+			    <apex:inputhidden id="lookupHiddenVar" value="{!Value}" rendered="{!IsLookup}"/>        
+			    <input type="button" class="lookupIconOn" id="LookupIdBtn" style="{!renderLookupButton} margin-left:2px; float:right;" onclick="openLookupPopup1(this,'{!pLocalName}','{!pObjectName}');"/>               
+		    </td>
+		    <td>
+				<!-- <apex:image id="expandInput" rendered="{!RenderExpandImage}" styleClass="CMDB_ExpandImage {!StyleClass}" style="margin-left:2px" width="19px" height="19px" value="{!$Resource.SDEFStyles}/SDEFbuttons/b_textbox_popup.gif" /> -->
+			    <apex:image id="datePopupImg" rendered="{!RenderDatePicker}" styleClass="CMDB_DatePickerImage {!StyleClass}" style="margin-left:2px" width="19px" height="19px" value="{!$Resource.BMCServiceDesk__SDEFStyles}/SDEFbuttons/b_calendar_popup.gif" />
+			    <apex:outputLabel value="{!AttributeTypeString}" rendered="false"></apex:outputLabel>
+		    </td>
+	    </tr>
+    </table>
+    <script>
+       	var clickedLookupId = '';
+    	taboutPageType = 'custom';      	
+    	function setClickedLookupId(Id){
+    		clickedLookupId = Id;
+    	}    
+
+		function removeHiddenValue(Obj){
+			if(Obj.value == null || Obj.value == ''){
+				var ObjId = Obj.id;	
+				if(ObjId != null && ObjId != ''){
+					var splittedID = ObjId.split('_id_');
+					var customCounter = splittedID[1].substring((splittedID[1].lastIndexOf('_')+1),(splittedID[1].length));
+					var hiddenId = splittedID[0]+'_id_id__x_'+customCounter;
+					var hiddenEle = document.getElementById(hiddenId);
+					hiddenEle.value = '';
+				}
+			}
+		}
+    	
+    	function setIdForHiddenVar(){
+    		//get hidden variable and assign id to them generated by controller
+    		if(document.getElementById('{!$Component.lookupHiddenVar}')){
+    			document.getElementById('{!$Component.lookupHiddenVar}').id="{!lookupIdHidden}";
+    		}
+    		
+    		if(document.getElementById('{!$Component.lookupTextVar}')){
+    			if('{!JSENCODE(Value)}' == ''){
+    				document.getElementById('{!$Component.lookupTextVar}').value= '';
+    			}			
+    			document.getElementById('{!$Component.lookupTextVar}').id="{!lookupId}";
+    		}    		
+    	}
+    	setIdForHiddenVar();
+    </script>
+	<apex:outputPanel id="outputPanel">   
+    <script>            
+        function changedateformat(){
+            if(document.getElementById('{!$Component.custominputDate}')){
+                var temp = document.getElementById('{!$Component.custominputDate}').value;          
+                var cdate = temp.split(' ');
+                document.getElementById('{!$Component.custominputDate}').value = cdate[0];
+            }
+        }
+        changedateformat();     
+
+        function removeHiddenId(obj){
+        	if(obj.value == '' || obj.value == null){
+        		var hiddenVar = document.getElementById(obj.id+'__hidden');
+        		hiddenVar.value = '';
+        	}
+        }               
+    </script>
+    </apex:outputPanel>   
+</apex:component>

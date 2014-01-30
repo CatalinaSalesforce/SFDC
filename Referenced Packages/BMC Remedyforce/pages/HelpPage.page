@@ -1,0 +1,20 @@
+<apex:page showHeader="false" controller="BMCServiceDesk.HelpController" action="{!shHelp}" standardStylesheets="false">
+<apex:outputPanel id="opHelp" rendered="true">
+<apex:form id="frmHelp">
+    <h1>{!msg}</h1>
+    <script>
+        var url="{!JSENCODE(url)}";
+        var resource="{!$Resource.Help}/helpfile.htm?context=IEHelp&";
+        //if(url.indexOf('http')==-1) url='Resource.'+url';
+        if(url=="IncidentPage")
+            url=resource+'file=ie_webservices-01.htm';
+        if(url=="SearchPage")
+            url=resource;
+        //alert(url);
+        if(url!="") window.location=url;        
+    </script>
+    <apex:actionFunction name="shHelp" action="{!shHelp}" reRender="opHelp" />
+    <!--https://c.ap1.visual.force.com/resource/1266322321000/Help/wwhelp/wwhimpl/js/html/wwhelp.htm?context=IEHelp&file=ie_webservices-01.htm-->
+</apex:form>
+</apex:outputPanel>
+</apex:page>

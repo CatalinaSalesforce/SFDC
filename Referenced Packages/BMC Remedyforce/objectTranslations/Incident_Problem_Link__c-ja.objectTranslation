@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>インシデント問題のリンク名</value>
+    </caseValues>
+    <fields>
+        <label>インシデント</label>
+        <name>FKIncident__c</name>
+        <relationshipLabel>インシデント問題リンク</relationshipLabel>
+    </fields>
+    <fields>
+        <label>問題</label>
+        <name>FKProblem__c</name>
+        <relationshipLabel>インシデント問題リンク</relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>Remedyforce Incident Problem Link</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel><!-- Incident Problem Link Name --></nameFieldLabel>
+    <webLinks>
+        <label>作成してインシデントにリンク</label>
+        <name>Create_Problem_and_Link_to_Incident</name>
+    </webLinks>
+    <webLinks>
+        <label>インシデントを問題にリンク</label>
+        <name>Link_Incident</name>
+    </webLinks>
+    <webLinks>
+        <label>問題をインシデントにリンク</label>
+        <name>Link_Problem</name>
+    </webLinks>
+</CustomObjectTranslation>

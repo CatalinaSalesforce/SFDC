@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>プロセステンプレート</value>
+    </caseValues>
+    <fields>
+        <label>リクエスト定義</label>
+        <name>FKRequestDefinition__c</name>
+        <relationshipLabel>プロセステンプレート</relationshipLabel>
+    </fields>
+    <fields>
+        <label>テンプレート</label>
+        <name>FKTemplate__c</name>
+        <relationshipLabel>プロセステンプレート</relationshipLabel>
+    </fields>
+    <fields>
+        <label>実行順序</label>
+        <name>orderNumber__c</name>
+    </fields>
+    <nameFieldLabel>プロセステンプレート番号</nameFieldLabel>
+</CustomObjectTranslation>

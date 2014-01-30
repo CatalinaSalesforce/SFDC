@@ -1,0 +1,46 @@
+<apex:page id="SS_ContactUs" controller="BMCServiceDesk.SSIncidentController" action="{!handleIncidentRequest}" showHeader="false" standardStylesheets="false">
+<link rel="Stylesheet" type="text/css" href="{!$Resource.SSThemes}/{!staticResource}/SSCommon.css" />
+<apex:form >
+
+<div class="divToolBar">
+      <apex:commandButton id="btnSubmit" value="{!$Label.bmcservicedesk__SSContactUsSubmit}" action="{!handleSubmitContactUs}" styleclass="ssBtnCls" oncomplete="javascript:window.parent.closeTabLater('rf-tile-CONTACT');"></apex:commandButton>
+      <input type="button" id="btnCancel" value="{!$Label.SSContactUsCancel}" class="ssBtnCls" onclick="window.parent.closeTab('rf-tile-CONTACT');" />
+</div>
+
+<div style="padding:5px;">
+
+       <table cellpadding="5px" cellspacing="0" >
+       	<tr>
+       		<td>
+      			<apex:outputText rendered="{!IF(ContactUsMessage != null && ContactUsMessage != '', true, false)}">
+			        <div id="ssContactUsHeaderMessage" class="x-form-field">
+			            <apex:outputLabel value="{!ContactUsMessage}"/>
+			        </div>
+			    </apex:outputText>
+       		</td>
+       	</tr>
+        <tr>
+          <td>
+   			<apex:outputLabel value="{!$Label.bmcservicedesk__SSContactUsSubject}:" styleClass="x-form-field" /> <br />
+         	<apex:inputText id="subj" value="{!contactUsSubject}" style="width: 400px;" styleClass="clsInputTextBox" />
+          </td>
+       </tr>
+       
+       <tr>
+          <td style="vertical-align: top;">
+       		<apex:outputLabel value="{!$Label.bmcservicedesk__SSContactUsMessageText}:" styleClass="x-form-field" /> <br />
+          	<apex:inputTextarea id="desc" value="{!contactUsMessageBody}" style="width:800px; height:325px;overflow-y:auto;overflow-x:hidden;" styleClass="x-form-field x-form-text" />
+          </td>
+       </tr>
+      </table>
+</div>
+
+</apex:form>
+<script>
+    if(Sarissa._SARISSA_IS_IE && ((navigator.userAgent.indexOf("Trident/5")>-1) || (navigator.userAgent.indexOf("Trident/6")>-1))) {  
+      window.XMLSerializer = function(){};      
+      window.XMLSerializer.prototype.serializeToString=function(oNode){return oNode.xml;}    
+    }
+</script>
+
+</apex:page>

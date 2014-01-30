@@ -1,0 +1,695 @@
+<apex:page id="MessageEntryForm" controller="R6Service.TwitterController" Cache="false" tabStyle="SocialPost" showHeader="true" sidebar="true">
+
+    <apex:includeScript value="/support/console/24.0/integration.js"/>
+    
+    <script>
+        if(typeof String.prototype.trim !== 'function') {
+            String.prototype.trim = function() {
+                return this.replace(/^\s+|\s+$/g, '');
+            }
+        }
+            
+        if(typeof String.prototype.startsWith !== 'function') {
+            String.prototype.startsWith = function (str) {
+                return 0 == this.indexOf(str); 
+            }
+        }
+    </script>
+
+<style>
+    .bPageBlock .detailList TD{
+        vertical-align:middle;
+    }
+    .UserNameFont{
+       font-size: 91%;
+       font-weight: bold;
+       text-align: right;
+       color: #4A4A56;
+       padding-left: 50%;       
+    }
+    .usernameformat{
+        padding-left: 20px;
+    }
+    
+    .statusModalBackground
+    {
+        position:absolute;
+        width:100%;
+        height:100%;
+        opacity:0.5;
+        background-color:black;
+        z-index:1000;
+        display:none;
+    }
+    
+    .statusModal
+    {
+        background-color:white;
+        position:fixed;
+        top:40%;
+        left:40%;
+        width:450px;
+        padding:15px;
+        border-radius:5px;
+        z-index:1001;
+        display:none;
+    }
+    
+    .modalSpinner
+    {
+        float:left;
+        margin-top:40px;
+    }
+
+    .modalTitle
+    {
+        display:block;
+        font-size:14pt;
+    }
+    
+    .modalDetails
+    {
+        font-size:11pt;
+    }
+    
+    .modalTitle, .modalDetails
+    {
+        margin-left:45px;
+    }
+    
+    input.modalButton
+    {
+        display:block;
+        margin-left:auto;
+        margin-right:auto;
+        font-size:10pt;
+    }
+</style>
+
+<div id="modalBackground" class="statusModalBackground"></div>
+<div id="statusModal" class="statusModal">
+    <apex:image styleClass="modalSpinner" url="{!$Resource.R6Service__sending_status}" alt="{!$Label.r6service__AltToSendingStatusImage}"/>
+    <H3 id="modalTitle" class="modalTitle">title here</H3>
+    <p id="modalDetails" class="modalDetails">Creating shell post...</p>
+    <input type="button" id="modalRedirect" value="Send in Background" onClick="redirect();" class="btn modalButton" />
+</div>
+
+<apex:outputPanel id="messageRenderer">
+    <apex:pageMessages />
+</apex:outputPanel>
+ 
+<div id="outerWrapSection" class="outerWrapSectionCls" > 
+    <apex:form id="messageEntryFormId" >
+
+    <apex:actionFunction name="sendPostAction" action="{!sendMessage}" oncomplete="checkIfDeliveryFailed();" rerender="userFollowingChecker,deliveryChecker,messageRenderer,accountSelectList,messageTypeSelectList"/>
+    <apex:actionFunction name="savePostAction" action="{!saveMessage}" onComplete="checkIfSaveFailed();" reRender="messageRenderer,deliveryChecker" />
+    <apex:actionFunction name="callShorteningActionFunction" action="{!generateShortenedURL}"  reRender="newUrlRefresher,messageRenderer,attachArticlePanel"  oncomplete="insertUrlIntoText();">
+        <apex:param name="OldUrl" value="" assignTo="{!urlToShorten}"/>
+    </apex:actionFunction>
+    <apex:actionFunction name="scheduleTaskAction" action="{!redirectToScheduleTask}" />
+    <apex:actionFunction name="refreshSenderAvatar" rerender="senderSelector" />
+    <apex:actionFunction name="refreshPostStatus" action="{!pollStatus}" rerender="deliveryChecker,messageRenderer" oncomplete="checkMessageStatus();"/>
+    
+    
+    <table width="100%">
+      <tr>
+          <td align="right" width="80px">
+              <apex:image value="{!$Resource.R6Service__Twitter_Logo}" height="75" width="75" alt="{!$Label.r6service__TwitterLogo}"/>   
+          </td>
+          <td>
+              <apex:outputLabel value="{!$Label.r6service__SendATweet}" styleClass="messageEntryFormSendaTweetLbl" />            
+          </td>
+          <td align="right">
+              <table>
+                  <tr>
+                      <td>
+                          <b>{!$Label.r6service__PoweredBy}</b>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <apex:image value="{!$Resource.R6Service__Radian6_Logo}" height="50" width="150" alt="{!$Label.r6service__Radian6Logo}"/>
+                      </td>
+                  </tr>
+              </table>   
+          </td>
+      </tr>
+  </table>  
+            <div id="innerWrapSection" class="innerWrapSectionCls">
+            
+               <apex:pageBlock id="caseDetailPageblock" rendered="{!displayCaseDetailSection}">
+                  <apex:pageBlockSection columns="1">
+                       <apex:outputLabel value="{!$Label.r6service__MessageDetails}" styleClass="messageEntryFormCaseDetailLbl" ></apex:outputLabel>
+                   </apex:pageBlockSection>
+    
+                   <apex:pageBlockSection columns="1" title="{!$Label.r6service__CaseDetail}" id="caseDetail">  
+                       <apex:pageBlockSectionItem labelStyle="width:50px;" >
+                           <apex:outputLabel value="{!$Label.r6service__CaseNumberLabel}" />                      
+                           <apex:outputLabel value="{!caseNumber}"/>                               
+                       </apex:pageBlockSectionItem>
+                       
+                       <apex:pageBlockSectionItem >
+                           <apex:outputLabel value="{!$Label.r6service__LastPost}" />
+                           <c:PostDecorator post="{!replyToPost}"/>
+                       </apex:pageBlockSectionItem>                                                                     
+                   </apex:pageBlockSection>
+               </apex:pageBlock>
+    
+               <apex:pageBlock id="CommentDetailId" >     
+                   <apex:pageBlockSection id="CommentDetailSecId" columns="1" title="{!$Label.r6service__CommentDetail}">                   
+                       <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="{!$Label.r6service__SocialNetworkAccount}" />
+                         <c:SenderSelector channel="TWITTER" sender="{!sender}"/>
+                       </apex:pageBlockSectionItem> 
+                       <apex:pageBlockSectionItem id="messageTypePageBlocSecId">
+                         <apex:outputLabel value="{!$Label.r6service__MessageType}" />
+                         <apex:pageBlockSectionItem id="messageTypesSectionItemId">
+                           <apex:selectList id="statesSelectList" size="1" multiselect="false"  value="{!selectedMessageType}" onchange="selectOption(this);" >
+                             <apex:selectOptions value="{!messageTypes}" />
+                           </apex:selectList>       
+                           <apex:outputLabel id="statusUpdateMessage"  value="{!$Label.r6service__statusUpdateToFollower}" style="color:Red;"/>
+                          </apex:pageBlockSectionItem>
+                       </apex:pageBlockSectionItem>
+       
+                      <apex:pageBlockSectionItem id="commentTextboxSection" dataTitle="" >
+                            <apex:outputText value="">
+                            <apex:outputLabel id="commentTextboxlenExceeded" styleClass="CharLimitExceeded"></apex:outputLabel><br/> 
+                            <apex:outputLabel id="commentTextboxlen">140</apex:outputLabel>&nbsp; 
+                            <apex:outputLabel id="commentTextboxlenLabelCharsRemaining" ></apex:outputLabel>
+                            </apex:outputText>
+                            <apex:inputTextarea id="commentTextboxId" value="{!content}" rows="4" cols="100" onKeyDown="textCounter(this);" onKeyUp="textCounter(this);" onchange="textCounter(this);"/>
+                       </apex:pageBlockSectionItem> 
+                       
+                      </apex:pageBlockSection>
+                      <apex:pageBlockSection title="URL Shortener" id="UrlShortenerPageBlockSection" columns="1" rendered="{!urlShortening}"> 
+
+                            <apex:pageBlockSectionItem id="urlShorteningPBSectionItem" dataTitle="">
+                             <apex:outputText value="{!$Label.r6service__EnterUrlLabel}" >
+                             </apex:outputText>
+                             <apex:pageBlockSectionItem id="urlShorteningButtonSection" dataTitle="">
+                             <apex:inputText id="urlTextboxId"/>
+                             <input type="Button" class="btn" value="{!$Label.ShortenUrlButtonLabel}" id="shortencommandButtonId" style="margin-left:10px;" onclick="callShortener(document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.UrlShortenerPageBlockSection.urlShorteningPBSectionItem.urlShorteningButtonSection.urlTextboxId}').value,true);"/>
+                             </apex:pageBlockSectionItem>
+                            </apex:pageBlockSectionItem>
+                  
+                       </apex:pageBlockSection>
+                       
+
+                    <apex:pageBlockSection id="activitySection" title="Activities">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Record Activity"/>
+                            <apex:inputCheckbox value="{!recordActivity}" id="recordActivityCheckbox" />
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Schedule Task"/>
+                            <apex:inputCheckbox value="{!scheduleTask}" id="scheduleTaskCheckbox" />
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>   
+               </apex:pageBlock>
+               
+               <apex:pageBlock id="articleBlockId">
+                  
+                   
+                       <apex:pageBlockSection id="articleSectionId"  title="{!$Label.r6service__IncludeArticlesTitle}" rendered="{!showIncludeArticleSection}">
+                        
+                        <apex:dataTable value="{!articleKeys}" var="key" id="articleTableId">
+                           <apex:column >
+                                <apex:inputCheckBox id="attachArticleCheckBox" onclick="attachArticles(this,'{!key['title']}','{!articles[key]}');"/>
+                            </apex:column>
+                            <apex:column >
+                                <apex:outPutLink value="{!articles[key]}" target="_blank"> {!key['title']}</apex:outPutLink>
+                            </apex:column>
+                        </apex:dataTable>
+                        
+                        
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockButtons location="bottom">
+                        <apex:commandButton value="{!$Label.r6service__TweetButtonLabel}" id="SEND_2" onclick="checkMessageForWarnings();" reRender="deliveryChecker" disabled="{!!allowSend}" ></apex:commandButton>
+                        <apex:commandButton value="{!$Label.r6service__CancelButtonLabel}" id="CANCEL_2"  onClick="closeSendMessage(false);return false" /><br/>
+                    </apex:pageBlockButtons>                    
+               </apex:pageBlock>  
+
+          </div>
+      </apex:form>
+</div> 
+
+<apex:outputPanel id="deliveryChecker">
+  <script>
+       pageContainsError = {!pageContainsError};  
+       postStatus = '{!JSENCODE(sentMessage.R6Service__Status__c)}';
+       scheduleTask = {!scheduleTask};
+       saveFailed = {!saveFailed};
+  </script>   
+</apex:outputPanel>
+
+<apex:outputPanel id="userFollowingChecker">
+  <script>
+       userFollowingError = {!userFollowingError};  
+  </script>   
+</apex:outputPanel>
+
+<apex:outputPanel id="newUrlRefresher">
+  <script>
+       newUrl = '{!JSINHTMLENCODE(shortUrl)}';
+  </script>   
+</apex:outputPanel>
+
+
+    <script>
+    
+        var commentTextField = document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.CommentDetailSecId.commentTextboxSection.commentTextboxId}'); 
+        var commentTextFieldLen = document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.CommentDetailSecId.commentTextboxSection.commentTextboxlen}');                                
+        var commentTextFieldLenExceeded = document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.CommentDetailSecId.commentTextboxSection.commentTextboxlenExceeded}');
+        var commentTextboxlenLabelCharsRemaining = document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.CommentDetailSecId.commentTextboxSection.commentTextboxlenLabelCharsRemaining}');
+        var tweetUserName = '{!JSINHTMLENCODE(recipientHandle)}';
+        var oldUrl=document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.UrlShortenerPageBlockSection.urlShorteningPBSectionItem.urlShorteningButtonSection.urlTextboxId}');
+        var articleContent;
+        var userFollowingUs;
+        var messageType = '{!JSENCODE(selectedMessageType)}';
+        var pageContainsError;
+        var postStatus;
+        var scheduleTask;
+        var messageList=document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.CommentDetailSecId.messageTypePageBlocSecId.messageTypesSectionItemId.statesSelectList}');
+        var cancelFormSubmit = false;
+        var onloadCall;
+        var newUrl;
+        var noArticleFound;
+        var beforeShorteningUrl;
+        var oldNewURLMap = new Object();
+        var articleTitle;
+        var shortenButtonClicked = false;
+        var numberOfArticles = '{!articleKeys.size}'; 
+        var saveFailed;
+        var checkStatusInterval;
+        
+        var previousOnload = window.onload;
+             
+        window.onload = new function() 
+        { 
+            onloadCall=true;
+            initCommentBox('{!JSENCODE(selectedMessageType)}');
+            textCounter(commentTextField);
+               
+            if (previousOnload) { 
+                previousOnload();
+            }
+            setTimeout('setTabTitle(\'Send Message\')', '200');
+        }
+        
+        function showModal(title, details) {
+            setText(document.getElementById("modalTitle"), title);
+            setText(document.getElementById("modalDetails"), details);
+            document.getElementById("modalBackground").style.display = "block";
+            document.getElementById("statusModal").style.display = "block";
+            document.getElementById("modalRedirect").style.display = "none";
+        }
+        
+        function setText(element, text){
+            while(element.firstChild){
+                element.removeChild(element.firstChild);
+            }
+            element.appendChild(element.ownerDocument.createTextNode(text));
+        }
+        
+        function showModalWithSkip(title, details){
+            showModal(title, details);
+            document.getElementById("modalRedirect").style.display = "block";
+        }
+        
+        function hideModal(){
+            document.getElementById("modalBackground").style.display = "none";
+            document.getElementById("statusModal").style.display = "none";
+        }
+        
+        function initCommentBox(optionVal) 
+        {
+            var tag = '@' + tweetUserName;
+            if(optionVal == 'COMMENT')
+            {
+                 if(0 != commentTextField.value.indexOf(tag))
+                 {
+                    commentTextField.value = tag + " " + commentTextField.value.trim();
+                 }
+                 textCounter(commentTextField);
+                 messageType = 'COMMENT';
+                 document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.CommentDetailSecId.messageTypePageBlocSecId.messageTypesSectionItemId.statusUpdateMessage}').style.visibility = 'hidden';
+            }
+            else
+            {
+                if(0 == commentTextField.value.indexOf(tag))
+                {
+                    commentTextField.value = commentTextField.value.substring(tag.length).trim();
+                }
+                textCounter(commentTextField);
+                messageType = 'PRIVATE_MESSAGE';
+                document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.CommentDetailSecId.messageTypePageBlocSecId.messageTypesSectionItemId.statusUpdateMessage}').style.visibility = 'hidden';
+            }
+        } 
+        
+        function selectOption(option)
+        {
+            var optionVal = option.value;
+            onloadCall=false;
+            initCommentBox(optionVal);           
+        }
+            
+        function textCounter(field)
+        {
+            var totMaxlimit = 140;
+            maxlimit = totMaxlimit;
+            var tweetLength = getLengthOfTweet(field.value);
+           
+           if(tweetLength > maxlimit)
+           { 
+                commentTextFieldLenExceeded.innerHTML='{!$Label.MessageSizeExceededError}'+' '+Math.abs((140-tweetLength))+' '+'{!$Label.CharacterLabelInExceededErrorMessage}';
+                commentTextFieldLen.innerHTML='';
+                commentTextboxlenLabelCharsRemaining.innerHTML ='';
+           }            
+           else
+           { 
+               commentTextFieldLenExceeded.innerHTML='';
+               commentTextboxlenLabelCharsRemaining.innerHTML ='{!$Label.CharactersRemaining}';
+               commentTextFieldLen.innerHTML = maxlimit - (tweetLength);
+           }
+        }
+        
+
+        function checkMessageForWarnings() 
+        {
+            cancelFormSubmit = false;
+            commentTextField = document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.CommentDetailSecId.commentTextboxSection.commentTextboxId}'); 
+            var commentTextFieldLenWithoutSpace = commentTextField.value.trim().length;
+            
+            if(commentTextField.value==''||commentTextFieldLenWithoutSpace==0)
+            {
+                alert('{!$Label.TypeMessage}');
+                return;
+            }
+                            
+            if(messageType == 'COMMENT')
+            { 
+                   var re =/@[a-zA-Z0-9]+/;
+                   var test = commentTextField.value;
+                   var reResult=test.replace(re,' ');
+                   var reResultLen=reResult.trim().length;
+                   if(reResultLen==0)
+                   {
+                       alert('{!$Label.TypeMessageForReply}');
+                       initCommentBox(messageType);
+                       return;
+                   }
+            }
+            
+            var tweetLength = getLengthOfTweet(commentTextField.value);
+            if(tweetLength>140)
+            {
+              alert('{!$Label.MessageSizeExceededError1}'+' '+(tweetLength-140)+' '+'{!$Label.MessageSizeExceededError2}');
+              cancelFormSubmit = true;
+            }  
+
+            if(!cancelFormSubmit)
+            {
+               showModal("Saving Post...", "We will send your post shortly.");
+               savePostAction();
+            }
+        }
+        
+        function checkIfSaveFailed(){
+            if(!saveFailed){
+                showModal("Sending Post...", "Awaiting confirmation from Twitter. To proceed without confirmation select the button below.");
+                sendPostAction();
+                showModalWithSkip("Sending Post...", "Awaiting confirmation from Twitter. To proceed without confirmation select the button below.");
+            }
+            else{
+                hideModal();
+            }
+        }
+
+        function checkIfDeliveryFailed(){
+            if((userFollowingError && !cancelFormSubmit && (messageType == 'PRIVATE_MESSAGE') && !pageContainsError)){
+                var response1 = window.confirm('{!$Label.TwitterUserNotFollowing} {!$Label.AtMentionComfirmation}');            
+                if(response1 == true) {
+                    messageList.selectedIndex = 0;
+                    initCommentBox('COMMENT');
+                }
+                cancelFormSubmit == true;
+             }
+             else if(!pageContainsError && cancelFormSubmit == false){
+                 checkStatusInterval = setInterval(refreshPostStatus, 1000);
+                 return;
+             }
+             hideModal();
+        } 
+        
+        function checkMessageStatus(){
+            if(postStatus.toUpperCase() == "SENT"){
+                showModal("Post Sent!", "You will now be redirected.");
+                redirect();
+            }
+            else if(postStatus != null && postStatus != "" && postStatus.toUpperCase() != "PENDING"){
+                if(messageType == 'PRIVATE_MESSAGE' && postStatus.toUpperCase() == "TWITTER_USER_NOT_FOLLOWING_YOU"){
+                    var response1 = window.confirm('{!$Label.TwitterUserNotFollowing} {!$Label.AtMentionComfirmation}');            
+                    if(response1 == true) {
+                        messageList.selectedIndex = 0;
+                        initCommentBox('COMMENT');
+                    }   
+                }
+            
+                clearInterval(checkStatusInterval);
+                hideModal();
+            }
+        }
+        
+        
+       function redirect() {
+           if(scheduleTask) {
+               scheduleTaskAction();
+           }
+           else {
+               closeSendMessage(true);
+           }
+       }
+       
+       function callShortener(url , isShortenButtonClicked)
+       {
+            shortenButtonClicked = isShortenButtonClicked;
+            if((url.trim()=='')||(url.trim()==null))
+            {
+                alert('{!$Label.EnterUrl}');
+            }else
+            {
+               callShorteningActionFunction(url);
+            }
+       } 
+       
+       function insertUrlIntoText()
+       {
+           
+         if((newUrl != '') && (newUrl!=null))
+         {       
+           if(commentTextField.value.trim()==''||commentTextField.value.trim()==null)
+           {
+               if(shortenButtonClicked == true)
+                    articleTitle = '';
+               commentTextField.value = commentTextField.value.trim()+ articleTitle +newUrl;
+           }
+           else
+           {
+                if(shortenButtonClicked == true)
+                    articleTitle = ' ';
+               commentTextField.value = commentTextField.value.trim()+ articleTitle +newUrl;
+           }
+         }
+         else
+            window.scrollTo(0,0);
+            
+           textCounter(commentTextField);
+           oldUrl.value='';
+       }
+       
+       function attachArticles(checkBoxObject,title,orginalUrl)
+       {
+           var commentTextField = document.getElementById('{!$Component.MessageEntryForm.messageEntryFormId.CommentDetailId.CommentDetailSecId.commentTextboxSection.commentTextboxId}');
+            
+           if(checkBoxObject.checked)
+           {
+                beforeShorteningUrl = orginalUrl;
+                if(commentTextField.value.trim()==''||commentTextField.value.trim()==null)
+                {
+                    articleTitle = title +' : ';
+                }
+                else
+                {
+                    articleTitle = '\n'+title +' : ';
+                } 
+                if({!urlShortening})
+                {   
+                    callShortener(orginalUrl ,false);
+                }
+                else
+                {
+                    oldNewURLMap[orginalUrl] = orginalUrl;
+
+                    newUrl = oldNewURLMap[orginalUrl];
+                    insertUrlIntoText();
+                }
+                 
+                
+           }
+           else
+           {
+               if(commentTextField.value.match('\n'+title)!=null)
+                    commentTextField.value = commentTextField.value.replace('\n'+title+' : '+oldNewURLMap[orginalUrl],'');
+               else
+               {
+                    if(commentTextField.value.match(title+' : '+oldNewURLMap[orginalUrl]+'\n')!=null)
+                        commentTextField.value = commentTextField.value.replace(title+' : '+oldNewURLMap[orginalUrl]+'\n','');
+                    else if(commentTextField.value.match(title+' : '+oldNewURLMap[orginalUrl]+' ')!=null)
+                            commentTextField.value = commentTextField.value.replace(title+' : '+oldNewURLMap[orginalUrl]+' ','');
+                        else
+                            commentTextField.value = commentTextField.value.replace(title+' : '+oldNewURLMap[orginalUrl],'');
+               }    
+               textCounter(commentTextField);
+           }
+       }
+       
+       
+       function checkBlankReplyMessage(field)
+       {
+            var re =/@[a-zA-Z0-9]+/;
+            var test = commentTextField.value;
+            var reResult=test.replace(re,' ');
+            var reResultLen=reResult.trim().length;
+            if(reResultLen==0)
+            {
+                alert ('{!$Label.TypeMessageForReply}');
+                cancelFormSubmit = true;
+                return;
+            }else
+            {
+                cancelFormSubmit = false;
+                messageType = 'COMMENT';
+                savePostAction();
+            }
+       }
+       
+           
+        function disableArticlePanel() {
+            for(i=0;i<numberOfArticles;i++) {
+                document.getElementById('MessageEntryForm:messageEntryFormId:articleBlockId:articleSectionId:articleTableId:'+i+':attachArticleCheckBox').disabled = true;
+            }
+        }
+       
+        function enableArticlePanel() {
+            for(i=0;i<numberOfArticles;i++)
+                document.getElementById('MessageEntryForm:messageEntryFormId:articleBlockId:articleSectionId:articleTableId:'+i+':attachArticleCheckBox').disabled = false;
+        }
+       
+        function closeSendMessage(refreshTab) {
+            if(sforce.console.isInConsole()) {
+                closeTab();
+                if(refreshTab) {
+                    refreshPrimaryTab();
+                }
+            } else {
+                openUrl('/{!replyToPost.ParentId}');
+            }
+        }
+        
+        function openUrl(a) {
+            window.location.href = a;
+        }
+
+       
+        <!-- Service Cloud functions -->
+        
+        var callCloseTab = function callCloseTab(result) { 
+            sforce.console.closeTab(result.id);
+        };
+        
+        var refreshPrimaryTabById = function refreshPrimaryTabById(result) {
+            sforce.console.refreshPrimaryTabById(result.id, true);
+        };
+        
+        function setTabTitle(title) {
+            sforce.console.setTabTitle(title);
+        }
+        
+        function closeTab() { 
+            sforce.console.getEnclosingTabId(callCloseTab);
+        }
+        
+        function refreshPrimaryTab() {
+            sforce.console.getEnclosingPrimaryTabId(refreshPrimaryTabById);
+        } 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        function getLengthOfTweet(tweetText){
+            var ACCEPTABLE_BEGINNING_CHARACTERS_REGEX = "^|\\s|[\"%(),:;<=>`{}~'\\^\\?\\|\\*\\+\\.\\[\\]\\\\]";
+            var ACCEPTABLE_ENDING_CHARACTERS_REGEX = "\\s|[!\"%(),-/:;<=>_`{}~'\\$\\^\\?\\|\\*\\+\\.\\[\\]\\\\]|$";
+            var URL_SAFE_CHAR_REGEX = "[^\\s\\$\\?\\|\\^~\\[\\]\\(\\),;@<>#{}\\\\]";
+            var PROTOCOL_REGEX = "(https?://|ftps?://)?";
+            var SERVER_REGEX = "([A-z0-9]+\\.)*";
+            var GENERIC_TOP_LEVEL_DOMAIN_REGEX = "aero|asia|biz|cat|com|coop|info|int|jobs|mobi|museum|name|net|org|pro|tel|travel|xxx";
+            var US_TOP_LEVEL_DOMAIN_REGEX = "edu|gov|mil";
+            var COUNTRY_TOP_LEVEL_DOMAIN_REGEX = "ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|ss|st|su|sv|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw";
+            var TOP_LEVEL_DOMAIN_REGEX = "(" + GENERIC_TOP_LEVEL_DOMAIN_REGEX + "|" + US_TOP_LEVEL_DOMAIN_REGEX + "|" + COUNTRY_TOP_LEVEL_DOMAIN_REGEX + ")";
+            var DOMAIN_REGEX = "[A-z0-9]+\\." + TOP_LEVEL_DOMAIN_REGEX;
+            var FILEPATH_REGEX = "(/" + URL_SAFE_CHAR_REGEX  + "*)?";
+            var QUERY_PARAM_REGEX = "\\w+=" + URL_SAFE_CHAR_REGEX + "+";
+            var QUERY_STRING_REGEX = "(\\?(((" + QUERY_PARAM_REGEX + "&)*(" + QUERY_PARAM_REGEX + "))|(\\w+)))?";
+            var FRAGMENT_REGEX = "(#" + URL_SAFE_CHAR_REGEX  + "+)?";
+            var PORT_REGEX = "(:\\d{1,5})?";
+            var TWITTER_URL_REGEX = PROTOCOL_REGEX + SERVER_REGEX + DOMAIN_REGEX + PORT_REGEX + FILEPATH_REGEX + QUERY_STRING_REGEX + FRAGMENT_REGEX;    
+            var TWITTER_URL_SEARCH_REGEX = "(" + ACCEPTABLE_BEGINNING_CHARACTERS_REGEX + ")(" + TWITTER_URL_REGEX + ")(" + ACCEPTABLE_ENDING_CHARACTERS_REGEX + ")";
+        
+            var searchPattern = new RegExp(TWITTER_URL_SEARCH_REGEX, "im");
+            var urlPattern = new RegExp(TWITTER_URL_REGEX, "i");
+            var firstMatch = searchPattern.test(tweetText) ? tweetText.match(searchPattern)[0].match(urlPattern)[0] : null;
+            
+            if(firstMatch == null)
+                return tweetText.length;
+            
+            var linkChars = (firstMatch.indexOf('https') == 0) ? 23 : 22;
+            
+			
+            return tweetText.indexOf(firstMatch) + linkChars + getLengthOfTweet(tweetText.substr(tweetText.indexOf(firstMatch) + firstMatch.length));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+       
+    </script>
+  <apex:outputPanel id="attachArticlePanel">
+  <script>
+        if(shortenButtonClicked == false) {
+            oldNewURLMap[beforeShorteningUrl] = newUrl; //Map between orginal and shortened url
+        }       
+    </script>   
+</apex:outputPanel>
+<!--Include the stylesheet file from static resource--> 
+<apex:stylesheet value="{!URLFOR($Resource.R6Service__TwitterPageStyle,'TwitterPageStyle.css')}"/>
+   <style>
+    .CharLimitExceeded{
+        color: Red;
+        font-weight: bold;
+    }
+    </style>
+<!--Include the javascript file from static resource--> 
+<!--<apex:includeScript value="{!$Resource.TwitterHelper}/TwitterHelper.js" />-->
+    
+</apex:page>

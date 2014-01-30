@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HomePageComponent xmlns="http://soap.sforce.com/2006/04/metadata">
+    <links>Getting_Started_Videos</links>
+    <links>Getting_Started_Guide</links>
+    <links>Remedyforce_Help</links>
+    <links>Remedyforce_Community</links>
+    <links>Contact_Us</links>
+    <links>Release_Notes</links>
+    <links>User_s_Guide_for_Analysts</links>
+    <links>User_Guide_for_Self_Service_clients</links>
+    <links>Administrator_s_Guide</links>
+    <pageComponentType>links</pageComponentType>
+</HomePageComponent>

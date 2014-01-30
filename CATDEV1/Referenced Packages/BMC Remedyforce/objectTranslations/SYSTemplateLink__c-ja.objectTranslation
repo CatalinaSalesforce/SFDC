@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>テンプレートのリンク設定</value>
+    </caseValues>
+    <fields>
+        <label>FKリンク設定テンプレート</label>
+        <name>linkedTemplateId__c</name>
+        <relationshipLabel>SYSテンプレートリンク(FKリンク設定テンプレート)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>順序番号</label>
+        <name>orderNumber__c</name>
+    </fields>
+    <fields>
+        <label>FK親テンプレート</label>
+        <name>parentTemplateId__c</name>
+        <relationshipLabel>SYSテンプレートリンク(FK親テンプレート)</relationshipLabel>
+    </fields>
+    <nameFieldLabel><!-- Name --></nameFieldLabel>
+</CustomObjectTranslation>

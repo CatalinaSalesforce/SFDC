@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexComponent xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>26.0</apiVersion>
+    <description>A pair of picklists where you can move options from one picklist to the other picklist.
+Works like a fancy multi-select picklist.</description>
+    <label>Transfer Select List</label>
+</ApexComponent>

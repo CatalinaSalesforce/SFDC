@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Problème</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Problèmes</value>
+    </caseValues>
+    <fields>
+        <help><!-- Use this field to add additional information to the email even after selecting the email template. --></help>
+        <label>Infos supplémentaires e-mail</label>
+        <name>Additional_email_information__c</name>
+    </fields>
+    <fields>
+        <label><!-- All Tasks Closed Controller --></label>
+        <name>AllTaskCloseController__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the problem&apos;s category. Categories allow you to classify the problem using standard classifications, which can be easily tracked for reporting purposes. --></help>
+        <label>Catégorie~</label>
+        <name>Category__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to select the date when the problem is closed. --></help>
+        <label>Date de fermeture</label>
+        <name>Closed_Date_Time__c</name>
+    </fields>
+    <fields>
+        <label>Catégorie de clôture</label>
+        <name>ClosureCategory__c</name>
+        <picklistValues>
+            <masterLabel>Duplicate</masterLabel>
+            <translation><!-- Duplicate --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Resolved/Fixed</masterLabel>
+            <translation><!-- Resolved/Fixed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unable to resolve</masterLabel>
+            <translation><!-- Unable to resolve --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Workaround created</masterLabel>
+            <translation><!-- Workaround created --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Conforme</label>
+        <name>Compliant__c</name>
+    </fields>
+    <fields>
+        <label>Date d&apos;échéance</label>
+        <name>Due_Date_Time__c</name>
+    </fields>
+    <fields>
+        <label>Diffusion</label>
+        <name>FKBroadcast__c</name>
+        <relationshipLabel>Problèmes</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the problem&apos;s category. Categories allow you to classify the problem using standard classifications, which can be easily tracked for reporting purposes. --></help>
+        <label>Catégorie</label>
+        <name>FKCategory__c</name>
+        <relationshipLabel>Problèmes</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Staff ID of the currently logged-on staff. If required, you can use this field to select a different staff from the currently logged-on staff. --></help>
+        <label>ID personnel fermé par</label>
+        <name>FKClosed_By__c</name>
+        <relationshipLabel>Problèmes</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the problem&apos;s level of impact. The level of impact and the urgency are used to calculate the priority of the problem. --></help>
+        <label><!-- Impact --></label>
+        <name>FKImpact__c</name>
+        <relationshipLabel>Problèmes</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. --></help>
+        <label>Priorité</label>
+        <name>FKPriority__c</name>
+        <relationshipLabel>Problèmes</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Personnel</label>
+        <name>FKStaff__c</name>
+        <relationshipLabel>Problèmes (personnel)</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the problem. --></help>
+        <label>Statut</label>
+        <name>FKStatus__c</name>
+        <relationshipLabel>Problèmes</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the problem needs to be completed. The urgency and the level of impact are used to calculate the priority of the problem. --></help>
+        <label>Urgence</label>
+        <name>FKUrgency__c</name>
+        <relationshipLabel>Problèmes</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the problem&apos;s level of impact. The level of impact and the urgency are used to calculate the priority of the problem. --></help>
+        <label><!-- Impact~ --></label>
+        <name>Impact__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the problem is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label>Inactif</label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if you want to indicate that the problem is a known error. A known error is a problem for which the root cause is identified. --></help>
+        <label>Erreur connue</label>
+        <name>Known_Error__c</name>
+    </fields>
+    <fields>
+        <label>Nombre de changements associés</label>
+        <name>Number_of_linked_Changes__c</name>
+    </fields>
+    <fields>
+        <label>Nombre d&apos;incidents associés</label>
+        <name>Number_of_linked_Incidents__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the problem was created. --></help>
+        <label>Ouvert</label>
+        <name>Open_Date_Time__c</name>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. --></help>
+        <label>Priorité~</label>
+        <name>Priority__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter a description of the problem. --></help>
+        <label>*Description</label>
+        <name>Problem_Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to specify what has been done to fix the problem. Provide detailed solution instructions. For example, describe the configuration setting that must be applied to a configuration item while installing the configuration item. --></help>
+        <label>Résolution</label>
+        <name>Problem_Resolution__c</name>
+    </fields>
+    <fields>
+        <label>Source du problème</label>
+        <name>Problem_Source__c</name>
+        <picklistValues>
+            <masterLabel>Client</masterLabel>
+            <translation><!-- Client --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Event Trigger</masterLabel>
+            <translation><!-- Event Trigger --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Incident</masterLabel>
+            <translation><!-- Incident --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Staff</masterLabel>
+            <translation><!-- Staff --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Affich. boîte dialogue Date d&apos;échéance</label>
+        <name>ShowDueDateDialog__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Staff ID of the currently logged-on staff. If required, you can use this field to select a different staff from the currently logged-on staff. --></help>
+        <label>ID personnel fermé par</label>
+        <name>Staff_ID_Closed_By__c</name>
+    </fields>
+    <fields>
+        <label>Etat</label>
+        <name>State__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the problem. --></help>
+        <label>Statut~</label>
+        <name>Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- Task Closed Controller --></label>
+        <name>Task_Closed_Controller__c</name>
+    </fields>
+    <fields>
+        <label>Durée totale (minutes)</label>
+        <name>Total_Duration__c</name>
+    </fields>
+    <fields>
+        <label>Nombre de mises à jour d&apos;enregistrement</label>
+        <name>UpdateCount__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the problem needs to be completed. The urgency and the level of impact are used to calculate the priority of the problem. --></help>
+        <label>Urgence~</label>
+        <name>Urgency__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter the temporary or permanent alternative to fixing the current problem, if the alternative is available. --></help>
+        <label>Solution de contournement</label>
+        <name>Work_Around__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter the temporary or permanent alternative to fixing the current problem, if the alternative is available. --></help>
+        <label>Détails de la solution de contournement</label>
+        <name>Workaround_details__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays the name of the queue to which the problem was last assigned. --></help>
+        <label>Dernière file d&apos;attente</label>
+        <name>queueName__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field will contain value first 255 character value of description field. --></help>
+        <label>Brève description</label>
+        <name>shortDescription__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Remedyforce Problem Light 1.0</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Problem Details --></label>
+            <section>Problem Details</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Remedyforce Problem Version 3.0</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Problem Details --></label>
+            <section>Problem Details</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status Details --></label>
+            <section>Status Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>N° de problème</nameFieldLabel>
+    <namedFilters>
+        <informationalMessage>Sélectionner un problème actif</informationalMessage>
+        <name>nf_01I90000000dvDGEAY_00N90000003dIRDEA2</name>
+    </namedFilters>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage>Ce problème est fermé. Rouvrez-le pour le modifier.</errorMessage>
+        <name>Cannot_Update_Closed_Problem</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Sélectionnez le champ Erreur connue pour enregistrer la solution de contournement.</errorMessage>
+        <name>KnownErrorMustBeCheckedForWorkaround</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>La date d&apos;échéance doit être ultérieure à la date d&apos;ouverture.</errorMessage>
+        <name>dueDateMustBeAfterOpenedDate</name>
+    </validationRules>
+    <webLinks>
+        <label>Retour à la liste</label>
+        <name>Back_to_list</name>
+    </webLinks>
+    <webLinks>
+        <label>Arborescence de catégorie</label>
+        <name>Category_Tree</name>
+    </webLinks>
+    <webLinks>
+        <label>Fermer</label>
+        <name>Close</name>
+    </webLinks>
+    <webLinks>
+        <label>Créer un article de connaissance</label>
+        <name>Create_Knowledge_Article</name>
+    </webLinks>
+    <webLinks>
+        <label>Recherche de connaissance</label>
+        <name>Knowledge_Articles</name>
+    </webLinks>
+    <webLinks>
+        <label>Explorateur d&apos;EC</label>
+        <name>Launch_CI_Explorer</name>
+    </webLinks>
+    <webLinks>
+        <label>Nouveau</label>
+        <name>New</name>
+    </webLinks>
+    <webLinks>
+        <label>Processus de gestion de problème</label>
+        <name>Problem_Management_Process</name>
+    </webLinks>
+    <webLinks>
+        <label>Manifeste de problème</label>
+        <name>Problem_Manifest</name>
+    </webLinks>
+    <webLinks>
+        <label>Rouvrir le problème</label>
+        <name>Reopen_Problem</name>
+    </webLinks>
+    <webLinks>
+        <label>Envoyer un courrier électronique</label>
+        <name>Send_Email</name>
+    </webLinks>
+    <webLinks>
+        <label>Cibles du service</label>
+        <name>Service_Targets</name>
+    </webLinks>
+    <webLinks>
+        <label>Description et résolution standard</label>
+        <name>Standard_Description_and_Resolution</name>
+    </webLinks>
+</CustomObjectTranslation>

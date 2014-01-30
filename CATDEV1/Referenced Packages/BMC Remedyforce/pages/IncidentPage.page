@@ -1,0 +1,2174 @@
+<apex:page cache="true" showHeader="false" 
+controller="BMCServiceDesk.IncidentController" contentType="{!contetnTypeForIE}" 
+standardStylesheets="false" extensions="BMCServiceDesk.ClientInfo,BMCServiceDesk.JSRemoteActions">
+    <c:CommonIncludes />
+    <!-- overrides to base library -->
+    <link rel="stylesheet" type="text/css"  href="{!$Resource.ExtJSUX}/ex/ux/css/Portal.css" />
+    <link rel="stylesheet" type="text/css"  href="{!$Resource.ExtJSUX}/ex/ux/css/GroupTab.css" />
+    <link rel="stylesheet" type="text/css"  href="{!$Resource.SDEFStyles}/SIStyleSheet.css" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/GroupTabPanel.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/GroupTab.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/Portal.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/PortalColumn.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/Portlet.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/portal/sample-grid.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/JSTemplate.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/Incident.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS31}/src/locale/ext-lang-{!userlocale}.js" />    
+    <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/Incident.css" />
+
+<script>
+var KMdescription = '';
+var KMids ='';
+var error; 
+var savedone;
+var stageHTMLPrev = '{!JSENCODE(StageHTML)}'; 
+var globalSearch = '{!JSENCODE($Label.GlobalSearch)}'; 
+var stgName = '{!JSENCODE(closedStageName)}'; 
+var KMSearchLabel = '{!JSENCODE($Label.IncidentKnowledgeSearchButtonToolTip)}';
+var pageUrl= document.location.href.split('apex/');
+var baseElementId;
+var baseElementServiceName;
+var baseElementName;
+var brdCastName ; 
+var brdCastNameId;
+var baseElmID;
+var displayIncEle = true;
+var automaticupdateduedate = {!recalculateDueDate};
+var dateValue = '{!filterClauseDate}';
+var dateClause = escape('(end_date__c = null or end_date__c >=' + dateValue + ')');
+var incidentCloseError = '{!JSENCODE($Label.IncidentCloseError)}';
+var copymetrue = {!copyme};
+var incidentHeader = '{!JSENCODE($ObjectType.Incident__c.label)}';
+var LinkedToClient = '{!JSENCODE($Label.LinkedToClient)}';
+var remoteCallFlag = false;
+var clntPhone;
+var clntExtn;
+var clntOrgniation;
+var dueDateCalculationOptionJS = '{!$Component.incidentForm.pbarId.Incidentdetail.dueDateCalculationOption}';
+var labelTooltipMaximize = '{!JSENCODE($Label.TooltipMaximize)}',
+    labelTooltipRestore = '{!JSENCODE($Label.TooltipRestore)}';
+     Ext.ns("IncidentPage");
+            IncidentPage.Labels = {
+                SavedSuccessfully: '{!JSENCODE($Label.SavedSuccessfully)}',
+                CIExpCIExplorer: '{!JSENCODE($Label.CIExpCIExplorer)}',
+                LaunchCIExplorer :'{!JSENCODE($Label.LaunchCIExplorer)}',
+                ConfigurationItemsExplorer: '{!JSENCODE($Label.ConfigurationItemsExplorer)}',
+                ValidDateTime: '{!JSENCODE($Label.ValidDateTime)}',
+                IncidentWindowHeaderSearchPage: '{!JSENCODE($ObjectType.Incident__c.label)}',
+                TextAreaOverflow: '{!JSENCODE($Label.TextAreaOverflow)}',
+                Description: '{!JSENCODE($ObjectType.Incident__c.fields.incidentDescription__c.label)}',
+                Resolution: '{!JSENCODE($ObjectType.Incident__c.fields.incidentResolution__c.label)}',
+                Delete: '{!JSENCODE($Label.Delete)}',
+                ComposeEmailPageHeader: '{!JSENCODE($Label.ComposeEmailPageHeader)}',
+                DeleteIncidentPage: '{!JSENCODE($Label.DeleteIncidentPage)}',
+                SelectFrom: '{!JSENCODE($Label.SelectFrom)}',
+                Queue: '{!JSENCODE($Label.Queue)}',
+                IncidentProcess: '{!JSENCODE($Label.IncidentProcess)}',
+                AlignabilityProcessModel: '{!JSENCODE($Label.AlignabilityProcessModel)}',
+                New: '{!JSENCODE($Label.New)}',
+                Save: '{!JSENCODE($Label.Save)}',
+                Copy: '{!JSENCODE($Label.Copy)}',
+                Delete: '{!JSENCODE($Label.Delete)}',
+                Reset: '{!JSENCODE($Label.Refresh)}',
+                DurationError: '{!JSENCODE($Label.DurationError)}',
+                Note: '{!JSENCODE($ObjectType.Incident__c.fields.note__c.label)}',
+                ViewOpenIncidentsFor: '{!JSENCODE($Label.ViewOpenIncidentsFor)}',
+                IncidentsforClient: '{!JSENCODE($Label.IncidentsforClient)}',
+                IncidentsforCategory: '{!JSENCODE($Label.IncidentsforCategory)}',
+                AssignTo: '{!JSENCODE($Label.AssignTo)}',
+                IncidentsStaff: '{!JSENCODE($Label.IncidentsStaff)}',
+                IncidentsSuggestedStaff: '{!JSENCODE($Label.IncidentsSuggestedStaff)}',
+                IncidentMyself: '{!JSENCODE($Label.IncidentMyself)}',
+                IncidentMemberof: '{!JSENCODE($Label.IncidentMemberof)}',
+                Queue: '{!JSENCODE($Label.Queue)}',
+                Actions: '{!JSENCODE($Label.Actions)}',
+                IncidentClose: '{!JSENCODE($Label.IncidentClose)}', 
+                IncidentQuickClose: '{!JSENCODE($Label.IncidentQuickClose)}', 
+                IncidentReopenIncident: '{!JSENCODE($Label.IncidentReopenIncident)}', 
+                IncidentIncrementCallCounter: '{!JSENCODE($Label.IncidentIncrementCallCounter)}',
+                IncidentResponded: '{!JSENCODE($Label.IncidentResponded)}', 
+                Template: '{!JSENCODE($Label.Template)}',
+                IncidentMgmtProcess: '{!JSENCODE($Label.IncidentMgmtProcess)}',
+                Inactive: '{!JSENCODE($ObjectType.Incident__c.fields.inactive__c.label)}',
+                TooltipIncidentInactive: '{!JSENCODE($ObjectType.Incident__c.fields.inactive__c.label)}',
+                PreviousRecord: '{!JSENCODE($Label.PreviousRecord)}',
+                NextRecord: '{!JSENCODE($Label.NextRecord)}',
+                DragResizeClickCollapse: '{!JSENCODE($Label.DragResizeClickCollapse)}',
+                ClickToExpand: '{!JSENCODE($Label.ClickToExpand)}',
+                MsgNoAccessPerm: '{!JSENCODE($Label.MsgNoAccessPerm)}',
+                SelectFrom: '{!JSENCODE($Label.SelectFrom)}',
+                CloseIncident: '{!JSENCODE($Label.CloseIncident)}',
+                IncidentRelatedBroadcastsChanges: '{!JSENCODE($Label.IncidentRelatedBroadcastsChanges)}',
+                InsufficentDeletePrivilege: '{!JSENCODE($Label.InsufficentDeletePrivilege)}',
+                Email: '{!JSENCODE($Label.Email)}',
+                FollowUnfollow: '{!JSENCODE($Label.FollowUnfollow)}',
+                PM_netwokLatency: '{!JSENCODE($Label.PM_netwokLatency)}',
+                PM_PageLoad: '{!JSENCODE($Label.PM_PageLoad)}',
+                DeletedRecord: '{!JSENCODE($Label.DeletedRecord)}',
+                Information: '{!JSENCODE($Label.Information)}',
+                TextAreaOverflowForChatter: '{!JSENCODE($Label.TextAreaOverflowForChatter)}',
+                TextAreaOverflowForChatterComment: '{!JSENCODE($Label.TextAreaOverflowForChatterComment)}',
+                EmptyValueForChatterComment: '{!JSENCODE($Label.EmptyValueForChatterComment)}',
+                ConfirmHomePage: '{!JSENCODE($Label.ConfirmHomePage)}', 
+                ChatterDeletePost: '{!JSENCODE($Label.ChatterDeletePost)}',
+                ChatterDeleteComment: '{!JSENCODE($Label.ChatterDeleteComment)}',
+                ServiceTargets: '{!JSENCODE($Label.SLM_ServiceTargets)}',
+                OverwriteWarning:'{!JSENCODE($Label.OverwriteWarning)}',
+                ExtjsMessageYes:'{!JSENCODE($Label.ExtjsMessageYes)}',
+                ServiceRequestLabel: '{!JSENCODE($Label.ServiceRequestDetail)}',
+                ClosedStage : '{!JSENCODE($Label.ClosedStage)}',
+                SuggestedExperts : '{!JSENCODE($Label.SuggestedExperts)}',
+                replaceUnsaved : '{!JSENCODE($Label.replaceUnsaved)}'
+            }
+    Ext.ns("IncidentPageComp");
+         IncidentPageComp.ComponentVars = {
+            IncidentDescription: '{!$Component.incidentForm.incident_incidentDescription__c}',
+            IncidentNotes: '{!$Component.incidentForm.incident_incidentNote__c}',
+            IncidentDuration: '{!$Component.incidentForm.incident_incidentDuration__c}',
+            IncidentResolution: '{!$Component.incidentForm.incident_incidentResolution__c}',
+            IsPriorityChanged: '{!$Component.incidentForm.pbarId.Incidentdetail.Priority__c__isPriorityChanged}',
+            DueDateCalculationOption: '{!$Component.incidentForm.pbarId.Incidentdetail.dueDateCalculationOption}',
+            StatusId: '{!$Component.incidentForm.pbarId.Incidentdetail.Status__c_id_name}',
+            Status_Id: '{!$Component.incidentForm.pbarId.Incidentdetail.Status__c_id_id}',
+            ImpactIDName: '{!$Component.incidentForm.pbarId.Incidentdetail.Impact__c_id_name}',
+            UrgencyIDName: '{!$Component.incidentForm.pbarId.Incidentdetail.Urgency__c_id_name}',
+            IncidentForm: '{!$Component.incidentForm}',
+            DueDateTime: '{!$Component.incidentForm.pbarId.Incidentdetail.Incident__c_id_duedatetime__c}',
+            UserLastName: '{!$Component.incidentForm.User_id_lastname}',
+            PerformancePanel: '{!$Component.incidentForm.pbarId.PerformancepanelBar.PerformancePanel}',
+            TestPanelID: '{!$Component.incidentForm.testpanelId}',
+            BaseElementIDName: '{!$Component.incidentForm.pbarId.CIDetail.BMC_BaseElement__c_id_name__c}',
+            CIExpButton: '{!$Component.incidentForm.pbarId.CIDetail.CIExpBut}',
+            CategoryIDName: '{!$Component.incidentForm.Category__c_id_name}',
+            UserID: '{!$Component.incidentForm.User_id_id}',
+            TipUserID: '{!$Component.incidentForm.clientHiddeninput}',
+            UserName: '{!$Component.incidentForm.User_id_username}',
+            CategoryID: '{!$Component.incidentForm.Category__c_id_id}',
+            CategoryFKUrgency: '{!$Component.incidentForm.Category__c_id_fkurgency__c}',
+            UrgencyIDName: '{!$Component.incidentForm.pbarId.Incidentdetail.Urgency__c_id_name}',
+            UrgencyID: '{!$Component.incidentForm.pbarId.Incidentdetail.Urgency__c_id_id}',
+            ImpactID: '{!$Component.incidentForm.pbarId.Incidentdetail.Impact__c_id_id}',
+            BroadcastIDName: '{!$Component.incidentForm.pbarId.broadcastDetails.Broadcasts__c_id_name}',
+            BroadcastID: '{!$Component.incidentForm.pbarId.broadcastDetails.Broadcasts__c_id_id}',
+            ProblemIDName: '{!$Component.incidentForm.pbarId.Incidentdetail.Problem__c_id_name}',
+            ProblemID: '{!$Component.incidentForm.pbarId.Incidentdetail.Problem__c_id_id}',
+            PBarItemIDCD: '{!$Component.pbarId.pbarItemIdCD}',
+            clientFKUrgency: '{!$Component.incidentForm.User_id_fkurgency__c}', 
+            usercalledID: '{!$Component.incidentForm.pbarId.Incidentdetail.usercalledID}',
+            reqDefinationID: '{!$Component.incidentForm.SRM_RequestDefinition__c_id_id}',
+            reqDetailID: '{!$Component.incidentForm.SRM_RequestDetail__c_id_id}', 
+            serviceRequestTitle:'{!$Component.incidentForm.SRM_RequestDefinition__c_id_servicerequesttitle__c}',
+            serviceIDName:'{!$Component.incidentForm.pbarId.CIDetail.BMC_BusinessService__c_id_instance_name__c}',
+            businessServiceID:'{!$Component.incidentForm.pbarId.CIDetail.BMC_BusinessService__c_id_fkbmc_baseelement__c}',
+            offeringNameEleID:'{!$Component.incidentForm.pbarId.CIDetail.BMC_BusinessService__c_id_instance_name__c__x_1}',
+            offeringIdEleID:'{!$Component.incidentForm.pbarId.CIDetail.BMC_BusinessService__c_id_fkbmc_baseelement__c__x_1}',
+            staff_user_id: '{!$Component.incidentForm.pbarId.staffAssignmentPanel.staffHiddeninput}',
+            staff_firstname:'{!$Component.incidentForm.pbarId.staffAssignmentPanel.staff_firstname}',
+            staff_laststname:'{!$Component.incidentForm.pbarId.staffAssignmentPanel.staff_laststname}',
+            staff_profilename:'{!$Component.incidentForm.pbarId.staffAssignmentPanel.staff_profilename}',
+            staff_phone:'{!$Component.incidentForm.pbarId.staffAssignmentPanel.staff_phone}',
+            staff_extension:'{!$Component.incidentForm.pbarId.staffAssignmentPanel.staff_extension}',
+            staff_queue:'{!$Component.incidentForm.pbarId.staffAssignmentPanel.staff_queue}',
+            incidentOwnerId:'{!$Component.incidentForm.pbarId.staffAssignmentPanel.incidentOwnerId}'
+         }
+
+
+var CustomFieldCorrectValueErrorMsg = '{!JSENCODE($Label.CorrectValueErrorMsg)}';
+var CustomFieldInvalidEmail = '{!JSENCODE($Label.InvalidEmail)}';
+var CustomFieldCMDBDateError = '{!JSENCODE($Label.CMDBDateError)}';
+var CustomFieldrequiredFieldMsg = '{!JSENCODE($Label.requiredAllFieldBRActionPage)}';
+
+var mailConversationHelpLink = "{!$Resource.SDEFHelp}/email_conversation.htm";
+var servertime1='';
+
+var commontime = '';
+var labelIncidentPlural = "{!JSENCODE($ObjectType.Incident__c.LabelPlural)}";
+var starttime1 = '{!starttime}';
+var orgNamespace = '{!orgNamespace}'; 
+var testdate = new Date();
+var testtime = testdate.getTime();
+var iFrameSrc;
+var cookieName= 'ConfigureSI'+'{!JSENCODE($User.Id)}';
+var cookieValue = Ext.util.Cookies.get(cookieName);
+var isIncInactive= '{!incident.inactive__c}';
+var cilink_record = '{!cilink}';
+var accountPopupFlag = false, selectedAccountId = null;
+var categoryRequired = '{!categoryRequired}';
+
+        function getCookieValue(){
+            return cookieValue;
+        }
+       
+       
+        function getWID(){
+            return '{!JSENCODE($CurrentPage.parameters.wid)}';
+        }
+
+ function getModName(){
+            return '{!JSENCODE($CurrentPage.parameters.moduleName)}';
+        }
+
+        function getParentWid(){
+            return '{!JSENCODE($CurrentPage.parameters.parentWid)}';
+        }
+
+        function getIsLookUp(){
+            return '{!JSENCODE($CurrentPage.parameters.islookup)}';
+        }  
+
+        function getIsDirect(){
+            return '{!JSENCODE($CurrentPage.parameters.isDirect)}';
+        }
+
+        function getID(){
+            return '{!JSENCODE($CurrentPage.parameters.id)}';
+        }
+
+        function getClientID(){
+            return  '{!JSENCODE($CurrentPage.parameters.Userid)}';
+        }
+       function getAccountID(){
+         var accName= document.getElementById('{!$Component.incidentForm.Account_id_name}').value;
+         if(accName!='' && accName!=null)
+          return document.getElementById('{!$Component.incidentForm.Account_id_id}').value;
+         else
+          return ''; 
+        }
+         function getCIelemID()
+        {
+         var CIName= document.getElementById('{!$Component.incidentForm.pbarId.CIDetail.BMC_BaseElement__c_id_name__c}').value;
+         if(CIName!='' && CIName!=null)
+         return document.getElementById('{!$Component.incidentForm.pbarId.CIDetail.BMC_BaseElement__c_id_id}').value;
+         else
+           return '';
+        }
+         function getServiceElemID()
+        {
+         var CIName= document.getElementById('{!$Component.incidentForm.pbarId.CIDetail.BMC_BusinessService__c_id_instance_name__c}').value;
+         if(CIName!='' && CIName!=null)
+         return document.getElementById('{!$Component.incidentForm.pbarId.CIDetail.BMC_BusinessService__c_id_fkbmc_baseelement__c}').value;
+         else
+           return '';
+        }
+        function getUserID(){
+         var usrName= document.getElementById('{!$Component.incidentForm.User_id_username}').value;
+         if(usrName!='' && usrName!=null)
+           return document.getElementById('{!$Component.incidentForm.User_id_id}').value;
+         else
+           return ''; 
+        }
+ function getSDFStylesResPath(){
+          return '{!$Resource.SDEFStyles}';
+        }
+
+  function getSDEFExtJSResPath(){
+          return '{!$Resource.SDEFExtJS}';
+        }  
+  function getPortelTemplateId(){
+        return  '{!JSENCODE($CurrentPage.parameters.portletTemplateId)}';
+    }
+  function getSDEFCommonJSResPath(){
+          return '{!$Resource.SDEFCommonJS}';
+        }  
+ 
+function getProfileID(){
+            return '{!$Profile.Id}';
+        }
+
+function getAssignStaffState(){
+            return {!assignStaffState};
+        }
+
+function getAssignSuggestedStaffState(){
+            return {!assignSuggestedStaffState};
+        }
+
+ 
+        
+function getProfileName(){
+            return '{!userProfileName}';
+        }
+
+function getAssignMemberOfAdminState(){
+            return {!assignMemberOfAdminState};
+        }
+
+function getAssignQueueState(){
+            return {!assignQueueState};
+        }
+function getInactive(){
+            return {!incident.inactive__c};
+        }
+
+function getStateVar(){
+            return {!incident.BMCServiceDesk__state__c};
+        }
+function getNoRightsToViewEdit(){
+            return {!NoRightsToViewEdit};
+        }
+function getIncidentFeed(){
+            return {!incidentFeed};
+        }
+function setToolBarState(){
+            var toolBarEle = Ext.getCmp('tbarPanelId').getTopToolbar();
+            toolBarEle.doLayout();
+        }
+function isRecordDeleted(){
+        return {!isRecDeleted};
+    }
+function getIsChangeCreatable(){
+    return {!isChangeCreatable};
+}
+function getRequestDetailID(){
+    return '{!incident.BMCServiceDesk__FKRequestDetail__c}';
+}
+function pasteRes(res,KMId,type){
+    var str = res;
+    str=str.replace(/<\s*br\/*>/gi, " ");
+    str=str.replace(/<\s*a.*href="(.*?)".*>(.*?)<\/a>/gi, " $2 (Link->$1) ");
+    str=str.replace(/<\s*\/*.+?>/ig, " ");
+    str=str.replace(/ {2,}/gi, " ");
+    str=str.replace(/\n+\s*/gi, "");
+    
+    if(type == 'text'){
+        str = htmlDecode(str);
+    } 
+    
+    if(document.getElementById(IncidentPageComp.ComponentVars.IncidentResolution).value == ''){
+        document.getElementById(IncidentPageComp.ComponentVars.IncidentResolution).value += str;
+    } else {
+        if(type == 'text'){
+            document.getElementById(IncidentPageComp.ComponentVars.IncidentResolution).value +=' '+ str;
+        } else {
+            document.getElementById(IncidentPageComp.ComponentVars.IncidentResolution).value +='\n'+ str;
+        }
+    }
+
+    //Rahul add
+    KMids = KMId ;
+}
+
+function getapplyTemp(){
+ setcheckforTemplate = '{!showtemplatecheck}'; 
+ overwrite = '{!overwrite}'; 
+}
+function getIncidentName(){
+    return "#{!JSENCODE(incidentName)}";
+}
+
+var isAutocomplete = false;
+var selectId=0;
+var selectClientId=0;
+var iKeyCodeEvt;
+// Added for Autocomplete   
+var impactData = window.parent.parent.impactData;  
+var urgencyData = window.parent.parent.urgencyData;
+var list= '[]';
+
+
+var catId='{!$Component.incidentForm.Category__c_id_name}';
+var impId='{!$Component.incidentForm.pbarId.Incidentdetail.Impact__c_id_name}';
+var urgId='{!$Component.incidentForm.pbarId.Incidentdetail.Urgency__c_id_name}';
+var selectIdForAutoCom;
+var divIdForAutoCom;
+var fieldForAutoCom;
+var eventFoeAutoCom;
+var clUname='{!$Component.incidentForm.User_id_username}';
+var clFname='{!$Component.incidentForm.User_id_firstname}';
+var clLname='{!$Component.incidentForm.User_id_lastname}';
+var clPhone='{!$Component.incidentForm.pbarId.pbarItemIdCD.User_id_phone}';
+var clExtension='{!$Component.incidentForm.pbarId.pbarItemIdCD.User_id_extension}';
+var clAccname='{!$Component.incidentForm.pbarId.pbarItemIdCD.User_id_organization}';
+var accname='{!$Component.incidentForm.Account_id_name}';
+var incAccountId='{!$Component.incidentForm.Account_id_id}';
+</script>
+
+    
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/CustomFieldsFormGeneral.js"/>
+    <apex:stylesheet value="{!$Resource.BMCServiceDesk__ChatterCSS}/chatter.css" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/Autocomplete.js"/> 
+    <c:UserContextComponent />
+<style>
+    #btnToolbar,
+    #btnToolbar .x-panel,
+    #btnToolbar .x-panel .x-panel-bwrap{
+        *height: 37px; 
+    } 
+    .publisherrightcontainer{
+        *height: 45px;
+    }
+    .chatterdiv{*width: 260px; *height: 26px;} 
+
+    .clsInputTextArea, .clsInputTextAreaNote, .clsInputTextAreaDisabledNote{
+        height:40px !important;
+    }
+    .x-window-header-text{
+          padding-left: 0px !important;
+          margin-left: 0px !important;
+          }
+        .x-panel-btns-left{
+            padding-left: 5px !important; 
+            padding-right: 5px !important; 
+            border-left-width: 0px!important;
+            border-right-width: 0px!important;
+            border-bottom-width: 0px!important;
+          }
+    .clsInputTextAreaTD {
+         padding-left: 5px;
+       }    
+    .x-tool-restore {
+        background: url("{!$Resource.SDEFStyles}/SDEFbuttons/b_restore.png") no-repeat scroll 0 0 transparent;
+        margin-bottom: 0;
+        margin-top: 0;
+        *height:20px;
+        *width:20px;
+        padding-bottom: 6px;
+        padding-right: 5px;
+    }
+    
+    .x-tool-maximize {
+        background: url("{!$Resource.SDEFStyles}/SDEFbuttons/b_maximize.png") no-repeat scroll 0 0 transparent;
+        margin-bottom: 0;
+        margin-top: 0;
+        *height:20px;
+        *width:20px;
+        padding-bottom: 6px;
+        padding-right: 5px;
+    }          
+</style>
+    <script>
+        var wid2 = '{!JSENCODE($CurrentPage.parameters.wid)}';
+        var setdisplay = '{!CustomFieldsAccordionDisplay}';
+        function checkSave(){
+            if(doSave){
+                saveFunctionRef();
+            }
+        }
+    </script> 
+    <script>
+        var templateEnable={!flagForTemplate};
+        var wid = '{!JSENCODE($CurrentPage.parameters.wid)}';
+        
+
+        if(window.parent.refreshGridSI!=undefined)
+            window.parent.refreshGridSI(wid,resizeGrid);
+        
+        var isLookup = '{!JSENCODE($CurrentPage.parameters.islookup)}';  
+        var isInactive = '{!JSENCODE($CurrentPage.parameters.isinactive)}';  
+        
+         function ShowCIExplorer() {   
+           ShowCIExplorerJS('{!JSENCODE($Label.CIExpCIExplorer)}', '{!JSENCODE($Label.ConfigurationItemsExplorer)}');            
+        }
+        function callCopyPage(){
+            window.parent.addTab("IncidentPage?copyId=" + incidentId,incidentHeader,incidentHeader);
+        }
+        
+
+        function openNewTab(recId,recType) {
+            window.parent.parent.addNewTab("IncidentNewsFeedPage", "{!JSENCODE($Label.IncidentChatterFeed)}", "NewsFeedPage?recordId="+recId+"&recordType="+recType);
+        }
+
+            var IncProcBtnHandler = function (button,event){
+                var incProcPage = 'NavigatorPage?title={!JSENCODE($Label.IncidentProcess)}&target=IncProcMgmtPage?id=1001';
+                window.parent.parent.addNewTab('Incident Process', '{!JSENCODE($Label.AlignabilityProcessModel)}', incProcPage, 'false');
+            };
+   var idset;
+        checkIDSet(); 
+     
+    if(!isLookup)
+    {
+    window.parent.addStageProgression(wid, '{!JSENCODE(StageHTML)}');
+    }
+   
+    </script>
+    <apex:outputPanel id="inactivePanel">
+        <script>
+            isIncInactive= '{!incident.inactive__c}';
+         function updateInactiveForTemp(){
+            createControlMap();
+            renderElementsByType();             
+        } 
+    
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel id="afterSavePanel">
+        <script>
+      displayIncEle = {!OR(ISBLANK(TRIM(incidentName)),ISNULL(incidentName))};
+      var print_url=pageUrl[0]+'{!Incident.Id}'+'/p';
+      var print_url_pdf='/apex/PrintObjectDetailPDF?id=' +'{!Incident.Id}';
+       
+       function getIncidentID(){
+            return '{!Incident.Id}';
+        }
+        function handleSave(){
+               var id = "{!incident.id}";
+            window.parent.handleSave(wid, id);
+        }
+        function renderAddNoteAfterClose(){
+             var elem = document.getElementById('{!$Component.incidentForm.incident_incidentNote__c}');
+             var elemduration = document.getElementById('{!$Component.incidentForm.incident_incidentDuration__c}');
+             renderAddNoteAfterClose_JS(elem,elemduration);
+        }
+        function renderAddNoteButton(){
+            var elem = document.getElementById('{!$Component.incidentForm.incident_incidentNote__c}');
+            var elemduration = document.getElementById('{!$Component.incidentForm.incident_incidentDuration__c}');
+            var incidentState = "{!incident.BMCServiceDesk__state__c}";
+            if(errormsg != null && errormsg != '' && errormsg == '{!JSENCODE($Label.IncidentCloseError)}'){
+                    incidentState = true;
+            }
+            renderAddNoteButton_JS(elem,elemduration,incidentState);
+        }   
+        function renderIncidentNote(){
+         renderIncidentNote_JS();   
+       }    
+       function disableAddNote() {
+           var incidentNote = document.getElementById('{!$Component.incidentForm.incident_incidentNote__c}').value;
+           var incidentDuration = document.getElementById('{!$Component.incidentForm.incident_incidentDuration__c}').value;
+           disableAddNote_JS(incidentNote,incidentDuration);
+       }
+ 
+       function validateDuration(){
+           var incidentDuration = document.getElementById('{!$Component.incidentForm.incident_incidentDuration__c}').value;
+           validateDuration_JS(incidentDuration);
+       }
+       
+       function enableAddNote(){
+            enableAddNote_JS();
+       }
+       function getProblemId(){
+        return '{!problem.Id}';
+    }        
+    function getProblemName(){
+        return '{!problem.Name}';
+    }  
+    function getIncidentIDForPrb(){
+            return '{!Incident.Id}';
+        }
+        function getChatterLimitErrorMessage(){
+            return '{!chatterLimitErrorMessage}';
+        } 
+        function enableCustomAction(){
+            var instanceId = "{!incident.id}";
+            enableCustomActionJS(instanceId);
+        }
+        isServiceRequest = '{!JSENCODE(incident.ServiceRequest__c)}';
+        function getSRDtitle(){
+            return document.getElementById('{!$Component.incidentForm.SRM_RequestDefinition__c_id_servicerequesttitle__c}');
+        }
+        function clearKMIds(){
+        KMIds = '';
+        }
+        disableSRDlookup();
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel id="checkUserAccessPanel">
+        <script>
+        function checkLoogedInUserHasAccess(){
+            userHasAccesToInc = document.getElementById('{!$Component.incidentForm.checkIncidnetAccess}').value;
+            if(userHasAccesToInc == 'false' && incidentId != '' && incidentId != null && incidentId != 'null'){
+                window.parent.refreshList();
+                window.parent.closeTab(wid);
+            }
+       }
+       </script>    
+    </apex:outputPanel>     
+    <apex:outputPanel id="afterSavDelCloseReopen">
+<script>
+        savedone = {!quickclosedone};
+        function getIsChildTempExist(){
+            var isChildTempExist = '{!isChildTempExists}';
+            return isChildTempExist;
+        }               
+</script>
+</apex:outputPanel>
+    <apex:outputPanel id="titlePanel">
+        <script>
+            isIncInactive= '{!incident.inactive__c}';
+            incnState = {!incident.BMCServiceDesk__state__c};
+            var incidentName='{!incident.name}';
+             function getIncidentIDForSRD(){
+                return '{!Incident.Id}';
+            }   
+            function resetSupportingInformation(isSave){
+                var v1 = {!incident.BMCServiceDesk__state__c};
+                var isDisplay = document.getElementById('SIIframeID').style.display;
+                 var inactive = {!incident.inactive__c};
+                if(!v1 || inactive){ 
+                    if(isDisplay !='none'){
+                            window.frames.SIIframeID.disableAll();
+                    }
+                }else{
+                    if(isDisplay !='none'){
+                            window.frames.SIIframeID.enableAll();
+                    }
+                }
+                if(errormsg != null && errormsg != '' && errormsg == '{!JSENCODE($Label.IncidentCloseError)}'){
+                    window.frames.SIIframeID.enableAll();
+                }
+                //getINCid(incidentId,isSave);
+            }
+            
+            function updateTitle(){
+                var newTitle = '#'+'{!incident.name}'; 
+                var StageHTML = '{!JSENCODE(StageHTML)}';
+                if(StageHTML != null && StageHTML != '')
+                    stageHTMLPrev = StageHTML;  
+                 if(newTitle == '#'){
+                    newTitle = incidentHeader;
+                }
+                window.parent.changeTitle(wid,newTitle,newTitle);
+                window.parent.addStageProgression(wid, stageHTMLPrev);
+                window.parent.needsRefresh = true;
+
+                var incidentState = "{!incident.BMCServiceDesk__state__c}";
+                if(incidentState == 'false'){
+                renderAddNoteAfterClose();    
+            }
+            }
+    
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel id="checkPriorityCalculationPanel">
+        <script>
+        function setCatData(id, name, catUrgency) {
+            document.getElementById('{!$Component.incidentForm.Category__c_id_id}').value = id; 
+            document.getElementById('{!$Component.incidentForm.Category__c_id_name}').value = name;
+            document.getElementById('{!$Component.incidentForm.Category__c_id_fkurgency__c}').value = catUrgency;
+            FetchUrgencyHTTP();
+        }
+        function clientDetialsAcordian(){
+            if(typeof(clntExtn) != 'undefined'  ){
+                document.getElementById(clExtension).value = clntExtn;
+                document.getElementById(clAccname).value = clntOrgniation;
+                document.getElementById(clPhone).value = clntPhone;
+            }
+        }
+        function storeClientDetails(){
+            clntOrgniation = document.getElementById('{!$Component.incidentForm.Account_id_name}').value;
+            document.getElementById('{!$Component.incidentForm.pbarId.pbarItemIdCD.User_id_organization}').value = clntOrgniation; 
+            clntPhone = document.getElementById('{!$Component.incidentForm.pbarId.pbarItemIdCD.User_id_phone}').value; 
+            clntExtn = document.getElementById('{!$Component.incidentForm.pbarId.pbarItemIdCD.User_id_extension}').value; 
+        }
+        function FetchUrgencyHTTP() {
+            var  catId ='';
+            if(document.getElementById('{!$Component.incidentForm.Category__c_id_id}')!=null && document.getElementById('{!$Component.incidentForm.Category__c_id_id}')!='')
+                catId = document.getElementById('{!$Component.incidentForm.Category__c_id_id}').value;
+            
+            var  clientId = document.getElementById('{!$Component.incidentForm.User_id_id}').value;
+            var  broadcastId = document.getElementById('{!$Component.incidentForm.pbarId.broadcastDetails.Broadcasts__c_id_id}').value;
+            //var catUrgency = document.getElementById('{!$Component.incidentForm.Category__c_id_fkurgency__c}').value;
+            var clientUrgency = document.getElementById('{!$Component.incidentForm.User_id_fkurgency__c}').value;
+            storeClientDetails();
+            setIncidentForMenu();       
+            if( broadcastId == '' || broadcastId == null){
+                    FetchUrgencyHTTPJS('{!JSENCODE(Incident.id)}', '{!$Component.incidentForm.Category__c_id_id}',
+                        '{!$Component.incidentForm.User_id_id}', '{!$Component.incidentForm.pbarId.Incidentdetail.Impact__c_id_id}',
+                        '{!$Component.incidentForm.pbarId.broadcastDetails.Broadcasts__c_id_name}',
+                        '{!$Component.incidentForm.pbarId.Incidentdetail.Urgency__c_id_name}',
+                        '{!$Component.incidentForm.pbarId.Incidentdetail.Urgency__c_id_id}',
+                        '{!$Component.incidentForm.pbarId.Incidentdetail.Priority__c_id_name}',
+                        '{!$Component.incidentForm.pbarId.Incidentdetail.Priority__c_id_id}',
+                        IncidentPageComp.ComponentVars.IsPriorityChanged,
+                        '{!$Component.incidentForm.pbarId.Incidentdetail.Priority__c_id_name}');
+            }
+            SetIncidentCategory(catId);
+        } 
+        
+            
+        function FetchPriorityHTTP(){
+            var impactId = document.getElementById('{!$Component.incidentForm.pbarId.Incidentdetail.Impact__c_id_id}').value;
+            var urgencyId = document.getElementById('{!$Component.incidentForm.pbarId.Incidentdetail.Urgency__c_id_id}').value;
+            if(impactId != null && impactId != '' && urgencyId != null && urgencyId != ''){
+                FetchPriorityHTTPJS(impactId,
+                urgencyId,
+                '{!$Component.incidentForm.pbarId.Incidentdetail.Priority__c_id_name}',
+                '{!$Component.incidentForm.pbarId.Incidentdetail.Priority__c_id_id}',
+                IncidentPageComp.ComponentVars.IsPriorityChanged
+                );
+            }
+        }
+        function setIsPriorityChanged(val) {
+            var prChangeVal = document.getElementById(IncidentPageComp.ComponentVars.IsPriorityChanged);
+            if(prChangeVal!=null) {
+                prChangeVal.value = val;
+            }
+        }   
+       </script>
+    </apex:outputPanel>
+    <apex:outputPanel id="panelId">
+        <script>
+            incnState = {!incident.BMCServiceDesk__state__c};
+            priorityChanged = '{!isPriorityChanged}';
+            incidentId = '{!Incident.Id}';
+            incidentClient = '{!JSENCODE(clientName)}';
+            incidentCategory  = '{!JSENCODE(categoryName)}';  
+            incidentCloseState = '{!closeState}';
+            incidentReOpenState  = '{!reOpenState}'        
+            incidentclientId = '{!JSENCODE(incident.FKClient__c)}';
+            incidentCategoryId = "{!JSENCODE(incident.FKCategory__c)}";
+            closeState = {!incident.BMCServiceDesk__state__c};
+            cookieValue = Ext.util.Cookies.get(cookieName);
+            objName = "{!JSENCODE(objName)}";
+            iFrameSrc='/apex/SIContainerPage?oid='+incidentId+'&otype=Incident__c&wid='+wid+'&stateofIncident='+closeState+'&isChangeCreatable='+getIsChangeCreatable()+'&isInactive='+isIncInactive;
+            function getIncidentClient(){
+               return incidentClient;
+            }
+            function getIncidentCategory(){
+               return incidentCategory;
+            }
+            function getIncidentCloseState(){
+               return incidentCloseState;
+            }
+            hasServiceTargets = {!HasServiceTargets};
+            if(typeof(ChangeServiceTargetButtonState)!='undefined' && ChangeServiceTargetButtonState!=null) ChangeServiceTargetButtonState();
+        </script>
+        </apex:outputPanel>
+    <apex:outputPanel id="errorId">
+        <script>
+        
+           errormsg = '{!JSENCODE(messageString)}';
+           if(errormsg=='{!JSENCODE($Label.SavedSuccessfully)}'){
+               error = 0;
+           }else{
+               error = 1;               
+           }               
+                
+        
+        </script>
+        </apex:outputPanel>
+ 
+      
+   <script>
+        function DisplayMsg()
+        {
+            if((errormsg != null) && (errormsg != ''))
+                Ext.MessageBox.show({ msg: errormsg, buttons: Ext.MessageBox.OK});
+        }
+        function openTab(){
+            pageName = 'ProblemPage';
+            var winId = getWID();
+            var incId = getIncidentIDForPrb();
+            var prbId = document.getElementById('{!$Component.incidentForm.pbarId.Incidentdetail.Problem__c_id_id}').value; 
+            var prbName = document.getElementById('{!$Component.incidentForm.pbarId.Incidentdetail.Problem__c_id_name}').value;  
+            
+            var url;
+            var modname = '{!JSENCODE($Label.Navigator_Incidents)}';
+            var title = '{!JSENCODE($Label.ProblemWindowHeaderSearchPage)}';
+            var title1 = '{!JSENCODE($Label.Navigator_Problems)}';
+            var pageTitle = '{!JSENCODE($Label.ProblemWindowHeaderSearchPage)}';
+            if(prbName != 'undefined')
+                title =prbName;
+            if(prbId != null && prbId != ''){
+                url = pageName+escape('?id='+prbId+'&parentWid='+winId+'&moduleName=' + modname + '&incId='+incId+'&isPrbLink=true&columnField=name&direction=DESC');
+                window.parent.parent.addNewTab(pageName,'{!JSENCODE($Label.Navigator_Problems)}', "NavigatorPage?title="+pageTitle+"&tabTitle="+title+"&target="+encodeURI(url));
+            }else{ 
+                url = pageName+escape('?parentWid='+winId+'&moduleName=' + modname + '&incId='+incId+'&isPrbLink=true&columnField=name&direction=DESC');
+                window.parent.parent.parent.addNewTab(pageName, '{!JSENCODE($Label.Navigator_Problems)}', "NavigatorPage?title="+title1+"&target="+encodeURI(url));
+            }
+        }     
+      function showInfoPopup(eventObject, divId , objName ){
+        var recordId = '';
+            var target=eventObject.target;
+             if(target == null) 
+                 target = eventObject.srcElement;
+         
+          
+          if(objName == 'staff')
+          {
+                recordId = document.getElementById('{!$Component.incidentForm.staffHiddeninput}').value;
+             tooltipforstaff();
+          }
+           if(objName == 'client')
+          {
+             recordId = document.getElementById('{!$Component.incidentForm.clientHiddeninput}').value;
+             tooltipforclient(); 
+          }
+            if(recordId != '' && recordId != null){
+            var tooltipforclientstaff = new Ext.ToolTip({
+                    target: target.id,
+                    title : '',
+                    anchor: 'right',
+                    width: 200,
+                    trackMouse: false,
+                    shadow :'sides',
+                    bodyStyle:'font: 8pt Tahoma, Verdana, Arial; color:black;width:2%;border-color:black;',
+                    dismissDelay: 15000,
+                    html: document.getElementById(divId).innerHTML
+                 });    
+              
+              if (!Ext.isIE)
+              {
+                tooltipforclientstaff.show();
+              }
+             
+               
+          }    
+     }
+     function completeDelete(){
+                if(errormsg == '{!JSENCODE($Label.InsufficentDeletePrivilege)}'){
+                    showError();
+                }else{
+                    var modName = "{!JSENCODE($CurrentPage.parameters.moduleName)}";  
+                    var parentWid = "{!JSENCODE($CurrentPage.parameters.parentWid)}";
+                    if(modName != null && modName != '' && typeof(modName) != 'undefined' && parentWid != null && parentWid != '' && typeof(parentWid) != 'undefined'){
+                        window.parent.parent.refreshSupportingInformation(parentWid,modName);                       
+                    }else{
+                    updateTitle();
+                    }
+                    closeWindow();
+                }
+     }
+     
+     
+      </script>
+
+   <script>
+  
+    var stime = '{!serverstarttime}';
+    var etime = '{!serverendtime}';
+   
+    
+    var data = '';
+    data += '{!JSENCODE($Label.PM_servertime)}';
+    if(etime - stime == 0){
+        data += 0;
+    }
+    function setAccountNextOne(accountId,add_info){
+        selectedAccountId = accountId;
+        accountPopupFlag = true;
+        setAccountNext(accountId,add_info);
+    }
+</script>
+   
+    <apex:outputPanel id="urlStringPanelId">
+    <script>
+        urlStringVar ="{!urlQueryString}";
+    </script>
+    </apex:outputPanel>
+
+    <apex:outputPanel id="formOuputPanel">
+        <!-- Page body in this panel -->
+        <apex:messages />  
+
+        <apex:form id="incidentForm" >
+ 
+<!--  IE7-8 Related Changes -->        
+<div id="capsule" class="CapsuleDiv1">
+        <c:ValidationComponent errorMsgList="{!messageString}" id="validationComponent"></c:ValidationComponent>
+            <apex:actionRegion >
+             <apex:actionFunction name="setAssignedTo" action="{!setAssignedTo}" rerender="varPanel,staffPanel,staffHiddeninput,staffInfobtn,staffPopupID" onComplete="checkEnable();"> 
+                     <apex:param assignTo="{!savedId}" name="savedName" value=""/>
+              </apex:actionFunction>
+             </apex:actionRegion>
+            <apex:actionFunction name="calculatePriorityNext" action="{!calculatePriority}" 
+                reRender="Priority__c_id_name,Incident__c_id_duedatetime__c,panelId,clientPopupID,infoBtn,Priority__c__isPriorityChanged,Priority__c_id_id" oncomplete="checkSave();UpdateDueDateFieldState();"/>
+            <apex:actionFunction name="refreshFeed" action="{!doNothing}" reRender="allfeeds"></apex:actionFunction>         
+            <apex:actionFunction name="shareStatusPost" action="{!shareTextFeedPost}" reRender="allfeeds" oncomplete="waitMsg.hide();">
+                <apex:param name="newstatus" assignTo="{!newstatus}" value=""/>
+            </apex:actionFunction> 
+           <apex:actionFunction name="NewCommentValue" action="{!AddComment}" reRender="allfeeds" oncomplete="waitMsg.hide();">
+                <apex:param name="newComment" assignTo="{!newComment}" value=""/>
+                <apex:param name="feedId" assignTo="{!feedId}" value=""/>
+            </apex:actionFunction> 
+            <apex:actionFunction name="deleteComment" action="{!DeleteComment}" reRender="errorId,allfeeds" oncomplete="DisplayMsg();">
+                <apex:param name="commentId" assignTo="{!commentId}" value=""/>
+                <apex:param name="createdById" assignTo="{!createdById}" value=""/>
+            </apex:actionFunction>
+            <apex:actionFunction name="deletePost" action="{!DeletePost}" reRender="errorId,allfeeds" oncomplete="DisplayMsg();">
+                <apex:param name="postId" assignTo="{!postId}" value=""/>
+                <apex:param name="createdById" assignTo="{!createdById}" value=""/>
+            </apex:actionFunction>
+            <apex:actionFunction action="{!togglefollow}" name="followIncidentToggler" 
+                reRender="checkIncidnetAccess,incident_timeSpent__c,openDateId,varPanel,incidentPanelId,titlePanel,afterSavePanel, validationComponent,panelId,errorId,CIDetailsPanel,staffPanel,Incident__c_id_duedatetime__c,staffPopupID,Priority__c__isPriorityChanged,allfeeds" 
+                oncomplete="DisplayChatterLimitMessage();DisableCIExpBtn();checkEnable();afterSaveCloseAction();updateTitle();buttonValidator();justRerender();handleSave();ChangeCIExpBtnStatus();disabledatefield();disableclosedate();handleElemEvent();converdisabletoreadonly();UpdateDueDateFieldState();checkLoogedInUserHasAccess();refreshRelatedPortlets();resetSupportingInformation(false);">
+            </apex:actionFunction>
+            <apex:actionregion >
+                <apex:actionFunction name="saveNote" action="{!saveNote}" rerender="validationComponent,panelId,errorId" oncomplete="showError();renderIncidentNote();enableAddNote();afterAddNote();">
+                    <apex:param name="incidentNote" assignTo="{!incNote}" value=""/>
+                    <apex:param name="incDuration" assignTo="{!incDuration}" value=""/>
+                </apex:actionFunction>
+            </apex:actionregion>
+            <apex:actionFunction action="{!setSelectedClientNext}" name="setClientNext"  
+                rerender="User_id_fkurgency__c,User_id_id,User_id_username,clientDetailsOutputPanel,Priority__c_id_name,clientPopupID,User_id_firstname,User_id_lastname, Urgency__c_id_name, panelId,CIDetailsPanel,Account_id_name,Account_id_id" oncomplete="DisableCIExpBtn();FetchUrgencyHTTP();converdisabletoreadonly(); ">
+                <apex:param assignTo="{!savedID}" name="savedID" value=""/>
+            </apex:actionFunction> 
+              
+            <apex:actionFunction action="{!setSelectedUrgencytNext}" name="setUrgencyNext"  
+                rerender="Impact__c_id_id,Priority__c_id_name,Priority__c__isPriorityChanged,Priority__c_id_id" oncomplete="converdisabletoreadonly(); ">
+                <apex:param assignTo="{!savedID}" name="savedID" value=""/>
+            </apex:actionFunction>  
+            
+             <apex:actionFunction action="{!setSelectedImpactNext}" name="setImpactNext"  
+                 rerender="Urgency__c_id_id,Priority__c_id_name,Priority__c__isPriorityChanged,Priority__c_id_id" oncomplete="converdisabletoreadonly(); ">
+                <apex:param assignTo="{!savedID}" name="savedID" value=""/>
+            </apex:actionFunction> 
+            
+            <apex:actionFunction action="{!selectImpactOnName}" name="selectImpactOnName"  
+                 rerender="Impact__c_id_id,Urgency__c_id_id,Impact__c_id_name,Priority__c_id_name,Priority__c_id_name,Incident__c_id_duedatetime__c,Priority__c__isPriorityChanged,Priority__c_id_id" oncomplete="converdisabletoreadonly();checkSave();UpdateDueDateFieldState();">
+                <apex:param assignTo="{!savedID}" name="savedID" value=""/>
+            </apex:actionFunction>
+            
+            <apex:actionFunction action="{!selectUrgencyOnName}" name="selectUrgencyOnName"  
+                 rerender="incidentImpactId,incidentUrgencyId,Impact__c_id_name,Priority__c_id_name,Incident__c_id_duedatetime__c,Priority__c__isPriorityChanged,Priority__c_id_id" oncomplete="converdisabletoreadonly();checkSave();UpdateDueDateFieldState();">
+                <apex:param assignTo="{!savedID}" name="savedID" value=""/>
+            </apex:actionFunction>
+            <apex:actionregion >
+            <apex:actionFunction action="{!setSelectedIncidentNext}" name="setIncidentNext" 
+                    rerender="Status__c_id_name,Status__c_id_id,Status__c_id_stage__c,CustomFieldsOutputPanel,PanelbarOutputPanel,titlePanel,panelId,tablePanel,incidentDetailsPanel,afterSavePanel,varPanel,clientDetailsOutputPanel,CIDetailsPanel, BroadcastPanel,staffPanel,clientPopupID,staffPopupID" 
+                    oncomplete="DisableCIExpBtn();buttonValidator();checkEnable();updateTitle();resetSupportingInformation(false);handleSave();handleResetChange();handleElemEvent();disabledatefield();converdisabletoreadonly();disableAddNote();setIncidentForMenu();renderSIComponent();">
+                <apex:param assignTo="{!savedID}" name="savedID" value=""/>
+            </apex:actionFunction>
+             </apex:actionregion>             
+             <apex:actionFunction action="{!setSelectedCloseIncidentNext}" name="setCloseIncidentNext" 
+                    rerender="afterSavDelCloseReopen,Category__c_id_name,panelId,numberPanel,tablePanel,incidentDetailsPanel, clientDetailsOutputPanel,CIDetailsPanel, BroadcastPanel,staffPanel,varPanel,validationComponent,errorId,titlePanel,clientPopupID,staffPopupID" 
+                    oncomplete="DisableCIExpBtn();reloadSI();buttonValidator();checkEnable();showError(); closedRelatedBroadcasts();updateTitle();resetSupportingInformation(false);handleResetChange();handleElemEvent();disabledatefield();converdisabletoreadonly(); justRerender();disableSRDlookup(); ">
+                <apex:param assignTo="{!savedID}" name="savedID" value=""/>
+            </apex:actionFunction>
+            <apex:actionFunction action="{!closeRelatedBroadcasts}" name="closeBroadcasts"  oncomplete="updateTitle();resetSupportingInformation(false);converdisabletoreadonly();refreshRelatedPortlets();refreshBroadcastReleatedPortlets()">
+                <apex:param assignTo="{!checkedCloseBroadcast}" name="chekedCloseBroadcast" value=""/>
+            </apex:actionFunction>
+            <apex:actionFunction action="{!reopenRelatedBroadcasts}" name="reopenBroadcasts"  oncomplete="updateTitle();resetSupportingInformation(false);handleResetChange();handleElemEvent();converdisabletoreadonly();refreshRelatedPortlets();refreshBroadcastReleatedPortlets()">
+                <apex:param assignTo="{!checkedCloseBroadcast}" name="chekedreopenBroadcasts" value=""/>
+            </apex:actionFunction> 
+            <!-- Action region added here because on tabout Broadcast Id is populated and oncomlete of tabout when this function is executed
+                incident.FKbroadcast is posted and Id if broadcast of which values to be set is matched with incident.FKBroadcst and no logic is executed further -->
+            <apex:actionRegion >
+            <apex:actionFunction action="{!setBroadcastNext}" name="setBroadcastNext" reRender="Broadcasts__c_id_id,Status__c_id_name,Status__c_id_id,Status__c_id_stage__c,tablePanel,incidentDetailsPanel,BroadcastPanel,staffPanel" oncomplete="disableSRDlookup();disabledatefield();converdisabletoreadonly();">  
+               <apex:param assignTo="{!savedId}" name="savedName" value=""/>
+                <apex:param assignTo="{!clientLastName}" name="ln" value=""/>
+                <apex:param assignTo="{!clientFirstName}" name="fn" value=""/>
+                <apex:param assignTo="{!clientName}" name="cn" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKClient__c}" name="cid" value=""/>
+                <apex:param assignTo="{!accountName}" name="an" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKAccount__c}" name="aid" value=""/>
+                <apex:param assignTo="{!reqDefnName}" name="rdn" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKRequestDefinition__c}" name="rdid" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKRequestDetail__c}" name="reqDetailId" value="" />
+                <apex:param assignTo="{!incident.incidentDescription__c}" name="descrption" value=""/>
+                <apex:param assignTo="{!incident.incidentResolution__c}" name="resolution" value=""/>
+                <apex:param assignTo="{!statusName}" name="sn" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKStatus__c}" name="sid" value=""/>
+                <apex:param assignTo="{!impactName}" name="iin" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKImpact__c}" name="iid" value=""/>
+                <apex:param assignTo="{!urgencyName}" name="un" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKUrgency__c}" name="uid" value=""/>
+            </apex:actionFunction>
+            </apex:actionRegion>
+            <apex:actionRegion >
+            <apex:actionFunction action="{!setBroadcastNextFromTabout}" name="setBroadcastNextFromTabout" reRender="Broadcasts__c_id_id,tablePanel,incidentDetailsPanel,BroadcastPanel,staffPanel" oncomplete="disableSRDlookup();disabledatefield();checkSave();converdisabletoreadonly();">  
+                <apex:param assignTo="{!savedId}" name="savedName" value=""/>
+                <apex:param assignTo="{!clientLastName}" name="ln" value=""/>
+                <apex:param assignTo="{!clientFirstName}" name="fn" value=""/>
+                <apex:param assignTo="{!clientName}" name="cn" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKClient__c}" name="cid" value=""/>
+                <apex:param assignTo="{!accountName}" name="an" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKAccount__c}" name="aid" value=""/>
+                <apex:param assignTo="{!reqDefnName}" name="rdn" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKRequestDefinition__c}" name="rdid" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKRequestDetail__c}" name="reqDetailId" value="" />
+                <apex:param assignTo="{!incident.incidentDescription__c}" name="descrption" value=""/>
+                <apex:param assignTo="{!incident.incidentResolution__c}" name="resolution" value=""/>
+                <apex:param assignTo="{!statusName}" name="sn" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKStatus__c}" name="sid" value=""/>
+                <apex:param assignTo="{!impactName}" name="iin" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKImpact__c}" name="iid" value=""/>
+                <apex:param assignTo="{!urgencyName}" name="un" value=""/>
+                <apex:param assignTo="{!incident.BMCServiceDesk__FKUrgency__c}" name="uid" value=""/>
+            </apex:actionFunction>
+            </apex:actionRegion>
+            <apex:actionregion >
+            <apex:actionFunction action="{!descriptionQuery}" name="setDescriptionNext" reRender="incident_incidentDescription__c"> 
+                <apex:param assignTo="{!savedId}" name="savedName" value=""/>
+            </apex:actionFunction>
+            </apex:actionregion>
+            <apex:actionregion >
+            <apex:actionFunction action="{!resolutionQuery}" name="setResolutionNext" reRender="incident_incidentResolution__c"> 
+               <apex:param assignTo="{!savedId}" name="savedName" value=""/>
+           </apex:actionFunction>
+           </apex:actionregion>
+             <apex:actionFunction name="setIncidentPriority" action="{!setIncidentPriority}" rerender="Priority__c_id_name"> 
+                     <apex:param assignTo="{!priorityStr}" name="priorityId" value=""/>
+                     <apex:param assignTo="{!priorityNameStr}" name="priorityName" value=""/>
+              </apex:actionFunction>
+
+             <apex:actionFunction action="{!nextBtnHandler}" name="nextIncidentBtnHandler" oncomplete="ChangeCIExpBtnStatus();updateTitle();renderAddNoteButton();renderSIComponent();checkEnable();resetSupportingInformation(false);updateInactive();handleSave();handleResetChange();handleElemEvent();converdisabletoreadonly();UpdateDueDateFieldState();reloadSupportInfo();"
+                                    rerender="titlePanel,incidentDetailsPanel,incident_timeSpent__c,inactivePanel,afterSavePanel, panelId,tablePanel, PanelbarOutputPanel, varPanel, pbarItemIdCD, CIDetailsPanel, staffPanel, User_id_lastname, User_id_firstname, User_id_username,Account_id_name,clientPopupID,staffPopupID,CustomFieldsOutputPanel" > 
+                    <apex:param assignTo="{!tempString}" name="idSetString" value=""/>          
+            </apex:actionFunction>
+            
+            <apex:actionFunction action="{!previousBtnHandler}" name="previousIncidentBtnHandler" oncomplete="ChangeCIExpBtnStatus();updateTitle();renderAddNoteButton();renderSIComponent();checkEnable();updateTitle();resetSupportingInformation(false); updateInactive();handleSave();handleResetChange();handleElemEvent();converdisabletoreadonly();UpdateDueDateFieldState();reloadSupportInfo();"
+                                    rerender="titlePanel,incidentDetailsPanel,incident_timeSpent__c,inactivePanel, panelId, tablePanel, PanelbarOutputPanel, afterSavePanel,varPanel, pbarItemIdCD, CIDetailsPanel, staffPanel, User_id_lastname, User_id_firstname, User_id_username,clientPopupID,Account_id_name,staffPopupID,CustomFieldsOutputPanel" > 
+                                    <apex:param assignTo="{!tempString}" name="idSetString" value=""/>  
+            </apex:actionFunction>
+            <apex:actionFunction action="{!quickClose}" name="quickCloseIncidentNext" 
+                reRender="afterSavDelCloseReopen,panelId,varPanel,Status__c_id_name,Status__c_id_stage__c,validationComponent,errorId,titlePanel,closeDateId,afterSavePanel,allfeeds,Priority__c_id_name" 
+                onComplete="if(savedone){renderAddNoteAfterClose();}buttonValidator();checkEnable();checkNoteDuration();showError(); closedRelatedBroadcasts();updateTitle();resetSupportingInformation(false);handleResetChange();handleElemEvent();converdisabletoreadonly();refreshRelatedPortlets(); justRerender();"/> 
+            
+            <apex:actionFunction action="{!reopenIncident}" name="reopenIncidentNext" 
+                reRender="validationComponent,errorId,varPanel,Status__c_id_id,Status__c_id_name,Status__c_id_stage__c,panelId,titlePanel,closeDateId,afterSavePanel,afterSavDelCloseReopen,allfeeds,Incident__c_id_duedatetime__c" 
+                onComplete="showError();checkEnable();buttonValidator();reopenedRelatedBroadcasts();updateTitle();resetSupportingInformation(false);handleResetChange();handleElemEvent();converdisabletoreadonly();UpdateDueDateFieldState();refreshRelatedPortlets();justRerender();renderAddNoteButton();"/> 
+            <apex:actionFunction action="{!save}" name="saveIncident" 
+                reRender="Account_id_name,afterSavDelCloseReopen,titlePanel,checkIncidnetAccess,incident_timeSpent__c,openDateId,closeDateId,varPanel,incidentPanelId,afterSavePanel, validationComponent,incidentDetailsPanel,panelId,errorId,CIDetailsPanel,staffPanel,Incident__c_id_duedatetime__c,staffPopupID,Priority__c__isPriorityChanged,Priority__c_id_name,addNoteBtn,allfeeds,tablePanel, PanelbarOutputPanel,staffPanelm, repeatId, SRM_RequestDefinition__c_id_servicerequesttitle__c,SRM_RequestDefinition__c_id_id" 
+                oncomplete="waitMsg.hide();clearKMIds();enableCustomAction();refreshRelatedPortlets();DisableCIExpBtn();showError();updateTitle();checkEnable();disableSIMenu(); buttonValidator();setIncidentForMenu();handleSave();disabledatefield();disableclosedate();handleElemEvent();converdisabletoreadonly();UpdateDueDateFieldState();checkLoogedInUserHasAccess();renderAddNoteButton();resetSupportingInformation(true);ChangeCIExpBtnStatus();siControlBack();checkNoteDuration();updateInactiveForTemp();clientDetialsAcordian();">
+               <apex:param assignTo="{!chkBoxValue}" name="idSetString" value=""/>
+               <apex:param assignTo="{!ownerIdStr}" name="ownerName" value=""/>
+               <apex:param assignTo="{!KnowledgeIds}"name="KMIDs" value=""/>
+                 </apex:actionFunction>
+            <apex:actionFunction action="{!save}" name="saveBeforeCloseIncident" 
+                reRender="panelId,checkIncidnetAccess,incident_timeSpent__c,openDateId,varPanel,incidentPanelId,titlePanel,afterSavePanel, validationComponent,incidentDetailsPanel,errorId,CIDetailsPanel,staffPanel,Incident__c_id_duedatetime__c,staffPopupID,Priority__c__isPriorityChanged, allfeeds" 
+                oncomplete="clearKMIds();checkEnable();afterSaveCloseAction();updateTitle();buttonValidator();justRerender();handleSave();ChangeCIExpBtnStatus();disabledatefield();disableclosedate();handleElemEvent();converdisabletoreadonly();UpdateDueDateFieldState();checkLoogedInUserHasAccess();refreshRelatedPortlets();resetSupportingInformation(false);checkNoteDuration();DisableCIExpBtn();">
+               <apex:param assignTo="{!chkBoxValue}" name="idSetString" value=""/>
+               <apex:param assignTo="{!KnowledgeIds}"name="KMIDs" value=""/>
+               
+            </apex:actionFunction>
+
+              <apex:actionFunction name="justRerender" rerender="closeopId"/>
+  
+                 
+        <apex:actionFunction action="{!copyCommit}" name="copyCommit" 
+                reRender="incident_timeSpent__c,openDateId,varPanel,incidentPanelId,titlePanel,afterSavePanel, validationComponent,panelId,errorId,CIDetailsPanel,staffPanel,Incident__c_id_duedatetime__c" 
+                oncomplete="enableCustomAction();DisableCIExpBtn();checkEnable();updateTitle();buttonValidator();justRerender();handleSave();setIncidentForMenu();ChangeCIExpBtnStatus();disabledatefield();converdisabletoreadonly();UpdateDueDateFieldState();refreshRelatedPortlets();refreshBroadcastReleatedPortlets();resetSupportingInformation(false);renderAddNoteButton();" >        
+               <apex:param assignTo="{!chkBoxValue}" name="idSetString" value=""/>   
+                 </apex:actionFunction>
+            
+            <apex:actionFunction action="{!newIncident}" name="newIncident" immediate="true" />
+            <apex:actionFunction action="{!reset}" name="resetIncident" rerender="afterSavePanel,inactivePanel,tablePanel,PanelbarOutputPanel,staffPopupID,clientPopupID,CustomFieldsOutputPanel" oncomplete="DisableCIExpBtn();updateInactive();handleResetChange();handleElemEvent();converdisabletoreadonly();renderAddNoteButton(); resetSupportingInformation(false);"/>
+            <apex:actionFunction action="{!deleteIncident}" name="deleteIncidentNext" rerender="afterSavDelCloseReopen,errorId,validationComponent" oncomplete="refreshRelatedPortlets();completeDelete();"/>
+            
+            <!--  apex:actionFunction action="{!copyIncident}" name="copyIncidentNext" rerender="numberPanel"/--> 
+            
+      
+            <apex:actionFunction action="{!myselfBtnHandler}" name="myselfBtnHandler" rerender="firstName, profileName" oncomplete="converdisabletoreadonly();refreshRelatedPortlets()"/>
+            <apex:actionRegion >
+            <apex:actionFunction action="{!callCounterBtnHandler}" name="callCounterBtnHandler" rerender="usercalledID" oncomplete="convertUserCalledToInt();"/>
+            </apex:actionRegion>
+            <apex:actionRegion >
+            <apex:actionFunction action="{!respondedBtnHandler}" name="respondedBtnHandler" rerender="dummypanel,respondedId"/>
+            </apex:actionRegion>
+            
+            <apex:actionFunction name="FetchUrgencyDetails" action="{!FetchUrgency}" rerender="checkPriorityCalculationPanel,Impact__c_id_id,Urgency__c_id_id,Urgency__c_id_name,clientPopupID" oncomplete="converdisabletoreadonly();">
+                     <apex:param assignTo="{!incident.BMCServiceDesk__FKClient__c}" name="savedName" value=""/>
+            </apex:actionFunction>
+        
+            <!-- <apex:actionFunction action="{!setSelectedBusinessServiceFromTabout}" name="setBusinessServiceFromTabout" reRender="CIDetailsPanel" oncomplete="DisableCIExpBtn();">  
+                    <apex:param assignTo="{!savedId}" name="savedName" value=""/> 
+        </apex:actionFunction>--> 
+        <!-- <apex:actionRegion >-->
+           <apex:actionFunction name="fetchIncidentTemplates" action="{!fetchIncidentTemplates}"  
+                                    rerender="titlePanel, incidentPanelId, tablePanel, PanelbarOutputPanel, pbarItemIdCD, CIDetailsPanel, staffPanelm, repeatId" oncomplete="renderAddNoteButton();DisableCIExpBtn();converdisabletoreadonly();updateInactiveForTemp();" > 
+                             <apex:param assignTo="{!templateId}" name="savedName" value=""/>
+            </apex:actionFunction> 
+        <!-- </apex:actionRegion>-->
+        <apex:actionFunction action="{!setSelectedCINext}" name="setCINext" reRender="CIDetailsPanel" oncomplete="EnableAdditionalCILink();DisableCIExpBtn();converdisabletoreadonly();">  
+                    <apex:param assignTo="{!savedId}" name="savedName" value=""/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction action="{!setBusinessServiceNext}" name="setBusinessService" reRender="CIDetailsPanel" oncomplete="DisableCIExpBtn();">  <!--Decide oncomplete  -->
+                    <apex:param assignTo="{!savedId}" name="savedName" value=""/>
+        </apex:actionFunction>
+        
+       <!--<apex:actionFunction action="{!setSelectedCIFromTabout}" name="setCIFromTabout" reRender="CIDetailsPanel" oncomplete="DisableCIExpBtn();converdisabletoreadonly();">  
+                    <apex:param assignTo="{!savedId}" name="savedName" value=""/>
+        </apex:actionFunction>-->
+        
+        <apex:actionregion >
+        <apex:actionFunction action="{!setSRD}" name="setSelectedSRD" rerender="SRM_RequestDefinition__c_id_servicerequesttitle__c,SRM_RequestDefinition__c_id_id,Category__c_id_id,Category__c_id_name,BMC_BusinessService__c_id_instance_name__c,BMC_BusinessService__c_id_fkbmc_baseelement__c,BMC_BusinessService__c_id_fkbmc_baseelement__c__x_1,BMC_BusinessService__c_id_instance_name__c__x_1,serviceClauses" onComplete="resetSRDtldVal();openSRDetailpopUp();disableRequestDetailBtn();">
+            <apex:param name="srdId" value=""/>
+        </apex:actionFunction>
+        </apex:actionregion>
+        <apex:actionregion >
+        <apex:actionFunction action="{!poplateSRDvaluesTB}" name="poplateSRDvalues" rerender="SRM_RequestDefinition__c_id_servicerequesttitle__c,SRM_RequestDefinition__c_id_id,Category__c_id_id,Category__c_id_name,BMC_BusinessService__c_id_instance_name__c,BMC_BusinessService__c_id_fkbmc_baseelement__c,BMC_BusinessService__c_id_fkbmc_baseelement__c__x_1,BMC_BusinessService__c_id_instance_name__c__x_1,serviceClauses" onComplete="resetSRDtldVal();openSRDetailpopUp();disableRequestDetailBtn();">
+            <apex:param name="srdtitle" value=""/>
+        </apex:actionFunction>
+        </apex:actionregion>
+        <apex:actionregion >
+        <apex:actionFunction action="{!setSelectedServiceOffering}" name="setServiceOffering" rerender="BMC_BusinessService__c_id_instance_name__c__x_1,BMC_BusinessService__c_id_instance_name__c,BMC_BusinessService__c_id_fkbmc_baseelement__c,BMC_BusinessService__c_id_fkbmc_baseelement__c__x_1,serviceClauses" oncomplete="">
+            <apex:param name="offeringId" value="" />
+        </apex:actionFunction>
+        </apex:actionregion>
+        <apex:actionregion >
+        <apex:actionFunction action="{!setSelectedServiceOfferingTB}" name="setServiceOfferingTB" rerender="BMC_BusinessService__c_id_instance_name__c__x_1,BMC_BusinessService__c_id_instance_name__c,BMC_BusinessService__c_id_fkbmc_baseelement__c,BMC_BusinessService__c_id_fkbmc_baseelement__c__x_1,serviceClauses" oncomplete="">
+            <apex:param name="offeringName" value="" />
+        </apex:actionFunction>
+            <apex:actionFunction action="{!renderRequestDetails}" name="renderRequestDetails"   
+           rerender="titlePanel, incidentPanelId, PanelbarOutputPanel, pbarItemIdCD, CIDetailsPanel, staffPanelm, repeatId" oncomplete="renderAddNoteButton();DisableCIExpBtn();converdisabletoreadonly();updateInactiveForTemp();" >
+           <apex:param name="requestDetailId" value=""/>
+       </apex:actionFunction> 
+
+        </apex:actionregion>
+        <apex:actionregion >
+            <apex:actionFunction name="linkCIIncident" action="{!linkCIIncident}"
+                reRender="dummypanel">
+                <apex:param name="ciId" value="" />
+           </apex:actionFunction>
+        </apex:actionregion>
+            <apex:outputPanel id="dummypanel"> </apex:outputPanel>
+            <table class="clsMainTableSI" cellspacing="0" cellpadding="0">
+                <tr class="clsRowGreyBg">
+                    <td>
+                        <div id="btnToolbar"></div>
+                        
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td>
+                    
+                    <table class="clsTable" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td class="clsTopAlignment75">
+                                 <apex:outputPanel id="tablePanel">                                
+                            <table class="clsTable" cellspacing="0" cellpadding="0">
+                                <tr>
+                                     <td colspan="3"><div class="div15pxVspacing"/></td>
+
+                                </tr>
+                                <tr>
+                                    <td><apex:inputhidden id="checkIncidnetAccess" value="{!userHasAccessToInc}" /></td>
+                                </tr>
+                                <script>
+                                    function openClientLookup(){
+                                        if(!inProgress){
+                                        var srdId =  document.getElementById(IncidentPageComp.ComponentVars.reqDefinationID).value;
+                                         if(accountPopupFlag){
+                                          selectedAccountId = document.getElementById('{!$Component.incidentForm.Account_id_id}').value;
+                                          openPopup('SearchPage?popupId=Client&isLookup=true&accountId='+selectedAccountId+'&additional_columns=id,firstname,lastname,username,phone,extension&srtempid='+srdId,setClientRelatedFields);
+                                         }else{
+                                            openPopup('SearchPage?popupId=Client&isLookup=true&additional_columns=id,firstname,lastname,username,Account_ID__c,Account_Name__c,contact.accountid,phone,extension,contact.account.name&srtempid='+srdId,setClientRelatedFields);
+                                         }
+                                        }       
+                                    }
+                                    
+                                </script>
+                                <tr>
+                                            <td class="clsInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__clientLastName__c.label}" /></td>
+                                           <td class="clsInputTextBoxTD"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__clientLastName__c.inlineHelpText}" id="User_id_lastname" value="{!clientLastName}" styleClass="clsInputTextBox" tabindex="500" 
+                                                 onKeyUp="findClients('sel3','autocompleteClientLNameDiv',this,event)" 
+                                                 onblur="disableDiv('autocompleteClientLNameDiv');if(accountPopupFlag){selectedAccountId = document.getElementById('{!$Component.incidentForm.Account_id_id}').value; showData(event,FetchUrgencyHTTP,escape('IsActive=true and accountId=\''+selectedAccountId+'\''));} else {showData(event,FetchUrgencyHTTP,escape('IsActive=true'));}"/>
+                                                <div id='autocompleteClientLNameDiv' class="clsAutocompleteDiv">
+                                                    <select id="sel3" class="clsAutocompleteSelectOption" multiple="multiple" onmousedown="isAutocomplete = true;" onClick="SelectValue(this,'autocompleteClientLNameDiv');" >
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="lookupIconTD">
+                                        <div class="lookUpIconDiv">
+                                        <input type="button" class="lookupIconOn" id="lastnameLookup_Id" tabindex="501" onclick="openClientLookup();" />
+                                        </div>
+                                       </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__clientFirstName__c.label}" /></td>
+                                            <td class="clsInputTextBoxTD"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__clientFirstName__c.inlineHelpText}" id="User_id_firstname" value="{!clientFirstName}" styleClass="clsInputTextBox" tabindex="502" 
+                                                onKeyUp="findClients('sel4','autocompleteClientFNameDiv',this,event)"  
+                                                onblur="disableDiv('autocompleteClientFNameDiv');if(accountPopupFlag){ selectedAccountId = document.getElementById('{!$Component.incidentForm.Account_id_id}').value; showData(event,FetchUrgencyHTTP,escape('IsActive=true and accountId=\''+selectedAccountId+'\''));} else {showData(event,FetchUrgencyHTTP,escape('IsActive=true'));}"/>
+                                                <div id='autocompleteClientFNameDiv' class="clsAutocompleteDiv">
+                                                    <select id="sel4" class="clsAutocompleteSelectOption" multiple="multiple" onmousedown="isAutocomplete = true;" onClick="SelectValue(this,'autocompleteClientFNameDiv');" >
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="lookupIconTD">
+                                        <div class="lookUpIconDiv">
+                                        <input type="button" class="lookupIconOn" id="firstnameLookup_Id" onclick="openClientLookup();"  tabindex="503" />
+                                        </div>
+                                       </td>
+                                        </tr>
+                                <tr>
+                                     <td class="clsInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKClient__c.label}" /><span class="clsRequiredBlack">&nbsp;*</span></td>
+                                     <td class="clsInputTextBoxTD">
+                                         <apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKClient__c.inlineHelpText}" value="{!clientName}" styleClass="clsInputTextBox"  id="User_id_username"  tabindex="504" 
+                                         onKeyUp="findClients('sel5','autocompleteClientUNameDiv',this,event)" 
+                                         onblur="disableDiv('autocompleteClientUNameDiv');if(accountPopupFlag){ selectedAccountId = document.getElementById('{!$Component.incidentForm.Account_id_id}').value; showData(event,FetchUrgencyHTTP,escape('IsActive=true and accountId=\''+selectedAccountId+'\''),1);} else {showData(event,FetchUrgencyHTTP,escape('IsActive=true'),1);}"/>
+                                         <apex:inputhidden id="User_id_id" value="{!incident.BMCServiceDesk__FKClient__c}" />     
+                                         <apex:inputhidden id="User_id_fkurgency__c" value="{!clientUrgency}"/> 
+                                                <div id='autocompleteClientUNameDiv' class="clsAutocompleteDiv">
+                                                    <select id="sel5" class="clsAutocompleteSelectOption" multiple="multiple" onmousedown="isAutocomplete = true;" onClick="SelectValue(this,'autocompleteClientUNameDiv');" >
+                                                    </select>
+                                                </div>
+                                     </td>
+                                     <td class="lookupIconTD">
+                                      <div class="lookUpIconDiv">
+                                        <input type="button" class="lookupIconOn" id="clientIdLookup_Id" onclick="openClientLookup();"   tabindex="505" />
+                                      </div>
+                                    </td>
+                                        
+                                    <script>
+                                             var clientid=  '{!JSENCODE($CurrentPage.parameters.Userid)}';
+                                             var mName=  '{!JSENCODE($CurrentPage.parameters.moduleName)}';
+                                             if((clientid != null && clientid != '')|| (mName != null && mName !='' && mName=='Clients') ){
+                                                document.getElementById('{!$Component.incidentForm.User_id_firstname}').className = 'clsIdInputTextBoxReadOnly';
+                                                document.getElementById('{!$Component.incidentForm.User_id_lastname}').className='clsIdInputTextBoxReadOnly';
+                                                document.getElementById('{!$Component.incidentForm.User_id_username}').className='clsIdInputTextBoxReadOnly';              
+                                                document.getElementById('{!$Component.incidentForm.User_id_firstname}').disabled=true;
+                                                document.getElementById('{!$Component.incidentForm.User_id_lastname}').disabled=true;
+                                                document.getElementById('{!$Component.incidentForm.User_id_username}').disabled=true;
+                                                if ('{!$Component.incidentForm.clientIdLookup_Id}'!='')
+                                                document.getElementById('{!$Component.incidentForm.clientIdLookup_Id}').disabled=true;
+                                                if ('{!$Component.incidentForm.firstnameLookup_Id}'!='')
+                                                document.getElementById('{!$Component.incidentForm.firstnameLookup_Id}').disabled=true;
+                                                if ('{!$Component.incidentForm.lastnameLookup_Id}'!='')
+                                                document.getElementById('{!$Component.incidentForm.lastnameLookup_Id}').disabled=true;
+                                              } 
+                                    </script>
+                                        
+                                </tr>
+                                 <tr style="{!IF(hideAccount==true,'display:none','')}" >
+                                    <td class="clsInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKAccount__c.label}" /></td>
+                                    <td class="clsInputTextBoxTD"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKAccount__c.inlineHelpText}" id="Account_id_name" value="{!accountName}" styleClass="clsInputTextBox" tabindex="506" 
+                                    onblur="isAutocomplete = false; showData(event,'',escape('inactive__c = false'));"/>
+                                    <apex:inputhidden id="Account_id_id" value="{!incident.BMCServiceDesk__FKAccount__c}" />
+                                    </td>
+                                    <td class="lookupIconTD">
+                                        <div class="lookUpIconDiv">
+                                           <input type="button" class="lookupIconOn" id="accountLookup_Id" tabindex="507" onclick="if(!inProgress) {openPopup('SearchPage?popupId=Organization&isLookup=true&additional_columns=id,name',setAccountNextOne);}" />
+                                        </div>
+                                     </td>
+                                </tr> 
+                                                                                    
+                                <tr style="{!categoryShowStyle}">
+                                    <td class="clsInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKCategory__c.label}" /><apex:outputLabel value=" *" styleClass="clsRequiredBlack" rendered="{!categoryRequired}"/>   </td>
+                                    <td class="clsInputTextBoxTD"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKCategory__c.inlineHelpText}" id="Category__c_id_name" value="{!categoryName}" styleClass="clsInputTextBox" tabindex="508" 
+                                                    onKeyUp="if (event.keyCode != 9) { findIt('sel2','autocompleteCategoryDiv',this,event) }" 
+                                                        onblur="disableDiv('autocompleteCategoryDiv');showData(event,FetchUrgencyHTTP,escape('inactive__c = false and AvailableForIncidents__c = true'));"/>
+                                        <div id='autocompleteCategoryDiv' class="clsAutocompleteDiv">
+                                                <select id="sel2" class="clsAutocompleteSelectOption" multiple="multiple" onmousedown="isAutocomplete = true;" onClick="SelectValue(this,'autocompleteCategoryDiv');" >
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td class="lookupIconTD">
+                                    <div class="lookUpIconDiv">
+                                        <input type="button" id="categoryLookup" class="lookupIconOn" onclick="if(!inProgress) {if (getSRDtitle().value == '') {openPopup('CategorySearchPage?isLookup=true&isSD=true&popupId=incident&categoryview=incident',openCategoryLookup);} else {openPopup('CategorySearchPage?isLookup=true&isSD=true&popupId=incident&categoryview=SR',openCategoryLookup);}}" tabindex="509"  />
+                                    </div>
+
+<!--  IE7-8 Related Changes -->
+                                    <apex:inputhidden value="{!incident.BMCServiceDesk__FKCategory__c}" id="Category__c_id_id" /><!-- id="incidentcategoryfk" />-->
+                                        <apex:inputhidden id="Category__c_id_fkurgency__c" /> 
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                   <td class="clsInputLabelTD" style="white-space:normal;"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKRequestDefinition__c.label}" /></td>
+                                    <td class="clsInputTextBoxTD"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKRequestDefinition__c.inlineHelpText}" id="SRM_RequestDefinition__c_id_servicerequesttitle__c" value="{!reqDefnName}" styleClass="clsInputTextBox" tabindex="510"  
+                                              onblur="isAutocomplete=false;showData(event,poplateSRDvalues,escape('inactive__c = false'));"/>
+                                    </td>
+                                    <td class="lookupIconTD">
+                                    <div  style="padding-top:2px;">
+                                        <input type="button" id="reqDefLookupBtn" class="lookupIconOn" onclick="if(!inProgress){openSRDpopUp()}" tabindex="511"  />
+                                        <input type="button" id="reqDetailBtn" class="lookupIconLaunchForm" onclick="if(!inProgress){openSRDetailpopUp()}" onmouseover="callRequestDetailTooltip(event);" tabindex="512"  />
+                                    </div>
+                                  
+                                        
+                                   
+                                    <apex:inputhidden value="{!incident.BMCServiceDesk__FKRequestDefinition__c}" id="SRM_RequestDefinition__c_id_id" />
+                                    <apex:inputhidden value="{!incident.BMCServiceDesk__FKRequestDetail__c}" id="SRM_RequestDetail__c_id_id" />
+                                    </td>
+
+                                </tr>
+                                
+
+                            </table>
+                            <table class="clsTable" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="clsInputBoldLabelTableFirstRowTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__incidentDescription__c.label}" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="clsInputTextAreaTD clsRightPadTD">
+                                    <div class="clsRelativePosition">
+                                        <apex:inputTextarea title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__incidentDescription__c.inlineHelpText}" id="incident_incidentDescription__c" value="{!Incident.BMCServiceDesk__incidentDescription__c}" styleClass="clsInputTextArea" tabindex="513"/>
+                                    </div>
+                                    </td>
+                                    <td class="clsInputTextAreaTD" style="vertical-align:top;">
+                                        <input type="button" id="inputTxtAreaButton" class="TextboxPopupIcon" style="display:inline" onclick="showTextEditor('{!$Component.incidentForm.incident_incidentDescription__c}', '{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__incidentDescription__c.label}', '32000', '{!JSENCODE($Label.OK)}', '{!JSENCODE($Label.Cancel)}');"/>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td >
+                                        <table cellpadding="0px" cellspacing="0px">
+                                            <tr>
+                                                <td class="clsInputBoldLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__incidentResolution__c.label}" /></td>
+                                                <td class="fstCallResTD" ><apex:inputCheckbox value="{!Incident.BMCServiceDesk__firstCallResolution__c}"
+                                                     id="incident_firstCallResolution__c" title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__firstCallResolution__c.inlineHelpText}" tabindex="514"/> 
+                                                     <label for="radFCR" class="clsInputCheckBoxLabel">{!$ObjectType.Incident__c.fields.firstCallResolution__c.label}</label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                     </td>                          
+                                </tr>
+                                <tr>
+                                    <td class="clsInputTextAreaTD clsRightPadTD">
+                                    <div class="clsRelativePosition">
+                                        <apex:inputTextarea title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__incidentResolution__c.inlineHelpText}" value="{!Incident.BMCServiceDesk__incidentResolution__c}" id="incident_incidentResolution__c" styleClass="clsInputTextArea" tabindex="515"/>
+                                    </div>
+                                    </td>
+                                    <td class="clsInputTextAreaTD" style="vertical-align:top;">
+                                        <input type="button" id="inputTxtAreaButton" class="TextboxPopupIcon" style="display:inline" onclick="showTextEditor('{!$Component.incidentForm.incident_incidentResolution__c}', '{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__incidentResolution__c.label}', '32000', '{!JSENCODE($Label.OK)}', '{!JSENCODE($Label.Cancel)}');"/>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td class="clsInputBoldLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__note__c.label}" /></td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td class="clsInputTextAreaTDNote">
+                                    <table cellpadding="0px" cellspacing="0px" class="width100">
+                                        <tr>
+                                            <td colspan="2" class="clsRightPadTD">
+                                                 <apex:inputTextarea title="{!$Label.bmcservicedesk__TooltipNote}" value="{!incNote}" styleClass="clsInputTextAreaNote" tabindex="516" id="incident_incidentNote__c"  onkeyup="renderAddNoteButton();"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                           <td class="addNoteBtnStyle1">
+                                                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__IncidentHistory__c.fields.BMCServiceDesk__duration__c.label}" styleClass="clsDurationLabel"/>
+                                                <apex:inputText value="{!incDuration}" styleClass="clsDurationTextBox" id="incident_incidentDuration__c" title="{!$Label.bmcservicedesk__TooltipDuration}" tabindex="517" onblur="validateDuration();" onfocus=""/><apex:outputLabel value="{!$Label.bmcservicedesk__HHMM}" styleClass="clsTimeLabel"/>
+                                            </td>
+                                            <td class="addNoteBtnStyle2" align="right">
+                                                <input type="button" value="{!$Label.Add}" class="AddButton" id="addNoteBtn" style="width:auto;padding:4px;padding-top:2px;" onclick="disableAddNote()" />                                                
+                                            </td> 
+                                        </tr>
+                                    </table>
+                                    </td>
+                                    <td  style="vertical-align:top;padding-left:5px;" >                                   
+                                        <input type="button" id="inputTxtAreaButton" class="TextboxPopupIcon" style="display:inline" onclick="showTextEditor('{!$Component.incidentForm.incident_incidentNote__c}','{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__note__c.label}', '32000', '{!JSENCODE($Label.OK)}', '{!JSENCODE($Label.Cancel)}',null,null,renderAddNoteButton); " />                                        
+                                    </td>
+                                </tr>
+                           </table>
+                           </apex:outputPanel>
+                        </td>
+                        
+                        
+                        <td class="clsTopAlignment25">
+                            <div class="panelCapsule">
+                            <apex:outputPanel id="PanelbarOutputPanel">
+
+
+
+                            <apex:panelBar headerClass="clsRowBlueBgPanel" switchType="ajax" id="pbarId">
+                                <apex:panelBarItem label="{!$Label.bmcservicedesk__Details}" expanded="true" id="Incidentdetail" headerClass="panelHeader" contentClass="panelContent">
+                                 <apex:outputPanel id="incidentDetailsPanel">   
+                                    <table class="clsTable" cellspacing="0" cellpadding="0" >
+                                        <tr>                                            
+                                            <td height = "15"></td>                                         
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKStatus__c.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1" align="right">
+                                                <apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKStatus__c.inlineHelpText}" id="Status__c_id_name" value="{!statusName}" styleClass="clsPanelInputTextbox" tabindex="518" onblur="isAutocomplete=false;showData(event,'',escape('inactive__c = false and appliesToIncident__c = true'));"/>
+                                                <apex:inputHidden id="Status__c_id_id" value="{!incident.BMCServiceDesk__FKStatus__c}"/>
+                                                <apex:inputHidden id="Status__c_id_stage__c" value="{!stageName}"/>
+                                            </td>
+                                            <td class="lookupIconPanelTD">
+                                                  <div class="lookUpIconDiv">
+                                                  <!--<apex:commandButton onclick="openLookup('Status',setStatusNext);" styleClass="lookupIconOn" reRender="dummy"/>-->
+                                                      <input type="button" id="statusLookup" class="lookupIconOn" onclick="if(!inProgress) {openPopup('SearchPage?popupId=Status&isLookup=true&additional_columns=id,name&filterClause='+escape('inactive__c = false and appliesToIncident__c = true'),setStatusField);}"  tabindex="519" />
+                                                  </div>    
+                                              </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKImpact__c.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1" align="right">
+                                                <apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKImpact__c.inlineHelpText}" id="Impact__c_id_name" value="{!impactName}" styleClass="clsPanelInputTextbox safariAutoComplete" tabindex="520" onKeyUp="findIt('sel','autocompleteImpactDiv',this,event)"  
+                                                        onblur="disableDiv('autocompleteImpactDiv');showData(event,FetchPriorityHTTP,escape('inactive__c = false'));"/>
+                                                
+                                                <apex:inputhidden id="Impact__c_id_id" value="{!incident.BMCServiceDesk__FKImpact__c}"/>
+                                                <div id='autocompleteImpactDiv' class="clsPanelAutocompleteDiv">
+                                                    <select id="sel" class="clsPanelSelectOption" multiple="multiple" onmousedown="isAutocomplete = true;" onClick="SelectValue(this,'autocompleteImpactDiv');" >
+                                                    </select>
+                                                </div>
+                                                
+                                              
+                                            </td>
+                                            <td class="lookupIconPanelTD">
+                                                  <div class="lookUpIconDiv"><input type="button" id="impactLookup" class="lookupIconOn" onclick="if(!inProgress) { openPopup('SearchPage?popupId=Impact&isLookup=true&additional_columns=id,name&filterClause='+escape('inactive__c = false'),openImpactLookup);}" tabindex="521" /></div>
+                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKUrgency__c.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1">
+                                                <apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKUrgency__c.inlineHelpText}" id="Urgency__c_id_name" value="{!urgencyName}" styleClass="clsPanelInputTextbox safariAutoComplete" tabindex="522" onKeyUp="findIt('sel1','autocompleteUrgencyDiv',this,event)" 
+                                                    onblur="disableDiv('autocompleteUrgencyDiv');showData(event,FetchPriorityHTTP,escape('inactive__c = false'),escape('urgencyflag'));"/>
+                                                <apex:inputhidden id="Urgency__c_id_id" value="{!incident.BMCServiceDesk__FKUrgency__c}"/>
+                                                <div id='autocompleteUrgencyDiv' class="clsPanelAutocompleteDiv">
+                                                    <select id="sel1" class="clsPanelSelectOption" multiple="multiple" onmousedown="isAutocomplete = true;" onClick="SelectValue(this,'autocompleteUrgencyDiv');" >
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="lookupIconPanelTD" >
+                                                <div class="lookUpIconDiv">
+                                                    <input type="button" id="urgencylookup" class="lookupIconOn"  onclick="if(!inProgress) { openPopup('SearchPage?popupId=Urgency&isLookup=true&additional_columns=id,name&filterClause='+escape('inactive__c = false'),setUrgencyField); }" tabindex="523" onblur="if(!inProgress) { }" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKPriority__c.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKPriority__c.inlineHelpText}" tabindex="524" disabled="true" value="{!priorityName}"
+                                                styleClass="clsPanelInputTextboxReadOnly" id="Priority__c_id_name" onfocus="this.blur();"/>
+                                                <apex:inputhidden value="{!isPriorityChanged}" id="Priority__c__isPriorityChanged"/>
+                                                <apex:inputhidden value="{!incident.BMCServiceDesk__FKPriority__c}" id="Priority__c_id_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"> <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__openDateTime__c.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1"><apex:inputText id="openDateId" onfocus="this.blur()" value="{!OpenDateStr}" styleClass="clsPanelInputTextboxReadOnly" title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__openDateTime__c.inlineHelpText}" /></td>
+                                                <script>
+                                                function disabledatefield()
+                                                {
+                                                    document.getElementById('{!$Component.openDateId}').disabled = true;
+                                                }
+                                                </script>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"> <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__respondedDateTime__c.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__respondedDateTime__c.inlineHelpText}" onfocus="this.blur()" id="respondedId" value="{!RespondedDateStr}" styleClass="clsPanelInputTextboxReadOnly" /></td>
+                                            <script>
+                                                    document.getElementById('{!$Component.respondedId}').disabled = true;
+                                                </script>
+                                            <td class="lookupIconPanelTD">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__dueDateTime__c.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1" title="{!$ObjectType.Incident__c.fields.dueDateTime__c.inlineHelpText}">
+                                                    <apex:inputField value="{!incident.BMCServiceDesk__dueDateTime__c}" id="Incident__c_id_duedatetime__c" styleClass="clsPanelInputTextbox"/>
+                                                    <apex:inputhidden value="{!dueDateCalculationOption}" id="dueDateCalculationOption"/>                                                 
+                                            </td>
+                                            <td class="lookupIconPanelTD" >&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__closeDateTime__c.label}" /> </td>
+                                            <td class="clsPanelInputTextboxTD1"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__closeDateTime__c.inlineHelpText}" onfocus="this.blur()" id="closeDateId" value="{!CloseDateStr}" styleClass="clsPanelInputTextboxReadOnly" /></td>
+                                             <script>
+                                                document.getElementById('{!$Component.closeDateId}').disabled = true;
+                                                function disableclosedate()
+                                                {
+                                                    document.getElementById('{!$Component.closeDateId}').disabled = true;
+                                                }
+                                                </script>
+                                            <td class="lookupIconPanelTD" >&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__call__c.label}" /> </td>
+                                            <td class="clsPanelInputTextboxTD1"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__call__c.inlineHelpText}" onfocus="this.blur()" id="usercalledID" value="{!Incident.BMCServiceDesk__call__c}" styleClass="clsPanelInputTextboxReadOnly" />
+                                            <script>
+                                                document.getElementById('{!$Component.usercalledID}').disabled = true;
+                                                convertUserCalledToInt();
+                                            </script>
+                                            </td>
+                                            <td class="lookupIconPanelTD" >&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                             <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Problem__c.fields.Name.label}" /></td>
+                                             <td class="clsPanelInputTextboxTD1"><apex:inputText id="Problem__c_id_name" value="{!problem.name}" title="{!$Label.bmcservicedesk__TooltipIncidentProblem}" styleClass="clsPanelInputTextboxReadOnly" tabindex="525" />
+                                                                                 <apex:inputHidden id="Problem__c_id_id" value="{!problem.Id}"/>    
+                                             </td>
+                                             <td class="lookupIconPanelTD">
+                                                  <div class="lookUpIconDiv"><input id="problemLookup" type="button" class="lookupIconLaunchForm" onclick="openTab();"  tabindex="526" />
+                                                  </div>
+                                             </td>
+                                        </tr>
+                                    </table>
+                                    </apex:outputPanel> 
+                                </apex:panelBarItem>
+                                <apex:panelBarItem label="{!$Label.bmcservicedesk__ClientDetails}" headerClass="panelHeader" id="pbarItemIdCD" contentClass="panelContent">
+                                    <apex:outputPanel id="clientDetailsOutputPanel">
+                                    <table class="clsTable" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td colspan="3" class="viewMoreDtlsBg">
+                                            <button  type = "button" id="infoBtn" Class="bmcUserInfoPopup" onmouseover="showInfoPopup(event,'clientPopupDiv','client');"/> </td>
+                                        </tr>
+                                        <tr>                                            
+                                            <td height = "15"></td>                                         
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.User.fields.Phone.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__TooltipIncidentClientPhone}" id="User_id_phone" disabled="true" value="{!clientPhone}" styleClass="clsPanelInputTextboxReadOnly" /></td>
+                                            <td class="lookupIconPanelTD" >&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.User.fields.Extension.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__TooltipIncidentClientExtension}"  id="User_id_extension" disabled="true" value="{!clientExtension}" styleClass="clsPanelInputTextboxReadOnly" /></td>
+                                            <td class="lookupIconPanelTD" >&nbsp;</td>
+                                        </tr>
+                                        <tr style="{!IF(hideAccount==true,'display:none','')}"  >
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__Client_Account__c.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__Client_Account__c.inlineHelpText}" id="User_id_organization" disabled="true" value="{!organizationName}" styleClass="clsPanelInputTextboxReadOnly" /></td>
+                                            <td class="lookupIconPanelTD" >&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    </apex:outputPanel>
+                                </apex:panelBarItem>
+                                <apex:panelBarItem label="{!$Label.bmcservicedesk__CIDetails}" id="CIDetail" headerClass="panelHeader" contentClass="panelContent">
+                                    <apex:outputPanel id="CIDetailsPanel">
+                                            <table class="clsTable" cellpadding="0" cellspacing="0">
+                                                            
+                                                            <tr>
+                                                                <td height="15"></td>
+                                                            </tr> 
+                                                             <tr>
+                                                                <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKBusinessService__c.label}"/></td>
+                                                                <td class="clsPanelInputTextboxTD1"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKBusinessService__c.inlineHelpText}" id="BMC_BusinessService__c_id_instance_name__c" value="{!BusinessServiceName}"  styleClass="clsPanelInputTextbox" tabindex="527" onblur="setServiceClauses('businessService');showalldata(event,'',businessServiceClause);"/>
+                                                                <apex:inputHidden id="BMC_BusinessService__c_id_fkbmc_baseelement__c" value="{!incident.BMCServiceDesk__FKBusinessService__c}"/>
+                                                                </td>
+                                                               
+                                                                <td class="lookupIconPanelTD">
+                                                                      <div class="lookUpIconDiv"><input id="ciLookup" type="button" class="lookupIconOn" onclick="setServiceClauses('businessService');openPopup('SearchPage?popupId=BMC_BusinessService&isLookup=true&filterClause='+businessServiceClause+'&additional_columns=fkbmc_baseelement__c,instance_name__c',setServiceRelatedFields);"  tabindex="528" /></div>
+                                                                </td>
+
+                                                             </tr>
+                                                             <tr>
+                                                                <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKServiceOffering__c.label}"/></td>
+                                                                <td class="clsPanelInputTextboxTD1"><apex:inputText title="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKServiceOffering__c.inlineHelpText}" id="BMC_BusinessService__c_id_instance_name__c__x_1" value="{!serviceOfferingName}"  styleClass="clsPanelInputTextbox" tabindex="529" onblur="setServiceClauses('offering');showalldata(event,setServiceOfferingTB,OfferingClause);"/>
+                                                                <apex:inputHidden id="BMC_BusinessService__c_id_fkbmc_baseelement__c__x_1" value="{!incident.BMCServiceDesk__FKServiceOffering__c}"/>
+                                                                 </td>
+                                                               
+                                                                <td class="lookupIconPanelTD">
+                                                                      <div class="lookUpIconDiv"><input id="serviceOfferingLookup" type="button" class="lookupIconOn" onclick="if(!inProgress){setServiceClauses('offering'); openPopup('SearchPage?popupId=BMC_BusinessService&isLookup=true&filterClause='+OfferingClause+'&additional_columns=fkbmc_baseelement__c,instance_name__c',setServiceOfferingRelatedValues)}"  tabindex="530" /></div>
+                                                                </td>
+
+                                                             </tr>
+                                                            <tr>
+                                                                <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__outageFrom__c.label}" /></td>
+                                                                <td class="clsPanelInputTextboxTD1" title="{!$ObjectType.Incident__c.fields.outageFrom__c.inlineHelpText}">
+                                                                <apex:inputField value="{!incident.BMCServiceDesk__outageFrom__c}" id="Incident__c_id_outageFrom__c" styleClass="clsPanelInputTextbox"/>
+
+                                                                </td>
+                                                                <td class="lookupIconPanelTD" >&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__outageTo__c.label}" /></td>
+                                                                <td class="clsPanelInputTextboxTD1" title="{!$ObjectType.Incident__c.fields.outageTo__c.inlineHelpText}">
+                                                                <apex:inputField value="{!incident.BMCServiceDesk__outageTo__c}" id="Incident__c_id_outageTo__c" styleClass="clsPanelInputTextbox"/>
+                                                                                                       
+                                                                </td>
+                                                                <td class="lookupIconPanelTD" >&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKBMC_BaseElement__c.label}" /></td>
+                                                                <td class="clsPanelInputTextboxTD1"><apex:inputText title="{!$Label.bmcservicedesk__TooltipIncidentCIDetailsCIType}" id="BMC_BaseElement__c_id_name__c" value="{!ciName}" styleClass="clsPanelInputTextbox" tabindex="531" onblur="showalldata(event,oncompleteForCILookup,'MarkAsDeleted__c=false');"/>
+                                                                <apex:inputHidden id="BMC_BaseElement__c_id_id" value="{!incident.BMCServiceDesk__FKBMC_BaseElement__c}"/>
+                                                                 </td>
+                                                                
+                                                                <td class="lookupIconPanelTD">
+                                                                      <div class="lookUpIconDiv"><input id="CIDetails" type="button" class="lookupIconOn" onclick="if(!inProgress) {openPopup('SearchPage?popupId=BMC_BaseElement&isLookup=true&filterObjectId='+getUserID()+'&isFilterObject=true&parentName=Incident__c&isRadioChecked=false&accountId='+getAccountID()+'&incidentId='+getIncidentID()+'&incCiId='+getCIelemID()+'&incServiceId='+getServiceElemID()+'&selectedCIFilter='+LinkedToClient,setCINext);}"  tabindex="532" /></div>
+                                                                </td>
+
+                                                          </tr>
+                                                           <tr>
+                                                                <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__BMC_BaseElement__c.fields.BMCServiceDesk__CITag__c.label}" /></td>
+                                                                <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__TooltipIncidentCIDetailsAsset}" value="{!baseElement.BMCServiceDesk__CITag__c}" id="BMC_BaseElement__c_id_citag__c" disabled="true"  styleClass="clsPanelInputTextboxReadOnly" /></td>
+
+                                                                 <td class="lookupIconPanelTD" >&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__BMC_BaseElement__c.fields.BMCServiceDesk__SerialNumber__c.label}" /></td>
+                                                                <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__TooltipIncidentCIDetailsSerial}"  value="{!baseElement.BMCServiceDesk__SerialNumber__c}" id="BMC_BaseElement__c_id_serialnumber__c" disabled="true"  styleClass="clsPanelInputTextboxReadOnly" /></td>
+
+                                                                 <td class="lookupIconPanelTD" >&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__BMC_BaseElement__c.fields.BMCServiceDesk__WarrantyExpirationDate__c.label}" /></td>
+                                                                <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__TooltipIncidentCIDetailsWarrantyExpDate}" styleClass="clsPanelInputTextboxReadOnly"  disabled="true" value="{!warrantyExpDate}"/></td> 
+                                                                <td class="lookupIconPanelTD" >&nbsp;</td>
+                                                          </tr>
+                                                           <tr>
+                                                               <td class="defaultFont clsPadding10 topAlignTD" colspan="3"  id="linkAddCiID"> <a id="linkAddCILink" style="display:none;" href="JavaScript:void(0);" onclick="openPopup('SearchPage?popupId=BMC_BaseElement&amp;isLookup=true&amp;filterObjectId='+getUserID()+'&amp;isFilterObject=true&amp;parentName=Incident__c&isRadioChecked=false&accountId='+getAccountID()+'&incidentId='+getIncidentID()+'&incCiId='+getCIelemID()+'&incServiceId='+getServiceElemID()+'&selectedCIFilter='+LinkedToClient,linkCIIncidentJS);">{!JSENCODE($Label.LinkAdditionalCI)}</a></td>
+                                                         
+                                                           </tr>
+                                                        </table>
+                                    </apex:outputPanel> 
+                                   
+                                </apex:panelBarItem>                            
+                                <!-- Incident Chatter Feed Start -->
+                                   <apex:panelBarItem onenter="loadChatterFeeds();" label="{!$Label.bmcservicedesk__IncidentChatterFeed}" headerClass="panelHeader" contentClass="panelContent" rendered="{!IF(incidentFeed,true,false)}" id="IncidentChatterFeed">
+    <div style="padding-left:10px;">                                   
+    <apex:outputPanel id="chatterContent" layout="block">
+    <apex:actionFunction name="showChatterFeeds" action="{!showChatterFeeds}" rerender="chatterContent" />
+    <apex:outputPanel id="allfeeds" layout="block" styleClass="feedcontainer" rendered="{!renderChatterPanel}">
+        <apex:outputPanel layout="block" styleClass="" id="feed" >
+        <table>
+            <tr><td height = "10"></td>
+            </tr>
+        </table>
+        <div class="publishercontainer ChatterAccordionPublisherContainer">
+            <div class="publisherrightcontainer">
+                <div class="publishercontrols">
+                     <apex:inputTextArea style="height: 0pt;" title="{!$Label.bmcservicedesk__TooltipChatterShareIncident}" styleclass="publishertextarea ChatterAccordionTextAreaDefaultStyle _NoHandleChange" onclick="javascript:setElHeight(this,'')" onblur="javascript:setElHeight(this,'{!newStatus}');" cols="1000" id="publishertextarea" value="{!newStatus}"></apex:inputTextArea>
+                </div>
+        
+            </div>
+            <table border="0" class="chattertable">
+                <tr>
+                    <td><apex:commandLink id="followUnfollowLink" styleClass="RecordFollowUnfollowLink" value="{!FollowUnfollowLinkLabel}" onclick="followIncidentToggler(); return false;" /></td>
+                    <td align="right"><apex:commandButton id="shareBTN" rerender="fullcomponentid" onclick="return shareTextPost(document.getElementById('{!$Component.publishertextarea}').value);" styleClass="btnShare"   value=" {!$Label.bmcservicedesk__Share} "  title="{!$Label.bmcservicedesk__Share}" /></td>
+                </tr>
+            </table>                     
+        </div>
+        
+    <apex:repeat value="{!myfeed}" var="f"> 
+                <apex:outputPanel layout="block" styleClass="feedcontainer cxfeeditem feeditem cxfeedcontainer feed ">
+                    <apex:outputPanel layout="block" >
+                    <div class="cxfeeditemcontent">
+                                    <apex:outputText styleClass="ChatterAccordionCreatedBy" value="  {!f.feedItem.CreatedBy.Name}  " />
+                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'UserStatus', true, false)}">
+                                <apex:outputText styleClass="ChatterAccordionFeedItem" value="{!f.displayText}" />
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'TextPost', true, false)}">
+                                <apex:outputText styleClass="ChatterAccordionFeedItem" value="{!f.displayText}" />
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'TrackedChange', true, false)}">
+                                <apex:outputText styleClass="ChatterAccordionFeedItemSmall" value=" {!f.displayText}" />
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'LinkPost', true, false)}">
+                                    <apex:outputText styleClass="ChatterAccordionFeedItem" value="  {!f.feedItem.CreatedBy.Name} " />
+                                <apex:outputText styleClass="ChatterAccordionFeedItem" value="{!f.displayText}" />
+                                <apex:outputPanel layout="block" styleClass="linkPostLinkContainer">
+                                    <apex:outputLink value="{!f.feedItem.FeedPost.LinkUrl}" id="postLink" styleClass="linkPostLink" target="_blank">
+                                        <apex:outputText styleClass="ChatterAccordionFeedItem" id="postlinkTxt" title="{!f.feedItem.FeedPost.LinkUrl}" value="{!f.feedItem.FeedPost.Title}" />
+                                    </apex:outputLink>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'ContentPost', true, false)}">
+                                <apex:outputText styleClass="ChatterAccordionFeedItemTitle" value="  {!f.feedItem.CreatedBy.Name} " />
+                                <apex:outputText styleClass="ChatterAccordionFeedItem" value="{!f.displayText}" />
+                                <apex:outputPanel layout="block" styleClass="linkPostLinkContainer">
+                                    <apex:outputText styleClass="ChatterAccordionFeedItemTitle"   value="{!f.feedItem.FeedPost.Title}" />
+                                </apex:outputPanel>                                
+                            </apex:outputPanel>
+                        </div>
+                        <div class="feeditemfooter">
+                            <span class="cxfeeditemcontent">
+                                <apex:outputText value="{!f.createdDate}  " styleClass="ChatterAccordionFeedItemSmall" >
+                                </apex:outputText>
+                                <apex:outputLink id="commentLink" value="javascript:void(0);" onclick="setDisplay('{!JSENCODE(f.feedItem.id)}','block');">
+                                    <apex:outputText id="commentTxt" styleClass="ChatterAccordionFeedItemActionLink"  value="  {!$Label.bmcservicedesk__Comment}" />
+                                </apex:outputLink>
+                                    &nbsp;&nbsp;&nbsp;   
+                                <apex:outputLink value="javascript:void(0);" id="deleteLink" onclick="deleteFeedPost('{!JSENCODE(f.feedItem.FeedPostId)}','{!JSENCODE(f.feedItem.CreatedById)}')" rendered="{!IF(f.feedItem.Type == 'TextPost' || f.feedItem.Type == 'LinkPost' || f.feedItem.Type == 'ContentPost', true, false)}">
+                                    <apex:outputText id="deleteTxt" styleClass="ChatterAccordionFeedItemActionLink" value="{!$Label.bmcservicedesk__Delete}" />
+                                </apex:outputLink>           
+                                     
+                            </span>  
+                            <apex:actionRegion >
+                              <div id="{!f.feedItem.id}" class="hidden feeditemcommenttext" style="padding-left:58px">
+                                      
+                                         <div class="cxfeeditemcontent" style="background-color:#EFF7FA; padding-top:2px">
+                                               <apex:inputText styleClass="foobar cxnewcommenttext cxiswires _NoHandleChange" style="height: 20px; width:190px; padding-bottom:1px;"  value="{!currentComment}" title="{!$Label.bmcservicedesk__TooltipComment}">
+                                               </apex:inputText> <br/>
+                                                <apex:outputLink id="addcommentLink" value="javascript:void(0);" onclick="createNewComment(document.getElementById('{!f.feedItem.id}'),'{!f.feedItem.id}');">
+                                                    <apex:outputText id="addcommentTxt" styleClass="ChatterAccordionFeedItemActionLink"  value="{!$Label.bmcservicedesk__AddComment}" />
+                                                </apex:outputLink>   
+                                                     
+                                             <div class="feedclearfloat"></div>
+                                         </div>
+                             </div>
+                            </apex:actionRegion>
+                        </div>
+                        <apex:outputPanel id="commPanel" layout="block" styleClass="feeditemextras">
+                            <div class="cxcomments feeditemcomments">
+                                <apex:repeat value="{!f.feedCommentBeanList}" var="c">
+                                    <apex:outputPanel layout="block" styleClass="" style="padding-left:12px">
+                                        <span class="feeditemcomment cxfeedcomment feeditemcommentbody">
+                                            <span class="feedcommentuser">
+
+                                                    <apex:outputText styleClass="ChatterAccordionFeedItemActionLink"   value="{!c.createdByName}" />
+                                            </span>
+                                            <span class="feedcommenttext">
+                                                 <apex:outputText styleClass="ChatterAccordionFeedItemSmall" value="{!c.commentBody}" />
+                                            </span>
+                                            <span class="feedcommentfooter">
+                                              <apex:outputText styleClass="ChatterAccordionFeedItemSmall feeditemtimestamp"  value="{!c.createdDate}">
+                                               </apex:outputText>
+                                            </span>
+                                            <span class="feedresolutionfooter">
+                                               <table border="0"><tr>
+                                               <td valign="top">
+                                               <apex:outputText value="  " />
+                                                <apex:outputLink value="javascript:void(0);" id="deletecommentLink" onclick="deleteCommentFromFeed('{!JSENCODE(c.commentId)}','{!JSENCODE(c.CreatedById)}')" >
+                                                    <apex:outputText styleClass="ChatterAccordionFeedItemSmall" id="deletecommentTxt" value="{!$Label.bmcservicedesk__Delete}" />
+                                                </apex:outputLink>
+                                                </td><td>           
+                                                &nbsp;&nbsp;&nbsp;<apex:outputText value="  " />
+                                                </td><td valign="top"> 
+                                                <apex:outputLink rendered="{!incident.BMCServiceDesk__state__c}" id="addresolutionLink" value="javascript:void(0);" onclick="copyResolutionAndCloseIncident('{!JSENCODE(c.commentBody)}');" >
+                                                    <apex:outputText styleClass="ChatterAccordionFeedItemSmall" id="addresolutionTxt" value="{!$Label.bmcservicedesk__AddResolutionClose}" />
+                                                </apex:outputLink>
+                                               </td>
+                                               </tr>                
+                                               </table>
+                                            </span> 
+                                        </span>
+                                    </apex:outputPanel>
+                                </apex:repeat>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:repeat>
+            <apex:outputLink value="javascript:void(0);" rendered="{!moreFeed}" id="moreFeedLink" onclick="openNewTab('{!JSENCODE(incidentId)}', '{!JSENCODE(objectName)}');">
+                <apex:outputText styleClass="ChatterAccordionFeedItemActionLink" id="moreFeedTxt" value="  {!$Label.bmcservicedesk__More}" />
+            </apex:outputLink>            
+                                   </apex:outputPanel>
+        <table class="clsTable" cellspacing="0" cellpadding="0">
+        <tr>
+            <td><apex:outputText styleClass="ChatterAccordionFeedLabel"  value="  {!$Label.bmcservicedesk__Following}"/></td>        
+        </tr>
+        </table>                                    
+                <apex:repeat value="{!userInfoList}" var="userInfo">
+                    <apex:image id="theImage" value="{!userInfo.userImage}" title="{!userInfo.userName}" width="40" height="40" />&nbsp;
+                </apex:repeat>
+                                   </apex:outputPanel>
+                         </apex:outputPanel>
+    </div>                                             
+                </apex:panelBarItem>
+    <!-- Incident Chatter Feed End -->                             
+                                <apex:panelBarItem label="{!$Label.bmcservicedesk__BroadcastDetails}" id="broadcastDetails" headerClass="panelHeader" contentClass="panelContent">
+                                <apex:outputPanel id="BroadcastPanel"> 
+                                    <table class="clsTable" border="0" cellpadding="0" cellspacing="0">
+                                        
+                                        <tr>
+                                            <td height="15"></td>
+                                        </tr> 
+                                        <tr>
+                                             <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKBroadcast__c.label}" /></td>
+                                             <td class="clsPanelInputTextboxTD1"><apex:inputText title="{!$Label.bmcservicedesk__TooltipIncidentBroadcastID}" id="Broadcasts__c_id_name" value="{!broadcastName}" styleClass="clsPanelInputTextbox" tabindex="533" onblur="showData(event,selectBroadcastNextFromTabout,escape('inactive__c = false'));"/>
+                                                                                 <apex:inputHidden id="Broadcasts__c_id_id" value="{!incident.BMCServiceDesk__FKBroadcast__c}"/>    
+                                             </td>
+                                             <td class="lookupIconPanelTD">
+                                                  <div class="lookUpIconDiv"><input type="button" id="broadcastLookup" class="lookupIconOn" onclick="if(!inProgress) {openPopup('SearchPage?popupId=Broadcast&isLookup=true',setBroadcastNextJS);}"  tabindex="534" /></div>
+                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Broadcasts__c.fields.BMCServiceDesk__broadcastMessage__c.label}" /></td>
+                                            <td class="clsPanelInputTextboxTD1"><apex:inputTextArea onfocus="this.blur()" title="{!$Label.bmcservicedesk__TooltipBroadcastMessage}"  id="Broadcasts__c_id_note__c" disabled="true" value="{!broadcastNote}" styleClass="clsPanelInputTextAreaReadOnly" /></td>
+                                            <td class="lookupIconPanelTD" >&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    </apex:outputPanel>
+                                </apex:panelBarItem>
+                                <apex:panelBarItem label="{!staffAssignmentLabel}" headerClass="panelHeader staffAssignmentPanelHeader" contentClass="panelContent" id="staffAssignmentPanel">
+                                    <script>
+                                        var staffPanelBar = document.getElementById('{!$Component.staffAssignmentPanel}');
+                                        var i=0;
+                                        if(staffPanelBar.childNodes.length > 0){
+                                            for(i=0; i<staffPanelBar.childNodes.length;i++){
+                                                if(staffPanelBar.childNodes[i] != null)
+                                                    if(staffPanelBar.childNodes[i].className.indexOf('staffAssignmentPanelHeader') > 0){
+                                                        staffPanelBar.childNodes[i].title = '{!JSENCODE($Label.StaffAssignmentDetails)}';
+                                                    }
+                                            }                                           
+                                        }
+                                    </script>
+                                    <apex:outputPanel id="staffPanel">                
+                                    <apex:inputhidden id="incidentOwnerId" value="{!incident.OwnerId}" />
+                                               
+                                    <table class="clsTable" cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    <td colspan="3" class="viewMoreDtlsBg">
+                                                                    <button  type ="button" id="staffInfobtn" Class="bmcUserInfoPopup" onmouseover="showInfoPopup(event,'staffPopupDiv','staff');"/></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td height="15"></td>
+                                                                </tr> 
+                                                                <tr>
+                                                                    <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.User.fields.FirstName.label}" /></td>
+                                                                    <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__Tooltip_StaffAssignment_FirstName}" id="staff_firstname" value="{!user.firstName}" styleClass="clsPanelInputTextboxReadOnly" /></td>
+                                                                    <td class="lookupIconPanelTD" >&nbsp;</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.User.fields.LastName.label}" /></td>
+                                                                    <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__Tooltip_StaffAssignment_LastName}" id="staff_laststname" value="{!user.lastName}" styleClass="clsPanelInputTextboxReadOnly" /></td>
+                                                                    <td class="lookupIconPanelTD" >&nbsp;</td>
+                                                                </tr>
+                                                                <tr> 
+                                                                    <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.Profile.label}" /></td> 
+                                                                    <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__Tooltip_StaffAssignment_Profile}" id="dummyProfile" id="staff_profilename" disabled="true" value="{!user.profile.Name}" styleClass="clsPanelInputTextboxReadOnly"/></td> 
+                                                                    <td class="lookupIconPanelTD" >&nbsp;</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.User.fields.Phone.label}" /></td>
+                                                                    <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__Tooltip_StaffAssignment_Phone}" id="assignedTo" id="staff_phone" value="{!user.phone}" styleClass="clsPanelInputTextboxReadOnly"/></td>  
+                                                                    <td class="lookupIconPanelTD" >&nbsp;</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$ObjectType.User.fields.Extension.label}" /></td>
+                                                                    <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__Tooltip_StaffAssignment_Extension}" id="supplierName" id="staff_extension" value="{!user.extension}"  styleClass="clsPanelInputTextboxReadOnly"/></td>  
+                                                                    <td class="lookupIconPanelTD" align="left">&nbsp;</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="clsPanelInputLabelTD"><apex:outputLabel value="{!$Label.bmcservicedesk__Queue}" /></td>
+                                                                    <td class="clsPanelInputTextboxTD1"><apex:inputText onfocus="this.blur()" title="{!$Label.bmcservicedesk__Tooltip_StaffAssignment_Queue}" id="supplierNameOne" id="staff_queue" value="{!queue}"  styleClass="clsPanelInputTextboxReadOnly"/></td>  
+                                                                    <td class="lookupIconPanelTD" align="left">&nbsp;</td>
+                                                                </tr>
+                                                            </table>
+                                   </apex:outputPanel>
+                                   <script>
+                                    loggedInUserId = "{!loggedInUserId}";
+                                    loggedInUserFirstName = "{!JSENCODE(loggedInUserFirstName)}";
+                                    loggedInUserLastName = "{!JSENCODE(loggedInUserLastName)}";
+                                    var ownerIdEle = document.getElementById('{!$Component.incidentForm.pbarId.staffAssignmentPanel.incidentOwnerId}');
+                                    if(ownerIdEle != null && (ownerIdEle.value == null || ownerIdEle.value == '')){ownerIdEle.value = loggedInUserId;}
+                                   </script>
+                                   
+                                </apex:panelBarItem>
+                                <apex:panelBarItem id="CustomFieldspanelBar" label="{!$Label.bmcservicedesk__IncidentCustomFields}" headerClass="panelHeader" contentClass="panelContent">
+                                    <script>                                        
+                                        if(setdisplay == 'block'){
+                                            //alert(setdisplay);
+                                            if(document.getElementById('{!$Component.CustomFieldspanelBar}')){
+                                                document.getElementById('{!$Component.CustomFieldspanelBar}').style.display = "block";
+                                            }
+                                        }else{
+                                            //alert(setdisplay);
+                                            if(document.getElementById('{!$Component.CustomFieldspanelBar}')){
+                                                document.getElementById('{!$Component.CustomFieldspanelBar}').style.display = "none";
+                                            }
+                                        }
+                                    </script>
+                                    <div id="CustomFieldsOutputPanel"> 
+                                        <div id="incidentcustomfields" style="padding-top:10px;">
+                                            <c:CustomFieldsLayout FieldNames="{!IntermediateAttributeNames}" 
+                                                               ColumnSize="1" AttributeInfo="{!DispAttrs}"  RenderFlag="true" isRecDeleted="{!isRecDeleted}"/>
+                                        </div>    
+                                    </div> 
+                               </apex:panelBarItem>                              
+                            </apex:panelBar>
+                             </apex:outputPanel>
+                            </div>
+                            </td>
+                        </tr>
+                    </table>
+                    </td>
+                </tr>
+
+<!--  IE7-8 Related Changes -->
+            </table>
+            
+
+         
+<!--  IE7-8 Related Changes -->   
+        <!--    <apex:outputPanel id="dummy"></apex:outputPanel>
+            <c:TabOutComponent ></c:TabOutComponent> -->
+ <!-- Code addded for Tool tip datoverflow bug -->
+ 
+<!-- Addition over -->         
+             <div style="display:none">
+                 <apex:outputpanel id="clientPopupID">
+                 <!-- Code updated by Himanshoo for tooltip -->
+                     <div id="clientPopupDiv" >
+                        <table cellspacing="0" cellpadding ="0">
+                            <tr>
+                                <td > <apex:inputHidden id="clientHiddeninput" value="{!incident.BMCServiceDesk__FKClient__c}"/></td>
+                                <td >
+                                    <table cellspacing="0" cellpadding ="0">
+                                        <tr >
+                                         <td style=" padding-top:3px; padding-left:4px; " class="clsInputBoldLabelTooltip1">
+                                           <div id="clientNameforttdivId"></div>                                             
+                                            </td>                                            
+                                        </tr>
+                                        
+                                        <tr style="{!IF(clienttitle=='','display:none','')}">
+                                        <td style=" padding-top:1px; padding-bottom: 4px; padding-left:4px;" class="clsInputLabelTooltipTitle1">
+                                        <div id="clientTitleforttdivId"></div>                                       
+                                        </td>
+                                        </tr>
+                                        
+
+                                        <tr style="{!IF(clientaddress=='','display:none','')}">
+                                        <td style="padding-left:4px; padding-top:1px;" class="clsInputLabelTooltip1">  
+                                       <div id="clientAddressforttdivId">{!clientaddress}</div>
+                                        </td>
+                                        </tr>
+                                        
+                                        <tr style="{!IF(clientCity=='' && clientState =='' && clientpostalcode =='','display:none','')}"> 
+                                        <td style="padding-left:4px;" class="clsInputLabelTooltip1">
+                                        <div id="clientCSZforttdivId"></div> </td>
+                                        </tr>
+                                        
+                                        <tr style="{!IF(clientCountry=='','display:none','')}">
+                                        <td style="padding-left:4px;" class="clsInputLabelTooltip1">
+                                        <div id="clientCountryforttdivId"></div></td>
+                                        </tr>                                        
+                                         <tr style="{!IF(clientPhone=='','display:none','')}">
+                                         <td  style=" padding-top:5px; padding-left:4px;" class="clsInputLabelTooltip1">
+                                         <div id="clientPhoneforttdivId"></div></td></tr>
+                                         <tr style="{!IF(clientEmail=='','display:none','')}">
+                                         <td style="padding-bottom: 5px; padding-top:1px; padding-left:4px;" class="clsInputLabelTooltip1">
+                                         <div id="clientEmailforttdivId"></div>
+                                           </td>
+                                         </tr>                                                                                                                                               
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        </div> <div id = "loadtime"/> 
+                        <script>
+                          function tooltipforclient(){
+                          document.getElementById('clientNameforttdivId').innerHTML = ellipse('{!JSENCODE(incident.client_Name__c)}',50);
+                          document.getElementById('clientTitleforttdivId').innerHTML = ellipse('{!JSENCODE(clienttitle)}',40);
+                          var strSingleLineText = document.getElementById('clientAddressforttdivId').innerHTML.replace(new RegExp( "\\n", "g" ), ' ');
+                          document.getElementById('clientAddressforttdivId').innerHTML = ellipse(strSingleLineText,33);
+                          var cszstring = formCSZString('{!JSENCODE(clientCity)}','{!JSENCODE(clientState)}','{!clientpostalcode}');
+                          document.getElementById('clientCSZforttdivId').innerHTML = cszstring ;
+                          document.getElementById('clientCountryforttdivId').innerHTML = ellipse('{!JSENCODE(clientCountry)}',33);
+                          document.getElementById('clientPhoneforttdivId').innerHTML = ellipse('{!JSENCODE(clientPhone)}',33);
+                          document.getElementById('clientEmailforttdivId').innerHTML = '<a href="{!clientEmail}" class="clsCmdLinkTooltip">'+ellipse('{!clientEmail}',33)+'</a>';
+                          }
+                          
+                          function updateDescription(){
+                              var strlengh = 0;                          
+                              KMdescription  = document.getElementById(IncidentPageComp.ComponentVars.IncidentDescription).value;
+                              if (KMdescription.length > 100){
+                              KMdescription = KMdescription.substring(0,99)  
+                              }
+                          }
+                          
+                        </script>
+                        <!-- Addition over -->
+                   </apex:outputpanel>
+                  
+                  
+                   <apex:outputpanel id="staffPopupID">
+                       <div id="staffPopupDiv" >                           
+                            <table  cellspacing="0" cellpadding ="0" >
+                            <tr>
+                                <td ><apex:inputHidden id="staffHiddeninput"  value="{!user.Id}"/></td>
+                                <td >
+                                <table cellspacing="0" cellpadding ="0">
+                                        <tr >
+                                         <td style=" padding-top:3px; padding-left:4px; " class="clsInputBoldLabelTooltip1">                                        
+                                         <div id="userNameforttdivId"></div> 
+                                          </td>
+                                        </tr>
+                                        <tr style="{!IF(user.title=='','display:none','')}">
+                                       
+                                        <td style=" padding-top:1px; padding-bottom: 4px; padding-left:4px;" class="clsInputLabelTooltipTitle1">
+                                       
+                                        <div id="userTitleforttdivId"></div> 
+                                        </td>
+                                        </tr>
+                                        <tr  style="{!IF(user.street=='','display:none','')}">
+                                        <td style="padding-left:4px; padding-top:1px;" class="clsInputLabelTooltip1"> 
+                                       
+                                        <div id="userAddressforttdivId"> {!user.street} </div>  
+                                       </td>
+                                        </tr>
+                                        
+                                        <tr style=" {!IF(user.city =='' && user.state =='' && user.Postalcode =='','display:none','')}">
+                                        <td style="padding-left:4px;" class="clsInputLabelTooltip1">
+                                        <div id="userCSZforttdivId"></div></td>
+                                                                               </tr>
+                                        <tr style="{!IF(user.country=='','display:none','')}">
+                                        <td style="padding-left:4px;" class="clsInputLabelTooltip1">
+                                        <div id="userCountryforttdivId"></div> 
+                                        </td>
+                                        </tr>                                        
+                                        <tr style=" {!IF(user.Phone=='','display:none','')}">
+                                        <td  style=" padding-top:5px;  padding-left:4px;" class="clsInputLabelTooltip1">
+                                        <div id="userPhoneforttdivId"></div> 
+                                        </td>
+                                        </tr>
+                                        <tr style=" {!IF(user.email=='','display:none','')}">
+                                        <td style="padding-bottom: 5px; padding-top: 1px; padding-left:4px;" class="clsInputLabelTooltip1">
+                                        <div id="userEmailforttdivId"></div>
+                                           </td>
+                                         </tr>                                                                              
+                                </table>
+                                </td>
+                            </tr>
+                           </table>
+                        
+                        </div>
+                        <script>
+                          function tooltipforstaff(){
+                          strSingleLineText = document.getElementById('userAddressforttdivId').innerHTML.replace(new RegExp( "\\n", "g" ), ' ');
+                          document.getElementById('userAddressforttdivId').innerHTML = ellipse(strSingleLineText,33);
+                          document.getElementById('userNameforttdivId').innerHTML = ellipse('{!JSENCODE(user.Name)}',50);
+                          document.getElementById('userTitleforttdivId').innerHTML = ellipse('{!JSENCODE(user.title)} ',40);
+                          var cszstringuser = formCSZString('{!JSENCODE(user.city)}','{!JSENCODE(user.state)}','{!JSENCODE(user.Postalcode)}');
+                          document.getElementById('userCSZforttdivId').innerHTML = cszstringuser ;
+                          document.getElementById('userCountryforttdivId').innerHTML = ellipse('{!JSENCODE(user.country)}',33);
+                          document.getElementById('userPhoneforttdivId').innerHTML = ellipse('{!JSENCODE(user.Phone)}',33);
+                          document.getElementById('userEmailforttdivId').innerHTML = '<a href="{!JSENCODE(user.email)}" class="clsCmdLinkTooltip">'+ellipse('{!JSENCODE(user.email)}',33)+'</a>';
+                          }
+                        </script>
+                        
+                     </apex:outputpanel>
+                     
+                  </div>
+
+
+</div>
+   <apex:outputPanel id="repeatId">
+        <script>ownerIdString=''; priorityString=''; taboutFlag=true; </script>
+        <apex:repeat value="{!keyValues}" var="mapkeys"> 
+         
+             <script>
+                keyName='{!mapkeys.key}';
+                keyValue='{!JSENCODE(mapkeys.value)}';
+                if(keyName=='incident_inactive__c'){
+                    Ext.getCmp('incident_inactive__c').setValue(keyValue);
+                }else if(keyName=='FKPriority'){
+                    priorityString = keyValue;                  
+                }else if(keyName=='FKPriorityName'){
+                    priorityNameString = keyValue;                  
+                }else if(keyName=='incident_OwnerId'){
+                    ownerIdString = keyValue;
+                }else if(keyName=='FKBMC_BaseElement__c'){
+                    baseElementName = keyValue;
+                }else if(keyName=='BMC_BaseElement__c_id_id'){
+                    baseElmID = keyValue;
+                }else if(keyName=='FKBroadcast__c'){
+                    brdCastName = keyValue;
+                }else if(keyName=='Broadcast__c_id_id'){
+                    brdCastNameId = keyValue;
+                }else{
+                    setTemplVal(keyName,keyValue); 
+                }
+             </script>
+        </apex:repeat>    
+        
+            <script>taboutFlag=false;
+            if(ownerIdString != null && ownerIdString != '' && ownerIdString != 'undefined'){
+                setAssignedTo(ownerIdString);
+            }
+            if(priorityString != null && priorityString != '' && priorityString != 'undefined'){
+                setIncidentPriority(priorityString,priorityNameString);
+            }
+            if(baseElmID != null && baseElmID != '' && baseElmID != 'undefined' ){
+                document.getElementById('{!$Component.incidentForm.pbarId.CIDetail.BMC_BaseElement__c_id_id}').value = baseElmID;
+            }
+            if(baseElementName != null && baseElementName != '' && baseElementName != 'undefined' ){
+                document.getElementById('{!$Component.incidentForm.pbarId.CIDetail.BMC_BaseElement__c_id_name__c}').value = baseElementName;
+                oncompleteForCILookup();
+            }
+            if(brdCastName != null && brdCastName != '' && brdCastName != 'undefined' ){
+                document.getElementById('{!$Component.incidentForm.pbarId.broadcastDetails.Broadcasts__c_id_id}').value =brdCastNameId ;
+                document.getElementById(IncidentPageComp.ComponentVars.BroadcastIDName).value = brdCastName;
+                setBroadcastNext(brdCastNameId);
+            }
+            </script>
+    </apex:outputPanel>
+
+
+<!--  IE7-8 Related Changes -->
+                                    <div id="detailsDivSI">
+                      <table  class="onDemandSITableCls" id="onDemandSITableId">
+                          <tr>
+                             <td id="noSIAvailTD">{!$Label.SIMessageForNewIncident}</td>
+                          </tr>  
+                          <tr >
+                              <td id="linkSIAvailTD">
+                                <table class="SICheckboxLinkInnerTable">
+                                    <tr>
+                                        <td id="configureSITD">
+                                            <input type="checkbox" title="{!$Label.ShowSupportingInformation}" id="configureSIId" onClick="writeCookie();"/>&nbsp;{!$Label.SIMessageForConfiguration}
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a id="getSIUrl" href="JavaScript:void(0);" onClick="SIComp('/apex/SIContainerPage?oid='+incidentId+'&otype=Incident__c&wid='+wid+'&stateofIncident='+closeState+'&isChangeCreatable='+getIsChangeCreatable()+'&isInactive='+isIncInactive);" >{!$Label.SIMessageForExistingIncident}</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                              
+                              </td>
+                          </tr>
+                       </table>
+                       <iframe name='SIIframeID' id='SIIframeID'  width='100%' height='100%' frameborder='0' style="display:none"/>
+                        </div>
+                           
+          <apex:outputPanel id="dummy"></apex:outputPanel>
+          <c:TabOutComponent ></c:TabOutComponent>
+<!--  Ends IE7-8 Related Changes Taken div inside form-->
+
+    </apex:form>
+</apex:outputPanel>
+
+<apex:outputPanel id="closeopId">
+        <script>
+
+        </script>
+    </apex:outputPanel>  
+    <script>
+  window.onload = function(){
+     if({!copyMe})
+     {  
+        copyCommit({!chkBoxValue});
+     }
+     //ChangeCIExpBtnStatus(cilink_record);
+ }
+ renderAddNoteButton();
+customActionJsonString = {!customActionJsonString};
+</script>
+<apex:outPutPanel id="srmDetails">
+    <script>
+        disableSRDlookup();
+        disableRequestDetailBtn();
+    </script>
+</apex:outPutPanel>
+<script>
+soqlDateClause = '{!JSENCODE(filterClauseDate)}';
+var endtime1 = '{!endtime}';
+var etestdate = new Date();
+var etesttime = etestdate.getTime();
+
+servertime1 = (endtime1 - stime);
+
+data +=servertime1;
+data += '<br>';
+
+    //time to calculate page rendertime 
+    var pageloaddate = new Date();
+    var renderingstartitme = pageloaddate.getTime();
+</script>
+       
+    <apex:outputPanel id="varPanel">
+<script>
+var isclosebroadcast;
+
+function isDueDateOverridenByServiceTarget(){
+    return {!HasValidServiceTargets};
+}
+        function getAssignMyselfState(){
+                    return {!assignMyselfState};
+                }
+        function getCloseState(){
+            return {!closeState};
+        }
+        function getReOpenState(){
+                    return {!reOpenState};
+                }
+        function getRespondedState(){
+                    return {!respondedState};
+                }
+        function getHasRelatedBroadcasts(){
+                    return {!hasRelatedBroadcasts};
+                } 
+         function getFlagForTemplate(){
+                    return {!flagForTemplate};
+                }        
+        function getSaveState(){
+            return {!saveState};
+        }
+function closeIncident(){
+         var incIdTemp = '{!JSENCODE(incident.id)}';
+         openPopupWithTitle('closeIncidentPage?incidentId='+ incIdTemp +'&isLookup=true&IncidentCat='+ incidentCategoryId,
+              setCloseIncidentNext, '{!JSENCODE($Label.CloseIncident)}', 462, 600);
+    }
+function checkNoteDuration(){
+     var elem1 = document.getElementById('{!$Component.incidentForm.incident_incidentNote__c}');
+     var elemduration1 = document.getElementById('{!$Component.incidentForm.incident_incidentDuration__c}'); 
+     if(errormsg != null && errormsg != '' && errormsg != '{!JSENCODE($Label.SavedSuccessfully)}'){                     
+        elem1.readOnly  = false;                        
+        elem1.className = 'clsInputTextAreaNote';
+        elemduration1.disabled = false;
+        elemduration1.className = 'clsDurationTextBox';                     
+     }
+      if(errormsg != null && errormsg != '' && errormsg == '{!JSENCODE($Label.IncidentCloseError)}'){
+        window.frames.SIIframeID.enableAll();
+    }
+}  
+</script>
+      </apex:outputPanel>
+<input type="hidden" id="dataval" name="dataval" value="qqqqqq"/>
+<!--<div id ="test" style="height:15px;border:1px solid red;font-size:10px;">hieewererewrwerwerwerew</div>-->     
+</apex:page>

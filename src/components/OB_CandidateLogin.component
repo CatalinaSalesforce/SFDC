@@ -1,0 +1,21 @@
+<apex:component controller="OB_CandidateLoginController"
+    id="loginComponent">
+    <apex:form id="loginForm" forceSSL="true" styleClass="loginForm">
+        <apex:pageMessages id="error" />
+        <div class="divBlock">
+            <apex:outputLabel value="{!$Label.site.username}" for="username" />
+            <apex:inputText id="username" value="{!username}" styleClass="field" />
+        </div>
+        <div class="divBlock">
+            <apex:outputLabel value="{!$Label.site.password}" for="password" />
+            <apex:inputSecret id="password" value="{!password}"
+                styleClass="field" />
+        </div>
+        <div class="submit">
+            <apex:commandButton action="{!login}"
+                value="{!$Label.site.login_button}" id="loginButton"
+                styleClass="button" />
+        </div>
+    </apex:form>
+
+</apex:component>

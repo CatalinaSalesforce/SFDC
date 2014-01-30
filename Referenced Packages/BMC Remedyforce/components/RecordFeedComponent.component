@@ -1,0 +1,275 @@
+<apex:component controller="BMCServiceDesk.RecordFeedController" allowDML="true" >
+
+    <apex:attribute name="RecordID" type="String" assignTo="{!AttribRecordID}" description="Record ID"/>
+    <apex:attribute name="RecordType" type="String" assignTo="{!AttribRecordType}" description="Record Type"/>
+    <apex:attribute name="InstanceID" type="String" assignTo="{!AttribInstanceID}" description="InstanceID in case of CIs"/>
+    <apex:attribute name="TooltipChatterShare" type="String" description=""/>
+    <apex:attribute name="TooltipComment" type="String" description=""/>
+    <apex:attribute name="MoreFeedsTabTitle" type="String" required="true" description=""/>
+
+    <apex:attribute name="RenderContent" assignTo="{!renderChatterPanel}" default="true" type="boolean" description=""/>
+<apex:outputPanel rendered="{!IsRecordFeedEnabled}">    
+    <apex:stylesheet value="{!$Resource.BMCServiceDesk__ChatterCSS}/chatter.css" />
+
+<style>
+
+	.hidden { display: none; }
+	.unhidden { display: block; }  
+
+</style>
+
+<script>
+var TextAreaOverflowForChatter = "{!JSENCODE($Label.TextAreaOverflowForChatter)}";
+var EmptyValueForChatterComment = '{!JSENCODE($Label.EmptyValueForChatterComment)}';
+
+function refreshChatterFeed(){
+			refreshFeed(); 
+		}
+
+function shareTextPost(textPostBody) {
+			if(textPostBody.length > 1000)
+			{                       
+				Ext.MessageBox.show({ msg: TextAreaOverflowForChatter, buttons: Ext.MessageBox.OK});         
+				return false;
+			}
+			waitbox(0);
+			shareStatusPost(textPostBody); 
+		}              
+
+function deleteCommentFromFeed(commentID, createdByID){
+	Ext.MessageBox.confirm("{!JSENCODE($Label.ConfirmHomePage)}", "{!JSENCODE($Label.ChatterDeleteComment)}", function(btn){
+		if(btn === 'yes'){
+			deleteComment(commentID, createdByID);
+		}
+	});	
+}
+		
+function deleteFeedPost(feedPostID, createdByID){
+	Ext.MessageBox.confirm("{!JSENCODE($Label.ConfirmHomePage)}", "{!JSENCODE($Label.ChatterDeletePost)}", function(btn){
+		if(btn === 'yes'){
+			deletePost(feedPostID, createdByID);
+		}
+	});	 
+}       	
+
+function setDisplay(id,value){ 
+		    document.getElementById(id).style.display = value; 
+		}
+
+function createNewComment(divId, feedId){
+	var inputtext = divId.getElementsByTagName('input')[0]; 
+	if(inputtext.value.length > 1000){                       
+		Ext.MessageBox.show({ msg: TextAreaOverflowForChatter, buttons: Ext.MessageBox.OK});         
+		return false;
+	}else if(inputtext.value.trim().length <= 0){
+		Ext.MessageBox.show({ msg: EmptyValueForChatterComment, buttons: Ext.MessageBox.OK});         
+		divId.getElementsByTagName('input')[0].focus();
+		return false;
+	}else{
+		waitbox(0);
+		NewCommentValue(inputtext.value,feedId);
+	}
+}
+
+function setElHeight(obj,value){
+	if(obj.style.height=='0pt'){
+		obj.style.height = '25pt';
+		obj.value = '';
+	}
+	else if (obj.style.height=='25pt' && obj.value == ''){
+		obj.style.height = '0pt';
+		obj.value = value;
+	}
+}
+
+function loadChatterFeeds(){
+			if(!this.FeedsVisible)
+			{
+				showChatterFeeds();
+		    	this.FeedsVisible = true;
+			}
+		}
+
+ function openNewChatterTab(recId,recType) {
+ 	 var addNewTab = window.parent.parent.addNewTab;
+ 	 if(typeof(addNewTab)=='undefined' || addNewTab==null) {
+ 	 	addNewTab = window.parent.parent.parent.addNewTab; // In case of CIs
+ 	 }
+     addNewTab(recId, "{!MoreFeedsTabTitle}", "NewsFeedPage?recordId="+recId+"&recordType="+recType);
+ }
+function DisplayMsg()
+   		{
+   			if((errormsg != null) && (errormsg != ''))
+   				Ext.MessageBox.show({ msg: errormsg, buttons: Ext.MessageBox.OK});
+   		}
+</script>
+<apex:outputPanel id="afterChatterFollow"> 
+	<script>
+   		function DisplayChatterLimitMessage(){
+			var chatterLimitError = '{!chatterLimitErrorMessage}';
+			if(chatterLimitError != "" && chatterLimitError != null && chatterLimitError.length > 0){
+				Ext.MessageBox.show({ msg: chatterLimitError, buttons: Ext.MessageBox.OK});
+			}
+		}
+   	</script>
+</apex:outputPanel>
+<apex:outputPanel id="errorId">
+        <script>        
+           var errormsg = '{!JSENCODE(messageString)}';
+        </script>
+</apex:outputPanel>
+	<div style="padding-left:10px;">                                   
+	    <apex:outputPanel id="chatterContent" layout="block">
+	    <apex:actionFunction name="showChatterFeeds" action="{!showChatterFeeds}" rerender="chatterContent" />
+	    <apex:outputPanel id="allfeeds" layout="block" styleClass="feedcontainer" rendered="{!renderChatterPanel}">
+	        <apex:outputPanel layout="block" styleClass="" id="feed" >
+		        <div class="publishercontainer ChatterAccordionPublisherContainer">
+		        	<div class="publisherrightcontainer">
+		        		<div class="publishercontrols">
+		        			 <apex:inputTextArea style="height: 0pt;" title="{!TooltipChatterShare}" styleclass="publishertextarea ChatterAccordionTextAreaDefaultStyle _NoHandleChange" onclick="javascript:setElHeight(this,'')" onblur="javascript:setElHeight(this,'{!newStatus}');" cols="1000" id="publishertextarea" value="{!newStatus}"></apex:inputTextArea>
+		        		</div>
+		        
+		        	</div>
+					<table border="0" class="chattertable" width="99%" style="padding-right:2px">
+		        		<tr>
+		        			<td><apex:commandLink styleClass="RecordFollowUnfollowLink" value="{!FollowUnfollowLinkLabel}" onclick="followIncidentToggler(); return false;" /></td>
+		        			<td align="right"><apex:commandButton rerender="fullcomponentid" onclick="return shareTextPost(document.getElementById('{!$Component.publishertextarea}').value);" styleClass="btnShare"   value=" {!$Label.bmcservicedesk__Share} "  title="{!$Label.bmcservicedesk__Share}" /></td>
+		        		</tr>
+		        	</table> 	        	 	 
+		        </div>
+		        
+		   		<apex:repeat value="{!myfeed}" var="f">
+		               <apex:outputPanel layout="block" styleClass="feedcontainer cxfeeditem feeditem cxfeedcontainer feed ">
+		                   <apex:outputPanel layout="block" >
+						<div class="cxfeeditemcontent">
+		                                   <apex:outputText styleClass="ChatterAccordionCreatedBy" value="  {!f.feedItem.CreatedBy.Name}  " />
+		                           <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'UserStatus', true, false)}">
+		                               <apex:outputText styleClass="ChatterAccordionFeedItem" value="{!f.displayText}" />
+		                           </apex:outputPanel>
+		                           <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'TextPost', true, false)}">
+		                               <apex:outputText styleClass="ChatterAccordionFeedItem" value="{!f.displayText}" />
+		                           </apex:outputPanel>
+		                           <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'TrackedChange', true, false)}">
+		                               <apex:outputText styleClass="ChatterAccordionFeedItemSmall" value=" {!f.displayText}" />
+		                           </apex:outputPanel>
+		                           <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'LinkPost', true, false)}">
+		                                   <apex:outputText styleClass="ChatterAccordionFeedItem" value="  {!f.feedItem.CreatedBy.Name} " />
+		                               <apex:outputText styleClass="ChatterAccordionFeedItem" value="{!f.displayText}" />
+		                               <apex:outputPanel layout="block" styleClass="linkPostLinkContainer">
+		                                   <apex:outputLink value="{!f.feedItem.FeedPost.LinkUrl}" styleClass="linkPostLink" target="_blank">
+		                                       <apex:outputText styleClass="ChatterAccordionFeedItem" title="{!f.feedItem.FeedPost.LinkUrl}" value="{!f.feedItem.FeedPost.Title}" />
+		                                   </apex:outputLink>
+		                               </apex:outputPanel>
+		                           </apex:outputPanel>
+		                           <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'ContentPost', true, false)}">
+		                               <apex:outputText styleClass="ChatterAccordionFeedItemTitle" value="  {!f.feedItem.CreatedBy.Name} " />
+		                               <apex:outputText styleClass="ChatterAccordionFeedItem" value="{!f.displayText}" />
+		                               <apex:outputPanel layout="block" styleClass="linkPostLinkContainer">
+		                               	<apex:outputText styleClass="ChatterAccordionFeedItemTitle"   value="{!f.feedItem.FeedPost.Title}" />
+		                               </apex:outputPanel>                                
+		                           </apex:outputPanel>
+		                       </div>
+		                       <div class="feeditemfooter">
+								<span class="cxfeeditemcontent">
+								    <apex:outputText value="{!f.createdDate}  " styleClass="ChatterAccordionFeedItemSmall" >
+		   	                        </apex:outputText>
+		   	                        <apex:outputLink value="javascript:void(0);" onclick="setDisplay('{!f.feedItem.id}','block');">
+		   	                        	<apex:outputText styleClass="ChatterAccordionFeedItemActionLink"  value="  {!$Label.bmcservicedesk__Comment}" />
+									</apex:outputLink>
+		                                   &nbsp;&nbsp;&nbsp;   
+		                               <apex:outputLink value="javascript:void(0);" onclick="deleteFeedPost('{!f.feedItem.FeedPostId}','{!f.feedItem.CreatedById}')" rendered="{!IF(f.feedItem.Type == 'TextPost' || f.feedItem.Type == 'LinkPost' || f.feedItem.Type == 'ContentPost', true, false)}">
+		                                   <apex:outputText styleClass="ChatterAccordionFeedItemActionLink" value="{!$Label.bmcservicedesk__Delete}" />
+		                               </apex:outputLink>           
+		                                    
+							    </span>  
+								<apex:actionRegion >
+		                          <div id="{!f.feedItem.id}" class="hidden feeditemcommenttext" style="padding-left:58px">
+		                                  
+		                                     <div class="cxfeeditemcontent" style="background-color:#EFF7FA; padding-top:2px">
+		                                           <apex:inputText styleClass="foobar cxnewcommenttext cxiswires _NoHandleChange" style="height: 20px; width:190px; padding-bottom:1px;"  value="{!currentComment}" title="{!TooltipComment}">
+		                                           </apex:inputText> <br/>
+		                                 			<apex:outputLink value="javascript:void(0);" onclick="createNewComment(document.getElementById('{!f.feedItem.id}'),'{!f.feedItem.id}');">
+		                                 				<apex:outputText styleClass="ChatterAccordionFeedItemActionLink"  value="{!$Label.bmcservicedesk__AddComment}" />
+		                                 			</apex:outputLink>   
+		                                 			     
+		                                         <div class="feedclearfloat"></div>
+		                                     </div>
+		                         </div>
+		                        	</apex:actionRegion>
+		                       </div>
+		                       <apex:outputPanel id="commPanel" layout="block" styleClass="feeditemextras">
+		                           <div class="cxcomments feeditemcomments">
+		                               <apex:repeat value="{!f.feedCommentBeanList}" var="c">
+		                                   <apex:outputPanel layout="block" styleClass="" style="padding-left:12px">
+		                                       <span class="feeditemcomment cxfeedcomment feeditemcommentbody">
+		                                           <span class="feedcommentuser">
+		
+		                                               	<apex:outputText styleClass="ChatterAccordionFeedItemActionLink"   value="{!c.createdByName} " />
+		                                           </span>
+		                                           <span class="feedcommenttext">
+		                                                <apex:outputText styleClass="ChatterAccordionFeedItemSmall" value="{!c.commentBody}" />
+		                                           </span>
+		                                           <span class="feedcommentfooter">
+		                                             <apex:outputText styleClass="ChatterAccordionFeedItemSmall feeditemtimestamp"  value="{!c.createdDate}">
+		                                              </apex:outputText>
+		                                           </span>
+		                                           <span class="feedresolutionfooter">
+		                                              <apex:outputText value="  " />
+													<apex:outputLink value="javascript:void(0);" onclick="deleteCommentFromFeed('{!c.commentId}','{!c.CreatedById}')" >
+														<apex:outputText styleClass="ChatterAccordionFeedItemSmall" value="{!$Label.bmcservicedesk__Delete}" />
+													</apex:outputLink>                
+		                                           </span> 
+		                                       </span>
+		                                   </apex:outputPanel>
+		                          		</apex:repeat>
+		                           </div>
+		                       </apex:outputPanel>
+		                   </apex:outputPanel>
+		               </apex:outputPanel>
+		           </apex:repeat>
+		    		<apex:outputLink value="javascript:void(0);" rendered="{!moreFeed}"  onclick="openNewChatterTab('{!JSENCODE(AttribRecordID)}', '{!JSENCODE(AttribRecordType)}');">
+		    	    	<apex:outputText styleClass="ChatterAccordionFeedItemActionLink" value="  {!$Label.bmcservicedesk__More}" />
+					</apex:outputLink>            
+				</apex:outputPanel>
+				
+		        <table class="clsTable" cellspacing="0" cellpadding="0">
+		        <tr>
+		    		<td><apex:outputText styleClass="ChatterAccordionFeedLabel"  value="  {!$Label.bmcservicedesk__Following}"/></td>        
+		        </tr>
+				</table>                                    
+
+				<apex:repeat value="{!userInfoList}" var="userInfo">
+					<apex:image id="theImage" value="{!userInfo.userImage}" title="{!userInfo.userName}" width="40" height="40" />&nbsp;
+				</apex:repeat>
+			</apex:outputPanel>
+		</apex:outputPanel>
+	</div>			                                      
+</apex:outputPanel>	
+	
+	
+	<apex:actionFunction name="refreshFeed" action="{!doNothing}" reRender="allfeeds"></apex:actionFunction>         
+	
+	<apex:actionFunction name="shareStatusPost" action="{!shareTextFeedPost}" reRender="allfeeds" oncomplete="waitMsg.hide();">
+		<apex:param name="newstatus" assignTo="{!newstatus}" value=""/>
+	</apex:actionFunction> 
+	
+	<apex:actionFunction name="NewCommentValue" action="{!AddComment}" reRender="allfeeds" oncomplete="waitMsg.hide();">
+		<apex:param name="newComment" assignTo="{!newComment}" value=""/>
+		<apex:param name="feedId" assignTo="{!feedId}" value=""/>
+	</apex:actionFunction> 
+		
+	<apex:actionFunction name="deleteComment" action="{!DeleteComment}" reRender="errorId, allfeeds" oncomplete="DisplayMsg();">
+		<apex:param name="commentId" assignTo="{!commentId}" value=""/>
+		<apex:param name="createdById" assignTo="{!createdById}" value=""/>
+	</apex:actionFunction>
+	
+	<apex:actionFunction name="deletePost" action="{!DeletePost}" reRender="errorId, allfeeds" oncomplete="DisplayMsg();">
+		<apex:param name="postId" assignTo="{!postId}" value=""/>
+		<apex:param name="createdById" assignTo="{!createdById}" value=""/>
+	</apex:actionFunction>
+	
+	<apex:actionFunction action="{!togglefollow}" name="followIncidentToggler" 
+		reRender="allfeeds,afterChatterFollow" oncomplete="DisplayChatterLimitMessage();">
+	</apex:actionFunction>            
+	
+</apex:component>

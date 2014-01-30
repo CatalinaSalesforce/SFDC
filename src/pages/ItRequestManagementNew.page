@@ -1,0 +1,59 @@
+<apex:page standardController="IT_Project_Request__c"  extensions="ItRequestExtension" sidebar="false">
+
+	<apex:pageMessages />
+
+	<apex:sectionHeader title="ITプロジェクト申請" subtitle="{!IT_Project_Request__c.ProjectName__c}" />
+
+	<apex:form >
+
+		<apex:pageBlock title=" " mode="maindetail">
+
+				<apex:pageBlockButtons >
+					<apex:commandButton action="{!save}" value="保存"/>
+					<apex:commandButton action="{!cancel}" value="キャンセル"/>
+				</apex:pageBlockButtons>
+
+
+	            <apex:pageBlockSection title="プロジェクト基本情報" columns="2">
+                	<apex:inputField value="{!IT_Project_Request__c.ProjectName__c}"/>
+                	<apex:outputField value="{!IT_Project_Request__c.CreatedByName__c}"/>
+                	<apex:outputField value="{!IT_Project_Request__c.ProjectNumber__c}"/>
+                	<apex:outputField value="{!IT_Project_Request__c.AnswererName__c}"/>
+                	<apex:outputField value="{!IT_Project_Request__c.ApprovalStatus__c}"/>
+                	<apex:inputField value="{!IT_Project_Request__c.Priority__c}"/>
+            	</apex:pageBlockSection>
+            	<br/>
+
+            	<apex:pageBlockSection title="プロジェクト依頼内容" columns="1">
+	                <apex:inputField value="{!IT_Project_Request__c.RequestDescription__c}" style="width:600px"/>
+                	<br/>
+                	<apex:inputField value="{!IT_Project_Request__c.ReasonDecription__c}" style="width:600px"/>
+	                <br/>
+                	<apex:inputField value="{!IT_Project_Request__c.BenefitDescription__c}" style="width:600px"/>
+                	<br/>
+                	<apex:inputField value="{!IT_Project_Request__c.RequestDate__c}" />
+            	</apex:pageBlockSection>
+            	<br/>
+
+            	<apex:pageBlockSection title="関連ファイル" columns="1">
+	            	<apex:inputField value="{!IT_Project_Request__c.Document1__c}" style="width:600px"/>
+            		<apex:inputField value="{!IT_Project_Request__c.Document2__c}" style="width:600px"/>
+            		<apex:inputField value="{!IT_Project_Request__c.Document3__c}" style="width:600px"/>
+            		<apex:inputField value="{!IT_Project_Request__c.Document4__c}" style="width:600px"/>
+            		<apex:inputField value="{!IT_Project_Request__c.Document5__c}" style="width:600px"/>
+            		<apex:inputField value="{!IT_Project_Request__c.Document6__c}" style="width:600px"/>
+            		<apex:inputField value="{!IT_Project_Request__c.Document7__c}" style="width:600px"/>
+            		<apex:inputField value="{!IT_Project_Request__c.Document8__c}" style="width:600px"/>
+            		<apex:inputField value="{!IT_Project_Request__c.Document9__c}" style="width:600px"/>
+            		<apex:inputField value="{!IT_Project_Request__c.Document10__c}" style="width:600px"/>
+
+            	</apex:pageBlockSection>
+            	<br/>
+
+				<br/>
+
+		</apex:pageBlock>
+
+
+	</apex:form>
+</apex:page>

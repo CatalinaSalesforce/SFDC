@@ -1,0 +1,51 @@
+<apex:page sidebar="true" tabStyle="Task_Console__tab" showHeader="true" showChat="true" controller="BMCServiceDesk.TaskConsoleController" title="{!JSENCODE($Label.bmcservicedesk__Task_Console)}">
+	<apex:includeScript value="/support/console/23.0/integration.js"/>
+	<c:ConsoleComponent ConsoleObjectName="Task__c" />
+<script type="text/javascript">
+   var pkgNamespace='BMCServiceDesk__';
+    Ext.ns("TaskConsolePage");
+   TaskConsolePage.Labels = { 
+        ComposeEmailPageHeader: '{!JSENCODE($Label.ComposeEmailPageHeader)}',
+        StdIncidentRelatedBroadcastsChanges: '{!JSENCODE($Label.StdIncidentRelatedBroadcastsChanges)}',
+        New: '{!JSENCODE($Label.New)}',
+        Save: '{!JSENCODE($Label.Save)}',
+        Email: '{!JSENCODE($Label.Email)}',
+        Actions: '{!JSENCODE($Label.Actions)}',	
+        TaskClose: '{!JSENCODE($Label.IncidentClose)}', 
+        TaskQuickClose: '{!JSENCODE($Label.IncidentQuickClose)}', 
+        Reopen: '{!JSENCODE($Label.Reopen)}', 
+        TaskForm: '{!JSENCODE($Label.TaskForm)}',
+        RelatedLists: '{!JSENCODE($Label.RelatedLists)}',
+        AgentTools: '{!JSENCODE($Label.AgentTools)}',
+        CIExpCIExplorer: '{!JSENCODE($Label.CIExpCIExplorer)}',
+        KnowledgeSearch: '{!JSENCODE($Label.KnowledgeSearch)}',
+        Undo: '{!JSENCODE($Label.CIExpReload)}',
+        Undo_Consolebtn_Tooltip: '{!JSENCODE($Label.CIExpReload)}',
+        Print: '{!JSENCODE($Label.Print)}',
+        PrintPDF: '{!JSENCODE($Label.PrintPDF)}',
+        AddNote: '{!JSENCODE($Label.Message1)}',
+        CloseTask: '{!JSENCODE($Label.CloseTask)}',
+		labelcloseWindow : '{!JSENCODE($Label.closeWindow)}',
+		labelcloseWindowLabel : '{!JSENCODE($Label.closeWindowLabel)}',
+        Clone: '{!JSENCODE($Label.Clone)}',
+        Tsk: '{!JSENCODE($Label.Tsk)}'
+    }        
+    
+    _RemotingActions.quickClose = '{!$RemoteAction.TaskConsoleController.quickClose}';
+    _RemotingActions.reopenTask = '{!$RemoteAction.TaskConsoleController.reopenTask}';
+    _RemotingActions.pasteResolution = '{!$RemoteAction.TaskConsoleController.pasteResolution}';
+    
+   if('{!JSENCODE($CurrentPage.parameters.record_name)}'!='' && isServiceCloudConsole=='true')
+   {
+       sforce.console.setTabTitle('{!$Label.tsk}{!$CurrentPage.parameters.record_name}');
+   }   
+</script>
+
+<script src="{!$Resource.SDEFCommonJS}/TaskConsole.js"  type="text/javascript" />
+
+<div id="DetailFormDiv" style="height:100%">
+    <iframe id="detailsFrameId" name="detailsFrame"  onload="afterTaskDetailFrameLoad()" frameborder="0" scrolling="yes" src ="" style="width:100%;height:100%;border:none;"></iframe>
+    <iframe id="relatedListFrameId" name="relatedListFrame" onload="afterTaskRelatedListFrameLoad()" frameborder="0" scrolling="yes"  src ="" style="width:100%;height:100%;border:none;"></iframe>
+</div>
+
+</apex:page>

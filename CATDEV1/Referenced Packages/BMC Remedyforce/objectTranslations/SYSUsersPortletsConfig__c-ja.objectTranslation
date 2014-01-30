@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>名前</value>
+    </caseValues>
+    <fields>
+        <label>FKポートレットID</label>
+        <name>FKSYSPortlet__c</name>
+        <relationshipLabel>SYSユーザポートレット設定</relationshipLabel>
+    </fields>
+    <fields>
+        <label>FKスタッフ</label>
+        <name>FKUser__c</name>
+        <relationshipLabel>&gt;SYSユーザポートレット設定</relationshipLabel>
+    </fields>
+    <fields>
+        <label>順番</label>
+        <name>Order__c</name>
+    </fields>
+    <fields>
+        <label>シーケンスID</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>ポートレットの表示</label>
+        <name>showPortlet__c</name>
+    </fields>
+    <nameFieldLabel><!-- Name --></nameFieldLabel>
+</CustomObjectTranslation>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>アプリケーションシステム</value>
+    </caseValues>
+    <fields>
+        <label>ビルド番号</label>
+        <name>BuildNumber__c</name>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>パッチ番号</label>
+        <name>PatchNumber__c</name>
+    </fields>
+    <fields>
+        <label>サービスパック</label>
+        <name>ServicePack__c</name>
+    </fields>
+    <nameFieldLabel>BMC_ApplicationSystem Name</nameFieldLabel>
+</CustomObjectTranslation>

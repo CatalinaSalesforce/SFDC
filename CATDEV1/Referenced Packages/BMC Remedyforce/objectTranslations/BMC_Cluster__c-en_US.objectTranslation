@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Cluster</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Clusters</value>
+    </caseValues>
+    <fields>
+        <label><!-- Cluster Type --></label>
+        <name>ClusterType__c</name>
+        <picklistValues>
+            <masterLabel>ApplicationInstanceCluster</masterLabel>
+            <translation><!-- ApplicationInstanceCluster --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hardware Cluster</masterLabel>
+            <translation><!-- Hardware Cluster --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Software Cluster</masterLabel>
+            <translation><!-- Software Cluster --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SoftwareServerCluster</masterLabel>
+            <translation><!-- SoftwareServerCluster --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Instance ID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Interconnect Address --></label>
+        <name>InterconnectAddress__c</name>
+    </fields>
+    <fields>
+        <label><!-- Interconnect --></label>
+        <name>Interconnect__c</name>
+    </fields>
+    <fields>
+        <label><!-- Maximum Number Of Nodes --></label>
+        <name>MaxNumberOfNodes__c</name>
+    </fields>
+    <fields>
+        <label><!-- Types --></label>
+        <name>Types__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

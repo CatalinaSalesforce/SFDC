@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Domaine NT</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Domaines NT</value>
+    </caseValues>
+    <fields>
+        <label>Nom du site client</label>
+        <name>ClientSiteName__c</name>
+    </fields>
+    <fields>
+        <label>DS - Identifiant du service d&apos;annuaire</label>
+        <name>DSDirectoryServiceFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS - Identifiant du contrôleur DNS</label>
+        <name>DSDnsControllerFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS - Identifiant du domaine DNS</label>
+        <name>DSDnsDomainFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS - Identifiant de la forêt DNS</label>
+        <name>DSDnsForestFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS - Identifiant du catalogue global</label>
+        <name>DSGlobalCatalogFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS - Identif. cent. de distrib. Kerberos</label>
+        <name>DSKerberosDistributionCenterFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS - Identif. contr. de domaine princip.</label>
+        <name>DSPrimaryDomainControllerFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS - Identifiant du service horaire</label>
+        <name>DSTimeServiceFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS - Identifiant en écriture</label>
+        <name>DSWritableFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Nom du site du contrôleur de domaine</label>
+        <name>DcSiteName__c</name>
+    </fields>
+    <fields>
+        <label>Nom de la forêt DNS</label>
+        <name>DnsForestName__c</name>
+    </fields>
+    <fields>
+        <label>Type d&apos;adresse du contrôleur de domaine</label>
+        <name>DomainControllerAddressType__c</name>
+        <picklistValues>
+            <masterLabel>DS_INET_ADDRESS</masterLabel>
+            <translation><!-- DS_INET_ADDRESS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DS_NETBIOS_ADDRESS</masterLabel>
+            <translation><!-- DS_NETBIOS_ADDRESS --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Adresse du contrôleur de domaine</label>
+        <name>DomainControllerAddress__c</name>
+    </fields>
+    <fields>
+        <label>Nom du contrôleur de domaine</label>
+        <name>DomainControllerName__c</name>
+    </fields>
+    <fields>
+        <label>Guid du domaine</label>
+        <name>DomainGuid__c</name>
+    </fields>
+    <fields>
+        <label>Nom de domaine</label>
+        <name>DomainName__c</name>
+    </fields>
+    <fields>
+        <label>ID instance</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- BMC_NTDomain Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

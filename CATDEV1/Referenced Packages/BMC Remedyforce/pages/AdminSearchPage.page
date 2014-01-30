@@ -1,0 +1,129 @@
+<apex:page controller="BMCServiceDesk.AdminSelfServiceController" showHeader="false" standardStylesheets="false" action="{!AdminSearchLoader}" id="pg">
+
+ <c:CommonIncludes />
+   <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/AdminSelfService.css"/>
+   <link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/HelpStyles.css" />
+   <apex:form id="form">	   
+		<div id = "btnToolbar" />
+		<div id="helpDiv" class="clshelpDiv"></div>
+		   	<apex:outputPanel id="mainPanel">
+                         <table class = "bannerMainPanel">                                     
+                               <tr style="display:{!(if(isSSSwitchNewUI,'none',''))}">
+                                    <td >
+                                        <apex:inputField id="enableIntranet" value="{!selfServiceSetting.BMCServiceDesk__Enable_Intranet_Search_Portlet__c}"  onClick="enableUrl();"/>
+               						 </td> 
+                				<td align="left" colspan="2"> 
+                                   <apex:outputLabel value="{!$Label.bmcservicedesk__EnableIntranet}" />
+               					 </td>            
+                           </tr>
+                           <tr><td class = "div2pxVspacing"></td></tr>
+                            <tr>
+                            	<apex:outputText rendered="{!(!isSSSwitchNewUI)}">
+                                   <td>&nbsp;</td>
+                               </apex:outputText>
+                                   <td align="left" class="" colspan="{!(if(isSSSwitchNewUI,'2','1'))}"><apex:outputLabel value="{!$Label.bmcservicedesk__IntranetURL}"  /></td>
+                                   <td >
+                                       <apex:inputText id="txturl" title="{!$Label.bmcservicedesk__IntranetSearch}" style="width:350px"    value="{!selfServiceSetting.BMCServiceDesk__URL_of_Intranet_Search__c}"/>
+                                   </td>
+	                               </tr>
+	                               <tr><td class = "div2pxVspacing"></td></tr>
+	                               <tr>
+                                   <td  >
+                                        <apex:inputField id="enableInternet" value="{!selfServiceSetting.BMCServiceDesk__Allow_Internet_Search__c}" onClick="enableSearchEngine();" />                                            
+                                    </td> 
+				                     <td align="left" colspan="2"> 
+				                         <apex:outputLabel value="{!$Label.bmcservicedesk__EnableInternet}"  />
+                                     </td> 
+                                     </tr>
+                                     <tr><td class = "div2pxVspacing"></td></tr>
+                                     <tr>
+                    			   <td >&nbsp;</td>                                        
+                                   <td ><apex:outputLabel value="{!$Label.bmcservicedesk__SearchEngine}" /></td>
+                                   <td >
+                                       <apex:inputText disabled="true"  id="txtSearchEngine"  value="{!selfServiceSetting.BMCServiceDesk__Available_Search_Engines__c}"/>
+                                   </td>
+                            </tr>
+                            <tr><td class = "div2pxVspacing"></td></tr>
+                            <tr>
+                           
+                                 <td >
+                                   	<apex:inputField id="enableRFKnowledgeSearch" value="{!selfServiceSetting.BMCServiceDesk__Allow_RF_Knowledge__c}" />          
+                                </td> 
+                                <td align="left" colspan="2"> 
+        				            <apex:outputLabel value="{!$Label.bmcservicedesk__SearchRFKnowledgeInSS}"  />     
+                                </td>                                       
+                                   
+                           </tr>
+                           
+                           <tr>
+                           	<td class = "div5pxVspacing"></td>
+                           </tr>
+                           <tr>
+                           
+                               <td >
+                               <apex:inputField id="enableSFKnowledge" value="{!selfServiceSetting.BMCServiceDesk__Allow_SF_Knowledge__c}"  />          
+                                </td> 
+                           <td align="left" colspan="2"> 
+                             <apex:outputLabel value="{!$Label.bmcservicedesk__SearchSFKnowledgeInSS}"  />     
+                           </td>
+                          </tr> 
+   						 <tr>
+                           	<td colspan="3"></td>
+                      	</tr>
+         </table>  
+        </apex:outputPanel>
+       <apex:outputPanel id="msg">
+         <script>               
+             var message = '{!JSENCODE(messageString)}';                  
+         </script>
+   </apex:outputPanel>
+         <apex:actionFunction name="save" action="{!searchSave}" reRender="msg" oncomplete="waitMsg.hide();showErrorMsg();" />                  
+         <apex:actionFunction name="reset" action="{!searchReset}" rerender="mainPanel" /> 
+   </apex:form>    
+   <script>
+    var txturlvar='{!JSENCODE($Component.pg.form.txturl)}';
+    var txtSearchEnginevar='{!JSENCODE($Component.pg.form.txtSearchEngine)}';
+    var txtEnableinternet = '{!JSENCODE($Component.pg.form.enableIntranet)}';
+    var saveLabel = '{!JSENCODE($Label.save)}';
+    var undoDefaultSettingPageLabel='{!JSENCODE($Label.undoDefaultSettingPage)}';
+   	function enableUrl(){
+   		var isNewSSUI = '{!isSSSwitchNewUI}';
+   		if(isNewSSUI.toUpperCase() =='FALSE')
+   		{
+   			isNewSSUI = false;
+   		}
+        if(document.getElementById(txtEnableinternet).checked){
+            document.getElementById(txturlvar).disabled=false;
+        }
+        else if(!Boolean(isNewSSUI)){
+        	document.getElementById(txturlvar).disabled=true;
+        }
+       
+    }
+    function enableSearchEngine(){
+    	
+        if(document.getElementById(txtEnableinternet).checked){
+            //document.getElementById(txtSearchEnginevar).disabled=false;
+        }
+        else{
+            document.getElementById(txtSearchEnginevar).disabled=true;
+        }
+    }
+    function ResetBtnHandler(){
+		   reset();
+    }
+    function showErrorMsg(){
+              
+         if(message!=null && message !=''){                                
+             Ext.MessageBox.show({                                
+                 title: '{!JSENCODE($Label.SSSearch)}',
+                 msg:message ,
+                 width:300,
+                 buttons: Ext.MessageBox.OK
+             });
+        }
+    }
+    parent.addHelpOnPage(document.getElementById('helpDiv'),'SS_search_settings.htm');
+   </script>  
+   <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/AdminSearch.js"/>                   
+</apex:page>

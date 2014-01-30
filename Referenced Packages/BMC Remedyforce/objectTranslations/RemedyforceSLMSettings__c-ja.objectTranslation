@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value><!-- RemedyforceSLMSettings --></value>
+    </caseValues>
+    <fields>
+        <label>適用先</label>
+        <name>AppliesToObject__c</name>
+    </fields>
+    <fields>
+        <label>優先度</label>
+        <name>Priority__c</name>
+    </fields>
+    <fields>
+        <label>目標タイプ</label>
+        <name>TargetType__c</name>
+    </fields>
+    <fields>
+        <label>警告期間</label>
+        <name>WarningDuration__c</name>
+    </fields>
+    <fields>
+        <label>警告の比率</label>
+        <name>WarningPercentage__c</name>
+    </fields>
+</CustomObjectTranslation>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>ブロードキャスト</value>
+    </caseValues>
+    <fields>
+        <help><!-- From the list of options, select the broadcast&apos;s category. Categories allow you to classify the broadcast using standard classifications, which can be easily tracked for reporting purposes. --></help>
+        <label>カテゴリ~</label>
+        <name>Category_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Staff ID of the currently logged-on staff. If required, you can use this field to select a different staff from the currently logged-on staff. --></help>
+        <label>完了者~</label>
+        <name>Closed_By__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if you want to display the broadcast in Self Service. --></help>
+        <label>セルフサービスに表示</label>
+        <name>Display_In_SelfService__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the broadcast&apos;s category. Categories allow you to classify the broadcast using standard classifications, which can be easily tracked for reporting purposes. --></help>
+        <label>カテゴリ</label>
+        <name>FKCategory__c</name>
+        <relationshipLabel>ブロードキャスト(FKCategory)</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Staff ID of the currently logged-on staff. If required, you can use this field to select a different staff from the currently logged-on staff. --></help>
+        <label>完了者</label>
+        <name>FKClosedBy__c</name>
+        <relationshipLabel>ブロードキャスト(完了者)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>投稿者</label>
+        <name>FKFrom__c</name>
+        <relationshipLabel>ブロードキャスト(送信元)</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the broadcast&apos;s level of impact. The level of impact and the urgency are used to calculate the priority of the broadcast. --></help>
+        <label>インパクト</label>
+        <name>FKImpact__c</name>
+        <relationshipLabel>ブロードキャスト</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. If required, you can use this field to select a different priority value from the calculated value. --></help>
+        <label>優先度</label>
+        <name>FKPriority__c</name>
+        <relationshipLabel>ブロードキャスト</relationshipLabel>
+    </fields>
+    <fields>
+        <label>スタッフ</label>
+        <name>FKStaff__c</name>
+        <relationshipLabel>掲示板（スタッフ）</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the broadcast. Status is used to display the progress of a broadcast through its stages of opening to closure. --></help>
+        <label>ステータス</label>
+        <name>FKStatus__c</name>
+        <relationshipLabel>ブロードキャスト(FKStatus)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>表示先</label>
+        <name>FKTo__c</name>
+        <relationshipLabel>ブロードキャスト(宛先)</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the broadcast needs to be resolved. The urgency and the level of impact are used to calculate the priority of the broadcast. --></help>
+        <label>緊急度</label>
+        <name>FKUrgency__c</name>
+        <relationshipLabel>ブロードキャスト(FKUrgency)</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the broadcast&apos;s level of impact. The level of impact and the urgency are used to calculate the priority of the broadcast. --></help>
+        <label>インパクト~</label>
+        <name>Impact_ID__c</name>
+    </fields>
+    <fields>
+        <label>アカウント内のユーザに制限</label>
+        <name>Limit_To_Account_Users__c</name>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. If required, you can use this field to select a different priority value from the calculated value. --></help>
+        <label>優先度~</label>
+        <name>Priority_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to select the staff to whom you want to display the broadcast message. This field is enabled when you clear the To All check box. --></help>
+        <label>表示先プロファイル</label>
+        <name>Profiles__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the broadcast. Status is used to display the progress of a broadcast through its stages of opening to closure. --></help>
+        <label>ステータス~</label>
+        <name>Status_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the broadcast needs to be resolved. The urgency and the level of impact are used to calculate the priority of the broadcast. --></help>
+        <label>緊急度~</label>
+        <name>Urgency_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter a detailed description of the outage or issue. This description is appended to the Description field of incidents that are linked to the broadcast. --></help>
+        <label>説明</label>
+        <name>broadcastDescription__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter a short description of the outage or issue that should be broadcasted to users. This message scrolls across the top of the browser if you select the box Scroll Message check box. --></help>
+        <label>メッセージ</label>
+        <name>broadcastMessage__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to specify what has been done to resolve the outage or issue. This resolution is appended to the Resolution field of incidents that are linked to the broadcast. --></help>
+        <label>解決方法</label>
+        <name>broadcastResolution__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to scroll the broadcast message across the top of the browser. --></help>
+        <label>メッセージのスクロール</label>
+        <name>broadcastTicker__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the broadcast is closed. --></help>
+        <label>終了日</label>
+        <name>closeDateTime__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if you want to close all tasks linked to this broadcast. When you have resolved the broadcast, you might want to close all linked tasks because these tasks are no longer required. --></help>
+        <label>インシデントの終了</label>
+        <name>closeIncident__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to select the date when you want to stop displaying the broadcast message. --></help>
+        <label>期限日</label>
+        <name>expirationDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the broadcast record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label>無効</label>
+        <name>inactive__c</name>
+    </fields>
+    <fields>
+        <label>メモ</label>
+        <name>note__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the broadcast was created. --></help>
+        <label>投稿日</label>
+        <name>postDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays the name of the queue to which the change broadcast was last assigned. --></help>
+        <label>最終キュー</label>
+        <name>queueName__c</name>
+    </fields>
+    <fields>
+        <label>未完了状態</label>
+        <name>state__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if you want to display the broadcast to all staff. By default, broadcasts are displayed to all staff. If you decide to display the broadcast to a staff only, this field is cleared. --></help>
+        <label>すべてのスタッフ</label>
+        <name>toEveryone__c</name>
+    </fields>
+    <layouts>
+        <layout>Remedyforce Broadcast Light 1.0</layout>
+        <sections>
+            <label><!-- Broadcast Details --></label>
+            <section>Broadcast Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Display Broadcast --></label>
+            <section>Display Broadcast</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Remedyforce Broadcast Version 3.0</layout>
+        <sections>
+            <label><!-- Broadcast Details --></label>
+            <section>Broadcast Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Display Broadcast --></label>
+            <section>Display Broadcast</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status Details --></label>
+            <section>Status Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>ブロードキャストID</nameFieldLabel>
+    <namedFilters>
+        <informationalMessage>未完了およびアクティブなブロードキャストを選択してください。</informationalMessage>
+        <name>nf_01I90000000P11VEAS_00N90000002lHLZEA2</name>
+    </namedFilters>
+    <namedFilters>
+        <informationalMessage>未完了およびアクティブなブロードキャストを選択してください。</informationalMessage>
+        <name>nf_01I90000000lPVJEA2_00N900000031qlUEAQ</name>
+    </namedFilters>
+    <validationRules>
+        <errorMessage>ブロードキャストメッセージを入力してください。</errorMessage>
+        <name>BroadcastMessage_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>このブロードキャストは終了しています。ブロードキャストを変更するには、再開してください。</errorMessage>
+        <name>Cannot_Update_Closed_Broadcast</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>カテゴリを入力してください。</errorMessage>
+        <name>Category_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>期限の日時は、現在の日時以降および掲載日時以降にする必要があります。</errorMessage>
+        <name>Check_ExpirationDate</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>このブロードキャストIDのブロードキャストレコードはすでに存在しています。 固有のブロードキャストIDを入力してください。</errorMessage>
+        <name>UniqueBroadcastIDCheck</name>
+    </validationRules>
+    <webLinks>
+        <label>カテゴリエキスパートに割り当て</label>
+        <name>Assign_To_Suggested_Expert</name>
+    </webLinks>
+    <webLinks>
+        <label>リストに戻る</label>
+        <name>Back_to_list</name>
+    </webLinks>
+    <webLinks>
+        <label>カテゴリツリー</label>
+        <name>Category_Tree</name>
+    </webLinks>
+    <webLinks>
+        <label>閉じる</label>
+        <name>Close</name>
+    </webLinks>
+    <webLinks>
+        <label>ナレッジ検索</label>
+        <name>Knowledge_Articles</name>
+    </webLinks>
+    <webLinks>
+        <label>新規作成</label>
+        <name>New</name>
+    </webLinks>
+    <webLinks>
+        <label>ブロードキャストの再開</label>
+        <name>Reopen_Broadcast</name>
+    </webLinks>
+    <webLinks>
+        <label>標準説明および解決</label>
+        <name>Standard_Description_and_Resolution</name>
+    </webLinks>
+</CustomObjectTranslation>

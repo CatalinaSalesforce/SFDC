@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>提案オーナーのマッピング条件</value>
+    </caseValues>
+    <fields>
+        <label>提案されたオーナーのマッピング</label>
+        <name>FKSuggested_Owner_Mapping__c</name>
+        <relationshipLabel>提案されたオーナーのマッピング条件</relationshipLabel>
+    </fields>
+    <fields>
+        <label>フィールド情報</label>
+        <name>Field_Info__c</name>
+    </fields>
+    <fields>
+        <label>グループ化演算子</label>
+        <name>Grouping_Operator__c</name>
+    </fields>
+    <fields>
+        <label>オペランド</label>
+        <name>Operand__c</name>
+    </fields>
+    <fields>
+        <label>演算子</label>
+        <name>Operator__c</name>
+    </fields>
+    <fields>
+        <label>順序インデックス</label>
+        <name>Order_Index__c</name>
+    </fields>
+    <nameFieldLabel>提案オーナーのマッピング#</nameFieldLabel>
+</CustomObjectTranslation>

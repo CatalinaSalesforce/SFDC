@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Thèmes Libre service</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Thème Libre service</value>
+    </caseValues>
+    <fields>
+        <label>Actif</label>
+        <name>Active__c</name>
+    </fields>
+    <fields>
+        <label>URL de la société</label>
+        <name>Company_URL__c</name>
+    </fields>
+    <fields>
+        <label>Nom du fichier ressource</label>
+        <name>Resource_File_Name__c</name>
+    </fields>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Description du thème</label>
+        <name>Theme_Description__c</name>
+    </fields>
+    <fields>
+        <label>Nom du thème</label>
+        <name>Theme_Name__c</name>
+    </fields>
+    <fields>
+        <label>Conseils pour l&apos;URL</label>
+        <name>URL_Tip_Text__c</name>
+    </fields>
+    <fields>
+        <label>Utiliser les images par défaut</label>
+        <name>Use_Default_Images__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- Theme Number --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

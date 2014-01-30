@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Lien de problème de connaissance</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Liens de problème de connaissance</value>
+    </caseValues>
+    <fields>
+        <label>Numéro d&apos;article de connaissance</label>
+        <name>Knowledge_Article__c</name>
+        <relationshipLabel>Problèmes liés</relationshipLabel>
+    </fields>
+    <fields>
+        <label>N° de problème</label>
+        <name>Problem__c</name>
+        <relationshipLabel>Articles de connaissances liés</relationshipLabel>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Nom</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label>Lier au problème</label>
+        <name>New_Link</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Définition de demande</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Définitions de demande</value>
+    </caseValues>
+    <fields>
+        <label>Tous les comptes</label>
+        <name>AllAccounts__c</name>
+    </fields>
+    <fields>
+        <label>Approbation obligatoire</label>
+        <name>ApprovalRequired__c</name>
+    </fields>
+    <fields>
+        <label>Coût - Option 1</label>
+        <name>CostOption1__c</name>
+        <picklistValues>
+            <masterLabel>Adapter</masterLabel>
+            <translation><!-- Adapter --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Asset</masterLabel>
+            <translation><!-- Asset --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CPU</masterLabel>
+            <translation><!-- CPU --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Concurrent user</masterLabel>
+            <translation><!-- Concurrent user --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Enterprise</masterLabel>
+            <translation><!-- Enterprise --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Installed Server</masterLabel>
+            <translation><!-- Installed Server --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Instance</masterLabel>
+            <translation><!-- Instance --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>License</masterLabel>
+            <translation><!-- License --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Named User</masterLabel>
+            <translation><!-- Named User --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Site</masterLabel>
+            <translation><!-- Site --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Storage in GB</masterLabel>
+            <translation><!-- Storage in GB --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Storage in TB</masterLabel>
+            <translation><!-- Storage in TB --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unit</masterLabel>
+            <translation><!-- Unit --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Coût - Option 2</label>
+        <name>CostOption2__c</name>
+        <picklistValues>
+            <masterLabel>Day</masterLabel>
+            <translation><!-- Day --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Fulfillment</masterLabel>
+            <translation><!-- Fulfillment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hour</masterLabel>
+            <translation><!-- Hour --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Month</masterLabel>
+            <translation><!-- Month --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Quarter</masterLabel>
+            <translation><!-- Quarter --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Week</masterLabel>
+            <translation><!-- Week --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Year</masterLabel>
+            <translation><!-- Year --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Type de devise</label>
+        <name>CurrencyType__c</name>
+    </fields>
+    <fields>
+        <label>DateActuelle</label>
+        <name>CurrentDate__c</name>
+    </fields>
+    <fields>
+        <label>Prix client</label>
+        <name>CustomerPrice__c</name>
+    </fields>
+    <fields>
+        <label>Coût d&apos;exécution</label>
+        <name>DeliveryCost__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>Description_Rich_Text__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter a description of the Request Definition. --></help>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label>Date de fin</label>
+        <name>EndDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service --></label>
+        <name>FKBusinessService__c</name>
+        <relationshipLabel>Définitions de demande</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Catégorie</label>
+        <name>FKCategory__c</name>
+        <relationshipLabel>Définitions de demande</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Offre de service</label>
+        <name>FKServiceOffering__c</name>
+        <relationshipLabel>Définitions de demande (Offre de service)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Image (32 x 32)</label>
+        <name>Image__c</name>
+    </fields>
+    <fields>
+        <label>Inactif</label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this check box to make the service request available on Mobile App. --></help>
+        <label><!-- Mobile --></label>
+        <name>Mobile__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this check box to make the service request available in Self Service. --></help>
+        <label>En ligne</label>
+        <name>Online__c</name>
+    </fields>
+    <fields>
+        <label>Prix - Option 1</label>
+        <name>PriceOption1__c</name>
+        <picklistValues>
+            <masterLabel>Adapter</masterLabel>
+            <translation><!-- Adapter --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Asset</masterLabel>
+            <translation><!-- Asset --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CPU</masterLabel>
+            <translation><!-- CPU --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Concurrent user</masterLabel>
+            <translation><!-- Concurrent user --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Enterprise</masterLabel>
+            <translation><!-- Enterprise --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Installed Server</masterLabel>
+            <translation><!-- Installed Server --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Instance</masterLabel>
+            <translation><!-- Instance --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>License</masterLabel>
+            <translation><!-- License --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Named User</masterLabel>
+            <translation><!-- Named User --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Site</masterLabel>
+            <translation><!-- Site --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Storage in GB</masterLabel>
+            <translation><!-- Storage in GB --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Storage in TB</masterLabel>
+            <translation><!-- Storage in TB --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unit</masterLabel>
+            <translation><!-- Unit --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Prix - Option 2</label>
+        <name>PriceOption2__c</name>
+        <picklistValues>
+            <masterLabel>Day</masterLabel>
+            <translation><!-- Day --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Fulfillment</masterLabel>
+            <translation><!-- Fulfillment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hour</masterLabel>
+            <translation><!-- Hour --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Month</masterLabel>
+            <translation><!-- Month --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Quarter</masterLabel>
+            <translation><!-- Quarter --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Week</masterLabel>
+            <translation><!-- Week --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Year</masterLabel>
+            <translation><!-- Year --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Profil</label>
+        <name>Profiles__c</name>
+    </fields>
+    <fields>
+        <help><!-- Provide Information --></help>
+        <label>Fournir des informations</label>
+        <name>ProvideInformation__c</name>
+    </fields>
+    <fields>
+        <label>Service de révision</label>
+        <name>ReviewService__c</name>
+    </fields>
+    <fields>
+        <label>Ordre d&apos;affichage Libre service</label>
+        <name>SelfService_Display_Order__c</name>
+    </fields>
+    <fields>
+        <label>Définir l&apos;ordre d&apos;exécution</label>
+        <name>Set_Execution_Order__c</name>
+    </fields>
+    <fields>
+        <label>Date de début</label>
+        <name>StartDate__c</name>
+    </fields>
+    <fields>
+        <label>Statut</label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Deployed</masterLabel>
+            <translation><!-- Deployed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Draft</masterLabel>
+            <translation><!-- Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Requirements</masterLabel>
+            <translation><!-- Requirements --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Waiting Approval</masterLabel>
+            <translation><!-- Waiting Approval --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Délai d&apos;exécution</label>
+        <name>TurnaroundTime__c</name>
+    </fields>
+    <fields>
+        <label>Instructions pour l&apos;utilisateur</label>
+        <name>UserInstructions__c</name>
+    </fields>
+    <fields>
+        <label>Afficher une demande</label>
+        <name>ViewRequest__c</name>
+    </fields>
+    <fields>
+        <label>Titre de demande de service</label>
+        <name>serviceRequestTitle__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Définition de demande</nameFieldLabel>
+    <namedFilters>
+        <informationalMessage>Sélectionnez une définition de demande active.</informationalMessage>
+        <name>nf_01I90000000hFNEEA2_00N90000002y7JBEAY</name>
+    </namedFilters>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage>La date de fin doit être ultérieure à la date de début.</errorMessage>
+        <name>endDateMustBeAfterStartDate</name>
+    </validationRules>
+</CustomObjectTranslation>

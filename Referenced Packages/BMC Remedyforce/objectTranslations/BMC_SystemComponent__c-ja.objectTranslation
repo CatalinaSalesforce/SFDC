@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>システムコンポーネント</value>
+    </caseValues>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>システムクラスID</label>
+        <name>SystemClassId__c</name>
+    </fields>
+    <fields>
+        <label>システム名</label>
+        <name>SystemName__c</name>
+    </fields>
+    <fields>
+        <label>仮想</label>
+        <name>isVirtual__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <nameFieldLabel><!-- BMC_SystemComponent Name --></nameFieldLabel>
+</CustomObjectTranslation>

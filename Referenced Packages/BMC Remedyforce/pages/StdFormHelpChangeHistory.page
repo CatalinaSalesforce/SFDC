@@ -1,0 +1,2 @@
+<apex:page showHeader="false" controller="BMCServiceDesk.StdFormHelp" action="{!URLFOR($Resource[IF((userLang=='JA'),'StdFormHelp_JA','StdFormHelp')], helpURL)}">
+</apex:page>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>変更マニフェスト</value>
+    </caseValues>
+    <fields>
+        <label><!-- Change Request --></label>
+        <name>FKChange_Request__c</name>
+        <relationshipLabel><!-- Change Manifests --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>テンプレート</label>
+        <name>FKFuture_Tasks__c</name>
+        <relationshipLabel>変更マニフェスト</relationshipLabel>
+    </fields>
+    <fields>
+        <label>ステータス</label>
+        <name>FKStatus__c</name>
+        <relationshipLabel>変更マニフェスト</relationshipLabel>
+    </fields>
+    <fields>
+        <label>タスク</label>
+        <name>FKTask__c</name>
+        <relationshipLabel>変更マニフェスト</relationshipLabel>
+    </fields>
+    <fields>
+        <label>FKTemplateのリンク設定</label>
+        <name>FKTemplate_Linking__c</name>
+        <relationshipLabel>変更マニフェスト</relationshipLabel>
+    </fields>
+    <fields>
+        <label>順序</label>
+        <name>Order__c</name>
+    </fields>
+    <fields>
+        <label>テンプレートの順序</label>
+        <name>Template_Order__c</name>
+    </fields>
+    <nameFieldLabel>マニフェスト番号</nameFieldLabel>
+</CustomObjectTranslation>

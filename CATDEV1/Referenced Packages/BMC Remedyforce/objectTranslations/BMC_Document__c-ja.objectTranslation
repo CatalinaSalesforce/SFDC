@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>文書</value>
+    </caseValues>
+    <fields>
+        <label>作成者</label>
+        <name>Author__c</name>
+    </fields>
+    <fields>
+        <label>ドキュメントの日付</label>
+        <name>DocumentDate__c</name>
+    </fields>
+    <fields>
+        <label>ドキュメントのサイズ</label>
+        <name>DocumentSize__c</name>
+    </fields>
+    <fields>
+        <label>ドキュメントのステータス</label>
+        <name>DocumentStatus__c</name>
+        <picklistValues>
+            <masterLabel>Draft</masterLabel>
+            <translation><!-- Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Obsolete</masterLabel>
+            <translation><!-- Obsolete --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pre-Released</masterLabel>
+            <translation><!-- Pre-Released --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Released</masterLabel>
+            <translation><!-- Released --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>ドキュメントのタイプ</label>
+        <name>DocumentType__c</name>
+    </fields>
+    <fields>
+        <label>終了日</label>
+        <name>EndDate__c</name>
+    </fields>
+    <fields>
+        <label>ファイル名</label>
+        <name>FileName__c</name>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>キーワード</label>
+        <name>Keywords__c</name>
+    </fields>
+    <fields>
+        <label>ロケール</label>
+        <name>Locale__c</name>
+    </fields>
+    <fields>
+        <label>開始日</label>
+        <name>StartDate__c</name>
+    </fields>
+    <nameFieldLabel><!-- BMC_Document Name --></nameFieldLabel>
+    <validationRules>
+        <errorMessage>開始日は、終了日よりも前の日付にしてください。</errorMessage>
+        <name>start_date_validation</name>
+    </validationRules>
+</CustomObjectTranslation>

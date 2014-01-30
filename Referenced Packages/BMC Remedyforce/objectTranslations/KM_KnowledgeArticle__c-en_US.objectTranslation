@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Knowledge Article</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Knowledge Articles</value>
+    </caseValues>
+    <fields>
+        <label><!-- Answer --></label>
+        <name>Answer__c</name>
+    </fields>
+    <fields>
+        <label><!-- Article # --></label>
+        <name>Article_Number__c</name>
+    </fields>
+    <fields>
+        <label><!-- Article Type --></label>
+        <name>Article_Type__c</name>
+    </fields>
+    <fields>
+        <label><!-- Category~ --></label>
+        <name>Category__c</name>
+    </fields>
+    <fields>
+        <label><!-- Retired Date --></label>
+        <name>Closed_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Create Change Request --></label>
+        <name>CreateChangeRequest__c</name>
+    </fields>
+    <fields>
+        <label><!-- Error --></label>
+        <name>Error_description__c</name>
+    </fields>
+    <fields>
+        <label><!-- Category --></label>
+        <name>FKCategory__c</name>
+        <relationshipLabel><!-- Knowledge Articles --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Keywords --></label>
+        <name>Keywords__c</name>
+    </fields>
+    <fields>
+        <label><!-- Problem --></label>
+        <name>Problem__c</name>
+    </fields>
+    <fields>
+        <label><!-- Published Date --></label>
+        <name>PublishedDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Question --></label>
+        <name>Question__c</name>
+    </fields>
+    <fields>
+        <label><!-- Relevance --></label>
+        <name>Relevance__c</name>
+    </fields>
+    <fields>
+        <label><!-- Review Date --></label>
+        <name>Review_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Root Cause --></label>
+        <name>Root_Cause__c</name>
+    </fields>
+    <fields>
+        <label><!-- Solution --></label>
+        <name>Solution__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Draft</masterLabel>
+            <translation><!-- Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>In Review</masterLabel>
+            <translation><!-- In Review --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Published</masterLabel>
+            <translation><!-- Published --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Retired</masterLabel>
+            <translation><!-- Retired --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Title --></label>
+        <name>Title__c</name>
+    </fields>
+    <fields>
+        <help><!-- Number of times used in Self Service --></help>
+        <label><!-- Used in Self Service # --></label>
+        <name>Used_Count__c</name>
+    </fields>
+    <fields>
+        <label><!-- Used by Staff Members # --></label>
+        <name>Used_by_Staff_Members_Count__c</name>
+    </fields>
+    <fields>
+        <label><!-- Viewed in Self Service # --></label>
+        <name>View_Count__c</name>
+    </fields>
+    <fields>
+        <label><!-- Display in Self Service --></label>
+        <name>Visible_in_Self_Service__c</name>
+    </fields>
+    <fields>
+        <label><!-- Workaround --></label>
+        <name>Workaround__c</name>
+    </fields>
+    <layouts>
+        <layout>FAQ</layout>
+        <sections>
+            <label><!-- Additional Information --></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label><!-- Article Details --></label>
+            <section>Article Details</section>
+        </sections>
+        <sections>
+            <label><!-- Article Information --></label>
+            <section>Article Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>How To</layout>
+        <sections>
+            <label><!-- Additional Information --></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label><!-- Article Details --></label>
+            <section>Article Details</section>
+        </sections>
+        <sections>
+            <label><!-- Article Information --></label>
+            <section>Article Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Known Error</layout>
+        <sections>
+            <label><!-- Additional Information --></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label><!-- Article Details --></label>
+            <section>Article Details</section>
+        </sections>
+        <sections>
+            <label><!-- Article Information --></label>
+            <section>Article Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Problem Solution</layout>
+        <sections>
+            <label><!-- Additional Information --></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label><!-- Article Details --></label>
+            <section>Article Details</section>
+        </sections>
+        <sections>
+            <label><!-- Article Information --></label>
+            <section>Article Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <label><!-- FAQ --></label>
+        <name>FAQ</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- How To --></label>
+        <name>How_To</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Known Error --></label>
+        <name>Known_Error</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Problem Solution --></label>
+        <name>Problem_Solution</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Please enter the Category. --></errorMessage>
+        <name>Category_Is_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Review date must be a future date. --></errorMessage>
+        <name>Review_date_must_be_a_future_date</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Knowledge_Management_Process --></label>
+        <name>Knowledge_Management_Process</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Preview --></label>
+        <name>Preview</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Publish --></label>
+        <name>Publish</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Retire --></label>
+        <name>Retire</name>
+    </webLinks>
+</CustomObjectTranslation>

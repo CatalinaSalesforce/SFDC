@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Template Field Info</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>SYSTemplateFieldInfo</value>
+    </caseValues>
+    <fields>
+        <label><!-- FKSYSTemplate --></label>
+        <name>FKSYSTemplate__c</name>
+        <relationshipLabel><!-- SYSTemplateFieldInfo --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- FieldId --></label>
+        <name>FieldId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Field Name --></label>
+        <name>fieldName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Field Value --></label>
+        <name>fieldValue__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

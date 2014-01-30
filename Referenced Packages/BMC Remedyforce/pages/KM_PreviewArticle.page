@@ -1,0 +1,359 @@
+<apex:page standardController="BMCServiceDesk__KM_KnowledgeArticle__c" extensions="BMCServiceDesk.KnowledgeManagementController" sidebar="false" showHeader="false" action="{!previewArticle}">
+	<apex:outputPanel id="ArticleContentsPanel" rendered="{!isforembeddedpage}">
+		<apex:outputPanel rendered="{!isfromSS}">     
+			<apex:stylesheet value="{!$Resource.BMCServiceDesk__Themes}/{!activenow}/SkywalkerStyleSheet.css" />
+			<apex:stylesheet value="{!$Resource.BMCServiceDesk__Themes}/{!activenow}/SSCore.css" />
+		</apex:outputPanel>
+
+		<link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/KMArticleView.css"/>
+	    <link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/BMCStyleSheet.css" />
+	    
+		<apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS}/adapter/ext/ext-base.js" id="ext-base-js"/>
+    	<apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS}/ext-all.js" id="ext-all-js"/>
+		
+			<style>
+			.sfdc_richtext {
+				color: #000000;
+				font-family: 'Arial','Helvetica',sans-serif;
+			    margin: 0;
+			    padding-left: 4px;
+			    font-size:12px !important;
+			}
+			html,body {
+				overflow-x: hidden;
+			}
+			strong {
+				font-weight: bold !important;
+			}
+			
+			em{
+			    font-style:italic !important;
+			}
+			
+			.clsfieldValue {
+				*width: 100% !important;
+				width /*\**/: : 100% \9 ;
+			}
+			
+			.x-grid3-hd-row TD {
+				width: 99% !important;
+			}
+			
+			.x-grid3, .x-grid3-header {
+				width: 100% !important;
+				/*width: 97% \0/ !important; */
+			}
+			
+			.x-grid3-header-inner {
+				width: 100% !important;
+				width: 100% \0/ !important;
+			}
+			
+			body {
+				font-size: 12px !important;
+			}
+			
+			.clsInputTextFeedback {
+				width: 68% !important;
+				width: 93% \9  !important;
+				width: 68% \0/  !important;
+				height:20px;
+			}
+			
+			.clsRequestHelpBtn2 {
+				background-image:
+					url("{!$Resource.Themes}/SSDarkYellowTheme/images/en_US/SS_Service_Request_16.png")
+					!important;
+				background-position: 3px 50% !important;
+				background-repeat: no-repeat !important;
+				height: 22px !important;
+				padding-left:20px !important;
+				margin-top: 3px;
+				min-width: 70px;
+				border-color: #CCCCCC #666666 #666666 #CCCCCC;
+				border-style: solid;
+				border-width: 1px;
+				cursor: pointer;
+				font-family: Tahoma, MS Sans Serif;
+				font-size: 11px;
+				font-weight: normal;
+				margin-left: 5px;
+				margin-bottom: 5px\9;
+				text-align: right !important;
+				margin-right: 15px;
+			}
+			
+			.copyRadio label {
+				padding-right: 10px !important;
+				vertical-align: top !important;
+				vertical-align /*\**/: middle\9  ;
+				vertical-align: top \0/ !important;
+			}
+			
+			.copyRadio {
+				margin-left: 5px !important;
+			}
+			
+			.AddButton {
+				min-width: 48px !important;
+				background-image: none !important;
+				background-color: #F0F0F0 !important;
+				
+			}
+			.AddButtonOff{
+				min-width: 48px !important;
+			}
+			
+			.x-form-field {
+				font: 11px tahoma, arial, helvetica, sans-serif !important;
+			}
+			
+			#otherInfo {
+				margin-left: 7px !important;
+				margin-right: 5px !important;
+				margin-bottom: 5px;
+			}
+			
+			.x-grid3-row,.x-grid3-header-offset,.x-grid3-header-offset table {
+				width: 100% !important;
+			}
+			
+			.x-grid3-body,.x-grid3-row-table,.x-grid3-col {
+				width: 99% !important;
+				width: 99% \0/ !important;
+			}
+			
+			.ext-ie8 {
+				margin-right: - \0/ !important;
+			}
+			
+			.TextboxPopupIcon {
+				margin-left: 0 !important;
+				height: 20px  !important;	
+				display:inline;
+				margin-top: 11px !important;
+				*margin-top: 12px !important;
+				margin-top: 12px \0/ !important;
+			}
+			
+			#attachmentDiv .x-panel-bwrap .x-panel-body {
+				width:100% !important;
+				width: 99% \0/ !important;
+			}
+			
+			.x-grid3 {
+				width: 100% \0/ !important;
+			}
+			#attachment_grid .x-grid3-scroller{
+				/*height:35px !important;*/
+				width: 100% !important;
+			}
+			#ratingPicklist
+			{
+				color:#000000;
+			}
+			.clsfieldValue{
+				*width:99% !important;
+			}			
+			.x-panel-header
+            {
+                *height:15px !important;
+            }
+			</style>		
+		    <apex:form id="kmformArticleContents">
+		      <apex:outputPanel id="outerPanel" rendered="{!showArticle}">
+		
+					<apex:outputPanel id="KnownErrorPanel" rendered="{!renderKnownError}">
+				<div class="x-panel-header headerBackColor" style="height: 15px;"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__KM_KnowledgeArticle__c.fields.BMCServiceDesk__Error_description__c.label}" /></div>
+						<div class="clsfieldValue" id="Error_description__c">
+							<apex:outputField value="{!articleObj.BMCServiceDesk__Error_description__c}"></apex:outputField>
+						</div>
+				<div class="x-panel-header headerBackColor" style="height: 15px;"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__KM_KnowledgeArticle__c.fields.BMCServiceDesk__Root_Cause__c.label}" /></div>
+						<div class="clsfieldValue" id="Root_Cause__c" style="height: 100px;">
+							<apex:outputField value="{!articleObj.BMCServiceDesk__Root_Cause__c}"></apex:outputField>
+						</div>
+				<div class="x-panel-header headerBackColor" style="height: 15px;"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__KM_KnowledgeArticle__c.fields.BMCServiceDesk__Workaround__c.label}" /></div>
+						<div class="clsfieldValue" id="Workaround__c" style="height: 100px;">
+							<apex:outputField value="{!articleObj.BMCServiceDesk__Workaround__c}"></apex:outputField>
+						</div>
+					</apex:outputPanel>
+		
+					<apex:outputPanel id="QuestionAnswerPanel" rendered="{!renderFAQ}">
+				<div class="x-panel-header headerBackColor" style="height: 15px;"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__KM_KnowledgeArticle__c.fields.BMCServiceDesk__Question__c.label}" /></div>
+						<div class="clsfieldValue" id="Question__c">
+							<apex:outputField value="{!articleObj.BMCServiceDesk__Question__c}"></apex:outputField>
+						</div>
+				<div class="x-panel-header headerBackColor" style="height: 15px;"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__KM_KnowledgeArticle__c.fields.BMCServiceDesk__Answer__c.label}" /></div>
+						<div class="clsfieldValue" id="Answer__c">
+							<apex:outputField value="{!articleObj.BMCServiceDesk__Answer__c}"></apex:outputField>
+						</div>
+					</apex:outputPanel>
+		
+					<apex:outputPanel id="ProblemSolutionPanel"	rendered="{!renderProblemSoln}">
+				<div class="x-panel-header headerBackColor" style="height: 15px;"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__KM_KnowledgeArticle__c.fields.BMCServiceDesk__Problem__c.label}" /></div>
+						<div class="clsfieldValue" id="Problem__c">
+							<apex:outputField value="{!articleObj.BMCServiceDesk__Problem__c}"></apex:outputField>
+						</div>
+				<div class="x-panel-header headerBackColor" style="height: 15px;"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__KM_KnowledgeArticle__c.fields.BMCServiceDesk__Solution__c.label}" /></div>
+						<div class="clsfieldValue" id="Solution__c">
+							<apex:outputField value="{!articleObj.BMCServiceDesk__Solution__c}"></apex:outputField>
+						</div>
+					</apex:outputPanel>
+			  </apex:outputPanel>
+		  </apex:form>  
+		</apex:outputPanel>
+		<script>
+		function getexplorerversion()
+		{
+			var myBoolean=new Boolean();
+			myBoolean=false;
+			var versionis=parseInt(window.parent.getInternetExplorerVersion());
+			if(versionis == 8){		
+				if({!isIE9} == true)
+				{
+					myBoolean=true;
+				}
+				else
+				{
+					myBoolean=false;;
+				}
+			}
+			return myBoolean;
+		}
+		        var calledFromform;
+		        var isfromSS;
+		        var isGS;
+				//alert("In iframe " +aheight);
+				
+				function SetLocalSize(aheight)
+				{
+					var FlagArray = new Array(3);
+					FlagArray=window.parent.getFlags();
+					calledFromform=FlagArray[0];
+		        	isfromSS=FlagArray[1];
+		        	isGS=FlagArray[2]
+					//alert("Calledfromform: "+FlagArray[0]+" isfromSS: "+FlagArray[1]+" isGS: "+FlagArray[2])
+					
+					var questionheight=document.getElementById("Question__c");
+					var answerheight=document.getElementById("Answer__c");
+					var problemheight=document.getElementById("Problem__c");
+					var solutionheight=document.getElementById("Solution__c");
+					var error=document.getElementById("Error_description__c");
+					var rootcause=document.getElementById("Root_Cause__c");
+					var workaround=document.getElementById("Workaround__c");
+					
+					if (questionheight != null && answerheight != null)
+					{
+						//alert("Here ");
+						aheight=aheight-30;
+						
+						if(Ext.isIE7)
+						{
+							questionheight.style.height=(aheight*0.225)+"px";
+							answerheight.style.height=aheight*0.675+"px";
+						}
+						else{ 
+							questionheight.style.height=(aheight*0.238)+"px"; 
+							answerheight.style.height=aheight*0.714+"px";
+						}
+					
+						if (calledFromform==true && (isfromSS==true) && (isGS==false)) //from ss
+						{
+							if(Ext.isIE7)
+
+							{
+								//alert("IN Preview SS");
+								questionheight.style.height=(aheight*0.232)+"px";
+								answerheight.style.height=aheight*0.695+"px";
+							}
+						}
+					}
+					else if (problemheight != null && solutionheight != null){		
+							aheight=aheight-30;	
+							problemheight.style.height=aheight*0.235+"px"; 
+							solutionheight.style.height=aheight*0.705+"px";
+							if(Ext.isIE7)
+							{
+								problemheight.style.height=aheight*0.225+"px";
+								solutionheight.style.height=aheight*0.675+"px";
+							}
+							if(calledFromform==true && (isfromSS==true) && (isGS==false)){ //for ss
+								if(Ext.isIE7)
+								{
+									//alert("PS SS IE7");
+									problemheight.style.height=aheight*0.231+"px";
+									solutionheight.style.height=aheight*0.694+"px";
+								
+								}
+								else if(getexplorerversion()){
+									//alert("PS SS IE9");
+									problemheight.style.height=aheight*0.24+"px"; 
+									solutionheight.style.height=aheight*0.72+"px";
+								}
+							}
+							else if (calledFromform==true && (isfromSS==false) && (isGS==true)){//for gs
+								if(getexplorerversion()){
+									//alert("PS SS IE9");
+									problemheight.style.height=aheight*0.24+"px";
+									solutionheight.style.height=aheight*0.72+"px";
+								}
+							}
+							else if (calledFromform==false && (isfromSS==false) && (isGS==false)){//for preview
+								if(getexplorerversion()){
+									//alert("PS SS IE9");
+									problemheight.style.height=aheight*0.24+"px";
+									solutionheight.style.height=aheight*0.72+"px";
+								}
+							}
+					}
+					
+					else if (error != null && rootcause!=null && workaround !=null)
+					{	
+							aheight=aheight-45;
+							error.style.height=Math.round(aheight*0.15)+"px";
+							rootcause.style.height=Math.round(aheight*0.35)+"px";
+							workaround.style.height=Math.round(aheight*0.40)+"px";
+							if(Ext.isIE7)
+							{
+								error.style.height=Math.round(aheight*0.15)+"px";
+								rootcause.style.height=Math.round(aheight*0.3)+"px";
+								workaround.style.height=Math.round(aheight*0.35)+"px";
+							}
+							
+							if(calledFromform==false && (isfromSS==false) && (isGS==false)){ //from preview
+								if(Ext.isChrome)
+								{
+									//alert("KE P C");
+									error.style.height=Math.round(aheight*0.15)+"px";
+									rootcause.style.height=Math.round(aheight*0.35)+"px";
+									workaround.style.height=Math.round(aheight*0.42)+"px";
+								}
+							}
+							else if (calledFromform==true && (isfromSS==false) && (isGS==true))//for gs
+							{
+								if (Ext.isIE7){
+									//alert("KE GS IE7");
+									error.style.height=Math.round(aheight*0.15)+"px";
+									rootcause.style.height=Math.round(aheight*0.321)+"px";
+									workaround.style.height=Math.round(aheight*0.371)+"px";								
+								}
+							}
+							else if(calledFromform==true && (isfromSS==true) && (isGS==false)){ //for ss
+								if (Ext.isIE7){
+									//alert("KE SS IE7");
+									error.style.height=Math.round(aheight*0.15)+"px";
+									rootcause.style.height=Math.round(aheight*0.33)+"px";
+									workaround.style.height=Math.round(aheight*0.38)+"px";								
+								}
+					
+							}	
+				} //KE ends
+			}	
+			var aheight=window.parent.settingKASize();
+			var xyz = "SetLocalSize(aheight)";
+			
+			window.onload=function(){eval(xyz);};
+
+		</script>
+		
+</apex:page>

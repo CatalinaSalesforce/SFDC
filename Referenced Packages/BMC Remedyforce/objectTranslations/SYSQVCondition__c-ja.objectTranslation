@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SYSQVCondition Name</value>
+    </caseValues>
+    <fields>
+        <label>FKSYSQVフィールド情報</label>
+        <name>FKSYSQVFieldInfo__c</name>
+        <relationshipLabel>SYSQV条件(FKSYSQVフィールド情報)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>FKSYSQVクエリー</label>
+        <name>FKSYSQVQuery__c</name>
+        <relationshipLabel>SYSQV条件</relationshipLabel>
+    </fields>
+    <fields>
+        <label>SYSQV演算子</label>
+        <name>SYSQVOperator__c</name>
+    </fields>
+    <fields>
+        <label>シーケンスID</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>表示ラベル</label>
+        <name>displaylabel__c</name>
+    </fields>
+    <fields>
+        <label>グループ化演算子</label>
+        <name>groupingOperator__c</name>
+    </fields>
+    <fields>
+        <label>オペランド1はランタイム変数</label>
+        <name>op1IsRuntimeVar__c</name>
+    </fields>
+    <fields>
+        <label>オペランド2はランタイム変数</label>
+        <name>op2IsRuntimeVar__c</name>
+    </fields>
+    <fields>
+        <label>オペランド1</label>
+        <name>operand1__c</name>
+    </fields>
+    <fields>
+        <label>オペランド2</label>
+        <name>operand2__c</name>
+    </fields>
+    <fields>
+        <label>順序インデックス</label>
+        <name>orderIndex__c</name>
+    </fields>
+    <nameFieldLabel><!-- SYSQVCondition Name --></nameFieldLabel>
+</CustomObjectTranslation>

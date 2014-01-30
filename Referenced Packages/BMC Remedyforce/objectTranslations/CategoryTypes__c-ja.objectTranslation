@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>カテゴリタイプ</value>
+    </caseValues>
+    <fields>
+        <label>シーケンスID</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the category type record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label>無効</label>
+        <name>inactive__c</name>
+    </fields>
+    <nameFieldLabel>カテゴリタイプ</nameFieldLabel>
+    <validationRules>
+        <errorMessage>[カテゴリタイプ]フィールドに値を入力してください。</errorMessage>
+        <name>CategoryType_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>このカテゴリタイプのカテゴリタイプレコードはすでに存在しています。 固有のカテゴリタイプを入力してください。</errorMessage>
+        <name>UniqueCategoryTypeCheck</name>
+    </validationRules>
+</CustomObjectTranslation>

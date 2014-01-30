@@ -1,0 +1,5 @@
+<apex:page controller="BMCServiceDesk.CMDBPicklistController" ShowHeader="false" contentType="text/xml" standardStylesheets="false" > 
+
+    <apex:outputText escape="false" value="{!strXLMPicklistvalue}" ></apex:outputText>
+
+</apex:page>

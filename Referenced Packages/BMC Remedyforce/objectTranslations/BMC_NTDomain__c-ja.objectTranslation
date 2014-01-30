@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>NTドメイン</value>
+    </caseValues>
+    <fields>
+        <label>クライアントのサイト名</label>
+        <name>ClientSiteName__c</name>
+    </fields>
+    <fields>
+        <label>DSディレクトリサービスフラグ</label>
+        <name>DSDirectoryServiceFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS DNSコントローラフラグ</label>
+        <name>DSDnsControllerFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS DNSドメインフラグ</label>
+        <name>DSDnsDomainFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS DNSフォレストフラグ</label>
+        <name>DSDnsForestFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DSグローバルカタログフラグ</label>
+        <name>DSGlobalCatalogFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS Kerberos Distribution Centerフラグ</label>
+        <name>DSKerberosDistributionCenterFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DSプライマリドメインコントローラフラグ</label>
+        <name>DSPrimaryDomainControllerFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DSタイムサービスフラグ</label>
+        <name>DSTimeServiceFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DS書き込み可能フラグ</label>
+        <name>DSWritableFlag__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>DCサイト名</label>
+        <name>DcSiteName__c</name>
+    </fields>
+    <fields>
+        <label>DNSフォレスト名</label>
+        <name>DnsForestName__c</name>
+    </fields>
+    <fields>
+        <label>ドメインコントローラアドレスタイプ</label>
+        <name>DomainControllerAddressType__c</name>
+        <picklistValues>
+            <masterLabel>DS_INET_ADDRESS</masterLabel>
+            <translation><!-- DS_INET_ADDRESS --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DS_NETBIOS_ADDRESS</masterLabel>
+            <translation><!-- DS_NETBIOS_ADDRESS --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>ドメインコントローラアドレス</label>
+        <name>DomainControllerAddress__c</name>
+    </fields>
+    <fields>
+        <label>ドメインコントローラ名</label>
+        <name>DomainControllerName__c</name>
+    </fields>
+    <fields>
+        <label>ドメインGUID</label>
+        <name>DomainGuid__c</name>
+    </fields>
+    <fields>
+        <label>ドメイン名</label>
+        <name>DomainName__c</name>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <nameFieldLabel><!-- BMC_NTDomain Name --></nameFieldLabel>
+</CustomObjectTranslation>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Composant</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Composants</value>
+    </caseValues>
+    <fields>
+        <label>ID instance</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- BMC_Component Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,3 @@
+<apex:page controller="WuFoo" action="{!run}">
+<apex:outputText value="{!output}"></apex:outputText>
+</apex:page>

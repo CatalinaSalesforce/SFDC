@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Chatter Listener</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Chatter Listeners</value>
+    </caseValues>
+    <fields>
+        <label>Utilisateur de réponse automatique</label>
+        <name>Auto_Reply_User__c</name>
+        <relationshipLabel>Ecouteurs Chatter</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Réponse automatique aux messages Chatter</label>
+        <name>Auto_Reply_to_Chatter__c</name>
+    </fields>
+    <fields>
+        <label>Groupe Chatter</label>
+        <name>Chatter_Group__c</name>
+    </fields>
+    <fields>
+        <label>Modèle</label>
+        <name>FKTemplate__c</name>
+        <relationshipLabel>Ecouteurs Chatter</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Nom de groupe</label>
+        <name>Group_Name__c</name>
+    </fields>
+    <fields>
+        <label>Inactif</label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <label><!-- Hashtags --></label>
+        <name>Keywords__c</name>
+    </fields>
+    <fields>
+        <label>Enregistrer utilisateur msg Chatter sous</label>
+        <name>Map_Chatter_User_to__c</name>
+    </fields>
+    <fields>
+        <label>Sujet</label>
+        <name>Object__c</name>
+    </fields>
+    <fields>
+        <label>Modèle~</label>
+        <name>Template__c</name>
+    </fields>
+    <fields>
+        <label>Utilisateur~</label>
+        <name>User__c</name>
+    </fields>
+    <fields>
+        <label>Autoriser le suivi auto d&apos;enregistrement</label>
+        <name>User_to_Follow_Record__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Name</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

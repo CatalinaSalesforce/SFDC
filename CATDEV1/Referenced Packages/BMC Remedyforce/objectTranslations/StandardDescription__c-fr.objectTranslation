@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Description standard</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Descriptions standard</value>
+    </caseValues>
+    <fields>
+        <help><!-- Use this field to enter a standard description for the selected category. This description will be added to the selected category&apos;s list of standard descriptions. --></help>
+        <label>Description standard</label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the category for which you want to create a standard description. --></help>
+        <label>Catégorie</label>
+        <name>FKCategory__c</name>
+        <relationshipLabel>Descriptions standard</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the category for which you want to create a standard description. --></help>
+        <label>Catégorie~</label>
+        <name>category_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the standard description record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label>Inactif</label>
+        <name>inactive__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel><!-- Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage>Veuillez saisir une catégorie.</errorMessage>
+        <name>Standard_Description_Category_Required</name>
+    </validationRules>
+</CustomObjectTranslation>

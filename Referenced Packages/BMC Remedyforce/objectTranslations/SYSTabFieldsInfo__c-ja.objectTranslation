@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>タブフィールド情報</value>
+    </caseValues>
+    <fields>
+        <label>FKタブ情報</label>
+        <name>SYSTabInfo__c</name>
+        <relationshipLabel>SYSタブフィールド情報</relationshipLabel>
+    </fields>
+    <fields>
+        <label>シーケンスID</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>列のシーケンス</label>
+        <name>columnSequence__c</name>
+    </fields>
+    <fields>
+        <label>列幅</label>
+        <name>columnWidth__c</name>
+    </fields>
+    <fields>
+        <label>フィールドAPI名</label>
+        <name>fieldAPIName__c</name>
+    </fields>
+    <nameFieldLabel><!-- Name --></nameFieldLabel>
+</CustomObjectTranslation>

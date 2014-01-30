@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Change Manifest</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Change Manifests</value>
+    </caseValues>
+    <fields>
+        <label><!-- Change Request --></label>
+        <name>FKChange_Request__c</name>
+        <relationshipLabel><!-- Change Manifests --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Template --></label>
+        <name>FKFuture_Tasks__c</name>
+        <relationshipLabel><!-- Change Manifests --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>FKStatus__c</name>
+        <relationshipLabel><!-- Change Manifests --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Task --></label>
+        <name>FKTask__c</name>
+        <relationshipLabel><!-- Change Manifests --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- FKTemplate Linking --></label>
+        <name>FKTemplate_Linking__c</name>
+        <relationshipLabel><!-- Change Manifests --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Order --></label>
+        <name>Order__c</name>
+    </fields>
+    <fields>
+        <label><!-- Template Order --></label>
+        <name>Template_Order__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Utilitaire de couplage MF</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Utilitaire de couplage MF</value>
+    </caseValues>
+    <fields>
+        <label>Nom CFRM</label>
+        <name>CFRM_Name__c</name>
+    </fields>
+    <fields>
+        <label>Nom de site CFRM</label>
+        <name>CFRM_Site_Name__c</name>
+    </fields>
+    <fields>
+        <label>ID instance</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>Descripteur de nœud</label>
+        <name>Node_Descriptor__c</name>
+    </fields>
+    <fields>
+        <label>Stockage</label>
+        <name>Storage__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Nom d&apos;utilitaire de couplage MF</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

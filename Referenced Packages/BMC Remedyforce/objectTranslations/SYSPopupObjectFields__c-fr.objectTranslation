@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Détails de la fenêtre contextuelle</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Détails de la fenêtre contextuelle</value>
+    </caseValues>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <help><!-- Data types supported by EXTJS grid component data loader and will be used for sorting --></help>
+        <label>Type de données</label>
+        <name>dataType__c</name>
+        <picklistValues>
+            <masterLabel>String</masterLabel>
+            <translation><!-- String --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>date</masterLabel>
+            <translation><!-- date --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>float</masterLabel>
+            <translation><!-- float --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>integer</masterLabel>
+            <translation><!-- integer --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Ordre des champs</label>
+        <name>fieldOrder__c</name>
+    </fields>
+    <fields>
+        <label>Largeur de champ</label>
+        <name>fieldWidth__c</name>
+    </fields>
+    <fields>
+        <label>Objet contextuel FK</label>
+        <name>popupObjectId__c</name>
+        <relationshipLabel>Champs d&apos;objet contextuel SYS</relationshipLabel>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- Field API Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

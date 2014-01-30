@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SelfService Image</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>SelfService Images</value>
+    </caseValues>
+    <fields>
+        <label><!-- Active --></label>
+        <name>Active__c</name>
+    </fields>
+    <fields>
+        <label><!-- Theme --></label>
+        <name>FKTheme__c</name>
+        <relationshipLabel><!-- SelfService Images --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Image Key --></label>
+        <name>Image_Key__c</name>
+        <picklistValues>
+            <masterLabel>Background</masterLabel>
+            <translation><!-- Background --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>BannerHeader</masterLabel>
+            <translation><!-- BannerHeader --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>LoginHeader</masterLabel>
+            <translation><!-- LoginHeader --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Logo</masterLabel>
+            <translation><!-- Logo --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>MainApplication Logo</masterLabel>
+            <translation><!-- MainApplication Logo --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Image Type --></label>
+        <name>Image_Type__c</name>
+    </fields>
+    <fields>
+        <label><!-- Sequence Id --></label>
+        <name>Sequence__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

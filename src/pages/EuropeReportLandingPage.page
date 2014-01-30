@@ -1,0 +1,373 @@
+<apex:page controller="EuropeReportLandingController" id="page">
+
+    <style>
+        .bPageBlock .detailList .dataCol {
+            width: 30%;
+        }
+    </style>
+    <apex:sectionHeader title="Dashboards"/>
+    <apex:form id="form">
+        <apex:pageMessages />
+        <apex:pageblock mode="maindetail">
+
+            <apex:pageblocksection columns="4" rendered="{!IF(isFranceUser,true,false)}" >                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                          <!--      <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank">
+                                    <apex:param name="Param" assignTo="{!reporttype}" value="MyFav" /> 
+                           --> 
+                                    <apex:image url="{!$Resource.Favorites}" title="Mes Favoris" width="90" height="90" style="image-align:center;" /> 
+                           <!--     </apex:commandlink>
+                            -->
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Mes Favoris"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperMyFav}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank">
+                                    <apex:param name="Param1" assignTo="{!reporttype}" value="FSD" /> 
+                                    <apex:image url="{!$Resource.Dashboard}" title="TDB & Rapports Sales" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="TDB & Rapports Sales"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperSD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank">
+                                    <apex:param name="Param4" assignTo="{!reporttype}" value="FRD" />   
+                                    <apex:image url="{!$Resource.Renewals}" title="Renouvellements" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Renouvellements"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperRD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank"> 
+                                    <apex:param name="Param5" assignTo="{!reporttype}" value="FSMD" />  
+                                    <apex:image url="{!$Resource.AccountManagement}" title="Executive Dashboards" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Executive Dashboards"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperSMD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>                                
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank">
+                                    <apex:param name="Param3" assignTo="{!reporttype}" value="FMD" />   
+                                    <apex:image url="{!$Resource.ExecutiveReport}" title="Tableau de Bord Manager" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Tableau de Bord Manager"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperManD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank">
+                                    <apex:param name="Param2" assignTo="{!reporttype}" value="Pacing" />  
+                                    <apex:image url="{!$Resource.Forecasting}" title="Pacing" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Pacing"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperPacD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank">
+                                    <apex:param name="Param2" assignTo="{!reporttype}" value="FDR" />  
+                                    <apex:image url="{!$Resource.AccountManagementDetailed}" title="Digital Reports" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Digital Reports"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperDRD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+            </apex:pageblocksection>
+            
+            <apex:pageblocksection columns="3" rendered="{!IF(isItalyUser,true,false)}" >               
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                      <!--          <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank">
+                                    <apex:param name="Param" assignTo="{!reporttype}" value="MyFav" /> 
+                       -->
+                                    <apex:image url="{!$Resource.Favorites}" title="My Favorites" width="90" height="90" style="image-align:center;" /> 
+                       <!--
+                                </apex:commandlink>
+                       -->
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="My Favorites"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperMyFav}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank">
+                                    <apex:param name="Param1" assignTo="{!reporttype}" value="ISD" />   
+                                    <apex:image url="{!$Resource.Dashboard}" title="Sales Dashboard" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Sales Dashboard"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperSD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank"> 
+                                    <apex:param name="Param2" assignTo="{!reporttype}" value="IMFD" />   
+                                    <apex:image url="{!$Resource.AccountManagement}" title="Manufacturing Dashboard" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Manufacturing Dashboard"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperDRD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank"> 
+                                    <apex:param name="Param3" assignTo="{!reporttype}" value="IRD" />   
+                                    <apex:image url="{!$Resource.Renewals}" title="Renewals Dashboard" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Renewals Dashboard"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperRD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+            </apex:pageblocksection>
+            
+            <apex:pageblocksection columns="3" rendered="{!IF(isGermanyUser,true,false)}" >
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                      <!--          <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank">
+                                    <apex:param name="Param" assignTo="{!reporttype}" value="MyFav" /> 
+                       -->
+                                    <apex:image url="{!$Resource.Favorites}" title="My Favorites" width="90" height="90" style="image-align:center;" /> 
+                       <!--
+                                </apex:commandlink>
+                        -->
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="My Favorites"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperMyFav}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank"> 
+                                    <apex:param name="Param1" assignTo="{!reporttype}" value="GSD" />   
+                                    <apex:image url="{!$Resource.Dashboard}" title="Sales Dashboard" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Sales Dashboard"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperSD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank"> 
+                                    <apex:param name="Param2" assignTo="{!reporttype}" value="GMFD" />   
+                                    <apex:image url="{!$Resource.AccountManagement}" title="Manufacturing Dashboard" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Manufacturing Dashboard"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperDRD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+                
+                <apex:pageblocksectionItem >
+                    <apex:outputPanel >
+                        <table>
+                            <tr><td>
+                                <apex:commandlink action="{!goToReportDashboardDisplay}" target="_blank"> 
+                                    <apex:param name="Param3" assignTo="{!reporttype}" value="GRD" />   
+                                    <apex:image url="{!$Resource.Renewals}" title="Renewals Dashboard" width="90" height="90" style="image-align:center;" /> 
+                                </apex:commandlink>
+                            </td></tr>
+                            <tr><td>
+                                <b><U><apex:outputText value="Renewals Dashboard"></apex:outputText></U></b>
+                            </td></tr>
+                            <tr><td>
+                                <apex:repeat value="{!wrapperRD}" var="rep">
+                                    <tr><td>
+                                        <apex:outputLink value="/{!rep.Id}" target="_blank">{!rep.Name}</apex:outputLink>
+                                    </td></tr>
+                                </apex:repeat>
+                            </td></tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageblocksectionItem>
+            </apex:pageblocksection>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

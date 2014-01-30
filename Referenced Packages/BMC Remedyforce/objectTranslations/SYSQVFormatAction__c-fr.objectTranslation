@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Action de format de vue rapide</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Action de format de vue rapide</value>
+    </caseValues>
+    <fields>
+        <label>Couleur d&apos;arrière-plan</label>
+        <name>BgColor__c</name>
+    </fields>
+    <fields>
+        <label>Gras</label>
+        <name>Bold__c</name>
+    </fields>
+    <fields>
+        <label>Italique</label>
+        <name>Italic__c</name>
+    </fields>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Règle de format QV FK</label>
+        <name>SysQVFormatRule__c</name>
+        <relationshipLabel>Actions de format QV SYS</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Couleur de texte</label>
+        <name>TextColor__c</name>
+    </fields>
+    <fields>
+        <label>Clignotement</label>
+        <name>blink__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel><!-- SysQVFormatAction Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

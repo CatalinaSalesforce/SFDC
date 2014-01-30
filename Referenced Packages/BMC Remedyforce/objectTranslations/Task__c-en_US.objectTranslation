@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Task</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Tasks</value>
+    </caseValues>
+    <fields>
+        <label><!-- Asset Core Device ID --></label>
+        <name>ACDeviceID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Asset Core Execute --></label>
+        <name>ACExecute__c</name>
+    </fields>
+    <fields>
+        <label><!-- Asset Core Operational Rule --></label>
+        <name>ACOpRuleID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Operational Rule Status Description --></label>
+        <name>ACOpRuleStatusDescription__c</name>
+    </fields>
+    <fields>
+        <label><!-- Asset Core Operational Rule Status --></label>
+        <name>ACOpRuleStatus__c</name>
+        <picklistValues>
+            <masterLabel>Approval Rejected</masterLabel>
+            <translation><!-- Approval Rejected --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Execution Error</masterLabel>
+            <translation><!-- Execution Error --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Applicable</masterLabel>
+            <translation><!-- Not Applicable --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Request Error</masterLabel>
+            <translation><!-- Request Error --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Request Pending</masterLabel>
+            <translation><!-- Request Pending --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Request Successful</masterLabel>
+            <translation><!-- Request Successful --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Requested</masterLabel>
+            <translation><!-- Requested --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Asset Core Requires Approval --></label>
+        <name>ACRequiresApproval__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to add additional information to the email even after selecting the email template. --></help>
+        <label><!-- Additional email information --></label>
+        <name>Additional_email_information__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the task&apos;s category. Categories allow you to classify the task using standard classifications, which can be easily tracked for reporting purposes. --></help>
+        <label><!-- Category~ --></label>
+        <name>Category_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Client Account --></label>
+        <name>Client_Account__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the first name of the client who submitted the task. --></help>
+        <label><!-- First Name --></label>
+        <name>Client_First_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Client ID of the client who submitted the task. --></help>
+        <label><!-- Client ID~ --></label>
+        <name>Client_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the last name of the client who is submitting the task. --></help>
+        <label><!-- Last Name --></label>
+        <name>Client_Last_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Client Name --></label>
+        <name>Client_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Client Type --></label>
+        <name>Client_Type__c</name>
+        <picklistValues>
+            <masterLabel>Contact</masterLabel>
+            <translation><!-- Contact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Lead</masterLabel>
+            <translation><!-- Lead --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>User</masterLabel>
+            <translation><!-- User --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Staff ID of the currently logged-on staff. If required, you can use this field to select a different staff from the currently logged-on staff. --></help>
+        <label><!-- Closed By~ --></label>
+        <name>Closed_By__c</name>
+    </fields>
+    <fields>
+        <label><!-- Compliant --></label>
+        <name>Compliant__c</name>
+    </fields>
+    <fields>
+        <help><!-- This checkbox is used for programmatic purpose. --></help>
+        <label><!-- ExistsInManifest --></label>
+        <name>ExistsInManifest__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the task&apos;s category. Categories allow you to classify the task using standard classifications, which can be easily tracked for reporting purposes. --></help>
+        <label><!-- Category --></label>
+        <name>FKCategory__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Change Request --></label>
+        <name>FKChange__c</name>
+        <relationshipLabel><!-- Linked Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Client ID of the client who submitted the task. --></help>
+        <label><!-- Client ID --></label>
+        <name>FKClient__c</name>
+        <relationshipLabel><!-- Tasks (Client ID) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Staff ID of the currently logged-on staff. If required, you can use this field to select a different staff from the currently logged-on staff. --></help>
+        <label><!-- Closed By --></label>
+        <name>FKClosedBy__c</name>
+        <relationshipLabel><!-- Tasks (Closed By) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Contact --></label>
+        <name>FKContact__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the task&apos;s level of impact. The level of impact and the urgency are used to calculate the priority of the task. --></help>
+        <label><!-- Impact --></label>
+        <name>FKImpact__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Incident --></label>
+        <name>FKIncident__c</name>
+        <relationshipLabel><!-- Linked Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Lead --></label>
+        <name>FKLead__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Staff --></label>
+        <name>FKOpenBy__c</name>
+        <relationshipLabel><!-- Tasks (Staff) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. If required, you can use this field to select a different priority value from the calculated value. --></help>
+        <label><!-- Priority --></label>
+        <name>FKPriority__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Problem --></label>
+        <name>FKProblem__c</name>
+        <relationshipLabel><!-- Linked Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Release --></label>
+        <name>FKRelease__c</name>
+        <relationshipLabel><!-- Linked Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the task. Status is used to display the progress of a task through its stages of opening to closure. --></help>
+        <label><!-- Status --></label>
+        <name>FKStatus__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Template --></label>
+        <name>FKTemplate__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the task needs to be completed. The urgency and the level of impact are used to calculate the priority of the task. --></help>
+        <label><!-- Urgency --></label>
+        <name>FKUrgency__c</name>
+        <relationshipLabel><!-- Tasks --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the task&apos;s level of impact. The level of impact and the urgency are used to calculate the priority of the task. --></help>
+        <label><!-- Impact~ --></label>
+        <name>Impact_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Launch Console --></label>
+        <name>Launch_console__c</name>
+    </fields>
+    <fields>
+        <label><!-- Opened Date~ --></label>
+        <name>Opened_DateTime__c</name>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. If required, you can use this field to select a different priority value from the calculated value. --></help>
+        <label><!-- Priority~ --></label>
+        <name>Priority_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Recurrence --></label>
+        <name>Recurrence__c</name>
+    </fields>
+    <fields>
+        <label><!-- Recurring Parent Record ID --></label>
+        <name>RecurringParentRecordId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Scheduled End --></label>
+        <name>Scheduled_End_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Scheduled Start --></label>
+        <name>Scheduled_Start_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service Request Process --></label>
+        <name>Service_Request_Process__c</name>
+    </fields>
+    <fields>
+        <label><!-- Show DueDate Dialog --></label>
+        <name>ShowDueDateDialog__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the task. Status is used to display the progress of a task through its stages of opening to closure. --></help>
+        <label><!-- Status~ --></label>
+        <name>Status_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Task #+ --></label>
+        <name>Task_console_detail_link__c</name>
+    </fields>
+    <fields>
+        <label><!-- Template Already Applied --></label>
+        <name>TemplateAlreadyApplied__c</name>
+    </fields>
+    <fields>
+        <label><!-- Template Name --></label>
+        <name>TemplateName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Total Duration (minutes) --></label>
+        <name>Total_Duration__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the task needs to be completed. The urgency and the level of impact are used to calculate the priority of the task. --></help>
+        <label><!-- Urgency~ --></label>
+        <name>Urgency_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Bus Assessment --></label>
+        <name>busAssessment__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the task is closed. --></help>
+        <label><!-- Closed Date --></label>
+        <name>closeDateTime__c</name>
+    </fields>
+    <fields>
+        <label><!-- Closed Profile --></label>
+        <name>closedProfile__c</name>
+    </fields>
+    <fields>
+        <label><!-- Comments --></label>
+        <name>comments__c</name>
+    </fields>
+    <fields>
+        <label><!-- Completed Date --></label>
+        <name>completedDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Contact Type --></label>
+        <name>contactType__c</name>
+        <picklistValues>
+            <masterLabel>Email Other</masterLabel>
+            <translation><!-- Email Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mail Listen</masterLabel>
+            <translation><!-- Mail Listen --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Phone</masterLabel>
+            <translation><!-- Phone --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Self Service</masterLabel>
+            <translation><!-- Self Service --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Walkup</masterLabel>
+            <translation><!-- Walkup --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Cost Estimate --></label>
+        <name>costEstimate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Created On --></label>
+        <name>createdOn__c</name>
+    </fields>
+    <fields>
+        <label><!-- Decision --></label>
+        <name>decision__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the task should be completed based on the priority&apos;s duration. If required, you can use this field to select a different due date from the calculated due date. --></help>
+        <label><!-- Due Date --></label>
+        <name>dueDateTime__c</name>
+    </fields>
+    <fields>
+        <label><!-- Duration --></label>
+        <name>duration__c</name>
+    </fields>
+    <fields>
+        <label><!-- EMail Originator --></label>
+        <name>eMailOriginator__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Date --></label>
+        <name>endDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the task record is no longer valid, but the record has to be retained for compliance with the records retention policy. For example, if a client has left the account, all tasks associated with the client would be invalid. --></help>
+        <label><!-- Inactive --></label>
+        <name>inactive__c</name>
+    </fields>
+    <fields>
+        <label><!-- isReopened --></label>
+        <name>isReopened__c</name>
+    </fields>
+    <fields>
+        <label><!-- Note --></label>
+        <name>note__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the task was created. --></help>
+        <label><!-- Opened Date --></label>
+        <name>openDateTime__c</name>
+    </fields>
+    <fields>
+        <label><!-- Opened Profile --></label>
+        <name>openedProfile__c</name>
+    </fields>
+    <fields>
+        <label><!-- Phone --></label>
+        <name>phone__c</name>
+    </fields>
+    <fields>
+        <label><!-- Process Template Order --></label>
+        <name>processTemplateOrder__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays the name of the queue to which the task was last assigned. --></help>
+        <label><!-- Last Queue --></label>
+        <name>queueName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Recommendations --></label>
+        <name>recommendations__c</name>
+    </fields>
+    <fields>
+        <label><!-- Recommended Fix Date &amp; Time --></label>
+        <name>recommendedFixDateTime__c</name>
+    </fields>
+    <fields>
+        <label><!-- Resource Description --></label>
+        <name>resourceDescription__c</name>
+    </fields>
+    <fields>
+        <label><!-- Response Date &amp; Time --></label>
+        <name>responseDateTime__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field will contain value first 255 character value of description field. --></help>
+        <label><!-- Short Description --></label>
+        <name>shortDescription__c</name>
+    </fields>
+    <fields>
+        <label><!-- Start Date --></label>
+        <name>startDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- State Open --></label>
+        <name>state__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter a description of the task that must be completed. --></help>
+        <label><!-- Description --></label>
+        <name>taskDescription__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to specify what has been done to complete the task. Provide detailed steps taken to complete the task or describe why the task cannot be completed. --></help>
+        <label><!-- Resolution --></label>
+        <name>taskResolution__c</name>
+    </fields>
+    <fields>
+        <label><!-- Task Type --></label>
+        <name>taskType__c</name>
+        <picklistValues>
+            <masterLabel>General</masterLabel>
+            <translation><!-- General --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Operational Rule</masterLabel>
+            <translation><!-- Operational Rule --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Testing</masterLabel>
+            <translation><!-- Testing --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Tech Assessment --></label>
+        <name>techAssessment__c</name>
+    </fields>
+    <fields>
+        <label><!-- Template Order --></label>
+        <name>templateOrder__c</name>
+    </fields>
+    <fields>
+        <label><!-- Time Spent --></label>
+        <name>timeSpent__c</name>
+    </fields>
+    <layouts>
+        <layout>Remedyforce Task Console Version 1.0</layout>
+        <sections>
+            <label><!-- Client Details --></label>
+            <section>Client Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+        <sections>
+            <label><!-- Task Details --></label>
+            <section>Task Details</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Remedyforce Task Light 1.0</layout>
+        <sections>
+            <label><!-- Client Details --></label>
+            <section>Client Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+        <sections>
+            <label><!-- Task Details --></label>
+            <section>Task Details</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Remedyforce Task Version 3.0</layout>
+        <sections>
+            <label><!-- Client Details --></label>
+            <section>Client Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status Details --></label>
+            <section>Status Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+        <sections>
+            <label><!-- Task Details --></label>
+            <section>Task Details</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <label><!-- Approver --></label>
+        <name>Approver</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Assessor --></label>
+        <name>Assessor</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Tasks --></label>
+        <name>Tasks</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- This task is closed. Reopen the task to modify it. --></errorMessage>
+        <name>Cannot_Update_Closed_Task</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- To save the task, select a value in any one of the following fields: Client ID, Contact or Lead. --></errorMessage>
+        <name>Select_Either_User_Lead_or_Contact</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- A task can be linked to only one object (Incident or Change Request or Problem or Release) at a time --></errorMessage>
+        <name>TaskLinkingValidation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The Due Date must be later than the Opened Date --></errorMessage>
+        <name>dueDateMustBeAfterOpenedDate</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Assign_To_Suggested_Expert --></label>
+        <name>Assign_To_Suggested_Expert</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Back_to_list --></label>
+        <name>Back_to_list</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Category_Tree --></label>
+        <name>Category_Tree</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Close --></label>
+        <name>Close</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Create_Task_and_Link_to_Problem --></label>
+        <name>Create_Task_and_Link_to_Problem</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Create_Task_and_Link_to_Release --></label>
+        <name>Create_Task_and_Link_to_Release</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Create_and_Link_Task --></label>
+        <name>Create_and_Link_Task</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Create_and_Link_Task_Change_Request --></label>
+        <name>Create_and_Link_Task_Change_Request</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Knowledge_Articles --></label>
+        <name>Knowledge_Articles</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Launch_CI_Explorer --></label>
+        <name>Launch_CI_Explorer</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Link_Task_to_Change --></label>
+        <name>Link_Task_to_Change</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Link_Task_to_Incident --></label>
+        <name>Link_Task_to_Incident</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Link_Task_to_Problem --></label>
+        <name>Link_Task_to_Problem</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Link_Task_to_Release --></label>
+        <name>Link_Task_to_Release</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- New --></label>
+        <name>New</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- New_Task_console --></label>
+        <name>New_Task_console</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Quick_Close --></label>
+        <name>Quick_Close</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Reopen_Task --></label>
+        <name>Reopen_Task</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Send_Email --></label>
+        <name>Send_Email</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Standard_Description_and_Resolution --></label>
+        <name>Standard_Description_and_Resolution</name>
+    </webLinks>
+</CustomObjectTranslation>

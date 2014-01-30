@@ -1,0 +1,187 @@
+<apex:component controller="BMCServiceDesk.ValidationController">
+    <script>
+    	var vservertime = '';
+    	var vstart = '{!vstarttime}';
+    </script>
+    <apex:attribute name="errorMsgList" description="" id="errMSgId"  type="string" required="true"></apex:attribute>
+    <script src="{!$Resource.BMCServiceDesk__SDEFCommonJS}/ValidationScript.js"/>
+    <apex:outputPanel >        
+        <script>            
+            var validationMap = new Array();
+            var nodesMap = new Array();
+            var elementMap = new Array();
+            var nodes = {};
+            var isInitialized = false;
+            var messages = new Array();
+            var messageIndex = 0;
+            var isDebugOn = false;
+            function initComponent(){
+                 showAlert('initComponent() : START -> '+isInitialized );
+                if(!isInitialized){
+                    isInitialized = true;
+                    showAlert('initComponent() : PROCESSING ' );
+                    nodes = {!validationJsonFeed};
+                    
+                     showAlert('nodes : '+nodes  );
+                    var elements = document.getElementsByTagName('*');
+                    var count = elements.length;
+                    while(count!=0){
+                        var element = elements[count];
+                        if(element!=null)
+                        {
+                            var elementID = element.id;
+                            if(elementID.match("_id_")!=null)
+                            {
+                                showAlert('elementID : '+elementID );
+                                var elementName = elementID.substring(elementID.lastIndexOf(':')+1);
+                                showAlert('elementName : '+elementName );
+                                elementMap[elementName] = element;
+                               
+                            }                                      
+                        }
+                        count--;
+                    } 
+                }
+                showAlert('initComponent() : END' );
+            }
+            
+            
+            function testComponent(saveFunc){
+                showAlert('in comp');
+                testScript();
+                testPageFuncInScript(saveFunc);
+                showAlert('calling page function from comp');
+                saveFunc();
+            }            
+            
+            function validateBeforeSave(saveFunction){
+                showAlert('validateBeforeSave() : START');
+                  messages = new Array();
+                  messageIndex = 0;
+                  initComponent();
+                  var max = nodes.length;
+                  showAlert('max  : ' + max );
+                  if(nodes !=null && max>0){
+                      for(var i=0; i< max;i++){
+                          showAlert('validateBeforeSave() : Inside for , i='+i);
+                          var validation = nodes[i];
+                          showAlert('validation.fieldId : ='+validation.fieldId);
+                          if(validation.fieldId!=null && validation.fieldId!=''){
+                               var elem = elementMap[validation.fieldId];
+                               showAlert('elem====  : ' + elem );
+                               if(elem!=null){
+                                   fieldId = elem.id;
+                                   showAlert('validation.fieldId : ' + validation.fieldId);
+                                   var fieldValue = document.getElementById(fieldId).value;
+                                   showAlert('fieldValue  : ' + fieldValue );
+                                   callValidationFunction(validation, fieldValue);
+                               }
+                           }
+                      }
+                  }
+                  showAlert('validateBeforeSave() : After For(), messageIndex ='+messageIndex);
+                  if(messageIndex == 0){
+                      showAlert('calling Save function');
+                      saveFunction();
+                  }else{
+                      showAlert('clling showErrorMessages()');
+                      showErrorMessages(messages);
+                  }
+                   showAlert('validateBeforeSave() : END');
+              } 
+               
+               
+              function showErrorMessages(messages){
+                  showAlert('showErrorMessages() : START');
+                    var message= '';
+                    for(var i=0; i<messages.length;i++){                                             
+                        message += messages[i]+'<BR>';                          
+                    }                   
+                    Ext.MessageBox.show({                       
+                        msg:message ,
+                        width:500,
+                        height:'auto',
+                        buttons: Ext.MessageBox.OK
+                    });
+                  showAlert('showErrorMessages() : END');
+              }
+
+              function showMessage(message){
+                  showAlert('showMessage() : START');                  
+                    Ext.MessageBox.show({                       
+                        msg:message ,
+                        width:500,
+                        height:'auto',
+                        buttons: Ext.MessageBox.OK
+                    });
+                  showAlert('showMessage() : END');
+              }
+              function callValidationFunction(validation, value){
+                  showAlert('callValidationFunction() : START');
+                  var success = '';
+                  var functionName = validation.validationFunction;
+                  showAlert('functionName : '+functionName );
+                  if(functionName == 'validateRequired'){
+                      showAlert(' calling validateRequired' );
+                      if(!validateRequired(value)){
+                           messages[messageIndex++] = validation.errorMessage +' '+ validation.fieldLabel;
+                           success = false;
+                      }
+                  }else if(functionName == 'validateEmail'){
+                      showAlert(' calling validateEmail' );
+                      if(!validateEmail(value)){
+                           messages[messageIndex++] = validation.errorMessage +' '+ validation.fieldLabel +' '+ 'in the form of an email';
+                           success = false;
+                      }
+                  }
+                  showAlert('callValidationFunction() : END');
+                  return success;
+              } 
+                
+                
+               function showError(){
+                     var msg = new Array();
+                     msg = "{!JSENCODE(errorMsglist)}";
+                     var wid = '{!JSENCODE($CurrentPage.parameters.wid)}';
+                     if(msg!=null && msg !=''){
+                         var message= msg;                          
+                            Ext.MessageBox.show({                                
+                                title: ' ',
+                                msg:message ,
+                                minWidth:300,
+                                buttons: Ext.MessageBox.OK,
+                                fn: function(){
+                                	if(msg == "{!JSENCODE($Label.savedSuccessfully)}"){
+                                        if(typeof(window.parent.registerSave) == 'function'){
+                                            window.parent.registerSave(wid);
+                                            if(typeof(clickedOnce ) != 'undefined' && clickedOnce  != null){
+                                                clickedOnce = false;
+                                            }
+                                        }
+                                    }else if(msg == "{!JSENCODE($Label.recordIsdeleted)}"){
+                                    	if(typeof(window.parent.refreshList) == 'function'){
+                                       		window.parent.refreshList();
+                                       		if(typeof(window.parent.closeTab) == 'function'){
+                                       			window.parent.closeTab(wid);
+                                       		}
+                                       	}
+                                   }
+                                }
+                            });
+                    }
+                }
+            
+                function showAlert(msg){
+                    if(isDebugOn)
+                    {
+                        alert(msg);
+                    }
+                
+                } 
+        </script>
+    </apex:outputPanel>
+    <script>
+    	var vend = '{!vendtime}';
+    	vservertime = vend - vstart;
+    </script>    
+</apex:component>

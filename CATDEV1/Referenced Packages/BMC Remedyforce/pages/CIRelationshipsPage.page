@@ -1,0 +1,52 @@
+<apex:page controller="BMCServiceDesk.CIRelationshipsController" showHeader="false" standardStylesheets="false" extensions="BMCServiceDesk.CMDBGenericRemoting" cache="true">
+	<link rel="stylesheet" type="text/css" href="{!$Resource.SDEFExtJS}/resources/css/ext-all.css" id="ext-all-css"/>
+	<link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/BMCStyleSheet.css" id="ext-all-css"/>
+	<apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS}/adapter/ext/ext-base.js" id="ext-base-js"/>
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS}/ext-all.js" id="ext-all-js"/>
+    <link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/CMDBRelationships.css" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS31}/src/locale/ext-lang-{!userlocale}.js" />
+    <style>
+    	
+    </style>
+    
+	<script>
+		var InstanceID = '{!JSENCODE(InstanceID)}';
+		var PageOptions = {
+			prevPage: {
+				img: '{!$Resource.SDEFStyles}/SDEFbuttons/b_previous.gif', 
+				title:'{!JSENCODE($Label.previousPage)}'
+			},
+			nextPage: {
+				img: '{!$Resource.SDEFStyles}/SDEFbuttons/b_next.gif', 
+				title:'{!JSENCODE($Label.nextPage)}' 
+			}
+		}
+		
+	</script>
+	<apex:form >
+	<div id="ciRelationsGrid">
+		
+	</div>
+	<apex:actionregion >
+    	<apex:actionFunction Name="deletecirelationships" action="{!deletecirelationships}" onComplete="DeleteDone();" reRender="successId" >
+            <apex:param name="deletecirelationshipsdata" value="" assignTo="{!deletecirelationshipsdata}" /> 
+    	</apex:actionFunction>	
+    </apex:actionregion>
+	</apex:form>
+	<apex:outputPanel id="successId">
+     <script>
+     var success_message = '{!JSENCODE(success)}';  
+     </script>
+     </apex:outputPanel>
+     <script>
+     	var error = '{!JSENCODE($Label.Error)}';
+     	var CIFORCE_RES_PATH = '{!$Resource.CIForce}';  
+     	var orgNamespace = '{!JSENCODE(orgNamespace)}';
+     	function getSDFStylesResPath(){
+            return '{!$Resource.SDEFStyles}';
+         }
+         var isBRCreatable = {!isBRCreatable},isBREditable ={!isBREditable},isBRDeletable={!isBRDeletable},
+         RelationshipEditor="{!JSENCODE($Label.CMDBRelationshipEditor)}";
+     </script>
+	<script src="{!$Resource.SDEFCommonJS}/CMDBRelationships.js"/>
+</apex:page>

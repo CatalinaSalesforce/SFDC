@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>サービスレベルのターゲット</value>
+    </caseValues>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>SLTタイプ</label>
+        <name>SLTType__c</name>
+        <picklistValues>
+            <masterLabel>Measurment</masterLabel>
+            <translation><!-- Measurment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Policy</masterLabel>
+            <translation><!-- Policy --></translation>
+        </picklistValues>
+    </fields>
+    <nameFieldLabel><!-- BMC_ServiceLevelTarget Name --></nameFieldLabel>
+</CustomObjectTranslation>

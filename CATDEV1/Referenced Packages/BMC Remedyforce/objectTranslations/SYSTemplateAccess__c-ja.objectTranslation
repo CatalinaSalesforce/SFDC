@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SYSTemplateAccess</value>
+    </caseValues>
+    <fields>
+        <label>プロファイル</label>
+        <name>profile__c</name>
+    </fields>
+    <fields>
+        <label>FKテンプレート</label>
+        <name>templateId__c</name>
+        <relationshipLabel>SYSテンプレートアクセス</relationshipLabel>
+    </fields>
+    <fields>
+        <label>テンプレート名</label>
+        <name>templateName__c</name>
+    </fields>
+    <nameFieldLabel><!-- Name --></nameFieldLabel>
+</CustomObjectTranslation>

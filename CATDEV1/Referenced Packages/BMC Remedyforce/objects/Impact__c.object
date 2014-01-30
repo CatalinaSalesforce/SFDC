@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>This object allows you to store data for impact records.</description>
+    <enableActivities>true</enableActivities>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>Sequence__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>Sequence Id</label>
+        <length>10</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>inactive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select this field if the impact record is no longer valid, but the record has to be retained for compliance with the records retention policy.</inlineHelpText>
+        <label>Inactive</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Impact</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Impact</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <namedFilters>
+        <fullName>nf_01I90000000WgEmEAK_00N9000000283K4EAI</fullName>
+        <active>true</active>
+        <field>Change_Request__c.FKImpact__c</field>
+        <filterItems>
+            <field>Impact__c.inactive__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </filterItems>
+        <infoMessage>Select an active impact.</infoMessage>
+        <isOptional>true</isOptional>
+        <name>Change Request_FKImpact</name>
+    </namedFilters>
+    <namedFilters>
+        <fullName>nf_01I90000000WgEyEAK_00N9000000283LXEAY</fullName>
+        <active>true</active>
+        <field>Incident__c.FKImpact__c</field>
+        <filterItems>
+            <field>Impact__c.inactive__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </filterItems>
+        <infoMessage>Select an active impact.</infoMessage>
+        <isOptional>true</isOptional>
+        <name>Incident_FKImpact</name>
+    </namedFilters>
+    <namedFilters>
+        <fullName>nf_01I90000000WgF3EAK_00N9000000283MiEAI</fullName>
+        <active>true</active>
+        <field>Problem__c.FKImpact__c</field>
+        <filterItems>
+            <field>Impact__c.inactive__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </filterItems>
+        <infoMessage>Select an active impact.</infoMessage>
+        <isOptional>true</isOptional>
+        <name>Problem_FKImpact</name>
+    </namedFilters>
+    <namedFilters>
+        <fullName>nf_01I90000000WgFlEAK_00N9000000283RDEAY</fullName>
+        <active>true</active>
+        <field>Task__c.FKImpact__c</field>
+        <filterItems>
+            <field>Impact__c.inactive__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </filterItems>
+        <infoMessage>Select an active impact.</infoMessage>
+        <isOptional>true</isOptional>
+        <name>Task_FKImpact</name>
+    </namedFilters>
+    <namedFilters>
+        <fullName>nf_01I90000000lPUsEAM_00N900000031qclEAA</fullName>
+        <active>true</active>
+        <field>Broadcasts__c.FKImpact__c</field>
+        <filterItems>
+            <field>Impact__c.inactive__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </filterItems>
+        <infoMessage>Select an active impact.</infoMessage>
+        <isOptional>true</isOptional>
+        <name>Broadcast_Impact</name>
+        <sourceObject>Broadcasts__c</sourceObject>
+    </namedFilters>
+    <namedFilters>
+        <fullName>nf_01IA0000001KADEMA4_00NA0000008rKWnMAM</fullName>
+        <active>true</active>
+        <field>Release__c.FKImpact__c</field>
+        <filterItems>
+            <field>Impact__c.inactive__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </filterItems>
+        <infoMessage>Select an active impact</infoMessage>
+        <isOptional>true</isOptional>
+        <name>Release_Impact</name>
+    </namedFilters>
+    <pluralLabel>Impacts</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>inactive__c</lookupDialogsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>ImpactId_required</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR( ISNULL(Name ) , ISBLANK(Name))</errorConditionFormula>
+        <errorMessage>Please enter Impact.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>UniqueImpactIdCheck</fullName>
+        <active>true</active>
+        <errorConditionFormula>IF(ISNEW(),
+NOT(ISBLANK(VLOOKUP( $ObjectType.Impact__c.Fields.Name , $ObjectType.Impact__c.Fields.Name,NULLVALUE(Name, Name)))),
+IF(ISCHANGED(Name),
+IF((LOWER(Name) = LOWER(VLOOKUP($ObjectType.Impact__c.Fields.Name , $ObjectType.Impact__c.Fields.Name,Name))&amp;&amp;LOWER(PRIORVALUE(Name)) != Lower(Name)), TRUE, FALSE),
+FALSE))</errorConditionFormula>
+        <errorMessage>An record with this Impact already exists. Enter unique Impact.</errorMessage>
+    </validationRules>
+</CustomObject>

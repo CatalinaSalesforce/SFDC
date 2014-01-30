@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Incident</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Incidents</value>
+    </caseValues>
+    <fields>
+        <label>Statut d&apos;approbation Asset Core</label>
+        <name>ACApprovalStatus__c</name>
+        <picklistValues>
+            <masterLabel>Approved</masterLabel>
+            <translation><!-- Approved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Applicable</masterLabel>
+            <translation><!-- Not Applicable --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pending Approval</masterLabel>
+            <translation><!-- Pending Approval --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Rejected</masterLabel>
+            <translation><!-- Rejected --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Gravité Asset Core</label>
+        <name>ACSeverity__c</name>
+        <picklistValues>
+            <masterLabel>Error</masterLabel>
+            <translation><!-- Error --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Information</masterLabel>
+            <translation><!-- Information --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Warning</masterLabel>
+            <translation><!-- Warning --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Temps d&apos;interruption réel (Heures)</label>
+        <name>Actual_Outage_Time_Hours__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to add additional information to the email even after selecting the email template. --></help>
+        <label>Infos supplémentaires e-mail</label>
+        <name>Additional_email_information__c</name>
+    </fields>
+    <fields>
+        <label>All Tasks Closed Controller</label>
+        <name>AllTaskCloseController__c</name>
+    </fields>
+    <fields>
+        <label>Approuvé</label>
+        <name>Approved__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the incident&apos;s category. Categories allow you to classify the incident using standard classifications, which can be easily tracked for reporting purposes. --></help>
+        <label>Catégorie~</label>
+        <name>Category_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the account of the client who submitted the incident. --></help>
+        <label>Compte</label>
+        <name>Client_Account__c</name>
+    </fields>
+    <fields>
+        <label>Gestionnaire de clients</label>
+        <name>Client_Manager__c</name>
+        <relationshipLabel>Incidents (gestionnaire de clients)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Nom du client</label>
+        <name>Client_Name__c</name>
+    </fields>
+    <fields>
+        <label>Téléphone client</label>
+        <name>Client_Phone__c</name>
+    </fields>
+    <fields>
+        <label>Type de client</label>
+        <name>Client_Type__c</name>
+        <picklistValues>
+            <masterLabel>Contact</masterLabel>
+            <translation><!-- Contact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Lead</masterLabel>
+            <translation><!-- Lead --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>User</masterLabel>
+            <translation><!-- User --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Staff ID of the currently logged-on staff. If required, you can use this field to select a different staff from the currently logged-on staff. --></help>
+        <label>Fermé par~</label>
+        <name>Closed_By__c</name>
+    </fields>
+    <fields>
+        <label>Catégorie de clôture</label>
+        <name>ClosureCategory__c</name>
+        <picklistValues>
+            <masterLabel>Resolved</masterLabel>
+            <translation><!-- Resolved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unable to reproduce</masterLabel>
+            <translation><!-- Unable to reproduce --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unable to solve or in conflict with standards or policy</masterLabel>
+            <translation><!-- Unable to solve or in conflict with standards or policy --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Withdrawn by requester</masterLabel>
+            <translation><!-- Withdrawn by requester --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Workaround</masterLabel>
+            <translation><!-- Workaround --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Conforme</label>
+        <name>Compliant__c</name>
+    </fields>
+    <fields>
+        <label>Eloges et plaintes</label>
+        <name>Compliments_and_Complaints__c</name>
+    </fields>
+    <fields>
+        <help><!-- Shows status of incident in a graphical format. --></help>
+        <label>Progression de la date d&apos;échéance</label>
+        <name>Due_Date_Progress__c</name>
+    </fields>
+    <fields>
+        <label>Adresse du service de messagerie</label>
+        <name>EmailServiceAddress__c</name>
+    </fields>
+    <fields>
+        <label>ID d&apos;événement</label>
+        <name>Event_ID__c</name>
+    </fields>
+    <fields>
+        <label>Compte</label>
+        <name>FKAccount__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>Eléments de configuration</label>
+        <name>FKBMC_BaseElement__c</name>
+        <relationshipLabel><!-- Incident --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>Diffusion</label>
+        <name>FKBroadcast__c</name>
+        <relationshipLabel>Incidents</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Use this field to link the incident to the service that is affected by the incident. --></help>
+        <label><!-- Service --></label>
+        <name>FKBusinessService__c</name>
+        <relationshipLabel>Service d&apos;entreprise</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the incident&apos;s category. Categories allow you to classify the incident using standard classifications, which can be easily tracked for reporting purposes. --></help>
+        <label>Catégorie</label>
+        <name>FKCategory__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Client ID of the client who submitted the incident. --></help>
+        <label>ID de client</label>
+        <name>FKClient__c</name>
+        <relationshipLabel>Incidents pour client</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Staff ID of the currently logged-on staff. If required, you can use this field to select a different staff from the currently logged-on staff. --></help>
+        <label>Fermé par</label>
+        <name>FKClosedBy__c</name>
+        <relationshipLabel>Incidents (Fermé par)</relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Contact --></label>
+        <name>FKContact__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- http://www.google.com --></help>
+        <label><!-- Impact --></label>
+        <name>FKImpact__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Incident --></label>
+        <name>FKIncident__c</name>
+        <relationshipLabel>Incidents liés</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Piste</label>
+        <name>FKLead__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>Personnel</label>
+        <name>FKOpenBy__c</name>
+        <relationshipLabel>Incidents (Personnel)</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. If required, you can use this field to select a different priority value from the calculated value. --></help>
+        <label>Priorité</label>
+        <name>FKPriority__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Select the request definition that you want to use to create a service request. --></help>
+        <label>Définition de la demande</label>
+        <name>FKRequestDefinition__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>Détails de la demande</label>
+        <name>FKRequestDetail__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Link a service offering of the associated service. --></help>
+        <label>Offre de service</label>
+        <name>FKServiceOffering__c</name>
+        <relationshipLabel>Incidents (Offre de service)</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the incident. Status is used to display the progress of an incident through its stages of opening to closure. --></help>
+        <label>Statut</label>
+        <name>FKStatus__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>Modèle</label>
+        <name>FKTemplate__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the incident needs to be resolved. The urgency and the level of impact are used to calculate the priority of the incident. --></help>
+        <label>Urgence</label>
+        <name>FKUrgency__c</name>
+        <relationshipLabel><!-- Incidents --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>Dernier commentaire envoyé</label>
+        <name>Feedback_Last_Submitted__c</name>
+    </fields>
+    <fields>
+        <label>Commentaires</label>
+        <name>Feedback__c</name>
+    </fields>
+    <fields>
+        <help><!-- http://www.google.com --></help>
+        <label><!-- Impact~ --></label>
+        <name>Impact_Id__c</name>
+    </fields>
+    <fields>
+        <label>Type d&apos;incident</label>
+        <name>IncidentType__c</name>
+        <picklistValues>
+            <masterLabel>Complaint</masterLabel>
+            <translation><!-- Complaint --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Compliment</masterLabel>
+            <translation><!-- Compliment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Incident</masterLabel>
+            <translation><!-- Incident --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Information Request</masterLabel>
+            <translation><!-- Information Request --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Out of Scope</masterLabel>
+            <translation><!-- Out of Scope --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Request for Change</masterLabel>
+            <translation><!-- Request for Change --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Service Request</masterLabel>
+            <translation><!-- Service Request --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Est un nouvel enregistrement</label>
+        <name>Is_New_Record__c</name>
+    </fields>
+    <fields>
+        <label>Lancer la console</label>
+        <name>Launch_console__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates if the incident is a new incident. --></help>
+        <label>Nouvel incident</label>
+        <name>New_Incident__c</name>
+    </fields>
+    <fields>
+        <label>Méthode de contact de préférence</label>
+        <name>PreferredContactMethod__c</name>
+        <picklistValues>
+            <masterLabel>Email</masterLabel>
+            <translation><!-- Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mobile Phone</masterLabel>
+            <translation><!-- Mobile Phone --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Work Phone</masterLabel>
+            <translation><!-- Work Phone --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. If required, you can use this field to select a different priority value from the calculated value. --></help>
+        <label>Priorité~</label>
+        <name>Priority_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Recurrence --></label>
+        <name>Recurrence__c</name>
+    </fields>
+    <fields>
+        <label><!-- Recurring Parent Record ID --></label>
+        <name>RecurringParentRecordId__c</name>
+    </fields>
+    <fields>
+        <help><!-- Original service request detail ID that is used to clone the service request --></help>
+        <label>ID de clone de détail de demande</label>
+        <name>RequestDetailCloneId__c</name>
+    </fields>
+    <fields>
+        <label>Demande de service</label>
+        <name>ServiceRequest__c</name>
+    </fields>
+    <fields>
+        <label>Titre de demande de service</label>
+        <name>Service_Request_Title__c</name>
+    </fields>
+    <fields>
+        <label>Affich. boîte dialogue Date d&apos;échéance</label>
+        <name>ShowDueDateDialog__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the incident. Status is used to display the progress of an incident through its stages of opening to closure. --></help>
+        <label>Statut~</label>
+        <name>Status_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Task Closed Controller --></label>
+        <name>Task_Closed_Controller__c</name>
+    </fields>
+    <fields>
+        <label>Modèle appliqué</label>
+        <name>TemplateAlreadyApplied__c</name>
+    </fields>
+    <fields>
+        <label>Nom du modèle</label>
+        <name>TemplateName__c</name>
+    </fields>
+    <fields>
+        <label>Pourcentage de temps restant</label>
+        <name>Time_Remaining_Percentage__c</name>
+    </fields>
+    <fields>
+        <label>Durée totale (minutes)</label>
+        <name>Total_Duration__c</name>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>Type__c</name>
+    </fields>
+    <fields>
+        <label>Nombre de mises à jour d&apos;enregistrement</label>
+        <name>UpdateCount__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the incident needs to be resolved. The urgency and the level of impact are used to calculate the priority of the incident. --></help>
+        <label>Urgence~</label>
+        <name>Urgency_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates if the client is VIP. --></help>
+        <label>Client VIP</label>
+        <name>VIP_Client__c</name>
+    </fields>
+    <fields>
+        <label>Contrôleur de workflow</label>
+        <name>WorkflowController__c</name>
+    </fields>
+    <fields>
+        <label>Durée réelle</label>
+        <name>actualDuration__c</name>
+    </fields>
+    <fields>
+        <label>Temps d&apos;interruption réel (Min)</label>
+        <name>actualOutageDuration__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically incremented by 1 when you choose the Increment Call Counter command of the Actions menu. This field allows you to track the number of times an incident&apos;s client has called the service desk. --></help>
+        <label>N° d&apos;appel</label>
+        <name>call__c</name>
+    </fields>
+    <fields>
+        <label>E-mail client</label>
+        <name>clientEmail__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the first name of the client who submitted the incident. --></help>
+        <label>Prénom</label>
+        <name>clientFirstName__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Client ID of the client who submitted the incident. --></help>
+        <label>ID de client~</label>
+        <name>clientId__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the last name of the client who is submitting the incident. --></help>
+        <label>Nom</label>
+        <name>clientLastName__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the incident is closed. --></help>
+        <label>Date de fermeture</label>
+        <name>closeDateTime__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if you want to close all tasks linked to this incident. When you have resolved the incident, you might want to close all linked tasks because these tasks are no longer required. --></help>
+        <label>Fermer les tâches</label>
+        <name>closeTasks__c</name>
+    </fields>
+    <fields>
+        <label>Date de fin</label>
+        <name>completedDate__c</name>
+    </fields>
+    <fields>
+        <label>Type de contact</label>
+        <name>contactType__c</name>
+        <picklistValues>
+            <masterLabel>Chatter</masterLabel>
+            <translation><!-- Chatter --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Email Other</masterLabel>
+            <translation><!-- Email Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Email message</masterLabel>
+            <translation><!-- Email message --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Event</masterLabel>
+            <translation><!-- Event --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Fax, Letter, Paper form, or Memo</masterLabel>
+            <translation><!-- Fax, Letter, Paper form, or Memo --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mail Listen</masterLabel>
+            <translation><!-- Mail Listen --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Own observation</masterLabel>
+            <translation><!-- Own observation --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Personal visit</masterLabel>
+            <translation><!-- Personal visit --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Phone</masterLabel>
+            <translation><!-- Phone --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Self Service</masterLabel>
+            <translation><!-- Self Service --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Walkup</masterLabel>
+            <translation><!-- Walkup --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Web request form</masterLabel>
+            <translation><!-- Web request form --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the incident should be completed based on the priority&apos;s duration. If required, you can use this field to select a different due date from the calculated due date. --></help>
+        <label>Date d&apos;échéance</label>
+        <name>dueDateTime__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if this incident is resolved in the first telephone call made to the staff. --></help>
+        <label>Résolution au premier appel</label>
+        <name>firstCallResolution__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to set the date and time at which the follow up action must be initiated. This field is enabled when you select the Follow Up field. --></help>
+        <label>Date de suivi</label>
+        <name>followUpDateTime__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if a follow up is required for this incident after you have closed the incident. --></help>
+        <label>Suivi</label>
+        <name>followUp__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the incident record is no longer valid, but the record has to be retained for compliance with the records retention policy. For example, if a client has left the account, all the client&apos;s incident records would be invalid. --></help>
+        <label>Inactif</label>
+        <name>inactive__c</name>
+    </fields>
+    <fields>
+        <label><!-- Incident #+ --></label>
+        <name>inc_console_detail_link__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter a description of the issue the client is reporting. --></help>
+        <label>*Description</label>
+        <name>incidentDescription__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to specify what has been done to resolve the incident. Provide detailed solution instructions or describe why the incident cannot be resolved if it is not possible to provide a solution or workaround. --></help>
+        <label>Résolution</label>
+        <name>incidentResolution__c</name>
+    </fields>
+    <fields>
+        <label>Durée maximale</label>
+        <name>maximumDuration__c</name>
+    </fields>
+    <fields>
+        <label>Remarque</label>
+        <name>note__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the incident was created. --></help>
+        <label>Date d&apos;échéance</label>
+        <name>openDateTime__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to select the date when the service outage begins. --></help>
+        <label>Début de l&apos;interruption</label>
+        <name>outageFrom__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to select the date when the service outage ends. --></help>
+        <label>Fin de l&apos;interruption</label>
+        <name>outageTo__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays the name of the queue to which the incident was last assigned. --></help>
+        <label>Dernière file d&apos;attente</label>
+        <name>queueName__c</name>
+    </fields>
+    <fields>
+        <label>Date et heure de résolution recommandées</label>
+        <name>recommendedFixDateTime__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the &quot;Actions &gt; Responded&quot; command is run. This field is used to record the date and time when the staff has communicated to the client about the issue reported by the client. --></help>
+        <label>Date de réponse</label>
+        <name>respondedDateTime__c</name>
+    </fields>
+    <fields>
+        <label>Date et heure de réponse</label>
+        <name>responseDateTime__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field will contain value first 255 character value of description field. --></help>
+        <label>Brève description</label>
+        <name>shortDescription__c</name>
+    </fields>
+    <fields>
+        <label>Etat ouvert</label>
+        <name>state__c</name>
+    </fields>
+    <fields>
+        <label>Temps passé</label>
+        <name>timeSpent__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Remedyforce Incident Console version 1.0</layout>
+        <sections>
+            <label><!-- Client Details --></label>
+            <section>Client Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Incident Details --></label>
+            <section>Incident Details</section>
+        </sections>
+        <sections>
+            <label><!-- Service and Configuration Item Details --></label>
+            <section>Service and Configuration Item Details</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status Details --></label>
+            <section>Status Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Remedyforce Incident Light 1.0</layout>
+        <sections>
+            <label><!-- Client Details --></label>
+            <section>Client Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Incident Details --></label>
+            <section>Incident Details</section>
+        </sections>
+        <sections>
+            <label><!-- Service and Configuration Item Details --></label>
+            <section>Service and Configuration Item Details</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Remedyforce Incident Version 3.0</layout>
+        <sections>
+            <label><!-- Client Details --></label>
+            <section>Client Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Incident Details --></label>
+            <section>Incident Details</section>
+        </sections>
+        <sections>
+            <label><!-- Service and Configuration Item Details --></label>
+            <section>Service and Configuration Item Details</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status Details --></label>
+            <section>Status Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Remedyforce Incident for Clients Version 1.0</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Incident Detail --></label>
+            <section>Incident Detail</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>N° d&apos;incident</nameFieldLabel>
+    <namedFilters>
+        <informationalMessage>Sélectionnez un incident actif.</informationalMessage>
+        <name>nf_01I90000000hFSCEA2_00N90000002y7u6EAA</name>
+    </namedFilters>
+    <sharingReasons>
+        <label>Partage clients d&apos;incid. pr Libre serv.</label>
+        <name>Incident_Clients_Share_for_SS</name>
+    </sharingReasons>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage>Cet incident est fermé. Rouvrez-le pour le modifier.</errorMessage>
+        <name>Cannot_Update_Closed_Incident</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>La date de début planifiée est requise.</errorMessage>
+        <name>Check_OutageStartDate</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>La date de fin planifiée doit être ultérieure à la date de début planifiée.</errorMessage>
+        <name>Check_OutageToDate</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Veuillez saisir la date de suivi.</errorMessage>
+        <name>Follow_up_date_required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Vous ne pouvez pas modifier la définition de la demande.</errorMessage>
+        <name>Not_allow_Request_Definition_Change</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Pour enregistrer l&apos;incident, sélectionnez une valeur dans l&apos;un des champs suivants : Catégorie, Modèle ou Définition de demande.</errorMessage>
+        <name>Select_Category_or_template_or_req_def</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Sélectionnez : Utilisateur, Responsable ou Contact</errorMessage>
+        <name>Select_Either_User_Lead_or_Contact</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>La date d&apos;échéance doit être ultérieure à la date d&apos;ouverture.</errorMessage>
+        <name>dueDateMustBeAfterOpenedDate</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>La date de suivi doit être ultérieure à la date de fermeture. Sélectionnez une nouvelle date de suivi.</errorMessage>
+        <name>followUpDateTimeValidation</name>
+    </validationRules>
+    <webLinks>
+        <label>Propriétaires suggérés</label>
+        <name>Assign_To_Suggested_Expert</name>
+    </webLinks>
+    <webLinks>
+        <label>Retour à la liste</label>
+        <name>Back_to_list</name>
+    </webLinks>
+    <webLinks>
+        <label>Actions d&apos;EC</label>
+        <name>CI_Actions</name>
+    </webLinks>
+    <webLinks>
+        <label>Explorateur d&apos;EC</label>
+        <name>CI_Explorer</name>
+    </webLinks>
+    <webLinks>
+        <label>Arborescence de catégorie</label>
+        <name>Category_Tree</name>
+    </webLinks>
+    <webLinks>
+        <label>Fermer</label>
+        <name>Close</name>
+    </webLinks>
+    <webLinks>
+        <label>Copier</label>
+        <name>Copy</name>
+    </webLinks>
+    <webLinks>
+        <label>Créer et lier à la diffusion</label>
+        <name>Create_Incident_and_Link_to_Broadcast</name>
+    </webLinks>
+    <webLinks>
+        <label>Créer un article de connaissance</label>
+        <name>Create_Knowledge_Article</name>
+    </webLinks>
+    <webLinks>
+        <label>Processus de gestion d&apos;incident</label>
+        <name>Incident_Management_Process</name>
+    </webLinks>
+    <webLinks>
+        <label>Manifeste d&apos;incident</label>
+        <name>Incident_Manifest</name>
+    </webLinks>
+    <webLinks>
+        <label>Incidents correspondants</label>
+        <name>Incident_Matching</name>
+    </webLinks>
+    <webLinks>
+        <label>Incidents pour catégorie</label>
+        <name>Incidents_for_Category</name>
+    </webLinks>
+    <webLinks>
+        <label>Incidents pour client</label>
+        <name>Incidents_for_Client</name>
+    </webLinks>
+    <webLinks>
+        <label>Articles de connaissance</label>
+        <name>Knowledge_Articles</name>
+    </webLinks>
+    <webLinks>
+        <label>Lier EC</label>
+        <name>Link_CI</name>
+    </webLinks>
+    <webLinks>
+        <label>Lier à la diffusion</label>
+        <name>Link_to_incident</name>
+    </webLinks>
+    <webLinks>
+        <label>Nouveau</label>
+        <name>New</name>
+    </webLinks>
+    <webLinks>
+        <label>Fermeture rapide</label>
+        <name>Quick_Close</name>
+    </webLinks>
+    <webLinks>
+        <label>Rouvrir</label>
+        <name>Reopen</name>
+    </webLinks>
+    <webLinks>
+        <label>Répondu</label>
+        <name>Responded</name>
+    </webLinks>
+    <webLinks>
+        <label>Envoyer un courrier électronique</label>
+        <name>Send_Email</name>
+    </webLinks>
+    <webLinks>
+        <label>Cibles du service</label>
+        <name>Service_Targets</name>
+    </webLinks>
+    <webLinks>
+        <label>Description et résolution standard</label>
+        <name>Standard_Description_and_Resolution</name>
+    </webLinks>
+    <webLinks>
+        <label>Modèles suggérés</label>
+        <name>Suggested_Templates</name>
+    </webLinks>
+</CustomObjectTranslation>

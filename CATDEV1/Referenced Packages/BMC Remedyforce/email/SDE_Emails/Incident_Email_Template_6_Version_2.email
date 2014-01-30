@@ -1,0 +1,14 @@
+Hello, <br>
+<br>
+This email is to inform you that the Service Desk Analyst has completed work on Incident # {!Incident__c.Name} and has closed the incident. If you have any questions or if the incident was not resolved to your satisfaction, please contact the Service Desk.<br>
+
+This incident has the following details: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Incident Number: {!Incident__c.Name}  <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Incident Description: {!Incident__c.incidentDescription__c} <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open Date: {!Incident__c.openDateTime__c}  <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Due Date: {!Incident__c.dueDateTime__c} <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Category:  {!Incident__c.Category_ID__c} <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Client Name: {!Incident__c.Client_Name__c} <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Urgency: {!Incident__c.Urgency_ID__c} <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Impact: {!Incident__c.Impact_Id__c} <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Priority: {!Incident__c.Priority_ID__c}

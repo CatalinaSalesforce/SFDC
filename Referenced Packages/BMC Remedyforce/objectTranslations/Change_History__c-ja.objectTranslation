@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>変更履歴ID</value>
+    </caseValues>
+    <fields>
+        <help><!-- From the list of options, select the user-defined actions that are applicable to change requests. User-defined actions are used to record details of the steps taken to complete the change request. --></help>
+        <label>アクション~</label>
+        <name>Action__c</name>
+    </fields>
+    <fields>
+        <label>作成者~</label>
+        <name>Created_By__c</name>
+    </fields>
+    <fields>
+        <label>説明</label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label>所要時間</label>
+        <name>Duration__c</name>
+    </fields>
+    <fields>
+        <label>電子メールアドレス</label>
+        <name>EmailConversationData__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the user-defined actions that are applicable to change requests. User-defined actions are used to record details of the steps taken to complete the change request. --></help>
+        <label>アクション</label>
+        <name>FKAction__c</name>
+        <relationshipLabel>変更履歴</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the user-defined actions that are applicable to change requests. User-defined actions are used to record details of the steps taken to complete the change request. --></help>
+        <label>変更</label>
+        <name>FKChange__c</name>
+        <relationshipLabel>変更履歴</relationshipLabel>
+    </fields>
+    <fields>
+        <label>作成者</label>
+        <name>FKCreated_By__c</name>
+        <relationshipLabel>変更履歴</relationshipLabel>
+    </fields>
+    <fields>
+        <label>所要時間</label>
+        <name>Formatted_Duration__c</name>
+    </fields>
+    <fields>
+        <label>無効</label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to provide details about what has been accomplished when you performed this action. The date and time is recorded for each new entry or update that you make in this field. --></help>
+        <label>メモ</label>
+        <name>Note__c</name>
+    </fields>
+    <fields>
+        <label>返信</label>
+        <name>Reply__c</name>
+    </fields>
+    <fields>
+        <label>システム</label>
+        <name>System__c</name>
+    </fields>
+    <layouts>
+        <layout>Remedyforce Change History</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Details --></label>
+            <section>Details</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel><!-- Change History ID --></nameFieldLabel>
+    <validationRules>
+        <errorMessage>アクションを入力してください。</errorMessage>
+        <name>Action_ID_Required</name>
+    </validationRules>
+    <webLinks>
+        <label>新規アクション</label>
+        <name>New_Action</name>
+    </webLinks>
+    <webLinks>
+        <label>すべてのメモを表示</label>
+        <name>View_All_Notes</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,6 @@
+<apex:page controller="BMCServiceDesk.CIExplorerSettingsController" ShowHeader="false"  contentType="text/xml" standardStylesheets="false" action="{!SaveSettings}"> 
+
+<apex:outputText escape="false" value="{!Settings}"></apex:outputText>
+
+                       
+</apex:page>

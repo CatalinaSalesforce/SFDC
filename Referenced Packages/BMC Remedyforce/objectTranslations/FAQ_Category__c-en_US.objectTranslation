@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>FAQ Category</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>FAQ Categories</value>
+    </caseValues>
+    <fields>
+        <help><!-- Use this field to enter a description of the FAQ category. --></help>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter the name of the FAQ category. --></help>
+        <label><!-- FAQ Category --></label>
+        <name>FAQ_Category_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if this record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label><!-- Inactive --></label>
+        <name>Inactive__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Please enter FAQ Category. --></errorMessage>
+        <name>FAQ_Category_Name_Required_Rule</name>
+    </validationRules>
+</CustomObjectTranslation>

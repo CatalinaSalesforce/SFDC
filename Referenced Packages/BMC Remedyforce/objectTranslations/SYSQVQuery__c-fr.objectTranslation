@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Vues rapides</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Vues rapides</value>
+    </caseValues>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Système</label>
+        <name>System__c</name>
+    </fields>
+    <fields>
+        <label>Type d&apos;accès</label>
+        <name>accessType__c</name>
+    </fields>
+    <fields>
+        <label>*Description</label>
+        <name>description__c</name>
+    </fields>
+    <fields>
+        <label>Nom</label>
+        <name>name__c</name>
+    </fields>
+    <fields>
+        <label>Afficher le type</label>
+        <name>viewType__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel><!-- SYSQVQuery Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

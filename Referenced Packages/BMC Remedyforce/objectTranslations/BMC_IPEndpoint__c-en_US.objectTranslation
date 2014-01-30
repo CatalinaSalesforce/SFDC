@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>IP Endpoint</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>IP Endpoints</value>
+    </caseValues>
+    <fields>
+        <label><!-- Address Type --></label>
+        <name>AddressType__c</name>
+        <picklistValues>
+            <masterLabel>IPv4</masterLabel>
+            <translation><!-- IPv4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>IPv6</masterLabel>
+            <translation><!-- IPv6 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pv4</masterLabel>
+            <translation><!-- Pv4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- DNS Host Name --></label>
+        <name>DNSHostName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Instance ID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Management Address --></label>
+        <name>ManagementAddress__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Prefix Length --></label>
+        <name>PrefixLength__c</name>
+    </fields>
+    <fields>
+        <label><!-- Subnet Mask --></label>
+        <name>SubnetMask__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

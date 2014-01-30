@@ -1,0 +1,914 @@
+<apex:page showHeader="false" controller="BMCServiceDesk.FAQController" standardStylesheets="false">
+     <c:CommonIncludes />
+	<apex:stylesheet value="{!$Resource.BMCServiceDesk__ChatterCSS}/chatter.css" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/JSTemplate.js"/>
+    <link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/SelfServiceStyleSheet.css" />
+    <style>
+    	.hidden { display: none; }
+       .x-panel-collapsed .x-tool-toggle {
+                        background:transparent url({!$Resource.SDEFStyles}/SDEFbuttons/arrow_right_white.gif) no-repeat 0px 3px !important;
+                    //margin-right:100%;
+                    //margin-left:-100px;
+                    //padding-top: -10px;
+                    width:20px;
+                    margin-right:0%;
+                    margin-left:-9px;
+                    padding-top: -10px;
+                    float:left;
+               	}
+			
+			
+                .clsBoldInputLabelTDFAQ {
+                    color:#004376;
+                    font: bold 11px Tahoma, MS Sans Serif;
+                    padding-bottom: 5px;
+                    padding-top:15px;
+                }
+                
+                .panelHeader {
+                    padding-left: 10px;
+                    width: 254px;
+                    margin: 0px;
+                    line-height: 2em;
+                    height: 100%;
+                    padding: 0 0 0 10px;
+                }
+                
+                 .panelContent {
+                        Background-color: white;
+                        border: solid 1px #adb9c0;
+                        overflow: hidden;
+                 }
+                
+             
+            
+            .clsRowBlueBgPanel {
+                background-color: #FFFFFF;
+                background: url({!$Resource.SDEFStyles}/SDEFimages/blue_bg.gif) repeat;
+                height: 25px;
+                vertical-align: middle;
+                align: center;
+                padding-left: 10px;
+                font-family: Tahoma, MS Sans Serif;
+                font-size: 11px;
+                width: auto;
+                
+                //margin-right:10px;
+                //padding-right:10px;
+            }
+            .panelContent {
+                Background-color: white;
+                border: solid 1px #adb9c0;
+                //border-left: solid 1px #adb9c0;
+                overflow: hidden;
+            }
+            
+            .clsInputTextArea {
+              height:178px;
+              border-style: none;
+              overflow: auto;
+            }
+            
+             .x-panel-header {
+            background:transparent url({!$Resource.SDEFStyles}/SDEFimages/blue_bg.gif) repeat-x;
+            border-color:#99BBE8;
+            color:#FFFFFF;
+            font-family:tahoma,arial,verdana,sans-serif;
+            font-size:11px;
+            font-weight:bold;
+            padding-left:15px;
+            }
+ 
+    
+            
+            .x-tool-toggle{
+                    background:transparent url({!$Resource.SDEFStyles}/SDEFbuttons/arrow_down_white.gif) no-repeat 0px 3px !important;
+                    margin-right:100%;
+                    margin-left:-100px;
+                    padding-top: -10px;
+                    width:20px;
+                    margin-right:0%;
+                    margin-left: -6px;
+                    padding-top: -10px;
+                    float:left;
+            } 
+                   
+    </style>
+ 
+     <script type="text/javascript">
+        var faqLabel = '{!$ObjectType.FAQ__c.Label}';   
+
+     	function setCursorToQuestion(){
+     		//alert('IN setCursorToQuestion--->');
+     		var QuestionTextArea = document.getElementById('{!$Component.incidentForm.pbarId.QuestionId.QuestionTextId}');
+     		QuestionTextArea.tabIndex = 'auto';
+     		//alert('chkFAQText-->'+chkFAQText);
+     		QuestionTextArea.focus();
+     	}
+     	
+     	function setCursorToAnswer(){
+     		//alert('IN setCursorToAnswer--->');
+     		var AnswerTextArea = document.getElementById('{!$Component.incidentForm.pbarId.AnswerId.AnswerTextId}');
+     		AnswerTextArea.tabIndex = 'auto';
+     		//alert('chkFAQText-->'+chkFAQText);
+     		AnswerTextArea.focus();
+     	}
+         /*	Code for handling Data change on Page
+     		- START
+     	*/
+	    function afterSaveAction(){ 
+        var modName = "{!JSENCODE($CurrentPage.parameters.moduleName)}";  
+        var parentWid = "{!JSENCODE($CurrentPage.parameters.parentWid)}";  
+        if(modName != null && modName != '' && typeof(modName) != 'undefined' && parentWid != null && parentWid != '' && typeof(parentWid) != 'undefined' && errormsg=='{!JSENCODE($Label.SavedSuccessfully)}'){
+            window.parent.parent.refreshSupportingInformation(parentWid,modName);
+        }else{
+            showError();
+        }
+      } 
+        var wid2 = '{!JSENCODE($CurrentPage.parameters.wid)}';
+	    var clickedOnce = false;  
+		document.onclick = activateWindow; 
+		 function getWID(){
+				return '{!JSENCODE($CurrentPage.parameters.wid)}';
+		 }
+	    function handleChange(){
+	        if(!clickedOnce){
+	            clickedOnce = true;
+	            window.parent.registerChange(wid2);
+	        }
+        }
+	        
+	    function handleResetChange(){
+	    	if(clickedOnce){
+               clickedOnce = false;
+               window.parent.registerSave(wid2);
+           }
+	       }
+
+        function openNewTab(recId,recType) {
+            var sdehomeviewport = window.parent;
+        	while (sdehomeviewport.location.href.toLowerCase().search('sdehome') == -1)
+        		sdehomeviewport = sdehomeviewport.parent;
+            sdehomeviewport.addNewTab("FAQNewsFeedPage", "{!JSENCODE($Label.FAQChatterFeed)}", "NewsFeedPage?recordId="+recId+"&recordType="+recType);
+        }
+		function setOnClick(obj)
+		{
+			if(obj.style.height=='0pt'){
+				obj.style.height = '25pt';
+				obj.value = '';
+			}
+		}
+		function setOnBlur(obj,value)
+		{
+			if (obj.style.height=='25pt' && obj.value == ''){
+				obj.style.height = '0pt';
+				obj.value = value;
+			}
+			else if (obj.style.height=='25pt' && obj.value != '')
+				obj.style.height = '25pt';
+		}
+
+		function refreshChatterFeed(){
+			//alert('Inside refreshChatterFeed');
+			refreshFeed(); 
+		}
+
+    	function loadChatterFeeds(){
+			if(!this.FeedsVisible)
+			{
+				showChatterFeeds();
+		    	this.FeedsVisible = true;
+			}
+		}	
+				       
+		function shareTextPost(textPostBody) {
+			if(textPostBody.length > 1000)
+			{                       
+				Ext.MessageBox.show({ msg: '{!JSENCODE($Label.TextAreaOverflowForChatter)}', buttons: Ext.MessageBox.OK});         
+				return false;
+			}
+			waitbox(0); 
+			//alert(textPostBody);
+			shareStatusPost(textPostBody); 
+		}              
+	    function deleteCommentFromFeed(commentID, createdById){
+			Ext.MessageBox.confirm("{!JSENCODE($Label.ConfirmHomePage)}", "{!JSENCODE($Label.ChatterDeleteComment)}", function(btn){
+				if(btn === 'yes'){
+					deleteComment(commentID, createdById);
+				}
+			});	
+		}
+		
+		function deleteFeedPost(feedPostID, createdById){
+			Ext.MessageBox.confirm("{!JSENCODE($Label.ConfirmHomePage)}", "{!JSENCODE($Label.ChatterDeletePost)}", function(btn){
+				if(btn === 'yes'){
+					deletePost(feedPostID, createdById);
+				}
+			});	 
+		}
+		
+	       	function setDisplay(id,value) { 
+		    document.getElementById(id).style.display = value; 
+		}
+		function createNewComment(divId, feedId){
+			var inputtext = divId.getElementsByTagName('input')[0];
+			var strComment = inputtext.value.trim();
+			if(strComment.length > 1000){
+				Ext.MessageBox.show({
+                    msg: '{!JSENCODE($Label.TextAreaOverflowForChatterComment)}',
+                    buttons: Ext.MessageBox.OK
+                }); 
+			}else if(strComment.length <= 0){
+				Ext.MessageBox.show({ msg: '{!JSENCODE($Label.EmptyValueForChatterComment)}', buttons: Ext.MessageBox.OK});         
+				divId.getElementsByTagName('input')[0].focus();
+				return false;
+			}else{
+				waitbox(0); 
+				NewCommentValue(inputtext.value,feedId);
+			}
+		}	       
+    
+      /*
+     		END
+     	*/         	
+	</script>	
+    
+    <apex:outputPanel id="faqRerender">
+    <script>
+        var separator;
+        var chkBoxValue;
+        var faqId;
+        var NewBtnhandler = function(button,event) { activeAllWindowFlag=false; openPage("FAQPage", faqLabel, faqLabel); };
+        var SaveBtnHandler = function(button,event) { 
+        							Ext.getCmp('saveId').setDisabled(true);
+        							waitbox(0);
+                                    chkBoxValue=Ext.getCmp('idInactive').getValue(); //new one
+                                    saveFAQ(chkBoxValue);
+                             };
+		var removeCategoryHandler=function(button,event) {
+			if(button=='ok'){
+				deleteFAQ();
+			}else{
+				return;
+		 	}
+		};                             
+                             
+          var DeleteBtnHandler=function(button,event) {
+        var msg = '{!JSENCODE($Label.DeleteConfirmMessage)}';
+		 var icon = Ext.MessageBox.WARNING ;
+        Ext.Msg.show({
+                       
+                       title:'{!JSENCODE($Label.RemoveFAQ)}',
+                       msg: msg,
+                       buttons: Ext.Msg.OKCANCEL,
+                       fn: removeCategoryHandler,                 
+                       icon: icon ,
+                       width: 450
+                     
+                    });
+        }; 
+ 
+        var CopyBtnHandler=function(button,event){activeAllWindowFlag=false; copyFAQ();};
+        var UndoBtnHandler=function(button,event){
+        resetFAQ(faqId);}; 
+        var PreviuosBtnHandler = function (button,event) { 
+			if(document.getElementById('prevId').disabled!=true)
+        		previousFAQBtnHandler1();
+       		};
+        var NextBtnHandler = function (button,event) { if(document.getElementById('nextId').disabled!=true)nextFAQBtnHandler1();}; 
+		
+        Ext.onReady(function(){
+            Ext.QuickTips.init();  
+        	// Chatter feature
+        	var followBtnHandler = 
+        		function(button,event) {
+        		//alert('followBroadcastToggler');;
+            	followFaqToggler();
+        	};                
+        // Chatter feature             
+            var SamplePanel = Ext.extend(Ext.Panel, {
+                    renderTo: 'btnToolbar',
+                    defaults: {bodyStyle:'border:0px;padding:0px;margin:0px;zoom:0px;'}
+                });
+            new SamplePanel({
+                    title: '',
+                cls:'toolSpCls',
+                    bodyStyle:'border:0px;padding:0px;margin:0px;zoom:0px;',
+                    tbar: [ {
+                        scale: 'medium',
+                        iconCls: 'bmcNew',
+                        tooltipType : 'title',
+                        tooltip: '{!JSENCODE($Label.New)}',
+                        id:'newId',
+                        
+                        listeners: {
+                            mouseover: function(){
+                                this.setIconClass('bmcNewOn');    
+                            },
+                            mouseout: function(){
+                                this.setIconClass('bmcNew');          
+                            }
+                        },     
+                        handler:NewBtnhandler
+                    } ,' ', {
+                        scale: 'medium',
+                        iconCls: 'bmcSave',
+                        tooltipType : 'title',
+                        tooltip: '{!JSENCODE($Label.Save)}',
+                        id:'saveId',
+                        listeners: {
+                            mouseover: function(){
+                                this.setIconClass('bmcSaveOn');    
+                             },
+                            mouseout: function(){
+                                this.setIconClass('bmcSave');          
+                            }
+                        }, 
+                        handler:SaveBtnHandler
+                    },' ',{
+                        scale: 'medium',
+                        iconCls: 'bmcCopy',
+                        tooltipType : 'title',
+                        tooltip: '{!JSENCODE($Label.Copy)}',
+                        id:'copyId',
+                        
+                        listeners: {
+                            mouseover: function(){
+                                this.setIconClass('bmcCopyOn');    
+                             },
+                            mouseout: function(){
+                                this.setIconClass('bmcCopy');          
+                            }
+                        },     
+                        handler:CopyBtnHandler
+                    },' ','-',' ',{
+                        scale: 'medium',
+                        iconCls: 'bmcRefresh',
+                        tooltipType : 'title',
+                        tooltip: '{!JSENCODE($Label.UndoFAQPage)}',
+                        id:'undoId',
+                        
+                        listeners: {
+                            mouseover: function(){
+                                this.setIconClass('bmcRefresh');    
+                             },
+                            mouseout: function(){
+                                this.setIconClass('bmcRefresh');          
+                            }
+                        },     
+                        handler:UndoBtnHandler
+                    },' ',{
+                        scale: 'medium',
+                        iconCls: 'bmcDelete',
+                        tooltipType : 'title',
+                        tooltip: '{!JSENCODE($Label.Delete)}',
+                        id:'deleteId',
+                        listeners: {
+                            mouseover: function(){
+                                this.setIconClass('bmcDeleteOn');    
+                             },
+                             mouseout: function(){
+                                this.setIconClass('bmcDelete');          
+                             }
+                        },               
+                        handler:DeleteBtnHandler
+                },
+                new Ext.Toolbar.Fill(), 
+                {
+                      id :'idInactive',
+                   xtype  : 'checkbox',
+                   width  : 93,
+                   color :'#004376',
+                   align:'top',
+                   //checked: false,
+                   boxLabel:'<span class="checkboxLabelCls" style="font-family: Tahoma, MS Sans Serif;font-size: 11px;" >{!JSENCODE($ObjectType.FAQ__c.fields.Inactive__c.label)}</span>'                  
+                },  {
+                   
+                     id:'prevId',
+                    xtype : 'box',
+                    autoEl:  {tag: 'img', 
+                              src:('{!$Resource.SDEFStyles}/SDEFbuttons/b_previous.gif'),   
+                             title:'{!JSENCODE($Label.PreviousRecord)}'
+                             },
+                              
+                    cls:'cursorCls',
+                    listeners : { render: function(f){f.el.on('click', PreviuosBtnHandler);}}
+                                 
+                },{
+                   id:'nextId',
+                    xtype : 'box',
+                    autoEl:  {tag: 'img', 
+                              src:'{!$Resource.SDEFStyles}/SDEFbuttons/b_next.gif',
+                              title:'{!JSENCODE($Label.NextRecord)}' },
+                    cls:'cursorSpaceCls',
+                    listeners : { render: function(f){f.el.on('click', NextBtnHandler);}}
+                   
+                    
+                }
+                ] 
+            });
+			Ext.getCmp('saveId').setDisabled(true);
+			new Ext.ToolTip({
+				target: 'idInactive',			
+				anchor: 'left',			
+				html: '{!JSENCODE($ObjectType.FAQ__c.fields.Inactive__c.label)}'						  
+			});
+	     //functionality for enable/disable delete and copy
+	    var faqFeed = '{!faqFeed}';
+		var faqId='{!JSENCODE(faq.Id)}';
+        if (faqId != null && faqId!= ''){
+        	Ext.getCmp('prevId').setDisabled(false);
+        	Ext.getCmp('nextId').setDisabled(false);
+        	Ext.getCmp('deleteId').setDisabled(false);
+            Ext.getCmp('deleteId').setIconClass('bmcDelete');
+            Ext.getCmp('copyId').setDisabled(false);
+            Ext.getCmp('copyId').setIconClass('bmcCopy');
+            Ext.getCmp('undoId').setDisabled(false);
+           
+        } else {
+		    Ext.getCmp('prevId').setDisabled(true);
+        	Ext.getCmp('nextId').setDisabled(true);
+        	Ext.getCmp('deleteId').setDisabled(true);
+            Ext.getCmp('deleteId').setIconClass('bmcDeleteDisable');
+            Ext.getCmp('copyId').setDisabled(true);
+            Ext.getCmp('copyId').setIconClass('bmcCopyDisable');
+            Ext.getCmp('undoId').setDisabled(true);
+        }
+	
+			
+         Ext.getCmp('idInactive').setValue('{!chkBoxValue}');     
+      /*  var FAQCatArr = new Array();
+        var emptyList = '{!dataSourceNameList}';
+        if(emptyList == null || emptyList == '' || emptyList == '[]'){
+       		FAQCatArr[0] = new Array(2);
+       		FAQCatArr[0][1]='';
+       }
+        var i=0;
+        <apex:repeat value="{!dataSourceNameList}" var="dataSourceName" >    
+            FAQCatArr[i] = new Array(2);
+            FAQCatArr[i++][0]='{!dataSourceName}';
+        </apex:repeat>
+        
+        var i=0;
+        <apex:repeat value="{!dataSourceLabelList}" var="dataSourceLabel" >    
+            FAQCatArr[i++][1]='{!dataSourceLabel}';
+        </apex:repeat>
+         */       
+ 
+                var iscollapsible = {!panelCollapsed};
+                var p = new Ext.Panel({
+                    header : true,
+                    id:'FAQRatings',
+                    title: '{!JSENCODE($Label.FAQRatings)}',
+                    renderTo: 'panel-basic',
+                    width : '100%',
+                    labelStyle : 'clsRowBlueBgPanel',
+                    contentEl:'graphId',
+                    border : true,
+                    collapsible : true,
+					collapsed : iscollapsible
+                });
+                
+           /*------------function call To Handle Changes in Page Data---------*/
+            handleElemEvent();
+                
+            });
+            faqId = '{!faq.Id}';
+            function copyFAQ(){
+              window.parent.addTab("FAQPage?copyId=" + faqId, faqLabel, faqLabel);
+            }
+          function completeDelete(){
+		        if(errormsg == '{!JSENCODE($Label.InsufficentDeletePrivilege)}'){
+		            showError();
+		        }else{
+		            closeWindow();
+		        }
+	     	}
+            function closeWindow(){
+               window.parent.refreshList();
+               window.parent.closeTab(wid);
+            }
+            
+        	   
+	  function buttonValidator(){
+ 	       var faqFeed = '{!faqFeed}';         
+           if ((faqQuestion !=null && faqQuestion!='') && (faqAnswer!=null && faqAnswer!='') && (faqCategory !=null && faqCategory !='')) {
+               Ext.getCmp('deleteId').setDisabled(false);
+               Ext.getCmp('copyId').setDisabled(false);
+               Ext.getCmp('deleteId').setIconClass('bmcDelete');
+               Ext.getCmp('copyId').setIconClass('bmcCopy');
+               Ext.getCmp('undoId').setDisabled(false);
+           } else {
+               Ext.getCmp('deleteId').setDisabled(true);
+               Ext.getCmp('deleteId').setIconClass('bmcDeleteDisable');
+               Ext.getCmp('copyId').setDisabled(true);
+               Ext.getCmp('copyId').setIconClass('bmcCopyDisable');
+               Ext.getCmp('undoId').setDisabled(true);           
+               }
+      		}  
+       function setFaqCategoryNext(returnValue){
+            
+         FAQCategoryNext(returnValue);
+       }
+        
+        var idset=window.parent.returnListOfId(); 
+        
+        function previousFAQBtnHandler1(){
+        var idSetString='';
+        var i=0;
+        
+       while(idset.length > i){
+            if(idSetString==''){
+                idSetString=idset[i];
+            }else{
+                idSetString=idSetString+','+idset[i];
+            }
+            i++;
+        }
+        previousFAQBtnHandler(idSetString);
+       }
+       
+       function nextFAQBtnHandler1(){
+        var idSetString='';
+        var i=0;
+        
+        while(idset.length > i){
+            if(idSetString==''){
+                idSetString=idset[i];
+            }else{
+                idSetString=idSetString+','+idset[i];
+            }
+            i++;
+        }
+        
+        nextFAQBtnHandler(idSetString);
+       } 
+            
+  </script>
+  </apex:outputPanel>
+  <apex:outputPanel id="panelId">
+        <script>
+           var faqName ='{!JSENCODE(faq.name)}';
+           var faqId = '{!JSENCODE(faq.Id)}';
+           var faqQuestion='{!JSENCODE(faq.Question__c)}';
+           var faqAnswer='{!JSENCODE(faq.Answer__c)}';
+           var faqCategory='{!JSENCODE(faq.FKFAQ_Category__c)}';      
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel id="afterSavePanel">
+        <script>
+           function handleSave(){
+               var id = '{!JSENCODE(faq.Id)}';
+            window.parent.handleSave(wid, id);
+        }
+          function enableSaveButton() {
+        		Ext.getCmp('saveId').setDisabled(false);
+      		} 
+    
+			function DisplayChatterLimitMessage(){
+				var chatterLimitError = '{!chatterLimitErrorMessage}';
+				if(chatterLimitError != "" && chatterLimitError != null && chatterLimitError.length > 0){
+					Ext.MessageBox.show({ msg: chatterLimitError, buttons: Ext.MessageBox.OK});
+				}
+			}
+        </script>
+     </apex:outputPanel>
+    <apex:outputPanel id="titlePanel">
+        <script>
+			var newFaqId;
+			var wid = '{!JSENCODE($CurrentPage.parameters.wid)}';
+				function updateTitle(){
+				 var faqName ='{!JSENCODE(faq.name)}';
+                                  var newTitle = '#'+ faqName;  
+					 newFaqId = '{!JSENCODE(faq.Id)}';  
+					//getTSKid(newFaqId);   
+                    if(newTitle == '#'){
+                     newTitle = faqLabel;
+                    } 
+                    window.parent.changeTitle(wid,newTitle,newTitle);
+					window.parent.refreshList();
+				}
+      </script>
+    </apex:outputPanel>
+	    
+        <apex:form id="incidentForm">
+            <c:ValidationComponent errorMsgList="{!messageString}" id="validationComponent"></c:ValidationComponent>
+ 			<apex:outputPanel id="errorId">
+        	<script>
+            	var errormsg = '{!JSENCODE(messageString)}';     
+        	</script>
+  			</apex:outputPanel>             
+             <apex:actionFunction name="FAQCategoryNext"  action="{!FAQCategoryNext}" rerender="dummy,FAQCategoryId">
+             <apex:param assignTo="{!savedID}" name="savedName" value=""/>
+             </apex:actionFunction>
+             <apex:actionFunction name="refreshCategoryCombo" rerender="dummy">
+                    <apex:param name="index" assignTo="{!categoryIndex}" value=""/>
+             </apex:actionFunction>
+                <!-- Chatter feature -->
+                <apex:actionFunction name="followFaqToggler" action="{!togglefollow}" rerender="errorId,validationComponent,panel-basic,titlePanel,afterSavePanel,panelId,allfeeds" oncomplete="DisplayChatterLimitMessage();afterSaveAction();buttonValidator();updateTitle();showError();window.parent.refreshList();">
+                </apex:actionFunction>
+		<apex:actionFunction name="refreshFeed" action="{!doNothing}" reRender="allfeeds"></apex:actionFunction>
+
+		<apex:actionFunction name="shareStatusPost" action="{!shareTextFeedPost}" reRender="allfeeds" oncomplete="waitMsg.hide();">
+			<apex:param name="newstatus" assignTo="{!newstatus}" value=""/>
+		</apex:actionFunction> 
+
+		<apex:actionFunction name="NewCommentValue" action="{!AddComment}" reRender="allfeeds" oncomplete="waitMsg.hide();">
+   			<apex:param name="newComment" assignTo="{!newComment}" value=""/>
+   			<apex:param name="feedId" assignTo="{!feedId}" value=""/>
+		</apex:actionFunction> 
+
+		<apex:actionFunction name="deleteComment" action="{!DeleteComment}" reRender="allfeeds">
+   			<apex:param name="commentId" assignTo="{!commentId}" value=""/>
+   			<apex:param name="createdById" assignTo="{!createdById}" value=""/>
+		</apex:actionFunction>                                
+   			<apex:actionFunction name="deletePost" action="{!DeletePost}" reRender="allfeeds">
+				<apex:param name="postId" assignTo="{!postId}" value=""/>
+				<apex:param name="createdById" assignTo="{!createdById}" value=""/>
+			</apex:actionFunction>
+                <!-- Chatter feature -->                    
+             <apex:actionFunction action="{!save}" name="saveFAQ" rerender="errorId,validationComponent,panel-basic,titlePanel,afterSavePanel,panelId,allfeeds" oncomplete="waitMsg.hide();afterSaveAction();buttonValidator();updateTitle();showError();handleSave();window.parent.refreshList();enableSaveButton();">
+                <apex:param assignTo="{!chkBoxValue}" name="idSetString" value=""/>   
+             </apex:actionFunction>
+             
+             <apex:actionFunction action="{!deleteFAQ}" name="deleteFAQ" oncomplete="completeDelete();" rerender="errorId,validationComponent"/>
+            <apex:actionFunction action="{!nextBtnHandler}" name="nextFAQBtnHandler" 
+                                    rerender="faqRerender,panelId,titlePanel,graphPanel,formPanel,afterSavePanel" oncomplete="handleResetChange();updateTitle();"> 
+                    <apex:param assignTo="{!tempString}" name="idSetString" value=""/>          
+            </apex:actionFunction>
+             <apex:actionFunction action="{!previousBtnHandler}" name="previousFAQBtnHandler" 
+                                    rerender="faqRerender,panelId,titlePanel,graphPanel,formPanel,afterSavePanel" oncomplete="handleResetChange();updateTitle();" > 
+                                    <apex:param assignTo="{!tempString}" name="idSetString" value=""/>  
+             </apex:actionFunction> 
+             
+             <apex:actionFunction name="resetFAQ" action="{!reset}" rerender="titlePanel,graphPanel,formPanel,afterSavePanel,faqRerender,panelId"  oncomplete="handleResetChange();">
+             					<apex:param assignTo="{!faqId}" name="faqId" value=""/>  
+             </apex:actionFunction>
+             <apex:outputPanel id="formPanel">
+                <table class="clsMainTable" cellspacing="0" cellpadding="0" border="0">
+                                
+                                <tr class="clsRowGreyBg">
+                                            <td colspan="3">
+                                            	<apex:outputPanel id="btnToolbarPanel">
+                                                <div id="btnToolbar"></div>
+                                                </apex:outputPanel>
+                                                
+                                            </td>
+                                </tr>
+                            <tr>
+                                <td colspan="0">
+                                      <table  cellspacing="0" cellpadding="0">
+                                              <tr>
+                                                    <td>
+                                                            <table class="clsTable" cellspacing="0" cellpadding="0">
+                                                                <tr>
+                                                                     <td colspan="0"><div class="div15pxVspacing"/></td>
+                                                                </tr>
+                                                               
+                                                                <tr>
+                                                                        <td class="clsInputLabelTD"><apex:outputLabel value="{!$ObjectType.BMCServiceDesk__FAQ_Category__c.fields.BMCServiceDesk__FAQ_Category_Name__c.label}" /><span class="clsRequiredBlack">&nbsp;*</span></td>
+                                                                        <td >
+                                                                              <apex:inputText id="FAQCategoryId" value="{!category}" disabled="true" styleClass="clsInputTextBoxReadOnlyWithWhiteBG"/>
+                                                                        
+                                                                        </td>
+                                                                      <td class="lookupIconTD">
+                                                          <div class="lookUpIconDiv">
+                                                                <!-- <apex:commandButton onclick=" openPopup('SearchPage?popupId=FAQCategory&isLookup=true',setFaqCategoryNext);"  reRender="dummy" styleClass="lookupIconOn" /> -->
+							        	<apex:commandButton id="categoryLookup" onclick=" openPopupWithTitle('SearchPage?popupId=FAQCategory&isLookup=true',setFaqCategoryNext, '',480,600);"  reRender="dummy" styleClass="lookupIconOn" title="{!$Label.bmcservicedesk__ToolTipFAQCategoryForFAQ}"/>
+                                                             
+                                                            </div>  
+                                                         </td>
+                                                                </tr>
+                                                          </table>
+                                                    </td>
+                                              </tr>    
+                                       </table>
+                                 </td>
+                           </tr>
+                           <tr>
+                                <td colspan="3">
+                                    <div class="div15pxVspacing"/>  
+                                </td>
+                           </tr>
+                           <tr>
+                                  
+                                    <td  colspan="3" style="padding-left:10px; padding-right:10px;">
+                                        <apex:panelBar headerClass="clsRowBlueBgPanel" switchType="ajax" id="pbarId" width="100%" height="232px">
+                                            <apex:panelBarItem label="{!$ObjectType.BMCServiceDesk__FAQ__c.fields.BMCServiceDesk__Question__c.label} *" expanded="true" onenter="window.setTimeout('setCursorToQuestion()', 0000)" id="QuestionId" headerClass="panelHeader" contentClass="panelContent" >
+                                            <apex:inputTextArea value="{!faq.BMCServiceDesk__Question__c}" title="{!$ObjectType.BMCServiceDesk__FAQ__c.fields.BMCServiceDesk__Question__c.InlineHelpText}" id="QuestionTextId" styleClass="SSclsInputTextArea"/>
+                                            </apex:panelBarItem>
+                                            <apex:panelBarItem label="{!$ObjectType.BMCServiceDesk__FAQ__c.fields.BMCServiceDesk__Answer__c.label} *"  onenter="window.setTimeout('setCursorToAnswer()', 0000)" id="AnswerId" headerClass="panelHeader" contentClass="panelContent">
+                                                        <apex:inputTextArea value="{!faq.BMCServiceDesk__Answer__c}" title="{!$ObjectType.BMCServiceDesk__FAQ__c.fields.BMCServiceDesk__Answer__c.InlineHelpText}" id="AnswerTextId" styleClass="SSclsInputTextArea"/> 
+                                            </apex:panelBarItem>                                        
+<apex:panelBarItem label="{!$Label.bmcservicedesk__FAQChatterFeed}" id="chatterFeed" onenter="loadChatterFeeds();"  headerClass="panelHeader" contentClass="panelContent" rendered="{!IF(faqFeed,true,false)}">
+	<div style="padding-left:10px;">
+    <apex:outputPanel id="chatterContent" layout="block">
+    <apex:actionFunction name="showChatterFeeds" action="{!showChatterFeeds}" rerender="chatterContent" />
+    <apex:outputPanel id="allfeeds" layout="block" styleClass="feedcontainer" rendered="{!renderChatterPanel}">
+        <apex:outputPanel layout="block" styleClass="" id="feed">
+		<div class="publishercontainer ChatterAccordionPublisherContainer">
+			<div class="publisherrightcontainer">
+				<div class="publishercontrols">
+		    
+		             <apex:inputTextArea style="height: 0pt;" title="{!$Label.bmcservicedesk__TooltipChatterShareFAQ}" styleclass="publishertextarea ChatterAccordionTextAreaDefaultStyle _NoHandleChange" onclick="javascript:setOnClick(this)" onblur="javascript:setOnBlur(this,'{!newStatus}');" cols="1000" id="publishertextarea" value="{!newStatus}"></apex:inputTextArea>
+		    	</div>
+		    </div>
+			<table border="0" class="chattertablefaq">
+	       		<tr>
+	       			<td><apex:commandLink styleClass="RecordFollowUnfollowLink" id="followunfollowLink" value="{!FollowUnfollowLinkLabel}" onclick="followFaqToggler(); return false;" /></td>
+	       			<td align="right"><input type="button" id="shareBTN" onclick="return shareTextPost(document.getElementById('{!$Component.publishertextarea}').value);" class="btnShare" value=" {!$Label.Share} " title=" {!$Label.Share} "/></td>
+	       		</tr>
+	       	</table> 	        	 	                
+		    
+        </div>
+    <apex:repeat value="{!myfeed}" var="f">
+                <apex:outputPanel layout="block" styleClass="feedcontainer cxfeeditem feeditem cxfeedcontainer feed ">
+                    <apex:outputPanel layout="block" >
+					<div class="cxfeeditemcontent">
+                            <apex:outputText styleClass="ChatterAccordionCreatedBy" value="  {!f.feedItem.CreatedBy.Name}  " />
+                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'UserStatus', true, false)}">
+                                <apex:outputText styleClass="ChatterAccordionFeedItem"  value="{!f.displayText}" />
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'TextPost', true, false)}">
+                                <apex:outputText styleClass="ChatterAccordionFeedItem"  value="{!f.displayText}" />
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'TrackedChange', true, false)}">
+                                <apex:outputText styleClass="ChatterAccordionFeedItem"  value=" {!f.displayText}" />
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'LinkPost', true, false)}">
+                                    <apex:outputText styleClass="ChatterAccordionFeedItem"  value="  {!f.feedItem.CreatedBy.Name} " />
+                                <apex:outputText styleClass="ChatterAccordionFeedItem"  value="{!f.displayText}" />
+                                <apex:outputPanel layout="block" styleClass="linkPostLinkContainer">
+                                    <apex:outputLink value="{!f.feedItem.FeedPost.LinkUrl}" id="postLink" styleClass="linkPostLink" target="_blank">
+                                        <apex:outputText styleClass="ChatterAccordionFeedItem" id="postLinkTxt" title="{!f.feedItem.FeedPost.LinkUrl}" value="{!f.feedItem.FeedPost.Title}" />
+                                    </apex:outputLink>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="feeditemtext" rendered="{!IF(f.feedItem.Type == 'ContentPost', true, false)}">
+                                <apex:outputText styleClass="ChatterAccordionFeedItem"  value="  {!f.feedItem.CreatedBy.Name} " />
+                                <apex:outputText styleClass="ChatterAccordionFeedItem"  value="{!f.displayText}" />
+                                <apex:outputPanel layout="block" styleClass="linkPostLinkContainer">
+                                	<apex:outputText styleClass="ChatterAccordionFeedItemTitle"  value="{!f.feedItem.FeedPost.Title}" />
+                                </apex:outputPanel>                                
+                            </apex:outputPanel>
+                        </div>
+                        <div class="feeditemfooter">
+							<span class="feeditemcontent">
+							    <apex:outputText value="{!f.createdDate}  "   styleClass="ChatterAccordionFeedLabel" > 
+                                	<apex:param value="{!f.feedItem.CreatedDate}" />					
+    	                        </apex:outputText>
+    	                        <apex:outputLink value="javascript:void(0);" id="commentLink" onclick="setDisplay('{!JSENCODE(f.feedItem.id)}','block');">
+    	                        	<apex:outputText styleClass="ChatterAccordionFeedItemActionLink" id="commentLinkTxt" value="  {!$Label.bmcservicedesk__Comment}" />
+								</apex:outputLink>
+                                    &nbsp;&nbsp;&nbsp;   
+                                <apex:outputLink value="javascript:void(0);" id="deleteLink" onclick="deleteFeedPost('{!JSENCODE(f.feedItem.FeedPostId)}','{!JSENCODE(f.feedItem.CreatedById)}')" rendered="{!IF(f.feedItem.Type == 'TextPost' || f.feedItem.Type == 'LinkPost' || f.feedItem.Type == 'ContentPost', true, false)}">
+                                    <apex:outputText styleClass="ChatterAccordionFeedItemActionLink" id="deleteLinkTxt" value="{!$Label.bmcservicedesk__Delete}" />
+                                </apex:outputLink>           
+						    </span>  
+							<apex:actionRegion >
+	                          <div id="{!f.feedItem.id}" class="hidden feeditemcommenttext" style="padding-left:58px">
+	                                     <div class="feeditemcommentnew" style="background-color:#EFF7FA; padding-top:2px">
+	                                           <apex:inputText styleClass="foobar cxnewcommenttext cxiswires _NoHandleChange" style="height: 20px; width:190px; padding-bottom:1px;"  value="{!currentComment}" title="{!$Label.bmcservicedesk__TooltipChatterComment}">
+	                                           </apex:inputText><br/> 
+	                                 			<apex:outputLink value="javascript:void(0);" onclick="createNewComment(document.getElementById('{!f.feedItem.id}'),'{!f.feedItem.id}');">
+	                                 				<apex:outputText styleClass="ChatterAccordionFeedItemActionLink" value="{!$Label.bmcservicedesk__AddComment}" />
+	                                 			</apex:outputLink>   
+	                                         <div class="feedclearfloat"></div>
+	                                     </div>
+	                         </div>
+                         	</apex:actionRegion>
+                        </div> 
+                        <apex:outputPanel id="commPanel" layout="block" styleClass="feeditemextras">
+                            <div class="cxcomments feeditemcomments">
+                                <apex:repeat value="{!f.feedCommentBeanList}" var="c">
+                                    <apex:outputPanel layout="block" styleClass="" style="padding-left:12px">
+                                        <span class="feeditemcomment cxfeedcomment feeditemcommentbody">
+                                            <span class="feedcommentuser">
+                                                	<apex:outputText styleClass="ChatterAccordionFeedItemActionLink" value="{!c.createdByName} " />
+                                            </span>
+                                            <span class="feedcommenttext">
+                                                 <apex:outputText styleClass="ChatterAccordionFeedItemSmall"  value="{!c.commentBody}" />
+                                            </span>
+                                            <span class="feedcommentfooter">
+                                              <apex:outputText styleClass="ChatterAccordionFeedItemSmall feeditemtimestamp" value="{!c.createdDate}" >
+                                               </apex:outputText>
+                                            </span>
+                                            <span class="feedresolutionfooter">
+                                               <apex:outputText value="  " />
+												<apex:outputLink value="javascript:void(0);" id="deleteComment" onclick="deleteCommentFromFeed('{!JSENCODE(c.commentId)}','{!JSENCODE(c.CreatedById)}')" >
+													<apex:outputText styleClass="ChatterAccordionFeedItemSmall" id="deleteCommentTxt" value="{!$Label.bmcservicedesk__Delete}" />
+												</apex:outputLink>           
+												<apex:outputText value="  " /> 
+                                            </span>
+                                        </span>
+                                    </apex:outputPanel>
+                           		</apex:repeat>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:repeat>  
+       		<apex:outputLink value="javascript:void(0);" id="moreFeedLink" rendered="{!moreFeed}" onclick="openNewTab('{!faq.Id}', '{!objectName}');">
+    	    	<apex:outputText styleClass="ChatterAccordionFeedItemActionLink" id="moreFeedLinkTxt" value="  {!$Label.bmcservicedesk__More}" />
+			</apex:outputLink>            
+                                   </apex:outputPanel>
+        <table class="clsTable" cellspacing="0" cellpadding="0">
+        <tr>
+    		<td><apex:outputText styleClass="ChatterAccordionFeedLabel" value="  {!$Label.bmcservicedesk__Following}"/></td>        
+        </tr>
+		</table>                                    
+				<apex:repeat value="{!userInfoList}" var="userInfo">
+					<apex:image id="theImage" value="{!userInfo.userImage}" title="{!userInfo.userName}" width="40" height="40" />&nbsp;
+				</apex:repeat> 
+                                   </apex:outputPanel>
+                            </apex:outputPanel>
+		</div>		                                   
+                                </apex:panelBarItem>                                        
+                                        </apex:panelBar>
+                                    </td>
+                                        
+                           </tr>
+                           <tr>
+                                <td colspan="3">
+                                    <div class="div15pxVspacing"/>  
+                                </td>
+                           </tr>
+                           <tr>
+                                        <td>
+                                        <!--    <apex:panelBar headerClass="clsRowBlueBgPanel" switchType="ajax" id="FAQRatingsPbarId" width="100%" height="250px">
+                                                <apex:panelBarItem label="{!$Label.FAQRatings}"  id="FAQRatingsId" headerClass="panelHeader" contentClass="panelContent">  -->
+                                                        
+                                            
+                                          <!--     <table border="1" class="calOuterTable" >
+                                                        <tr>
+                                                            <td> -->
+                                                                <div id="panel-basic" style="margin:0px 0px 0px 10px;"> </div>
+                                                                <!-- <apex:outputPanel id="chartPanel">
+                                                                    <apex:flash width="385" Height="192" play="true" src="{!$Resource.FusionCharts}/Charts/Column3D.swf?chartWidth=385&chartHeight=335" flashvars="&dataXML={!chartDataXML}"></apex:flash>
+                                                                </apex:outputPanel> -->
+                                                         <!--    </td>
+                                                            
+                                                            
+                                                        </tr>
+                                            </table>     -->
+                                              
+                                                    
+                                            <!--    </apex:panelBarItem>
+                                                
+                                            </apex:panelBar>   -->
+                                        </td>
+                                        <td width="10px"></td>
+                           </tr>
+                           <tr>
+                                <td colspan="3">
+                                    <div class="div15pxVspacing"/>  
+                                </td>
+                          </tr>     
+              </table>
+               </apex:outputPanel>
+        </apex:form>
+       
+        <apex:outputPanel id="graphPanel">
+        <div id="graphId" >
+            <table>
+                        
+                <tr>    
+                    <td>
+                        <!--  <apex:flash width="400" Height="192" play="true" src="{!$Resource.FusionCharts}/Charts/Column3D.swf?chartWidth=385&chartHeight=335" flashvars="&dataXML={!chartDataXML}"></apex:flash> -->
+                        
+                        <span id="spanID"> 
+	                        <object	classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+							codebase="https://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab"
+							height="192" id="spanID:flash" width="385">
+								<param name="movie"	value="{!$Resource.FusionCharts}/Charts/Column3D.swf?chartWidth=385&amp;chartHeight=192" />
+								<param name="FlashVars"	value="&dataXML={!chartDataXML}" />
+								<param name="quality" value="high" />
+								<param name="bgcolor" value="#869ca7" />
+								<param name="wmode" value="transparent"/>
+								<param name="allowScriptAccess" value="sameDomain" />
+							<embed align="middle" allowScriptAccess="sameDomain" bgcolor="#869ca7"
+								FlashVars="&dataXML={!chartDataXML}"
+								height="192" loop="false" name="spanID:flash" play="true"
+								pluginspage="https://www.adobe.com/go/getflashplayer" quality="high"
+								src="{!$Resource.FusionCharts}/Charts/Column3D.swf?chartWidth=385&amp;chartHeight=192"
+								type="application/x-shockwave-flash" wmode="transparent" width="385">
+							</embed> 
+							</object> 
+							<script> 
+								var flashObject = (navigator.appName.indexOf ("Microsoft") !=-1)  ? window["spanID:flash"] : document["spanID:flash"];
+								var flashElement = document.getElementById("spanID:flash");
+								flashElement.parentNode.flash = flashObject;
+							</script>
+						</span>
+                          
+                    </td>
+                    <td class="clsBoldInputLabelTDFAQ" align="left" valign="top">
+                        <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__FAQ__c.fields.BMCServiceDesk__Rating__c.label} = " />
+                        <apex:outputLabel value="{!faq.BMCServiceDesk__Rating__c}" />
+                    </td>
+                </tr>       
+            </table>
+    </div>
+   </apex:outputPanel>  
+    
+</apex:page>

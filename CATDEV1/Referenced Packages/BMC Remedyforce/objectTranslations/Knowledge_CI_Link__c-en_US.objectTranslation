@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Knowledge CI Link</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Knowledge CI Links</value>
+    </caseValues>
+    <fields>
+        <label><!-- Class Name --></label>
+        <name>Class_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Configuration Item~ --></label>
+        <name>Configuration_Item__c</name>
+    </fields>
+    <fields>
+        <label><!-- Configuration Item --></label>
+        <name>FKConfiguration_Item__c</name>
+        <relationshipLabel><!-- Knowledge CI Links --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Instance ID --></label>
+        <name>Instance_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Instance Name --></label>
+        <name>Instance_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Knowledge Article --></label>
+        <name>Knowledge_Article__c</name>
+        <relationshipLabel><!-- Linked Services and CIs --></relationshipLabel>
+    </fields>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label><!-- Link_CI_to_Knowledge_Article --></label>
+        <name>Link_CI_to_Knowledge_Article</name>
+    </webLinks>
+</CustomObjectTranslation>

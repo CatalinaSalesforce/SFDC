@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>標準説明</value>
+    </caseValues>
+    <fields>
+        <help><!-- Use this field to enter a standard description for the selected category. This description will be added to the selected category&apos;s list of standard descriptions. --></help>
+        <label>説明の定型文</label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the category for which you want to create a standard description. --></help>
+        <label>カテゴリ</label>
+        <name>FKCategory__c</name>
+        <relationshipLabel>標準的な説明</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the category for which you want to create a standard description. --></help>
+        <label>カテゴリ~</label>
+        <name>category_Id__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the standard description record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label>無効</label>
+        <name>inactive__c</name>
+    </fields>
+    <nameFieldLabel><!-- Name --></nameFieldLabel>
+    <validationRules>
+        <errorMessage>カテゴリを入力してください。</errorMessage>
+        <name>Standard_Description_Category_Required</name>
+    </validationRules>
+</CustomObjectTranslation>

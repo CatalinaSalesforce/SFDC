@@ -1,0 +1,272 @@
+<apex:page controller="BMCServiceDesk.ACDeviceSummary" sidebar="false" showHeader="false" standardStylesheets="false">
+<title>
+	{!JSENCODE($Label.bmcservicedesk__DeviceSummary)} - {!JSENCODE(DeviceName)}
+</title>
+<body>
+  <c:CommonIncludes />
+  <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/SkywalkerStyleSheet.css"/>  
+  <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/ACDeviceSummarypage.css"/>
+  <c:ACCommon hideViewSummary="true" renderedin="{!JSENCODE($Label.bmcservicedesk__DeviceSummary)}"/> 
+   <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/ACDeviceSummary.js"/>
+   <style>
+	.ext-strict .x-grid3-cell-inner, .x-grid3-row {
+    	cursor: auto;
+	}
+	.x-grid3-row td {
+	-moz-user-select:inherit;
+	-ms-user-select: inherit;
+	user-select: inherit;
+}
+</style>
+   <script>
+    var response;
+    var gridData= [];
+     var grid, gridObj;
+    var selectedTabName; 
+    var softwareGrid;
+    var tabs; 
+    var tableStoreHW, tableStoreSW, tableStoreLI, tableStoreSEC, tableStoreFIN, tableStoreAH;
+    var gridName;
+    var record_count = parseInt({!RECORD_COUNT});
+    var json =  {!hardwareJson}; 
+    var storeFields = {!hardwareColFlds};
+    var ColumnModel = {!colunmfields};
+    var totalPages = {!totalPages};
+    var pageTitle = '{!JSENCODE($Label.bmcservicedesk__DeviceSummary)} - '+'{!JSENCODE(DeviceName)}';
+    var emptyText = '{!JSENCODE($Label.MsgNoRecordFoundSearchPage)}';
+    var securityStoreFlds ;
+    var securityColunmfields;
+    var securityJson = {!securityJson};
+    var HWStoreFlds = '';
+    var HWColunmfields = '';
+    var HWJson = '';
+    var softwareData='', softwareColModel='', softwareStorefields ='';
+    var financeStoreFlds;
+    var financeColunmfields = '';
+    var financeJson = '';
+    var licenseStoreFlds;
+    var licenseColunmfields = '';
+    var licenseJson = '';
+    fromStdLayout = '{!JSENCODE($CurrentPage.parameters.standardLayout)}';
+    var actionStoreFlds;
+    var actionColunmfields = '';
+    var actionJson = '';
+    
+     Ext.ns("ACDeviceSummaryPage");
+     ACDeviceSummaryPage.Labels = {
+                HardwareTab: '{!JSENCODE($Label.HardwareTab)}',
+                SoftwareTab: '{!JSENCODE($Label.SoftwareTab)}',
+                LicenseUnitsTab :'{!JSENCODE($Label.LicenseUnitsTab)}',
+                SecurityTab: '{!JSENCODE($Label.SecurityTab)}',
+                FinancialTab: '{!JSENCODE($Label.FinancialTab)}',
+                ActionHistory: '{!JSENCODE($Label.ActionHistory)}',
+                PageLabel: '{!JSENCODE($Label.Page)}',
+                OfLabel:'{!JSENCODE($Label.Of)}'
+            }
+    
+   </script>
+       
+    <apex:outputPanel id="refreshHWVarPanel">
+        <script>
+            HWStoreFlds = {!hardwareColFlds};
+            HWColunmfields = {!colunmfields};
+            HWJson = {!hardwareJson}; 
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel id="refreshSecurityVarPanel">
+        <script>
+
+            securityStoreFlds = {!securityStoreFlds};
+            securityColunmfields = {!securityColunmfields};
+            securityJson = {!securityJson};
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel id="refreshFinanceVarPanel">
+        <script>
+            financeStoreFlds = {!financeStoreFlds};
+            financeColunmfields = {!financeColunmfields};
+            financeJson = {!financeJson};
+        </script>
+    </apex:outputPanel>
+<apex:outputPanel id="refreshLicenseVarPanel">
+        <script>
+            licenseStoreFlds = {!licenseStoreFlds};
+            licenseColunmfields = {!licenseColunmfields};
+            licenseJson = {!licenseJson};
+        </script>
+    </apex:outputPanel> 
+    <apex:outputPanel id="softwarePanel">
+        <script>
+            totalPages = {!totalPages};
+            softwareData = {!softwareDataJson};
+            softwareColModel = {!softwareColModelJson};
+            softwareStorefields = {!softwareStoreFldsJson};
+        
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel id="refreshActionHistoryPanel">
+        <script>
+            actionStoreFlds = {!actionStoreFlds};
+            actionColunmfields = {!actionColunmfields};
+            actionJson = {!actionJson};
+            
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel id="dirConnErrPanel">
+        <script>
+        var acError =  '{!JSENCODE(messageString)}';
+        function checkACError(){
+            if(acError !=''){
+                 Ext.MessageBox.show({                       
+                     msg:acError,width:300,height:'auto',buttons: Ext.MessageBox.OK
+                  });
+            }else{
+                launchConsole();
+ }
+ }
+ 		function colRender(data, metadata, record, rowIndex, columnIndex, store){
+			var tip=''+data;
+		    metadata.attr = 'title="'+data+'"';  
+		if(columnIndex == 1){
+				var statusValue = record.get("hcol5");
+				var status_img = null;
+	        	if(statusValue=='_STATUS_EXECUTEDOK_' || statusValue=='_STATUS_ENABLED_')
+	        		status_img = 'Circle_Green.png';
+	        	else if(statusValue=='_STATUS_EXECUTEFAILED_' || statusValue=='_STATUS_VERIFICATIONFAILED_' || statusValue=='_STATUS_DEPENDENCIESCHECKFAILED_' || statusValue=='_STATUS_NOTRECEIVED_'|| statusValue=='_STATUS_ADVERTISENOTRECEIVED_')
+	        		status_img = 'Circle_Red.png';
+	        	else if(statusValue=='_STATUS_ASSIGNPAUSED_' || statusValue=='_STATUS_UPDATEPAUSED_' || statusValue=='_STATUS_UNASSIGNEDPAUSED_')
+	        		status_img = 'Circle_Grey.png';
+	        	else if(statusValue=='_STATUS_IMPOSSIBLESENDING_' )
+	        		status_img = 'Circle_Orange.png';
+	        	else 
+	        		status_img = 'Circle_Yellow.png';
+	        		
+	        	if(status_img!=null){
+		       		data='<img height="16px" width="16px"   src="{!$Resource.SDEFStyles}/SDEFicons/'+status_img+'"></img>'+'<span style="vertical-align: top;padding-left:5px;">'+data+'</span>';
+		        }
+		       		
+				}
+			return data;  
+		}
+
+ 
+        </script>
+    
+    </apex:outputPanel>
+    <apex:form id="DeviceSummaryForm" styleClass="formStyle">
+    <div id="capsule" class="CapsuleDiv1">
+        
+        <c:ValidationComponent errorMsgList="{!messageString}" id="validationComponent"></c:ValidationComponent>
+            <apex:actionregion >
+                <apex:actionFunction name="directConnectDevice" action="{!directConnectDevice}" rerender="dirConnErrPanel" onComplete="hideWaitMsg();checkACError();">
+                    <apex:param name="actionContext" value=""/>
+                    <apex:param name="assemblyId" value=""/>
+                    <apex:param name="reqContextId" value=""/>
+                </apex:actionFunction>
+            </apex:actionregion>
+            <apex:actionRegion >
+                <apex:actionFunction name="launchConsole" action="{!launchConsole}" />
+            </apex:actionRegion>
+             <apex:actionFunction name="fetchHardwareDetails" action="{!fetchHardwareDetails}" rerender="validationComponent,refreshHWVarPanel" onComplete="showError();refreshTabValues();">  
+              </apex:actionFunction>
+              <apex:actionFunction name="fetchSoftwareDetails" action="{!fetchSoftwareDetails}" rerender="validationComponent,softwarePanel" onComplete="hideWaitMsg();showError();refreshTabValues();"> 
+                <apex:param name="pageOffset" value="pageOffset"/>
+              </apex:actionFunction>
+              <apex:actionFunction name="fetchLicenseDetails" action="{!fetchLicenseDetails}" rerender="validationComponent,refreshLicenseVarPanel" onComplete="hideWaitMsg();showError();refreshTabValues();"> 
+              </apex:actionFunction>
+              <apex:actionFunction name="fetchSecurityDetails" action="{!fetchSecurityDetails}" rerender="validationComponent,refreshSecurityVarPanel" onComplete="hideWaitMsg();showError();refreshTabValues();" > 
+              </apex:actionFunction>
+              <apex:actionFunction name="fetchFinalcialDetails" action="{!fetchFinalcialDetails}" rerender="validationComponent,refreshFinanceVarPanel" onComplete="hideWaitMsg();showError();refreshTabValues();"> 
+              </apex:actionFunction>
+              <apex:actionFunction name="fetchActionHistoryDetails" action="{!fetchActionHistoryDetails}" rerender="validationComponent,refreshActionHistoryPanel" onComplete="hideWaitMsg();showError();refreshTabValues();"> 
+              </apex:actionFunction>
+              
+<table cellpadding="0" cellspacing="0" class="clsMainTable2" >
+                    <tr class="clsRowGreyBg">
+                <td>
+                    <div id="ToolBarTD"></div>                                
+                                </td>
+                            </tr>  
+        </table>      
+        <apex:outputPanel id="bannerdetails">      
+        
+        <table cellpadding="0" cellspacing="0" class="clsMainTableSI" >
+                    <tr >
+                        
+                                    <td style='width:100%;vertical-align:top;padding:10px;color: #004376;font: bold 11px Tahoma,MS Sans Serif;'>
+                                        {!JSENCODE($Label.SummaryFor)} {!DeviceName}
+                                    </td>
+                                
+                    </tr>
+                    <tr>
+                        <td style='width:100%;vertical-align:top;padding-left:20px;'>
+                            <table  style='width:100%;' cellspacing="5">
+                                <tr>
+                                    <td class="bannerlabelCLs">
+                                        {!JSENCODE($Label.DeviceType)}: 
+                                    </td>
+                                    <td class="bannervalCLs">
+                                         <apex:outputText value="{!deviceType}" id="deviceType"/>
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td class="bannerlabelCLs">
+                                        {!JSENCODE($Label.SerialNumber)}:
+                                    </td>
+                                    <td class="bannervalCLs">
+                                        <apex:outputText value="{!serialnumber}" id="serialnumber"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bannerlabelCLs">
+                                        {!JSENCODE($Label.OperatingSystem)}:
+                                    </td>
+                                    <td class="bannervalCLs">
+                                        <apex:outputText value="{!operatingSystem}" id="operatingSystem"/>
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td class="bannerlabelCLs">
+                                        {!JSENCODE($Label.IPAddress)}:
+                                    </td>
+                                    <td class="bannervalCLs">
+                                        <apex:outputText value="{!IPAddress}" id="IPAddress"/>
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td class="bannerlabelCLs">
+                                        {!JSENCODE($Label.MACAddress)}:
+                                    </td>
+                                    <td class="bannervalCLs">
+                                        <apex:outputText value="{!MACAddress}" id="MACAddress"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bannerlabelCLs">
+                                        {!JSENCODE($Label.Domain)}:
+                                    </td>
+                                    <td class="bannervalCLs">
+                                        <apex:outputText value="{!domain}" id="domain"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bannerlabelCLs">
+                                        {!JSENCODE($Label.User)}:
+                                    </td>
+                                    <td class="bannervalCLs">
+                                        <apex:outputText value="{!UserName}" id="userId"/>
+                                    </td> 
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>     
+                                      
+                </table>
+                </apex:outputPanel> 
+                </div>
+    </apex:form>
+    </body>  
+</apex:page>

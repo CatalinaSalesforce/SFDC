@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Compte sur système</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Compte sur systèmes</value>
+    </caseValues>
+    <fields>
+        <label>Type de compte</label>
+        <name>AccountType__c</name>
+        <picklistValues>
+            <masterLabel>Regular</masterLabel>
+            <translation><!-- Regular --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Secure</masterLabel>
+            <translation><!-- Secure --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>ID instance</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- BMC_AccountOnSystem Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

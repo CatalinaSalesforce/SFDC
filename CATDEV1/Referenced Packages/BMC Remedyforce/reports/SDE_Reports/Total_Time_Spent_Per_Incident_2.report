@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>Incident__c.openDateTime__c</field>
+    </columns>
+    <columns>
+        <field>Incident__c.closeDateTime__c</field>
+    </columns>
+    <columns>
+        <field>Incident__c.Client_Name__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Incident__c.Total_Duration__c</field>
+    </columns>
+    <description>Lists all closed incidents with the total amount of time taken to resolve each incident and groups them by Accounts.
+The 2.0 version supports users, contacts, and leads as clients.</description>
+    <filter>
+        <criteriaItems>
+            <column>Incident__c.state__c</column>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Incident__c.Client_Account__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Total Time Spent Per Incident 2.0</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Incident__c</reportType>
+    <scope>user</scope>
+    <showDetails>true</showDetails>
+    <timeFrameFilter>
+        <dateColumn>Incident__c.closeDateTime__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>システムサービス</value>
+    </caseValues>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>システムのクラスID</label>
+        <name>System_Class_Id__c</name>
+    </fields>
+    <fields>
+        <label>システム名</label>
+        <name>System_Name__c</name>
+    </fields>
+    <nameFieldLabel>システムサービス名</nameFieldLabel>
+</CustomObjectTranslation>

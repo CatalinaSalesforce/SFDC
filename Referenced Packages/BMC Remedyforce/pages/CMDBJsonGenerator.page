@@ -1,0 +1,3 @@
+<apex:page standardStylesheets="false" showHeader="false" contentType="text/javascript" controller="BMCServiceDesk.CMDBJsonGeneratorController">
+<apex:outputText escape="false" value="{!output}"></apex:outputText>
+</apex:page>

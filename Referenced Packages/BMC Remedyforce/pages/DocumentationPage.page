@@ -1,0 +1,121 @@
+<apex:page controller="BMCServiceDesk.DocumentationController" sidebar="false" showHeader="false" standardStylesheets="false">
+    <c:CommonIncludes />
+<style>
+ .inputfileCls{
+  font-family:Tahoma, MS Sans Serif;
+  height:23px;
+  height/*\**/: 22px\9;
+  *height:22px;
+ }
+  .5pxHeight{
+  height:5px;
+  *height:0px;
+ }
+</style>
+    <apex:form >
+        <!-- apex:panelGrid columns="3"-->
+        <table>
+		    <tr><td height="10"/></tr>
+            <tr>
+                <td class="clsPanelInputLabelTD" style="vertical-align: middle;">
+                    <input type="radio" id="fileRadio" name="group1" onclick="checkValidation();" checked="true" /> 
+                </td>
+                <td class="clsPanelInputLabelTD" style="vertical-align: middle;">
+                    <apex:outputText value="{!$Label.bmcservicedesk__FileDocumentationPage}"/>
+                </td>
+                <td class="clsPanelInputLabelTD" style="vertical-align: middle;">
+                    <apex:inputFile fileName="{!filename}" id="inputfile" styleclass="inputfileCls" fileSize="{!filesize}" value="{!filebody}" onchange="validateFile();" size="51" />
+                 <div id="errorDiv" style="color:red;padding-left:3px;"> {!errorMsg} </div>
+                 <div id="errorDivMsg" style="color:red;padding-left:3px;"> <apex:messages rendered="{!OR(errorMsg==null,errorMsg=='')}" /> </div>
+                </td>
+                    
+            </tr>  
+         <tr><td class="5pxHeight"/></tr> 		
+            <tr>
+                <td class="clsPanelInputLabelTD" style="vertical-align: middle;">
+                    <input type="radio" id="urlRadio" name="group1" onclick="checkValidation();" /> 
+                </td>
+                <td class="clsPanelInputLabelTD" style="vertical-align: middle;">
+                    <apex:outputText value="{!$Label.bmcservicedesk__UrlDocumentationPage}"/>
+                </td>
+                <td class="clsPanelInputLabelTD" style="vertical-align: middle;">
+                    <apex:inputtext id="inputtext" onchange="validateFile();" onblur="validateFile();" onkeyup="validateFile();" value="{!url}"  style="font-family:Tahoma, MS Sans Serif;font-size:11px;" size="51"/> 
+                </td>
+            </tr>
+            
+            <tr>
+                <td >
+                </td>
+                <td>
+                </td>
+                <td align="right"  style="padding-top: 18px;" >
+                <apex:commandButton action="{!attachFile}" id="okBtn" value="{!$Label.bmcservicedesk__Ok}" styleClass="bgBtnGrey"/>
+                <apex:commandButton value="{!$Label.bmcservicedesk__Cancel}" onclick="window.parent.closePopup();" styleClass="bgBtnGrey"/>
+                </td>
+            </tr>
+           
+        </table>
+        
+        <!-- /apex:panelGrid -->
+            <script>
+            document.getElementById('{!$Component.inputtext}').disabled=true;
+            document.getElementById('{!$Component.okBtn}').disabled=true;
+			var flag=false;
+                function checkValidation(){
+                    var checkFile = document.getElementById('fileRadio').checked;
+                    var checkUrl = document.getElementById('urlRadio').checked;
+                     document.getElementById('errorDiv').style.display='none';
+                    document.getElementById('errorDivMsg').style.display='none';
+                    if(checkFile){
+                    	document.getElementById('{!$Component.okBtn}').disabled=true;
+                        document.getElementById('{!$Component.inputtext}').disabled=true;
+                        document.getElementById('{!$Component.inputtext}').value='';
+                        document.getElementsByName('{!$Component.inputfile}'+':inputFile:file')[0].disabled=false;
+						var uploadedValue =document.getElementsByName('{!$Component.inputfile}'+':inputFile:file')[0].value;
+						if(flag && Ext.isIE && uploadedValue !=''){
+                         document.getElementById('{!$Component.okBtn}').disabled=false;
+                         flag=true;
+                        }
+                    }else if(checkUrl){
+                    	document.getElementById('{!$Component.okBtn}').disabled=true;
+                        document.getElementsByName('{!$Component.inputfile}'+':inputFile:file')[0].disabled=true;
+                        document.getElementsByName('{!$Component.inputfile}'+':inputFile:file')[0].value=null;
+                        document.getElementById('{!$Component.inputtext}').disabled=false;
+						flag=true;
+                    }
+                }
+                
+                
+                function validateFile(){
+                    var url = document.getElementById('{!$Component.inputtext}').value;
+                    var file = document.getElementsByName('{!$Component.inputfile}'+':inputFile:file')[0].value;
+                    
+                    if((url != null && url != '' && url != 'null') ||(file != null && file != '' && file != 'null')){
+                        document.getElementById('{!$Component.okBtn}').disabled=false;
+                        var v = document.getElementsByName('{!$Component.inputfile}'+':inputFile:file')[0].value;
+                        var filename = v.replace(/^.*\\/, '') ;
+                        var fileLength=filename.length;
+                        if(fileLength > 255){
+                           document.getElementById('errorDiv').innerHTML = '{!JSENCODE($Label.FileNameLimitExceeded)}';
+                           document.getElementById('errorDiv').style.display='inline';
+                           document.getElementById('{!$Component.okBtn}').disabled=true;
+                    		document.getElementsByName('{!$Component.inputfile}'+':inputFile:file')[0].value=null;
+                        }else{
+                            document.getElementById('errorDiv').style.display='none';
+                            document.getElementById('{!$Component.okBtn}').disabled=false;
+                    	}
+                    }
+                }
+             
+            </script>
+            
+    </apex:form>
+    
+    <style>
+    body {
+    font-family:Tahoma, MS Sans Serif;
+    font-size:11px;
+    }
+</style>
+
+</apex:page>

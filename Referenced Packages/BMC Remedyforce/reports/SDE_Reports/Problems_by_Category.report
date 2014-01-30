@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>Problem__c.Problem_Description__c</field>
+    </columns>
+    <columns>
+        <field>Problem__c.Status__c</field>
+    </columns>
+    <columns>
+        <field>Problem__c.Number_of_linked_Incidents__c</field>
+    </columns>
+    <columns>
+        <field>Problem__c.Number_of_linked_Changes__c</field>
+    </columns>
+    <columns>
+        <field>CUST_OWNER_NAME</field>
+    </columns>
+    <columns>
+        <field>CUST_CREATED_DATE</field>
+    </columns>
+    <columns>
+        <field>Problem__c.Problem_Source__c</field>
+    </columns>
+    <description>Lists all open problems that have been created for each category and groups them by the Category field.</description>
+    <filter>
+        <criteriaItems>
+            <column>Problem__c.State__c</column>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Problem__c.Category__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Problems by Category</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Problem__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <timeFrameFilter>
+        <dateColumn>Problem__c.Closed_Date_Time__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

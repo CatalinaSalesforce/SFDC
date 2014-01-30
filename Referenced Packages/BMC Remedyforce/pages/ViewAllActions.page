@@ -1,0 +1,60 @@
+<apex:page showHeader="false" action="{!getAllNotes}" controller="BMCServiceDesk.ViewAllActions" >
+<link rel="stylesheet" href="{!$Resource.SDEFStyles}/ViewAllActions.css" type="text/css" />
+<apex:pageBlock >
+<apex:pageBlockSection collapsible="false">
+<apex:facet name="header">
+<apex:outputText value=" {!objLabel}: {!$CurrentPage.parameters.recordName} {!NOW()}" style="color:black;font-size:14px;"></apex:outputText>
+</apex:facet>
+</apex:pageBlockSection>
+
+<apex:outputPanel rendered="{!IF(size==0,false,true)}">
+<apex:repeat value="{!historyObj}" var="historyObj" >
+<table height="100%" width="100%" class="noteTableCls">
+<tr>
+<td class="headerTd" width="100%" >
+<span>
+
+<b>{!JSENCODE($Label.Date_Time)} : </b> <apex:outputField value="{!historyObj['date__c']}" rendered="{!IF(OR(objtype=='Incident',objtype=='Task',objtype=='Broadcast'),TRUE,FALSE)}"/>
+<apex:outputField value="{!historyObj['createdDate']}" rendered="{!IF(OR(objtype=='Change Request',objtype=='Problem',objtype=='Release'),true,false)}" />
+&nbsp;&nbsp; 
+
+<b>{!JSENCODE($Label.IncidentsStaff)} : </b> {!IF(OR(objType=='Incident',objType='Task',objType=='Broadcast'),historyObj['FKUser__r.name'],historyObj['FKCreated_By__r.name'])} &nbsp;&nbsp;  
+<b>{!JSENCODE($Label.Duration)} : </b> {!IF(OR(objtype=='Incident',objtype=='Task',objtype=='Broadcast'),historyObj['duration__c'],historyObj['Formatted_Duration__c'])}
+</span>
+<br/>
+<span>
+<b>{!JSENCODE($Label.Description)} : </b> {!historyObj['description__c']}
+</span>
+</td>
+</tr>
+<tr>
+<td class="e" width="100%">
+<div>
+<b>{!JSENCODE($Label.Note)} :</b>
+<span style="white-space:pre-line;word-wrap:break-word;" id="{!historyObj['id']}">
+{!historyObj['note__c']}&nbsp;&nbsp;<a id="{!historyObj['id']}+anchorId" style="{!IF(LEN(historyObj['note__c'])>1000,'display:inline','display:none')};cursor:pointer;color:#015BA7;"  onclick="showMore('{!historyObj['id']}');">More</a>
+</span>
+</div>
+</td>
+</tr>
+</table>
+
+</apex:repeat>
+</apex:outputPanel>
+</apex:pageBlock>
+<apex:outputPanel rendered="{!IF(size==0,true,false)}">
+<span>
+<strong style="padding-left:250px;">{!JSENCODE($Label.MsgNoRecordFoundSearchPage)}</strong>
+</span>
+</apex:outputPanel>
+
+<script type="text/javascript" src="{!$Resource.SDEFCommonJS}/ViewAllActions.js"></script> 
+<script>
+
+	window.document.title='{!JSENCODE($Label.ViewAllNotes)} {!$CurrentPage.parameters.recordName}' ;
+	var objType ='{!objType}';
+	_RemotingActions={}
+	_RemotingActions.getData= "{!$RemoteAction.ViewAllActions.getData}";
+</script>
+
+</apex:page>

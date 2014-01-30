@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Fuseaux horaires des utilisateurs</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Fuseaux horaires des utilisateurs</value>
+    </caseValues>
+    <fields>
+        <label>Personnel FK</label>
+        <name>FKUserId__c</name>
+        <relationshipLabel>Fuseaux horaires utilisateurs SYS</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Décalage</label>
+        <name>Offset__c</name>
+    </fields>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Fuseau horaire</label>
+        <name>Timezone__c</name>
+    </fields>
+    <fields>
+        <label>Nom de ville</label>
+        <name>cityName__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- Locale --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

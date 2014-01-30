@@ -1,0 +1,65 @@
+<apex:component controller="R6Service.TransferSelectListController" selfClosing="true">
+    <apex:attribute name="options" assignTo="{!options}" type="SelectOption[]" description="the options to display" required="true"/>
+    <apex:attribute name="value" assignTo="{!value}" type="String[]" description="the selected values" required="true"/>
+    <apex:attribute name="onTransfer" type="String" description="Javascript to fire on adding or removing items" required="false"/>
+    <apex:attribute name="disabled" type="Boolean" description="True to disable the component. Default: false." default="false" required="false"/>
+    
+    <style>
+        .TransferSelectList .ListGroup
+        {
+            display:block;
+        }
+        .TransferSelectList .ListGroup, .TransferSelectList .Actions
+        {
+            display:inline-block;
+            vertical-align:top;
+        }
+        .TransferSelectList .Actions
+        {
+            margin:5px;
+            text-align:center;
+        }
+        .TransferSelectList .ButtonGroup
+        {
+            display:block;
+            text-align:center;
+        }
+        .TransferSelectList .ActionButtonTitle
+        {
+            display:block;
+        }
+        .TransferSelectList .TransferList
+        {
+            min-width:15em;
+            height:20ex;
+            padding:5px;
+        }
+    </style>
+
+    <span class="TransferSelectList">
+        <apex:outputpanel id="unselectedList" styleClass="ListGroup" >
+            <apex:selectlist value="{!optionsToAdd}" multiselect="true" styleClass="TransferList" disabled="{!disabled}" >
+                <apex:selectoptions value="{!unselectedOptions}" />
+            </apex:selectlist>
+        </apex:outputpanel>
+        <span class="Actions">
+            <span class="ButtonGroup">
+                <span class="ActionButtonTitle">
+                    Add
+                </span>
+                <apex:commandButton action="{!addSelectedOptions}" value=">>" rerender="unselectedList,selectedList" oncomplete="{!onTransfer}"  disabled="{!disabled}"  />
+            </span>
+            <span class="ButtonGroup">
+                <apex:commandButton action="{!removeSelectedOptions}" value="<<" rerender="unselectedList,selectedList" oncomplete="{!onTransfer}"  disabled="{!disabled}"  />
+                <span class="ActionButtonTitle">
+                    Remove
+                </span>
+            </span>
+        </span>
+        <apex:outputpanel id="selectedList" styleClass="ListGroup">
+            <apex:selectList value="{!optionsToRemove}" multiselect="true" styleClass="TransferList" disabled="{!disabled}" >
+                <apex:selectoptions value="{!selectedOptions}" />
+            </apex:selectList>
+        </apex:outputpanel>
+    </span>
+</apex:component>

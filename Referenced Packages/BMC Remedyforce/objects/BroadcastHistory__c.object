@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <content>StdBroadcastHistoryPage</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>StdFormHelpBroadcastHistory</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>This object allows you to store data that tracks the history of all actions that have been performed on broadcasts.</description>
+    <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <fields>
+        <fullName>FKActions__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>From the list of options, select the user-defined actions that are applicable to broadcasts. User-defined actions are used to record details of the steps taken to manage the issue or outage that caused the broadcast.</inlineHelpText>
+        <label>Action</label>
+        <referenceTo>Action__c</referenceTo>
+        <relationshipLabel>Broadcast History</relationshipLabel>
+        <relationshipName>Broadcast_Histroy</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>FKBroadcast__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Broadcast ID</label>
+        <referenceTo>Broadcasts__c</referenceTo>
+        <relationshipLabel>Action History</relationshipLabel>
+        <relationshipName>Broadcast_Histroy</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>FKUser__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is automatically set to the Staff ID of the currently logged-on staff.</inlineHelpText>
+        <label>Staff ID</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Broadcast_Histroy</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>actionId__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>FKActions__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>From the list of options, select the user-defined actions that are applicable to broadcasts. User-defined actions are used to record details of the steps taken to manage the issue or outage that caused the broadcast.</inlineHelpText>
+        <label>Action~</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>broadCastId__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>FKBroadcast__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Broadcast ID~</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>broadcastNote__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>FKBroadcast__r.note__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Broadcast Note</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is automatically set to the date and time at which the history record is created. If required, you can use this field to select a different date and time from the automatically filled in date and time for user-defined actions.</inlineHelpText>
+        <label>Date &amp; Time</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is automatically set to the description of the user-defined action selected in the Action ID field. This description explains what the selected Action ID represents.</inlineHelpText>
+        <label>Description</label>
+        <length>32000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>duration__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Use this field to enter the time that you spend performing this action.</inlineHelpText>
+        <label>Duration</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>inactive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select this field if the action record is no longer valid, but the record has to be retained for compliance with the records retention policy.</inlineHelpText>
+        <label>Inactive</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>note__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Use this field to provide details about what has been accomplished when you performed this action. The date and time is recorded for each new entry or update that you make in this field.</inlineHelpText>
+        <label>Note</label>
+        <length>32000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>system__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>System</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>userId__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>FKUser__r.Username</formula>
+        <inlineHelpText>This field is automatically set to the Staff ID of the currently logged-on staff.</inlineHelpText>
+        <label>Staff ID~</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Broadcast History</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Broadcast History</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>actionIDRequired</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR( ISNULL(FKActions__c) , ISBLANK(FKActions__c))</errorConditionFormula>
+        <errorMessage>Please enter Action.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>broadcastHistoryStaffIDRequired</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR( ISNULL(FKUser__c) , ISBLANK(FKUser__c))</errorConditionFormula>
+        <errorMessage>Please enter Staff ID</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>durationFormatValidation</fullName>
+        <active>true</active>
+        <description>duration should be in format hh:mm</description>
+        <errorConditionFormula>AND(NOT(REGEX( duration__c , &apos;[0-9]{2}:[0-9]{2}&apos;)), NOT(OR(ISNULL(duration__c), ISBLANK(duration__c) )  ))</errorConditionFormula>
+        <errorMessage>Please enter duration in the format hh:mm</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>New_Action</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>New Action</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>var stdLayoutScreenWidth = 671; 
+var stdLayoutScreenHeight = 400; 
+function stdScreenLeft(){ 
+return parseInt((screen.availWidth/2) - (stdLayoutScreenWidth/2)); 
+} 
+
+function stdScreenTop(){ 
+return parseInt((screen.availHeight/2) - (stdLayoutScreenHeight/2)); 
+} 
+
+if({!Broadcasts__c.state__c}){
+
+window.open(&apos;/apex/BMCServiceDesk__searchPage?popupId=Action&amp;isLookup=true&amp;objectType=BroadcastHistory__c&amp;enableSelfClosing=false&amp;standardLayout=true&amp;parentId={!Broadcasts__c.Id}&amp;filterClause=appliesToBroadcasts__c%3Dtrue%20and%20system__c%3Dfalse&apos;,null,&quot;status = 1,height =&quot;+stdLayoutScreenHeight+&quot;, width =&quot;+ stdLayoutScreenWidth+&quot;,left=&quot;+stdScreenLeft()+&quot;,top=&quot;+stdScreenTop()+&quot;, resizable = 0,scrollbars=no&quot;);
+}
+else
+{
+var label=&apos;{!JSENCODE($Label.bmcservicedesk__BroadcastClosed)}&apos;;
+alert(label);
+
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>View_All_Notes</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>View All Notes</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>var stdLayoutScreenWidth = 900;
+var stdLayoutScreenHeight = 750;
+
+function stdScreenLeft(){
+return parseInt((screen.availWidth/2) - (stdLayoutScreenWidth/2));
+}
+
+function stdScreenTop(){
+return parseInt((screen.availHeight/2) - (stdLayoutScreenHeight/2));
+}
+
+var left = stdScreenLeft();
+var top = stdScreenTop();
+var windowFeatures = &quot;width=&quot; + stdLayoutScreenWidth + &quot;,height=&quot; + stdLayoutScreenHeight + &quot;,status,resizable,scrollbars=yes,left=&quot; + left + &quot;,top=&quot; + top; 
+
+window.open(&apos;/apex/BMCServiceDesk__ViewAllActions?recordName={!Broadcasts__c.Name}&amp;objectName=Broadcast&amp;Objectid={!Broadcasts__c.Id}&amp;stdForm=true&amp;standardLayout=true&apos;,&apos;_blank&apos;,windowFeatures )</url>
+    </webLinks>
+</CustomObject>

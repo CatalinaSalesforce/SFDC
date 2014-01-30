@@ -1,0 +1,103 @@
+<apex:page standardController="Candidate__c"
+    extensions="OB_CandidateStatusController"
+    tabStyle="Candidate_Status__c" showHeader="false">
+
+    <apex:composition template="{!$Site.Template}">
+        <apex:define name="body">
+
+            <style type="text/css">
+table.downloadPanels td:first-child {
+    width: 190px;
+}
+
+table.downloadPanels td:second-child {
+    width: 190px;
+}
+
+table.downloadPanels {
+    border-width: 2px;
+    border-spacing: 0px;
+    border-style: outset;
+    border-color: gray;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+table.downloadPanels th {
+    border-width: 1px;
+    padding: 4px;
+    border-style: groove;
+    border-color: white;
+    background-color: white;
+    -moz-border-radius: ;
+}
+
+table.downloadPanels td {
+    border-width: 1px;
+    padding: 4px;
+    border-style: groove;
+    border-color: white;
+    background-color: white;
+    -moz-border-radius: ;
+}
+</style>
+            <apex:sectionHeader title="Document Review" subtitle="Step 6 of 6" />
+            <apex:form >
+
+                <apex:pageBlock title="Signed Documents">
+                    <apex:panelGrid columns="2" styleClass="downloadPanels">
+                        <apex:outputText value="Confidentiality Agreement" />
+                        <apex:outputLink target="_HROBdownload_" value="{!URLFOR($Resource.OB_Documents, 'ConfidentialityAgreement.pdf')}">Download</apex:outputLink>
+                        <apex:outputText value="Ethics Agreement" />
+                        <apex:outputLink target="_HROBdownload_" value="{!URLFOR($Resource.OB_Documents, 'Ethics.pdf')}">Download</apex:outputLink>
+                        <apex:outputText value="Information Assurance Agreement" />
+                        <apex:outputLink target="_HROBdownload_" value="{!URLFOR($Resource.OB_Documents, 'AssurancePolicy.pdf')}">Download</apex:outputLink>
+                        <apex:outputText value="Associate Handbook" />
+                        <apex:outputLink target="_HROBdownload_" value="{!URLFOR($Resource.OB_Documents, 'AssociateHandbook.pdf')}">Download</apex:outputLink>
+                    </apex:panelGrid>
+                </apex:pageBlock>
+
+
+                <apex:pageBlock title="Other Documents">
+                    <apex:facet name="footer">
+                        <apex:outputPanel >
+                            <apex:commandButton action="{!step5}" value="Previous"
+                                styleClass="btn" />
+                            <apex:commandButton action="{!finalSubmit}" value="Submit"
+                                styleClass="btn" />
+                        </apex:outputPanel>
+
+
+                    </apex:facet>
+                    <apex:panelGrid columns="2" styleClass="downloadPanels">
+                    <!--apex:outputText value="{!candidate.Bonus_Level__c}" />
+                    <apex:outputText value="{!candidate.Business_Unit__c}" /-->
+                        <apex:outputText value="Bonus/Commission Information  "  rendered="{!candidate.Bonus_Level__c != ''}"/>
+                        <apex:outputLink target="_HROBdownload_" value="{!URLFOR($Resource.OB_ICPDocuments, ICPDocument)}" rendered="{!candidate.Bonus_Level__c != ''}">Download</apex:outputLink>
+                        <apex:outputText value="I-9 Form*" />
+                        <apex:outputLink target="_HROBdownload_" value="{!URLFOR($Resource.OB_Documents, 'i9.pdf')}">Download</apex:outputLink>
+                        <apex:outputText value="New Hire Checklist" />
+                        <apex:outputLink target="_HROBdownload_" value="{!URLFOR($Resource.OB_Documents, 'NewAssociateChecklist.pdf')}">Download</apex:outputLink>
+                    </apex:panelGrid>
+                    <em>*Please review the I-9
+                        (Employment Eligibility Verification) Form. A copy of this form
+                        will be provided to you for completion on your first day. Be sure
+                        to bring the required identification as noted on page 5 of the form (one ID
+                        from list A, or one ID from both list B and C).</em>
+                    <br />
+                    <br />
+                    
+                    Please consider saving the documents above for your reference prior to beginning your new position.  After starting your new position, you will have access to this information through our portal for Catalina associates. 
+                   
+                     
+    </apex:pageBlock>
+
+
+
+            </apex:form>
+
+        </apex:define>
+    </apex:composition>
+
+
+</apex:page>

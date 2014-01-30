@@ -1,0 +1,48 @@
+<apex:page standardController="Case" extensions="CaseController" showHeader="false" sidebar="false">
+    <apex:form >
+    <apex:pageBlock >
+        <apex:include pageName="CaseFlaggedStatus"/> 
+        <apex:pageBlockButtons location="bottom">
+        <apex:commandButton value="Save" action="{!QuickSave}" oncomplete="window.top.location='/{!Case.id}'"/>
+            <apex:commandButton value="Send Email" 
+                                        action="{!QuickSave}" 
+                                        oncomplete="parent.location.replace('/_ui/core/email/author/EmailAuthor?&template_id={!TemplateId}{!Case.TemplateParam_URL__c}','_blank')" />                           
+        </apex:pageBlockButtons>
+
+        <apex:outputPanel >
+            <table align="left" width="100%" style="margin-top:15px;">
+                <tr>
+                    <td style="padding-right:10px;padding-bottom:2px;padding-top:5px;color:#4A4A56;font-weight:bold;">Case Number</td>
+                    <td style="padding-bottom:2px;padding-top:5px;"> <apex:outputField value="{!Case.CaseNumber}" /></td> 
+                    <td style="padding-right:10px;padding-left:10px;padding-bottom:2px;padding-top:5px;color:#4A4A56;font-weight:bold;">Contact Name</td>
+                    <td style="padding-bottom:2px;padding-top:5px;"> <apex:outputField style="width:150px;" value="{!Case.Contact.FirstName}" />&nbsp;<apex:outputField style="width:150px;" value="{!Case.Contact.LastName}" /></td> 
+                    <td style="padding-right:10px;color:#4A4A56;font-weight:bold;">Quick Response</td>
+                </tr>           
+                <tr>
+                    <td style="padding-right:10px;color:#4A4A56;font-weight:bold;">Subject</td>
+                    <td><apex:inputField style="width:150px;" value="{!Case.Subject}" /></td>
+                    <td style="padding-right:10px;padding-left:10px;color:#4A4A56;font-weight:bold;">Email</td>
+                    <td><apex:outputField style="width:276px" value="{!Case.Contact.Email}" /></td>
+                                        <td style="padding-top:5px;">
+                    <apex:selectList style="width:155px" size="1" value="{!TemplateId}"><apex:selectOptions value="{!templates}"  /></apex:selectList> 
+                    &nbsp;&nbsp;
+                   
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-right:10px;color:#4A4A56;font-weight:bold;">MCLU</td><td> <apex:inputField style="width:150px;" value="{!Case.MCLUs__c}" /></td>
+                    <td style="padding-right:10px;padding-left:10px;color:#4A4A56;font-weight:bold;">Phone</td><td><apex:outputField value="{!Case.Contact.Phone}" /></td>
+                </tr>
+                <tr>
+                    <td style="padding-right:10px;color:#4A4A56;font-weight:bold;">Status</td><td> <apex:inputField style="width:155px;" value="{!Case.Status}" /></td>
+                    <td style="padding-right:10px;padding-left:10px;color:#4A4A56;font-weight:bold;">Address</td><td><apex:outputField style="height:17px;width:276px" value="{!Case.Contact.MailingStreet}" /></td>
+                </tr>
+                <tr>
+                    <td style="padding-right:10px;color:#4A4A56;font-weight:bold;">&nbsp;</td><td>&nbsp;</td>                
+                    <td style="padding-right:10px;padding-left:10px;color:#4A4A56;font-weight:bold;">&nbsp;</td><td><apex:outputField value="{!Case.Contact.MailingCity}" />,&nbsp; <apex:outputField style="width:35px;" value="{!Case.Contact.MailingState}" />&nbsp;<apex:outputField style="width:45px;" value="{!Case.Contact.MailingPostalCode}" /></td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>
+    </apex:page>

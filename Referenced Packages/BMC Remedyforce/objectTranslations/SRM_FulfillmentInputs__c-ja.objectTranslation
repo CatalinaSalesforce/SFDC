@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>フルフィルメントの入力値</value>
+    </caseValues>
+    <fields>
+        <label>追加情報</label>
+        <name>AdditionalInfo__c</name>
+    </fields>
+    <fields>
+        <label>条件</label>
+        <name>Condition__c</name>
+    </fields>
+    <fields>
+        <label>条件付き</label>
+        <name>Conditional__c</name>
+    </fields>
+    <fields>
+        <label>条件の接尾辞</label>
+        <name>ConditionsPostfix__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this check box if you want to create conditions that use the value of this field to invoke a template. --></help>
+        <label>コントロールプロセス</label>
+        <name>ControlProcess__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this check box if you want to display this field in the second column. --></help>
+        <label>第2カラムに表示</label>
+        <name>DisplayInSecondColumn__c</name>
+    </fields>
+    <fields>
+        <label>リクエスト定義</label>
+        <name>FKRequestDefinition__c</name>
+        <relationshipLabel>フルフィルメントの入力値</relationshipLabel>
+    </fields>
+    <fields>
+        <label>非表示</label>
+        <name>Hidden__c</name>
+    </fields>
+    <fields>
+        <label>入力値</label>
+        <name>InputValues__c</name>
+    </fields>
+    <fields>
+        <label>順序</label>
+        <name>Order__c</name>
+    </fields>
+    <fields>
+        <label>入力・プロンプト</label>
+        <name>Prompt__c</name>
+    </fields>
+    <fields>
+        <label>必須</label>
+        <name>Required__c</name>
+    </fields>
+    <fields>
+        <label>応答タイプ</label>
+        <name>ResponseType__c</name>
+        <picklistValues>
+            <masterLabel>Check box</masterLabel>
+            <translation><!-- Check box --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Date</masterLabel>
+            <translation><!-- Date --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Date/Time</masterLabel>
+            <translation><!-- Date/Time --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Header Section</masterLabel>
+            <translation><!-- Header Section --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Lookup</masterLabel>
+            <translation><!-- Lookup --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Number</masterLabel>
+            <translation><!-- Number --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Picklist</masterLabel>
+            <translation><!-- Picklist --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Radio Button</masterLabel>
+            <translation><!-- Radio Button --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Text Area</masterLabel>
+            <translation><!-- Text Area --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Text Field</masterLabel>
+            <translation><!-- Text Field --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Displays fields in a fixed area with a scroll bar. --></help>
+        <label>スクロール可能</label>
+        <name>Scrollable__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this check box if you want to create validation rules for the value of this field. --></help>
+        <label>認証</label>
+        <name>Validate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Create the validation rule for the value of this field. --></help>
+        <label>認証規則</label>
+        <name>ValidationRule__c</name>
+    </fields>
+    <nameFieldLabel>フルフィルメントの入力値番号</nameFieldLabel>
+</CustomObjectTranslation>

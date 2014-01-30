@@ -1,0 +1,101 @@
+<apex:page standardController="Program__c" standardStylesheets="true" showHeader="true" sidebar="true" extensions="ProgramController,ProgramDistributeAmtButton" >
+   <style>
+      .activeTab {background-color: #DDB929; color:white; background-image:none; font-weight:bold;}
+      .inactiveTab { background-color: lightgrey; color:black; background-image:none}
+   </style>    
+    <apex:form >
+        <apex:pageBlock id="mainblock" mode="inlineedit" title="{!IF(Program__c.Opportunity__r.Proposal_Number__c==null,'New Opportunity',Program__c.Opportunity__r.Pro_Con_Number__c)}  ">
+            <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!Save}" value="Save"/> 
+                <apex:commandButton action="{!Cancel}" value="Cancel"/> 
+            </apex:pageBlockButtons>
+                <apex:pageBlockSection showHeader="false" title="Opportunity Details" >
+<!-- Indicates the column and row for each field, i.e. L1 = Left Column, Row 1, R1 = Right Column, Row 1 -->
+<!-- L1 -->         <apex:outputText label="Opportunity Owner" value="{!Program__c.Opportunity__r.Owner.Name}"/>
+<!-- R1 -->         <apex:inputField label="Proposal Number" value="{!Program__c.Opportunity__r.Proposal_Number__c}"/>
+                    <apex:inputField rendered="{!IF($Profile.Name=='System Administrator',true,false)}" label="Opportunity Name" value="{!Program__c.Opportunity__c}"/>
+                    <apex:outputText label="Opportunity Name" rendered="{!IF($Profile.Name=='System Administrator',false,true)}"><apex:outputLink rendered="{!IF($Profile.Name=='System Administrator',false,true)}" value="/{!Program__c.Opportunity__c}">{!Program__c.Opportunity__r.Name}</apex:outputLink></apex:outputText>
+<apex:inputField rendered="{!IF($Profile.Name=='System Administrator',true,false)}" label="Account Name" value="{!Program__c.Opportunity__r.AccountId}"/>
+<apex:outputText label="Account Name" rendered="{!IF($Profile.Name=='System Administrator',false,true)}"><apex:outputLink rendered="{!IF($Profile.Name=='System Administrator',false,true)}" value="/{!Program__c.Opportunity__r.AccountId}">{!Program__c.Opportunity__r.Account.CATS_External_ID__c} - {!Program__c.Opportunity__r.Account.Name}</apex:outputLink></apex:outputText>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection showHeader="false" title="Description" columns="1">
+<!-- Indicates the column and row for each field, i.e. L1 = Left Column, Row 1, R1 = Right Column, Row 1 -->
+<!-- Centered -->   <apex:inputField label="Comments" value="{!progIn.Description__c}" style="width:300px;"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection showHeader="true" title="{!IF(Program__c.Opportunity__r.Type == 'Addendum','Addendum Information',IF(Program__c.Opportunity__r.Type == 'Renewal','Renewal Information',null))}" columns="2" rendered="{!IF(Program__c.Opportunity__r.Type == 'Addendum' || Program__c.Opportunity__r.Type == 'Renewal',true,false)}">
+<!-- Indicates the column and row for each field, i.e. L1 = Left Column, Row 1, R1 = Right Column, Row 1 -->
+<!-- L1 -->         <apex:inputField label="Renewal Parent Contract" rendered="{!IF(Program__c.Opportunity__r.Type=='Addendum',true,false)}" value="{!Program__c.Opportunity__r.Parent_Contract__c}"/>
+<!-- R1 -->         <apex:inputField label="Parent Contract Number" rendered="{!IF(Program__c.Opportunity__r.Type=='Addendum',true,false)}" value="{!Program__c.Opportunity__r.Parent_External_ID__c}"/>
+<!-- L2 -->         <apex:inputField label="Parent Contract" rendered="{!IF(Program__c.Opportunity__r.Type=='Renewal',true,false)}" value="{!Program__c.Opportunity__r.Related_Contract__c}"/>
+<!-- R2 -->         <apex:inputField label="Expiration Date" rendered="{!IF(Program__c.Opportunity__r.Type=='Renewal',true,false)}" value="{!Program__c.Opportunity__r.Renewal_Rights_Expiry_Date__c}"/>
+<!-- L3 -->         <apex:inputField label="Renewal Goal" rendered="{!IF(Program__c.Opportunity__r.Type=='Renewal',true,false)}" value="{!Program__c.Opportunity__r.Renewal_Goal_Amount__c}"/>
+<!-- R3 -->         <apex:inputField label="% Goal" rendered="{!IF(Program__c.Opportunity__r.Type=='Renewal',true,false)}" value="{!Program__c.Opportunity__r.Goal__c}"/>
+<!-- L4 -->         <apex:inputField label="Prior Year Amount" rendered="{!IF(Program__c.Opportunity__r.Type=='Renewal',true,false)}" value="{!Program__c.Opportunity__r.Prior_Year_Amount__c}"/>
+<!-- R4 -->         <apex:inputField label="+/- Goal" rendered="{!IF(Program__c.Opportunity__r.Type=='Renewal',true,false)}" value="{!Program__c.Opportunity__r.Plus_Minus_Goal__c}"/>
+<!-- L5 -->         <apex:inputField label="Renewal Comments" rendered="{!IF(Program__c.Opportunity__r.Type=='Renewal',true,false)}" value="{!Program__c.Opportunity__r.Renewal_Comments__c}"/>
+<!-- R5 -->         <apex:inputField label="At Risk Comments" rendered="{!IF(Program__c.Opportunity__r.Type=='Renewal',true,false)}" value="{!Program__c.Opportunity__r.At_Risk_Comments__c}"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection showHeader="true" title="Program Details">
+<!-- Indicates the column and row for each field, i.e. L1 = Left Column, Row 1, R1 = Right Column, Row 1 -->
+<!-- L1 -->         <apex:outputText label="Record Type" value="{!Program__c.Opportunity__r.RecordType.Name}"/>
+<!-- R1 -->         <apex:inputField label="Billing Type" value="{!Program__c.Opportunity__r.Account_Record_Type__c}"/>
+<!-- L2 -->         <apex:outputText rendered="{!IF(Program__c.Opportunity__r.RecordType.Name == 'Contract',true,false)}" label="Contract Number" value="{!Program__c.Opportunity__r.CATS_External_ID__c}"/>
+<!-- R2 -->         <apex:outputText rendered="{!IF(Program__c.Opportunity__r.RecordType.Name == 'Contract',true,false)}" label="Contract Amount" value="USD{0, number, ###,##0.00}">
+                           <apex:param value="{!Program__c.Opportunity__r.CATS_Contract_Amount__c}" />
+                    </apex:outputText>
+<!-- L3 -->         <apex:inputField label="Delivery Channel" value="{!progIn.Delivery_Type__c}"/>
+<!-- R3 -->         <apex:inputField label="Specialist" value="{!progIn.Specialist__c}"/>
+<!-- L4 -->         <apex:inputField label="Estimated Program Amount" value="{!progIn.Program_Amount__c}"/>
+<!-- L5 --> 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Start Cycle"/>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!strStartCycle}" size="1" required="true" styleClass="">
+                            <apex:selectOptions value="{!Periods}"/>
+                        </apex:selectList>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <br/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="End Cycle"/>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!strEndCycle}" size="1" required="true" styleClass="">
+                            <apex:selectOptions value="{!Periods}"/>
+                        </apex:selectList>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>                
+                </apex:pageBlockSection>
+                <apex:pageBlockSection showHeader="true" title="Revenue Details" >
+<!-- Indicates the column and row for each field, i.e. L1 = Left Column, Row 1, R1 = Right Column, Row 1 -->
+<!-- L1 -->         <apex:inputField label="Weighted Amount" value="{!Program__c.Weighted_Forecast_Amount__c}"/>
+<!-- R1 -->         <apex:inputField label="Booked Amount" value="{!Program__c.Total_Amount__c}"/>
+<!-- L2 -->         <apex:inputField label="Total Forecast Amount" value="{!Program__c.Forecast_Amount__c}"/>
+<!-- L2 -->         <apex:outputLabel rendered="{!IF(Program__c.Opportunity__r.RecordType.Name != 'Contract',true,false)}" value=""/>
+                    <apex:inputField rendered="{!IF(Program__c.Opportunity__r.RecordType.Name == 'Contract',true,false)}" label="Actual Amount" value="{!Program__c.Actual_Amount__c}"/>
+                    <apex:inputField value="{!progIn.Auto_Sync_With_Cats__c}" label="Automatic Forecast"/>
+<!-- R2 -->         <apex:inputField label="Variance" value="{!Program__c.Variance__c}"/>
+                </apex:pageBlockSection><br/>
+                <apex:pageBlockSection showHeader="true" title="Brand/Division Details" >
+                <apex:pageBlockSectionItem rendered="{!NOT(hideBrands)}">
+                    <apex:outputLabel value="Brand"/>
+                    <apex:selectList value="{!strBrand}" size="1">
+                        <apex:selectOptions value="{!Brands}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!NOT(hideBrands)}">
+                    <apex:outputLabel value="Division"/>
+                    <apex:selectList value="{!strDivision}" size="1">
+                        <apex:selectOptions value="{!Divisions}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form> 
+</apex:page>

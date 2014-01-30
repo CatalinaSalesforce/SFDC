@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>System Service</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>System Services</value>
+    </caseValues>
+    <fields>
+        <label><!-- Instance ID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label><!-- System Class ID --></label>
+        <name>System_Class_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- System Name --></label>
+        <name>System_Name__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

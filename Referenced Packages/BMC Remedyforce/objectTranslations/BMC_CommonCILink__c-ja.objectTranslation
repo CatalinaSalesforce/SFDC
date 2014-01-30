@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>BMC_CommonCILinks</value>
+    </caseValues>
+    <fields>
+        <label>CIインスタンス</label>
+        <name>CIInstance__c</name>
+        <relationshipLabel>BMC共通CIリンク</relationshipLabel>
+    </fields>
+    <fields>
+        <label>クラス名</label>
+        <name>ClassName__c</name>
+    </fields>
+    <fields>
+        <label>構成アイテム~</label>
+        <name>Configuration_Item__c</name>
+    </fields>
+    <fields>
+        <label>タスク</label>
+        <name>FKTask__c</name>
+        <relationshipLabel>リンク済みサービスとCI</relationshipLabel>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>オブジェクト名</label>
+        <name>ObjectName__c</name>
+    </fields>
+    <fields>
+        <label>オブジェクトレコードID</label>
+        <name>ObjectRecordID__c</name>
+    </fields>
+    <nameFieldLabel><!-- Name --></nameFieldLabel>
+    <webLinks>
+        <label>新しいリンク</label>
+        <name>New_Link</name>
+    </webLinks>
+</CustomObjectTranslation>

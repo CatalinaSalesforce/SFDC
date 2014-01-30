@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>SRM_RequestDefinition__c.serviceRequestTitle__c</field>
+    </columns>
+    <columns>
+        <field>SRM_RequestDefinition__c.FKCategory__c</field>
+    </columns>
+    <columns>
+        <field>SRM_RequestDefinition__c.Description__c</field>
+    </columns>
+    <columns>
+        <field>SRM_RequestDefinition__c.Online__c</field>
+    </columns>
+    <columns>
+        <field>SRM_RequestDefinition__c.TurnaroundTime__c</field>
+    </columns>
+    <columns>
+        <field>SRM_RequestDefinition__c.StartDate__c</field>
+    </columns>
+    <columns>
+        <field>SRM_RequestDefinition__c.EndDate__c</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Lists all services and their service request definitions and groups them by the Service field.</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>SRM_RequestDefinition__c.FKBusinessService__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Service Catalog</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$SRM_RequestDefinition__c</reportType>
+    <scope>user</scope>
+    <showDetails>true</showDetails>
+    <timeFrameFilter>
+        <dateColumn>SRM_RequestDefinition__c.EndDate__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

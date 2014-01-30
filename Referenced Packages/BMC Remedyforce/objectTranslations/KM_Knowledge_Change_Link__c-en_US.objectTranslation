@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Knowledge Change Link</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Knowledge Change Links</value>
+    </caseValues>
+    <fields>
+        <label><!-- Change # --></label>
+        <name>Change_Request__c</name>
+        <relationshipLabel><!-- Linked Knowledge Articles --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Knowledge Article # --></label>
+        <name>Knowledge_Article__c</name>
+        <relationshipLabel><!-- Linked Change Requests --></relationshipLabel>
+    </fields>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label><!-- New_Link --></label>
+        <name>New_Link</name>
+    </webLinks>
+</CustomObjectTranslation>

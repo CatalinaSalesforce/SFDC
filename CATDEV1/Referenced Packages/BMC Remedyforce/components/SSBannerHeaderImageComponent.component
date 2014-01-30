@@ -1,0 +1,19 @@
+<apex:component id="bannerHeaderComponent" controller="BMCServiceDesk.SSThemeImagesComponentController">
+    <div class="ext-gecko ext-gecko3 x-border-sslayout-ct">
+    <table width="100%"><tr>
+    <td align="left">
+    <a onclick="openWindow();" target="_blank"  title="{!URLTipText}" styleClass="clsSSHeader" style="{!IF(companyURL!='','cursor:pointer','cursor:default')}" id="bmcLink">
+        <apex:image value="{!URLFOR($Resource.BMCServiceDesk__Themes,theme.BMCServiceDesk__Resource_File_Name__c+'/SDEFimages/app_title_BMC_RemedyForce.png')}" rendered="{!NOT(customBannerHeaderImageVisible)}"/>
+        <apex:image url="/servlet/servlet.FileDownload?file={!bannerHeaderId}" rendered="{!customBannerHeaderImageVisible}" height="23" width="178"/>
+    </a>
+    </td>
+    </tr></table>
+    </div>
+	<script>
+	function openWindow(){
+		var url ='{!companyURL}';
+		if(url!=null && url!='')
+		window.open(url);
+	}
+	</script>
+</apex:component>

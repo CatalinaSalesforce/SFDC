@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Médias</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Médias</value>
+    </caseValues>
+    <fields>
+        <label>Fonctions</label>
+        <name>Capabilities__c</name>
+    </fields>
+    <fields>
+        <label>Méthode de compression</label>
+        <name>CompressionMethod__c</name>
+    </fields>
+    <fields>
+        <label>Taille de bloc par défaut</label>
+        <name>DefaultBlockSize__c</name>
+    </fields>
+    <fields>
+        <label>ID cible SCSI de lecteur</label>
+        <name>DriveSCSITargetID__c</name>
+    </fields>
+    <fields>
+        <label>Taille de lecteur</label>
+        <name>DriveSize__c</name>
+    </fields>
+    <fields>
+        <label>Type d&apos;interface pilote</label>
+        <name>DriverInterfaceType__c</name>
+    </fields>
+    <fields>
+        <label>ID instance</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>Taille de bloc maximale</label>
+        <name>MaxBlockSize__c</name>
+    </fields>
+    <fields>
+        <label>Taille de support maximale</label>
+        <name>MaxMediaSize__c</name>
+    </fields>
+    <fields>
+        <label>Type de support</label>
+        <name>MediaType__c</name>
+        <picklistValues>
+            <masterLabel>Fixed hard disk</masterLabel>
+            <translation><!-- Fixed hard disk --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Removable media</masterLabel>
+            <translation><!-- Removable media --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Taille de bloc minimale</label>
+        <name>MinBlockSize__c</name>
+    </fields>
+    <fields>
+        <label>Nombre de supports pris en charge</label>
+        <name>NumberOfMediaSupported__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- BMC_Media Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

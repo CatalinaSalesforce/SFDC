@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Business Service</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Business Services</value>
+    </caseValues>
+    <fields>
+        <label><!-- Asset # --></label>
+        <name>Asset__c</name>
+    </fields>
+    <fields>
+        <label><!-- Price --></label>
+        <name>Base_Customer_Price__c</name>
+    </fields>
+    <fields>
+        <label><!-- Cost --></label>
+        <name>Base_Delivery_Cost__c</name>
+    </fields>
+    <fields>
+        <label><!-- Class Name --></label>
+        <name>Class_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Cost Description --></label>
+        <name>CostDescription__c</name>
+    </fields>
+    <fields>
+        <label><!-- Cost Option1 --></label>
+        <name>CostOption1__c</name>
+        <picklistValues>
+            <masterLabel>Adapter</masterLabel>
+            <translation><!-- Adapter --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Asset</masterLabel>
+            <translation><!-- Asset --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CPU</masterLabel>
+            <translation><!-- CPU --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Concurrent user</masterLabel>
+            <translation><!-- Concurrent user --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Enterprise</masterLabel>
+            <translation><!-- Enterprise --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Installed Server</masterLabel>
+            <translation><!-- Installed Server --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Instance</masterLabel>
+            <translation><!-- Instance --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Item</masterLabel>
+            <translation><!-- Item --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>License</masterLabel>
+            <translation><!-- License --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Named User</masterLabel>
+            <translation><!-- Named User --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Site</masterLabel>
+            <translation><!-- Site --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Storage in GB</masterLabel>
+            <translation><!-- Storage in GB --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Storage in TB</masterLabel>
+            <translation><!-- Storage in TB --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Cost Option2 --></label>
+        <name>CostOption2__c</name>
+        <picklistValues>
+            <masterLabel>Day</masterLabel>
+            <translation><!-- Day --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Fulfillment</masterLabel>
+            <translation><!-- Fulfillment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hour</masterLabel>
+            <translation><!-- Hour --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Month</masterLabel>
+            <translation><!-- Month --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Quarter</masterLabel>
+            <translation><!-- Quarter --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Week</masterLabel>
+            <translation><!-- Week --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Year</masterLabel>
+            <translation><!-- Year --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Date --></label>
+        <name>End_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Base Element --></label>
+        <name>FKBMC_BaseElement__c</name>
+        <relationshipLabel><!-- Business Services --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Sub-Service of --></label>
+        <name>FKBusinessService__c</name>
+        <relationshipLabel><!-- Business Services --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Inactive --></label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <label><!-- InstanceID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service Name --></label>
+        <name>Instance_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Owner --></label>
+        <name>Owner__c</name>
+    </fields>
+    <fields>
+        <label><!-- Parent Service --></label>
+        <name>Parent_Service__c</name>
+    </fields>
+    <fields>
+        <label><!-- Price Option1 --></label>
+        <name>PriceOption1__c</name>
+        <picklistValues>
+            <masterLabel>Adapter</masterLabel>
+            <translation><!-- Adapter --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Asset</masterLabel>
+            <translation><!-- Asset --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>CPU</masterLabel>
+            <translation><!-- CPU --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Concurrent user</masterLabel>
+            <translation><!-- Concurrent user --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Enterprise</masterLabel>
+            <translation><!-- Enterprise --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Installed Server</masterLabel>
+            <translation><!-- Installed Server --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Instance</masterLabel>
+            <translation><!-- Instance --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Item</masterLabel>
+            <translation><!-- Item --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>License</masterLabel>
+            <translation><!-- License --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Named User</masterLabel>
+            <translation><!-- Named User --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Site</masterLabel>
+            <translation><!-- Site --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Storage in GB</masterLabel>
+            <translation><!-- Storage in GB --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Storage in TB</masterLabel>
+            <translation><!-- Storage in TB --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Price Option2 --></label>
+        <name>PriceOption2__c</name>
+        <picklistValues>
+            <masterLabel>Day</masterLabel>
+            <translation><!-- Day --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Fulfillment</masterLabel>
+            <translation><!-- Fulfillment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hour</masterLabel>
+            <translation><!-- Hour --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Month</masterLabel>
+            <translation><!-- Month --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Quarter</masterLabel>
+            <translation><!-- Quarter --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Week</masterLabel>
+            <translation><!-- Week --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Year</masterLabel>
+            <translation><!-- Year --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Service Type --></label>
+        <name>ServiceType__c</name>
+        <picklistValues>
+            <masterLabel>BusinessService</masterLabel>
+            <translation><!-- BusinessService --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Offering</masterLabel>
+            <translation><!-- Offering --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>TechnicalService</masterLabel>
+            <translation><!-- TechnicalService --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Service Owner --></label>
+        <name>Service_Owner__c</name>
+        <relationshipLabel><!-- Business Services --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Service Provider --></label>
+        <name>Service_Provider__c</name>
+        <relationshipLabel><!-- Business Services --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Service Review Date --></label>
+        <name>Service_Review_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service Hours --></label>
+        <name>Service_hours__c</name>
+        <relationshipLabel><!-- Business Services --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Site --></label>
+        <name>Site__c</name>
+    </fields>
+    <fields>
+        <label><!-- Stage --></label>
+        <name>Stage__c</name>
+        <picklistValues>
+            <masterLabel>Analyzed</masterLabel>
+            <translation><!-- Analyzed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Approved</masterLabel>
+            <translation><!-- Approved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Build</masterLabel>
+            <translation><!-- Build --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Chartered</masterLabel>
+            <translation><!-- Chartered --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Defined</masterLabel>
+            <translation><!-- Defined --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Designed</masterLabel>
+            <translation><!-- Designed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Developed</masterLabel>
+            <translation><!-- Developed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Operational</masterLabel>
+            <translation><!-- Operational --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Published</masterLabel>
+            <translation><!-- Published --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Released</masterLabel>
+            <translation><!-- Released --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Requirements</masterLabel>
+            <translation><!-- Requirements --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Retired</masterLabel>
+            <translation><!-- Retired --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tested</masterLabel>
+            <translation><!-- Tested --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unpublished</masterLabel>
+            <translation><!-- Unpublished --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Start Date --></label>
+        <name>Start_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Vendor --></label>
+        <name>Vendor__c</name>
+        <relationshipLabel><!-- Business Services (Vendor) --></relationshipLabel>
+    </fields>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Start date should be lesser than End date --></errorMessage>
+        <name>Start_Date_Validation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Please enter the parent service in the Sub-Service of field --></errorMessage>
+        <name>Validate_Parent_service_for_an_offering</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The Sub-Service of attribute can only be populated with a Business Service Instance. --></errorMessage>
+        <name>Validate_Subservice_of</name>
+    </validationRules>
+</CustomObjectTranslation>

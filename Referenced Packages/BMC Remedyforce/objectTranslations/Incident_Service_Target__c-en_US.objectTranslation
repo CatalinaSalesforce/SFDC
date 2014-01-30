@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Incident Service Target</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Incident Service Targets</value>
+    </caseValues>
+    <fields>
+        <label><!-- Clock Pause Date --></label>
+        <name>ClockPauseDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Clock --></label>
+        <name>ClockState__c</name>
+        <picklistValues>
+            <masterLabel>Not Started</masterLabel>
+            <translation><!-- Not Started --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paused</masterLabel>
+            <translation><!-- Paused --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Running</masterLabel>
+            <translation><!-- Running --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Stopped</masterLabel>
+            <translation><!-- Stopped --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Elapsed Time --></label>
+        <name>ElapsedTime__c</name>
+    </fields>
+    <fields>
+        <label><!-- End Date --></label>
+        <name>EndDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service --></label>
+        <name>FKBusinessService__c</name>
+    </fields>
+    <fields>
+        <label><!-- Incident --></label>
+        <name>FKIncident__c</name>
+        <relationshipLabel><!-- Incident Service Target --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- SLA --></label>
+        <name>FKSLA__c</name>
+        <relationshipLabel><!-- Incident Service Targets --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Service Target --></label>
+        <name>FKServiceTarget__c</name>
+        <relationshipLabel><!-- Incident Service Targets --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Incident~ --></label>
+        <name>Incident__c</name>
+    </fields>
+    <fields>
+        <label><!-- Is Canceled --></label>
+        <name>IsCanceled__c</name>
+    </fields>
+    <fields>
+        <label><!-- Paused Duration --></label>
+        <name>PausedDuration__c</name>
+    </fields>
+    <fields>
+        <label><!-- Agreement --></label>
+        <name>SLAName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Target Title --></label>
+        <name>ServiceTargetName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service Target Duration --></label>
+        <name>Service_Target_Duration__c</name>
+    </fields>
+    <fields>
+        <label><!-- Service Target Support Hours --></label>
+        <name>Service_Target_Support_Hours__c</name>
+    </fields>
+    <fields>
+        <label><!-- Start Date --></label>
+        <name>StartDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- State --></label>
+        <name>StateValue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- Support Hour Applied --></label>
+        <name>Support_Hour_Applied__c</name>
+        <relationshipLabel><!-- Incident Service Targets --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Target Business Days --></label>
+        <name>TargetBusinessDays__c</name>
+    </fields>
+    <fields>
+        <label><!-- Target End Date --></label>
+        <name>TargetEndDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Target Type~ --></label>
+        <name>TargetTypeValue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Target Type --></label>
+        <name>TargetType__c</name>
+    </fields>
+    <fields>
+        <label><!-- Target Duration --></label>
+        <name>Target_Duration__c</name>
+    </fields>
+    <fields>
+        <label><!-- Time Remaining --></label>
+        <name>TimeRemaining__c</name>
+    </fields>
+    <fields>
+        <label><!-- Warning Time --></label>
+        <name>WarningTime__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

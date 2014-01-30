@@ -1,0 +1,196 @@
+<apex:component controller="BMCServiceDesk.IncidentApprovalComponentController" id="incidentComponent">
+<c:CommonIncludes />
+
+<link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFExtJS}/resources/css/ext-all.css" />
+<apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS}/adapter/ext/ext-base.js" id="ext-base-js"/>
+<apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFExtJS}/ext-all.js" id="ext-all-js"/>
+<link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/BMCStyleSheet.css"/>
+<link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/ChangeStyleSheet.css"/>
+<script>
+Ext.ns("IncidentApproval");
+            IncidentApproval.Labels = {
+            Information: '{!JSENCODE($Label.Information)}',
+            DeletedRecord: '{!JSENCODE($Label.DeletedRecord)}'
+            }
+var initialCost;
+var totalCost;
+            
+</script>
+    <apex:attribute name="incidentNum" assignTo="{!incidentId}" description="" required="true" type="String" />
+ 	<apex:attribute name="emailLinkFlag" assignTo="{!emailLinkFlag}" description="" type="String" />
+ 	
+ 	  <table cellpadding="0" cellspacing="0" class="clsTable">
+        <tr>
+            <td class="clsInputLabelTDCompPartI" >
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.Name.label}" />             
+            </td>           
+            <td class="clsInputTextBoxTD" >
+                <div id = "linkdiv" class = "clsIdInputTextBox">    
+                    <a id ="incidentnumber" HREF="somewhere.html" onClick="return OpenIncident()" oncontextmenu="return false;">
+					{!incidentName}</a> 
+
+                </div>
+            </td>     
+            <td class="clsInputLabelTDCompPartII" >
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKImpact__c.label}" />
+            </td>           
+            <td >
+                <apex:inputtext title="" id="ImpactId" value="{!impact}" styleClass="clsIdInputTextBox"  />
+            </td>           
+        </tr>
+        <tr>
+            <td class="clsInputLabelTDCompPartI">
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKCategory__c.label}" />
+            </td>           
+            <td class="clsInputTextBoxTD">
+                <apex:inputtext title="" id="CatgeoryId" value="{!category}" styleClass="clsIdInputTextBox" />
+            </td>           
+            <td class="clsInputLabelTDCompPartII">
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKUrgency__c.label}" />
+            </td>           
+            <td> 
+                <apex:inputtext title="" id="UrgencyId" value="{!urgency}" styleClass="clsIdInputTextBox" />
+            </td>           
+        </tr>   
+       <tr>
+            <td class="clsInputLabelTDCompPartI">
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKAccount__c.label}" />
+            </td>           
+            <td class="clsInputTextBoxTD">
+                <apex:inputtext title="" id="accountId" value="{!account}" styleClass="clsIdInputTextBox" />
+            </td>            
+             <td class="clsInputLabelTDCompPartII">
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKPriority__c.label}" />
+            </td>           
+            <td class="clsInputTextBoxTD">
+                <apex:inputtext title="" id="priorityId" value="{!priority}" styleClass="clsIdInputTextBox" />
+            </td>          
+        </tr>
+       
+        <tr>
+            <td class="clsInputLabelTDCompPartI">
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKClient__c.label}" />
+            </td>           
+            <td> 
+                <apex:inputtext title="" id="clientId" value="{!client}" styleClass="clsIdInputTextBox" />
+            </td>                      
+             <td class="clsInputLabelTDCompPartII">
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__Incident__c.fields.BMCServiceDesk__FKRequestDefinition__c.label}" />
+            </td>           
+            <td class="clsInputTextBoxTD">
+                <apex:inputTextArea title="" id="requestDefinationId" value="{!requestDefTitle}" styleClass="clsIdInputTextBox" />
+            </td> 
+                   
+        </tr>
+        <tr>
+        
+            <td class="clsInputLabelTDCompPartI">
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields.BMCServiceDesk__CustomerPrice__c.label}" />
+            </td>           
+            <td> 
+                <apex:inputtext title="" id="unitPrice" value="{!price}" styleClass="clsIdInputTextBox" />
+      
+            </td>                      
+             <td class="clsInputLabelTDCompPartII">
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields.BMCServiceDesk__Quantity__c.label}" />
+            </td>           
+            <td class="clsInputTextBoxTD">
+                <apex:inputTextArea title="" id="quantityId" value="{!quantity}" styleClass="clsIdInputTextBox" />
+            </td> 
+                   
+        </tr>
+        <tr>
+            <td class="clsInputLabelTDCompPartI">
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields.BMCServiceDesk__TotalPrice__c.label}" />
+            </td>           
+            <td> 
+                <apex:inputtext title="" id="totalPriceId" value="{!totalPrice}" styleClass="clsIdInputTextBox" />
+            </td>   
+                    
+             <td class="clsInputLabelTDCompPartII">
+                <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields.BMCServiceDesk__DateRequired__c.label}" />
+            </td>           
+            <td class="clsInputTextBoxTD">
+                <apex:inputTextArea title="" id="requiredDateId" value="{!requiredDateString}" styleClass="clsIdInputTextBox" />
+            </td> 
+                   
+        </tr>
+       
+        </table>
+        
+    <div id = "renderButtons"> 
+            <table cellpadding="0" cellspacing="0" class="">
+                <tr>
+                    <td colspan="3">
+                        <div class="div15pxVspacing"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" value="{!$ObjectType.Incident__c.fields.incidentDescription__c.label}" title = "" class="AddButton" id="incidentDescriptionBtnId" onclick="disablebuttons('incidentDescriptionBtnId');"/>
+                    </td>
+                    <td>
+                        <input type="button" value="User Input" title = "" class="AddButton" id="userInputId" onclick="disablebuttons('userInputId');" />
+                    </td>
+                    
+                </tr>   
+            </table>
+        </div>
+        
+        
+           <div id = "textarediv" >
+            <apex:inputtextarea id="incidentDescriptionboxId" value="{!incidentDescrption}" styleClass="clsPanelInputTextAreaReadOnlyChangeComp"  readOnly="true"/>
+            
+        </div>
+        <apex:inputtext title="" id="ciExplorer" value="{!ciEnable}" style="display:none"  />
+ 	 	<apex:inputtext title="" id="uiBtn" value="{!userInputBtn}" style="display:none"  />
+        <script>
+          function isRecordDeleted(){
+        	return {!isRecDeleted};
+    	  }
+          document.getElementById('{!$Component.ImpactId}').readOnly=true;
+          document.getElementById('{!$Component.CatgeoryId}').readOnly=true;
+          document.getElementById('{!$Component.UrgencyId}').readOnly=true;
+          document.getElementById('{!$Component.accountId}').readOnly=true;
+          document.getElementById('{!$Component.priorityId}').readOnly=true;
+          document.getElementById('{!$Component.clientId}').readOnly=true;
+          document.getElementById('{!$Component.requestDefinationId}').readOnly=true;
+          document.getElementById('{!$Component.unitPrice}').readOnly=true;
+          document.getElementById('{!$Component.quantityId}').readOnly=true;
+          document.getElementById('{!$Component.totalPriceId}').readOnly=true;
+          document.getElementById('{!$Component.requiredDateId}').readOnly=true;
+          document.getElementById('incidentDescriptionBtnId').className = 'clickedButton';  
+          
+          function disablebuttons(buttonClicked){
+          	if(buttonClicked=='incidentDescriptionBtnId'){
+         
+          	  document.getElementById('{!$Component.incidentDescriptionboxId}').value = "{!JSENCODE(incidentDescrption)}";
+          	  document.getElementById('incidentDescriptionBtnId').className = 'clickedButton';  
+              document.getElementById('userInputId').className = 'AddButton';
+          	}
+           if(buttonClicked=='userInputId'){
+          
+           	 document.getElementById('{!$Component.incidentDescriptionboxId}').value = '{!JSENCODE(requestDetailInput)}';
+          	  document.getElementById('userInputId').className = 'clickedButton';  
+              document.getElementById('incidentDescriptionBtnId').className = 'AddButton';
+           
+           }
+          
+          
+          }
+          
+          function OpenIncident(){
+         		var incidentName = "{!incidentName}";
+				var incidentId = "{!incidentId}";
+				var url =  "NavigatorPage? &title="+incidentName+"&target=IncidentPage?id="+incidentId;			
+				window.parent.parent.addNewTab("IncidentPage", '{!JSENCODE($ObjectType.Incident__c.LabelPlural)}',url);  
+				return false;    
+          
+          }
+          
+          function changeTextareaHeight(changedheight){
+        		document.getElementById('{!$Component.incidentDescriptionboxId}').style.height = changedheight;        	
+        	}
+        </script>
+ 	
+</apex:component>

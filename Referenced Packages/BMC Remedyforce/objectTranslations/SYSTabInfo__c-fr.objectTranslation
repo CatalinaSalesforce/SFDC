@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Informations des onglets</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Informations des onglets</value>
+    </caseValues>
+    <fields>
+        <label>Clé étrangère</label>
+        <name>Fkey__c</name>
+    </fields>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Objet enfant</label>
+        <name>childObject__c</name>
+    </fields>
+    <fields>
+        <label>Lien de modification</label>
+        <name>editLink__c</name>
+    </fields>
+    <fields>
+        <label>Nom du formulaire</label>
+        <name>formName__c</name>
+    </fields>
+    <fields>
+        <label>Nouveau/Modifier un lien</label>
+        <name>newEditLink__c</name>
+    </fields>
+    <fields>
+        <label>Objet parent</label>
+        <name>parentObject__c</name>
+    </fields>
+    <fields>
+        <help><!-- Label to be displayed on the field --></help>
+        <label>Nom d&apos;onglet</label>
+        <name>tabName__c</name>
+    </fields>
+    <fields>
+        <label>Séquence Onglet</label>
+        <name>tabSequence__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel>Name</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

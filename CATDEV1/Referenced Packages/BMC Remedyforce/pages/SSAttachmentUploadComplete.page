@@ -1,0 +1,6 @@
+<apex:page id="SSAttachmentUploadComplete" sidebar="false" showHeader="false" standardStylesheets="false">
+    <script>
+        window.parent.refreshDocs();
+        window.parent.SDF.incident.attachmentPopup.close();
+    </script>
+</apex:page>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>LAN Endpoint</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>LAN Endpoints</value>
+    </caseValues>
+    <fields>
+        <label><!-- Alias Addresses --></label>
+        <name>AliasAddresses__c</name>
+    </fields>
+    <fields>
+        <label><!-- Group Addresses --></label>
+        <name>GroupAddresses__c</name>
+    </fields>
+    <fields>
+        <label><!-- Instance ID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label><!-- LAN ID --></label>
+        <name>LANID__c</name>
+    </fields>
+    <fields>
+        <label><!-- MAC Address --></label>
+        <name>MACAddress__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

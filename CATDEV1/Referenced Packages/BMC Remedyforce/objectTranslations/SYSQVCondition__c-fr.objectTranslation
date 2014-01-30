@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Conditions de la vue rapide</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Conditions de la vue rapide</value>
+    </caseValues>
+    <fields>
+        <label>Infos du champ QV SYS FK</label>
+        <name>FKSYSQVFieldInfo__c</name>
+        <relationshipLabel>Conditions QV SYS (Infos du champ QV SYS FK)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Demande QV SYS FK</label>
+        <name>FKSYSQVQuery__c</name>
+        <relationshipLabel>Conditions QV SYS</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Opérateur QV SYS</label>
+        <name>SYSQVOperator__c</name>
+    </fields>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Intitulé</label>
+        <name>displaylabel__c</name>
+    </fields>
+    <fields>
+        <label>Opérateur de fusion</label>
+        <name>groupingOperator__c</name>
+    </fields>
+    <fields>
+        <label>Op1 est une variable d&apos;exécution</label>
+        <name>op1IsRuntimeVar__c</name>
+    </fields>
+    <fields>
+        <label>Op2 est une variable d&apos;exécution</label>
+        <name>op2IsRuntimeVar__c</name>
+    </fields>
+    <fields>
+        <label>Opérande 1</label>
+        <name>operand1__c</name>
+    </fields>
+    <fields>
+        <label>Opérande 2</label>
+        <name>operand2__c</name>
+    </fields>
+    <fields>
+        <label>Index des commandes</label>
+        <name>orderIndex__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel><!-- SYSQVCondition Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

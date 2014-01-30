@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SelfService</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>SelfService</value>
+    </caseValues>
+    <fields>
+        <label><!-- AccountName --></label>
+        <name>AccountName__c</name>
+    </fields>
+    <fields>
+        <label><!-- AllowSS_ConfigureBroadcastSpeed --></label>
+        <name>AllowSS_ConfigureBroadcastSpeed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Allow Incident Resolution --></label>
+        <name>Allow_Incident_Resolution__c</name>
+    </fields>
+    <fields>
+        <label><!-- Allow Internet Search --></label>
+        <name>Allow_Internet_Search__c</name>
+    </fields>
+    <fields>
+        <label><!-- Allow RF Knowledge --></label>
+        <name>Allow_RF_Knowledge__c</name>
+    </fields>
+    <fields>
+        <label><!-- Allow SF Knowledge --></label>
+        <name>Allow_SF_Knowledge__c</name>
+    </fields>
+    <fields>
+        <help><!-- Allow_To_Submit_New_Incident_Resolution --></help>
+        <label><!-- Allow To Submit New Incident Resolution --></label>
+        <name>Allow_To_Submit_New_Incident_Resolution__c</name>
+    </fields>
+    <fields>
+        <label><!-- Allow to Close Incident --></label>
+        <name>Allow_to_Close_Incident__c</name>
+    </fields>
+    <fields>
+        <label><!-- Allow to Copy Incident --></label>
+        <name>Allow_to_Copy_Incident__c</name>
+    </fields>
+    <fields>
+        <label><!-- Allow to Reopen Incident --></label>
+        <name>Allow_to_Reopen_Incident__c</name>
+    </fields>
+    <fields>
+        <label><!-- Assigned Queue to Incident --></label>
+        <name>Assigned_Queue_to_Incident__c</name>
+    </fields>
+    <fields>
+        <label><!-- Assigned StaffID to Incident --></label>
+        <name>Assigned_StaffID_to_Incident__c</name>
+    </fields>
+    <fields>
+        <label><!-- Available Search Engines --></label>
+        <name>Available_Search_Engines__c</name>
+    </fields>
+    <fields>
+        <label><!-- Contact Us Message --></label>
+        <name>Contact_Us_Message__c</name>
+    </fields>
+    <fields>
+        <label><!-- Allow to submit Incident form broadcast --></label>
+        <name>CreateIncForBroadcast__c</name>
+    </fields>
+    <fields>
+        <label><!-- Default Limit Record Home --></label>
+        <name>DefaultLimitRecordHome__c</name>
+    </fields>
+    <fields>
+        <label><!-- Enable Auto Suggestion --></label>
+        <name>EnableAutoSuggestion__c</name>
+    </fields>
+    <fields>
+        <label><!-- Enable Intranet Search Portlet --></label>
+        <name>Enable_Intranet_Search_Portlet__c</name>
+    </fields>
+    <fields>
+        <label><!-- Enable Mobile Access --></label>
+        <name>Enable_Mobile_Access__c</name>
+    </fields>
+    <fields>
+        <label><!-- Enable My Cart for Service Request --></label>
+        <name>Enable_MyCart__c</name>
+    </fields>
+    <fields>
+        <label><!-- Enable Quick Link Portlet --></label>
+        <name>Enable_Quick_Link_Portlet__c</name>
+    </fields>
+    <fields>
+        <label><!-- Incident History in Days --></label>
+        <name>Incident_History_in_Days__c</name>
+    </fields>
+    <fields>
+        <label><!-- Incident Template for Contact Us --></label>
+        <name>Incident_Template_for_Contact_Us__c</name>
+    </fields>
+    <fields>
+        <label><!-- Incident and Service Request Combined --></label>
+        <name>IncidentandServiceRequestCombined__c</name>
+    </fields>
+    <fields>
+        <label><!-- Enable Browse as default view --></label>
+        <name>IsBrowseDefault__c</name>
+    </fields>
+    <fields>
+        <label><!-- Knowledge Article has Priority --></label>
+        <name>KnowledgeArticlehasPriority__c</name>
+    </fields>
+    <fields>
+        <label><!-- Limit Closed Incidents --></label>
+        <name>Limit_Closed_Incidents__c</name>
+    </fields>
+    <fields>
+        <label><!-- Max Limit Record Home --></label>
+        <name>MaxLimitRecordHome__c</name>
+    </fields>
+    <fields>
+        <label><!-- Portal Account Id --></label>
+        <name>Portal_Account_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Portal ID --></label>
+        <name>Portal_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- SSBroadcastSpeed --></label>
+        <name>SSBroadcastSpeed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Sequence Id --></label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label><!-- Show_Hide_SSTopHeader --></label>
+        <name>Show_Hide_SSTopHeader__c</name>
+    </fields>
+    <fields>
+        <label><!-- Show My Profile Link --></label>
+        <name>Show_My_Profile_Link__c</name>
+    </fields>
+    <fields>
+        <label><!-- Show New User Registration Link --></label>
+        <name>Show_New_User_Registration_Link__c</name>
+    </fields>
+    <fields>
+        <label><!-- Show Note field --></label>
+        <name>Show_Note_field__c</name>
+    </fields>
+    <fields>
+        <label><!-- Site URL --></label>
+        <name>SiteURL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Site Base URL --></label>
+        <name>Site_Base_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Site Secure Base URL --></label>
+        <name>Site_Secure_Base_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tiles Order --></label>
+        <name>Tiles_Order__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tiles_Position --></label>
+        <name>Tiles_Position__c</name>
+    </fields>
+    <fields>
+        <label><!-- URL of Intranet Search --></label>
+        <name>URL_of_Intranet_Search__c</name>
+    </fields>
+    <fields>
+        <label><!-- showContactUs --></label>
+        <name>showContactUs__c</name>
+    </fields>
+    <fields>
+        <label><!-- showIncTemplatesOnHome --></label>
+        <name>showIncTemplatesOnHome__c</name>
+    </fields>
+    <fields>
+        <label><!-- showKnowledgeOnHome --></label>
+        <name>showKnowledgeOnHome__c</name>
+    </fields>
+    <fields>
+        <label><!-- showServiceRequestOnHome --></label>
+        <name>showServiceRequestOnHome__c</name>
+    </fields>
+    <fields>
+        <label><!-- submit Incident --></label>
+        <name>submit_Incident__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>クイックビューフィールドオブジェクトのマッピング</value>
+    </caseValues>
+    <fields>
+        <label>FKSYSQVフィールド情報</label>
+        <name>FKSYSQVFieldInfo__c</name>
+        <relationshipLabel>SYSQVフィールドオブジェクト情報</relationshipLabel>
+    </fields>
+    <fields>
+        <label>FKSYSQVクエリー</label>
+        <name>FKSYSQVQuery__c</name>
+        <relationshipLabel>SYSQVクエリーSYSQVフィールドオブジェクト情報</relationshipLabel>
+    </fields>
+    <fields>
+        <label>シーケンスID</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>オブジェクト名</label>
+        <name>objectName__c</name>
+    </fields>
+    <nameFieldLabel><!-- SYSQVFieldsObjectsInfo Name --></nameFieldLabel>
+</CustomObjectTranslation>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Informations des champs de l&apos;onglet</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Informations des champs de l&apos;onglet</value>
+    </caseValues>
+    <fields>
+        <label>Infos sur l&apos;onglet FK</label>
+        <name>SYSTabInfo__c</name>
+        <relationshipLabel>Infos sur les champs de l&apos;onglet SYS</relationshipLabel>
+    </fields>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Colonne Séquence</label>
+        <name>columnSequence__c</name>
+    </fields>
+    <fields>
+        <label>Largeur de colonne</label>
+        <name>columnWidth__c</name>
+    </fields>
+    <fields>
+        <label>Nom du champ API</label>
+        <name>fieldAPIName__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel>Name</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,411 @@
+<apex:page showHeader="false" controller="BMCServiceDesk.ServiceRequestDetail">
+<body id='docBody' onload="initiateSelfClosing()" />
+    <c:CommonIncludes />
+    <script src="{!$Resource.SDEFExtJS}/ex/ux/Spinner.js" />
+    <script src="{!$Resource.SDEFExtJS}/ex/ux/SpinnerField.js" />
+    <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFExtJS}/ex/ux/css/Spinner.css" />
+   
+    <script src="{!$Resource.SDEFCommonJS}/JSCommon.js"/>
+    <script src="{!$Resource.SDEFCommonJS}/ServiceRequestDetail.js"/>
+    <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/CustomViews.css" />
+    <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/ServiceLevelTarget.css" />
+    
+    <link rel="stylesheet" type="text/css" href="{!$Resource.ExtJSUX31}/ex/ux/css/GroupTab.css" />
+    <link rel="stylesheet" type="text/css" href="{!$Resource.Themes}/SSDefaultTheme/SSIncident.css" />
+    <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/SIStyleSheet.css"/>
+   
+<style>
+    
+.x-panel-header0 {
+	background: url("{!$Resource.SDEFStyles}/SDEFimages/btn_background_blue_01.gif") repeat scroll 0 0 transparent;
+	border-color:#99BBE8;
+	color:#FFFFFF;
+	font-family: Arial,Geneva, Helvetica, sans-serif, MS Sans Serif;
+	font-size:13px;
+	font-weight:bold;
+	height: 25px;
+	padding-left:5px;
+}
+.lineSeparatorCls {
+	font-family: Arial;
+	font-size: 13px;
+	border-top: 2px solid #B1B1B1;
+	padding-top: 3px;
+}
+.tdHeaderSection.tdHeaderSectionSR,.tdHeaderSectionSRBar{
+    font-family:Arial !important;
+    font-size: 13px !important;
+}
+.tdHeaderSectionSRBar{height:25px;}    
+.requestTableClass {
+            /*height: 180px;*/
+            width:100%;
+        }
+  .x-toolbar-right {
+   background-color: #CCD8E7;
+}     
+.requestCellEditCls {
+    padding-left:1px;
+    padding-left/*\**/: 2px\9;  
+}  
+.requestCellViewCls {
+    padding-left:1px;
+    padding-left/*\**/: 3px\9;
+    padding-left: 1px\9;
+}   
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .requestCellEditCls {
+        padding-left:3px;   
+    }
+    .requestCellViewCls {
+        padding-left:2px;   
+    }   
+}
+.optionsTableCls td{font-family: Tahoma, MS Sans Serif;font-size:11px;}
+.inputMainCls{padding-left:15px;}
+.rightFSTdCls{padding-left:5px;}
+.x-toolbar .x-btn-tl, .x-toolbar .x-btn-tr, .x-toolbar .x-btn-tc, .x-toolbar .x-btn-ml, .x-toolbar .x-btn-mr, .x-toolbar .x-btn-mc, .x-toolbar .x-btn-bl, .x-toolbar .x-btn-br, .x-toolbar .x-btn-bc {
+background-color: #CCD8E7;}
+</style>    
+<script>
+officialNamespace='';
+window.document.title = '{!JSENCODE($Label.ServiceRequestDetail)}';
+var standardLayout = '{!JSENCODE($CurrentPage.parameters.standardLayout)}';
+var succesvar='{!JSENCODE($Label.SavedSuccessfully)}';
+  Ext.ns("ServiceRequestPage");
+    ServiceRequestPage.Labels = {
+        Save: '{!JSENCODE($Label.Save)}',
+        Reset: '{!JSENCODE($Label.Refresh)}',
+        Error: '{!JSENCODE($Label.Error)}'
+    }
+ var requestDetailId; 
+ var quantitySpinnerState = {!isViewMode};
+ var incidentWithRequest = {!incidentWithRequest};
+ var isConsole = getUrlParameter('isConsole');
+ var incidentId = getUrlParameter('incidentId');
+  function getInitialCost(){
+     return {!requestBean.serviceRequest.customerPrice__c};
+  }
+  function getDetailQuantity(){
+     return {!requestBean.serviceRequest.BMCServiceDesk__Quantity__c};
+  }
+  function fetchQuantityText(){
+    return document.getElementById('{!$Component.serviceDetail.quantityText}');
+ }
+
+        requestDetailId = '{!JSENCODE(requestBean.serviceRequest.Id)}';
+        
+       
+        
+</script>
+<apex:outputPanel id="errorId">
+        <script>
+           errormsg = '{!JSENCODE(messageString)}';               
+  </script>
+  </apex:outputPanel>                 
+<apex:outputPanel id="refreshFieldPanel" >
+      <script>
+        requestDetailId = '{!requestBean.serviceRequest.Id}';
+        function getSDFStylesResPath(){
+          return '{!$Resource.SDEFStyles}';
+        }
+ 	
+        function setIdToParent(){
+            if(requestDetailId != null && typeof(requestDetailId) != 'undefined'){
+               
+                 if( standardLayout != 'true' ){
+                    
+                    window.parent.RequestDetailId(requestDetailId);
+                    
+                 }else{
+                 
+                    if(Ext.isIE){
+                    	var parentObj = window.dialogArguments;
+                       	parentObj.requestDetail= requestDetailId;
+                    }else{
+                        window.parent.opener.requestDetail= requestDetailId;
+                    }
+                  
+                 }
+            }
+        }
+    
+      </script>
+ </apex:outputPanel>
+      
+<apex:form id="serviceDetail" >
+       <c:ValidationComponent errorMsgList="{!messageString}" id="validationComponent"></c:ValidationComponent>
+        <apex:actionFunction action="{!save}" name="save" rerender="errorId,validationComponent,refreshFieldPanel,apexMessageErrorPanel" oncomplete="showErrorMessage();setIdToParent();buttonValidator();assignApexErrorMessage();" />
+        <apex:actionFunction action="{!replaceUrl}" name="replaceUrl" />	
+        <apex:outputPanel id="apexMessageErrorPanel" >
+            <div id="apexMessageErrorPanelDiv" style="display:none;">
+                <apex:messages />
+            </div>
+        </apex:outputPanel>
+        <table class="clsMainTable2" cellpadding="0" cellspacing="0" >
+            <tr class="clsRowGreyBg">
+                <td>
+                    <div id="toolBar"></div>
+                </td>
+            </tr>
+            <tr >
+                <td class="requestTableClass" style="vertical-align:top;font-family:Tahoma, MS Sans Serif;">
+                   <table width="100%" style="margin-left:-2px;" cellspacing="0" cellpadding="0">
+                   <tr>
+                   		<td style="width:100%;">
+                   			<table class="optionsTableCls" width="100%" cellspacing="0" cellpadding="0">
+                                <tr>
+		      	                 <td style="width:49%;vertical-align:top;padding-left:5px;">
+		                            <table width="100%" cellspacing="10">
+		                                <tr>
+		                                    <td style="width:40%">
+                                       {!$Label.EntitleLabel}
+                                    </td>
+		                                    <td style="width:60%">
+                                           <apex:inputText value="{!entitled}"  id="entitled" styleClass="clsPanelInputTextboxReadOnly"/>
+                                    </td>
+                                 </tr>
+                                <tr>
+                                    <td >
+                                        {!$Label.RequestFor}
+                                    </td>
+                                    <td>
+                                           {!ClientFullName}
+                                    </td>
+		                                 </tr>
+		                                <tr>
+                                    <td>
+		                                       {!$Label.RequestDetailPhone}
+		                                    </td>
+		                                     <td>
+		                                       <apex:outputText value="{!clientPhone}" id="phone"/>
+                                    </td>
+		                                </tr>
+		                                <tr>
+		                                     <td >
+		                                        {!$Label.RequestDetailEmail}
+                                    </td>
+                                     <td>
+		                                        <apex:outputText value="{!clientEmail}" id="email"/>
+                                    </td>
+                                 </tr>
+                                <tr>
+                                     <td >
+		                                        {!$Label.RequestedBy}
+                                    </td>
+                                     <td>
+		                                          {!incidentCreatedBy} 
+		                                    </td>
+		                                 </tr>
+		                            </table>
+		                       </td>
+		                       <td style="width:50%;padding-left:5px;">
+		                            <table width="100%" cellspacing="10">
+		                                <tr>
+		                                    <td style="width:40%;" class="{!if (isViewMode, 'requestCellViewCls', 'requestCellEditCls')}">
+		                                        {!$ObjectType.SRM_RequestDetail__c.fields.DateRequired__c.label}
+		                                    </td>
+		                                    <td style="width:60%">
+		                                        <apex:inputField value="{!requestBean.serviceRequest.BMCServiceDesk__DateRequired__c}" id="serviceRequestDate" styleClass="clsPanelInputTextbox" rendered="{!NOT(isViewMode)}"/>
+		                                        <apex:outputField value="{!requestBean.serviceRequest.BMCServiceDesk__DateRequired__c}" styleClass="clsPanelInputTextbox" rendered="{!(isViewMode)}"/>
+		                                    </td>
+		                                 </tr>
+		                                <tr>
+		                                     <td class="{!if (isViewMode, 'requestCellViewCls', 'requestCellEditCls')}">
+		                                        {!$ObjectType.SRM_RequestDetail__c.fields.DateExpected__c.label}
+                                    </td>
+                                     <td>
+		                                       <apex:outputField value="{!requestBean.serviceRequest.BMCServiceDesk__DateExpected__c}"/>
+                                    </td>
+		                                 </tr>
+		                                <tr>
+                                     <td class="{!if (isViewMode, 'requestCellViewCls', 'requestCellEditCls')}">
+                                       {!$ObjectType.SRM_RequestDetail__c.fields.Quantity__c.label}
+                                   </td>
+                                   <td>
+                                      <apex:inputHidden value="{!requestBean.serviceRequest.BMCServiceDesk__Quantity__c}" id="quantityText"/>
+                                      <div id="quantity"/>
+                                   </td>
+                                </tr>
+                                <tr>
+                                    <td class="{!if (isViewMode, 'requestCellViewCls', 'requestCellEditCls')}">
+                                     {!$Label.SRUnitPrice}
+                                   </td>
+                                  <td style="width:50%;">
+                                    <span id="unitPrice">{!requestBean.serviceRequest.CustomerPrice__c}</span>
+                                    <apex:outputLabel value="{!currencyType} {!IF(OR(priceOption1 == null,  priceOption1 == ''), '', '/')} {!priceOption1} {!IF(OR(priceOption2 == null, priceOption2 == ''), '', '/')} {!priceOption2}"></apex:outputLabel> 
+                                 </td>
+                                </tr>
+                                <tr>
+                                     <td class="{!if (isViewMode, 'requestCellViewCls', 'requestCellEditCls')}">
+                                       {!$ObjectType.SRM_RequestDetail__c.fields.TotalPrice__c.label}
+                                   </td>
+                                    <td>
+                                       <span id="totalCost">{!requestBean.serviceRequest.customerPrice__c}</span>
+                                       <apex:outputLabel value="{!currencyType}"></apex:outputLabel> 
+                                   </td>
+                                 </tr>
+                            </table>
+                       </td>
+	                   			</tr>
+                   			</table>
+                   		</td>
+                    </tr>                    
+                    <tr>    
+                        <td class="requestTableClass" style="vertical-align:top;">
+                             <table style='width:100%; margin-left:-2px;' >
+                                <tr>
+                                    <td style='width:50%;vertical-align:top;' class="{!if (isViewMode, '', 'clsPanelInputLabelTD')}">
+                                        <table  style='width:100%;' cellspacing="10" class="clsPanelInputLabelTD">
+                                            <c:DynamicInputComponent inputList="{!dynamicInputTypeList}" id="test"  isViewmode="{!isViewMode}" requestDetail="{!requestBean}" rendered="{!NOT(isViewMode)}"/>
+                                            <apex:outputPanel rendered="{!isViewMode}">
+                                                <table class="clsPanelInputLabelTD" width="100%" cellspacing="10px" style="margin-top:-15px;">
+                                                    <tr>
+                                                        <td width="53%" valign="top">
+                                                            <apex:outputPanel id="viewLeftFSId" rendered="{!if (isViewMode, true, false)}">
+                                                                <apex:repeat value="{!$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.FieldSets.BMCServiceDesk__leftPanel}" var="srFs"> 
+                                                                <apex:outputPanel id="panel1" rendered="{!$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields[srFs].accessible}" >
+                                                                        <apex:outputPanel id="panel3"  >
+                                                                            <table cellpadding="0px" cellspacing="0px" width="100%">
+                                                                                <tr>
+                                                                                    <td width="33%" style="padding-bottom:10px;">
+                                                                                        <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields[srFs].label}" />
+                                                                                    </td>
+                                                                                    <td width="67%" title="{!$ObjectType.SRM_RequestDetail__c.fields[srFs].inlineHelpText}"  style="padding-bottom:10px;">                                                                
+                                                                                        <apex:outputPanel id="panel5" rendered="{!CONTAINS($ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields[srFs].type,'reference')}">
+                                                                                            <apex:outputLabel value="{!requestBean.serviceRequest[requestBean.referenceFieldMap[$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.Fields[srFs].localname].referenceNameField][requestBean.referenceFieldMap[$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.Fields[srFs].localname].referenceNameFieldSec]}" />
+                                                                                        </apex:outputPanel>
+                                                                                        <apex:outputPanel id="panel6" rendered="{!NOT(CONTAINS($ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields[srFs].type,'reference'))}">
+                                                                                            <apex:outputField value="{!requestBean.serviceRequest[srFs]}" />
+                                                                                        </apex:outputPanel>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </apex:outputPanel>                                                     
+                                                                    </apex:outputPanel>
+                                                                </apex:repeat>
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                        <td width="47%" valign="top" style="padding-left:3px;">
+                                                            <apex:outputPanel id="viewRightFSId" rendered="{!if (isViewMode, true, false)}">
+                                                                <apex:repeat value="{!$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.FieldSets.BMCServiceDesk__rightPanel}" var="srFs"> 
+                                                                <apex:outputPanel id="panel1" rendered="{!$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields[srFs].accessible}" >
+                                                                        <apex:outputPanel id="panel3" >
+                                                                            <table cellpadding="0px" cellspacing="0px" width="100%">
+                                                                                <tr>
+                                                                                    <td width="37%" style="padding-bottom:10px;">
+                                                                                        <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields[srFs].label}" />
+                                                                                    </td>
+                                                                                    <td width="63%" title="{!$ObjectType.SRM_RequestDetail__c.fields[srFs].inlineHelpText}"  style="padding-bottom:10px;">                                                                
+                                                                                        <apex:outputPanel id="panel5" rendered="{!CONTAINS($ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields[srFs].type,'reference')}">
+                                                                                            <apex:outputLabel value="{!requestBean.serviceRequest[requestBean.referenceFieldMap[$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.Fields[srFs].localname].referenceNameField][requestBean.referenceFieldMap[$ObjectType.BMCServiceDesk__SRM_RequestDetail__c.Fields[srFs].localname].referenceNameFieldSec]}" />
+                                                                                        </apex:outputPanel>
+                                                                                        <apex:outputPanel id="panel6" rendered="{!NOT(CONTAINS($ObjectType.BMCServiceDesk__SRM_RequestDetail__c.fields[srFs].type,'reference'))}">
+                                                                                            <apex:outputField value="{!requestBean.serviceRequest[srFs]}" />
+                                                                                        </apex:outputPanel>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </apex:outputPanel>                                                     
+                                                                    </apex:outputPanel>
+                                                                </apex:repeat>
+                                                            </apex:outputPanel>                                         
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table class="clsPanelInputLabelTD" width="100%" cellspacing="0px" style="margin-top:-20px;">
+                                                    <tr>
+                                                        <td><hr/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="100%" valign="top">
+                                                            <table cellpadding="0px" cellspacing="10px" width="100%" border="0">
+                                                               <apex:repeat value="{!layoutObjList}" var="layoutObj"   id="requestTableRepeater">
+                													<apex:outputPanel layout="none" rendered="{!if(layoutObj.colOneInputType.BMCServiceDesk__Response__c=='header section', true, false)}">
+                													<tr>
+                                                                        <apex:outputPanel rendered="{!IF(OR(ISNULL(layoutObj.colOneInputType.FKFulfillmentInputs__r.BMCServiceDesk__AdditionalInfo__c),layoutObj.colOneInputType.FKFulfillmentInputs__r.BMCServiceDesk__AdditionalInfo__c==0),true,false)}">
+                                                                        <td colspan="{!IF(isSecondColumnEmpty,'2','4')}" valign="top"  class="tdHeaderSection"> 
+                                                                            <apex:outputLabel value="{!layoutObj.colOneInputType.BMCServiceDesk__Input__c}"/>
+																		</td>
+																		</apex:outputPanel>
+																		<apex:outputPanel rendered="{!IF(layoutObj.colOneInputType.FKFulfillmentInputs__r.BMCServiceDesk__AdditionalInfo__c==1,true,false)}">
+																		 <td colspan="{!IF(isSecondColumnEmpty,'2','4')}" valign="top" class="tdHeaderSection lineSeparatorCls"> 
+                                                                            <apex:outputLabel value="{!layoutObj.colOneInputType.BMCServiceDesk__Input__c}"/>
+																		</td>
+																		</apex:outputPanel>
+																		<apex:outputPanel rendered="{!IF(layoutObj.colOneInputType.FKFulfillmentInputs__r.BMCServiceDesk__AdditionalInfo__c==2,true,false)}">
+																		 <td colspan="{!IF(isSecondColumnEmpty,'2','4')}" class="tdHeaderSection x-panel-header0"> 
+                                                                            <apex:outputLabel value="{!layoutObj.colOneInputType.BMCServiceDesk__Input__c}"/>
+																		</td>
+																		</apex:outputPanel>
+																	</tr>
+																	</apex:outputPanel>
+																	<apex:outputPanel layout="none" rendered="{!AND(isSecondColumnEmpty,if(layoutObj.colOneInputType.BMCServiceDesk__Response__c!='header section', true, false))}">
+																	<tr>
+	                                                                    <td width="42%" valign="top"  class="srm_dynamicInputTableTdLbl"> 
+	                                                                        <apex:outputLabel value="{!layoutObj.colOneInputType.BMCServiceDesk__Input__c}"/>
+	                                                                    </td>
+	                                                                    <td width="58%" valign="top">
+	                                                                        <apex:outputLabel value="{!layoutObj.colOneInputType.BMCServiceDesk__Response__c}"/>
+	                                                                    </td>
+													                </tr>
+												                	</apex:outputPanel>
+													                <apex:outputPanel layout="none" rendered="{!AND(!isSecondColumnEmpty,if(layoutObj.colOneInputType.BMCServiceDesk__Response__c!='header section', true, false))}">
+                                                                    <tr>
+                                                                        <td width="18%" valign="top"  class="srm_dynamicInputTableTdLbl"> 
+                                                                            <apex:outputLabel value="{!layoutObj.colOneInputType.BMCServiceDesk__Input__c}"/>
+                                                                        </td>
+                                                                        <td width="32%" valign="top">
+                                                                            <apex:outputLabel value="{!layoutObj.colOneInputType.BMCServiceDesk__Response__c}"/>
+                                                                        </td>
+                                                                  
+	                                                                    <td width="18%" valign="top"  class="srm_dynamicInputTableTdLbl"> 
+	                                                                        <apex:outputLabel value="{!layoutObj.colTwoInputType.BMCServiceDesk__Input__c}"/>
+	                                                                    </td>
+	                                                                    <td width="32%" valign="top">
+	                                                                        <apex:outputLabel value="{!layoutObj.colTwoInputType.BMCServiceDesk__Response__c}"/>
+                                                                        </td>
+                                                                    </tr>                       
+													                </apex:outputPanel>
+                                                                </apex:repeat>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </apex:outputPanel>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+             </td>
+            </tr>
+            <!--<tr>
+                <td class="x-panel-header0" >
+                {!$Label.RequestInput}
+                </td>
+            </tr>-->
+            
+        </table>
+       
+   
+</apex:form>  
+<style>
+.customSStableCls{
+ width:305px;
+}
+.multiPickListCls{
+    width:25px;
+    font: normal 11px Tahoma, MS Sans Serif; 
+} 
+select
+{
+    width:130px !important;
+}
+</style>
+  
+</apex:page>

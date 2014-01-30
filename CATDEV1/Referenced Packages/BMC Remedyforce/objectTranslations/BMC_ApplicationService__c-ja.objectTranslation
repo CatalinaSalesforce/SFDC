@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>アプリケーションサービス</value>
+    </caseValues>
+    <fields>
+        <label>アプリケーションサービスタイプ</label>
+        <name>Application_Service_Type__c</name>
+        <picklistValues>
+            <masterLabel>J2EE Module</masterLabel>
+            <translation><!-- J2EE Module --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>J2EE Servlet</masterLabel>
+            <translation><!-- J2EE Servlet --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SAP Service</masterLabel>
+            <translation><!-- SAP Service --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Siebel Component</masterLabel>
+            <translation><!-- Siebel Component --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Siebel Component Group</masterLabel>
+            <translation><!-- Siebel Component Group --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>パス名</label>
+        <name>Path_Name__c</name>
+    </fields>
+    <nameFieldLabel>アプリケーションサービス名</nameFieldLabel>
+</CustomObjectTranslation>

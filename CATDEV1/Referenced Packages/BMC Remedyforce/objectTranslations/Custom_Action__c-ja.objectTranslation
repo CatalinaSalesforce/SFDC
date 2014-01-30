@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>カスタムアクション</value>
+    </caseValues>
+    <fields>
+        <help><!-- Use this field to enter a unique alphanumeric identifier that you want to assign to the custom action. --></help>
+        <label>アクション名</label>
+        <name>ActionName__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter a description of the custom action. For example, you can create a custom action to open the Google website in a new browser window. --></help>
+        <label>説明</label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label>表示方法</label>
+        <name>DisplayAs__c</name>
+        <picklistValues>
+            <masterLabel>Icon Button on Toolbar</masterLabel>
+            <translation><!-- Icon Button on Toolbar --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Menu Item In Action Menu</masterLabel>
+            <translation><!-- Menu Item In Action Menu --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the form where this custom action is displayed as a menu command of the Actions menu. --></help>
+        <label>フォーム</label>
+        <name>Form__c</name>
+    </fields>
+    <fields>
+        <label>次で起動</label>
+        <name>LaunchIn__c</name>
+        <picklistValues>
+            <masterLabel>Browser tab</masterLabel>
+            <translation><!-- Browser tab --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Browser window</masterLabel>
+            <translation><!-- Browser window --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Remedyforce tab</masterLabel>
+            <translation><!-- Remedyforce tab --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter URL of the external system or the Salesforce page that you want to access when you run this custom action. --></help>
+        <label>起動URL</label>
+        <name>LaunchUrl__c</name>
+    </fields>
+    <fields>
+        <label>パラメータ</label>
+        <name>Parameters__c</name>
+    </fields>
+    <fields>
+        <label>プロファイルアクセス</label>
+        <name>ProfileAccess__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the custom action record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label>無効</label>
+        <name>inactive__c</name>
+    </fields>
+    <nameFieldLabel><!-- Caption ID --></nameFieldLabel>
+</CustomObjectTranslation>

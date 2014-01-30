@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>ClientUrgency</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>ClientUrgencies</value>
+    </caseValues>
+    <fields>
+        <label><!-- FKClient --></label>
+        <name>FKClient__c</name>
+        <relationshipLabel><!-- ClientUrgencies --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- FKUrgency --></label>
+        <name>FKUrgency__c</name>
+        <relationshipLabel><!-- ClientUrgencies --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Client Name --></label>
+        <name>clientName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Urgency Name --></label>
+        <name>urgencyName__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,88 @@
+<apex:page standardController="Product__c" extensions="ProductSummaryController" tabStyle="Product__c">
+    <apex:sectionHeader title="Product Summary Report" />
+    <apex:pageBlock id="pb">
+        <apex:form id="form">                    
+            
+            <apex:pageblocksection columns="2">
+            <apex:inputField value="{!products.Name}"/>    
+            <apex:inputField value="{!products.Product_Family__c}"/>                
+            <apex:pageBlockSectionItem >
+                <apex:outputText >Geography</apex:outputText>
+                <apex:selectList value="{!selectCountry}" size="1">
+                    <apex:selectOptions value="{!CountryOptions}"/>
+                </apex:selectList>
+            </apex:pageBlockSectionItem>            
+            <apex:inputField value="{!products.Executive_Sponsor__c}"/>    
+            <apex:inputField value="{!products.OwnerId}" required="false"/>    
+            <apex:inputField value="{!products.Category__c}"/>
+            </apex:pageblocksection>
+            
+            <apex:commandButton value="Search"  id="theSubmitButton" action="{!searchProduct}" rerender="pb" status="searchstatus"/>
+            <apex:commandButton value="Reset"  id="rst" action="{!reset}" rerender="pb"/>
+            <br></br>
+            <apex:pageMessages ></apex:pageMessages>        
+            <apex:outputPanel style="color:RED"><apex:actionStatus startText="Searching..." id="searchstatus" /></apex:outputPanel>
+            <apex:outputPanel style="color:RED"><apex:actionStatus startText="Sorting..." id="sorting" /></apex:outputPanel>
+            
+            <apex:pageblocksection columns="1">
+            <apex:pageBlockTable value="{!productFilterList}" var="p" id="table">
+                <apex:column >
+                    <apex:facet name="header">
+                        <apex:commandLink value="Poduct Name" action="{!doSort}" rerender="table" status="sorting">
+                            <apex:param name="sortField" value="Name" assignTo="{!sortField}"/>
+                            <apex:image rendered="{!sortField=="Name"}" value="{!IF(sortOrder=='asc','/img/sort_asc_arrow.gif','/img/sort_desc_arrow.gif')}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputField value="{!p.Name}" />
+                </apex:column>  
+                <apex:column >
+                    <apex:facet name="header">
+                        <apex:commandLink value="Poduct Family" action="{!doSort}" rerender="table" status="sorting">
+                            <apex:param name="sortField" value="Product_Family__c" assignTo="{!sortField}"/>
+                            <apex:image rendered="{!sortField=="Product_Family__c"}" value="{!IF(sortOrder=='asc','/img/sort_asc_arrow.gif','/img/sort_desc_arrow.gif')}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputField value="{!p.Product_Family__c}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">
+                        <apex:commandLink value="Geography" action="{!doSort}" rerender="table" status="sorting">
+                            <apex:param name="sortField" value="Country__c" assignTo="{!sortField}"/>
+                            <apex:image rendered="{!sortField=="Country__c"}" value="{!IF(sortOrder=='asc','/img/sort_asc_arrow.gif','/img/sort_desc_arrow.gif')}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputField value="{!p.Country__c}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">
+                        <apex:commandLink value="Executive Sponsor" action="{!doSort}" rerender="table" status="sorting">
+                            <apex:param name="sortField" value="Executive_Sponsor__c" assignTo="{!sortField}"/>
+                            <apex:image rendered="{!sortField=="Executive_Sponsor__c"}" value="{!IF(sortOrder=='asc','/img/sort_asc_arrow.gif','/img/sort_desc_arrow.gif')}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputField value="{!p.Executive_Sponsor__c}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">
+                        <apex:commandLink value="Owner" action="{!doSort}" rerender="table" status="sorting">
+                            <apex:param name="sortField" value="OwnerId" assignTo="{!sortField}"/>
+                            <apex:image rendered="{!sortField=="OwnerId"}" value="{!IF(sortOrder=='asc','/img/sort_asc_arrow.gif','/img/sort_desc_arrow.gif')}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputField value="{!p.OwnerId}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">
+                        <apex:commandLink value="Category" action="{!doSort}" rerender="table" status="sorting">
+                            <apex:param name="sortField" value="Category__c" assignTo="{!sortField}"/>
+                            <apex:image rendered="{!sortField=="Category__c"}" value="{!IF(sortOrder=='asc','/img/sort_asc_arrow.gif','/img/sort_desc_arrow.gif')}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputField value="{!p.Category__c}"/>
+                </apex:column>
+            </apex:pageBlockTable>
+            </apex:pageblocksection>
+            
+        </apex:form>
+    </apex:pageBlock>
+</apex:page>

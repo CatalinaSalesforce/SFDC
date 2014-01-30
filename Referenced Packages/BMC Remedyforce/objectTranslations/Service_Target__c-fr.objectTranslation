@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Cible du service</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Cibles du service</value>
+    </caseValues>
+    <fields>
+        <help><!-- Select the object to which the service target is applied. --></help>
+        <label>S&apos;applique à</label>
+        <name>Applies_To__c</name>
+    </fields>
+    <fields>
+        <help><!-- Set the target time of completing the service in business days. --></help>
+        <label>Jours ouvrables</label>
+        <name>BusinessDays__c</name>
+    </fields>
+    <fields>
+        <label><!-- SLA --></label>
+        <name>FKSLA__c</name>
+        <relationshipLabel>Cibles de niveau de service</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Select the business support hours for the service. --></help>
+        <label>Heures de prise en charge</label>
+        <name>FKSupport_Hours__c</name>
+        <relationshipLabel>Cible de niveau de service</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Inactif</label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <label>Expression avancée de l&apos;horloge de pause</label>
+        <name>Pause_Clock_Advanced_Expression__c</name>
+    </fields>
+    <fields>
+        <label>Exp. avanc. de l&apos;horl. de pause ap.corr.</label>
+        <name>Postfix_Pause_Clock_Advanced_Expression__c</name>
+    </fields>
+    <fields>
+        <label>Exp. avanc. des crit�res ST apr�s corr.</label>
+        <name>Postfix_ST_Criteria_Advanced_Expression__c</name>
+    </fields>
+    <fields>
+        <label>Exp. avanc. de l&apos;horl. de d�b. ap. corr.</label>
+        <name>Postfix_Start_Clock_Advanced_Expression__c</name>
+    </fields>
+    <fields>
+        <label>Exp. avanc. de l&apos;horl. de fin ap. corr.</label>
+        <name>Postfix_Stop_Clock_Advanced_Expression__c</name>
+    </fields>
+    <fields>
+        <label>Expression avancée des critères ST</label>
+        <name>ST_Criteria_Advanced_Expression__c</name>
+    </fields>
+    <fields>
+        <label>*Description</label>
+        <name>Service_Target_Description__c</name>
+    </fields>
+    <fields>
+        <label>Cible de niveau de service</label>
+        <name>Service_Target_Title__c</name>
+    </fields>
+    <fields>
+        <label>Expression avancée de l&apos;horloge de début</label>
+        <name>Start_Clock_Advanced_Expression__c</name>
+    </fields>
+    <fields>
+        <label>Expression avancée de l&apos;horloge de fin</label>
+        <name>Stop_Clock_Advanced_Expression__c</name>
+    </fields>
+    <fields>
+        <label>Type de cible~</label>
+        <name>TargetTypeValue__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select the type of service target. --></help>
+        <label>Type de cible</label>
+        <name>Target_Type__c</name>
+    </fields>
+    <fields>
+        <help><!-- Set the target time of completing the service in days, hours, and minutes. --></help>
+        <label>Cible</label>
+        <name>Target__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- Service Target # --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

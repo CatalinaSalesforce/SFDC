@@ -1,0 +1,23 @@
+Hello,
+<br><br>
+This email message is to inform you that the incident #{!Incident__c.Name} has been closed.
+<br><br>
+If you have any question or if the incident was not resolved to your satisfaction, please contact the Service Desk.
+<br><br>
+Incident details:
+<br>
+<br>
+Client Name: {!Incident__c.Client_Name__c}
+<br>Description: {!Incident__c.incidentDescription__c} 
+<br>Open Date: {!Incident__c.openDateTime__c}	 
+<br>Due Date: {!Incident__c.dueDateTime__c}	 
+<br>Category: {!Incident__c.FKCategory__c}	 
+<br>Impact: {!Incident__c.FKImpact__c} 	 
+<br>Urgency: {!Incident__c.FKUrgency__c} 	 
+<br>Priority: {!Incident__c.FKPriority__c} 	 
+ <br><br>
+Click  <a href="http://examplesite-enterprise-edition.ap1.force.com/apex/BMCServiceDesk__SurveyPage?i={!Incident__c.Id}"> here</a> to provide feedback on the service you received.
+<br><br>
+Thank you
+<br>
+Service Desk Team

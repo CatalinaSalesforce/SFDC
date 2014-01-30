@@ -1,0 +1,30 @@
+<apex:component controller="R6Service.PostRendererController" selfClosing="true">
+    <apex:attribute name="post" assignTo="{!renderedPost}" type="SocialPost" description="The tweet to render" required="true"/>
+       
+    <apex:variable var="mediaProvider" value="{!post.MediaProvider}"/> <!-- This is required so that the standardController loads the field that is used in the PostRendererController. -->
+    <apex:variable var="messageType" value="{!post.MessageType}"/><!-- This is required so that the standardController loads the field that is used in the PostRendererController. -->
+    
+    <apex:variable var="likePostUrl" value="{!likePost.url}"/>
+    <apex:variable var="retweetUrl" value="{!retweet.url}"/>
+    <apex:variable var="replyUrl" value="{!reply.url}"/>
+    
+    <apex:variable var="isReply" value="{!UPPER(TRIM(post.R6Service__Status__c)) == 'REPLIED'}"/>
+    <apex:variable var="isDeleted" value="{!UPPER(TRIM(post.R6Service__Status__c)) == 'DELETED'}"/>
+    <apex:variable var="isSending" value="{!UPPER(TRIM(post.R6Service__Status__c)) == 'PENDING'}"/>
+    <apex:variable var="isSent" value="{!UPPER(TRIM(post.R6Service__Status__c)) == 'SENT'}"/>
+    <apex:variable var="isError" value="{!post.R6Service__Status__c != null && !isReply && !isDeleted && !isSending && !isSent}"/>
+    
+    <span class="postArea">
+        <c:PostDecorator post="{!post}">
+            <apex:outputLink styleClass="postFavorite postAction" value="{!likePostUrl}" target="_blank" rendered="{!isTwitterPost && !isPrivateMessage}"><apex:image styleClass="intentIcon" value="{!$Resource.R6Service__twitter_favorite_icon}" />Favorite</apex:outputLink>
+            <apex:outputLink styleClass="postRetweet postAction" value="{!retweetUrl}" target="_blank" rendered="{!isTwitterPost && !isPrivateMessage}"><apex:image styleClass="intentIcon" value="{!$Resource.R6Service__twitter_retweet_icon}" />Retweet</apex:outputLink>
+            <apex:outputLink styleClass="postReply postAction" value="{!replyUrl}" target="_blank"><apex:image styleClass="intentIcon" value="{!$Resource.R6Service__twitter_reply_icon}" rendered="{!isTwitterPost}"/>Reply</apex:outputLink>
+        </c:PostDecorator>
+        <span class="alertArea">
+            <apex:pageMessage title="Error" summary="{!post.R6Service__StatusMessage__c}" severity="error" strength="1" rendered="{!isError}" />
+            <apex:pageMessage title="{!post.R6Service__StatusMessage__c}" severity="warning" strength="1" rendered="{!isSending}" />
+            <apex:pageMessage title="{!post.R6Service__StatusMessage__c}" severity="info" strength="1" rendered="{!isDeleted}"/>
+            <apex:pageMessage title="{!post.R6Service__StatusMessage__c}" severity="confirm" strength="1" rendered="{!isReply || isSent}"/>
+        </span>
+    </span>
+</apex:component>

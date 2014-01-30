@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value><!-- Navigator Assignments --></value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value><!-- Navigator Assignments --></value>
+    </caseValues>
+    <fields>
+        <help><!-- Navigator Id --></help>
+        <label><!-- NavigatorID --></label>
+        <name>NavigatorId__c</name>
+    </fields>
+    <gender><!-- Masculine --></gender>
+    <startsWith><!-- Consonant --></startsWith>
+</CustomObjectTranslation>

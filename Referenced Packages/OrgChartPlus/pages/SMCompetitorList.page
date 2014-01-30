@@ -1,0 +1,60 @@
+<apex:page standardController="OrgChartPlus__SM_Competitor__c" recordSetVar="competitors" sidebar="false" tabStyle="SM_Config__tab">
+	<c:SMConfigBanner Title="Competitors" HelpURL="" Selection="co">	<!--{!$Resource.AdminHelpGuideSheetsZip}/AdminMainFrame.html?initial=hpf -->
+	    <apex:form >
+	        <div style="margin-top:4px; margin-bottom:10px">
+	            <span style="color:#333">Enter the list of Competitors that will be available for use in OrgChartPlus charts.</span>
+	        </div>
+
+			<div class="listViewport">
+				<apex:pageBlock title="Competitors" mode="detail" id="CompetitorsList">
+		            <apex:pageMessages />
+		
+		            <apex:pageBlockButtons >
+		                <apex:commandButton value="New" action="{!URLFOR($Action.OrgChartPlus__SM_Competitor__c.New, null, [retURL=$CurrentPage.URL, saveURL=$CurrentPage.URL])}"/>
+		            </apex:pageBlockButtons>
+		
+					<div style="position:relative">
+			            <apex:pageBlockTable value="{!competitors}" var="comp">
+			                <apex:column headerValue="Action" width="110" styleClass="actionColumn">
+			                    <apex:outputLink value="{!URLFOR($Action.SM_Competitor__c.Edit, comp.Id)}" styleClass="actionLink">Edit</apex:outputLink>
+			                    &nbsp;|&nbsp;
+			                    <apex:outputLink value="{!URLFOR($Action.SM_Competitor__c.Delete, comp.Id, [retURL='/apex/OrgChartPlus__SMCompetitorList'])}" onclick="return confirm('Are you sure?');" styleClass="actionLink">Del</apex:outputLink>
+			                </apex:column>
+			                <apex:column headerValue="Competitor Name" value="{!comp.Name}"/>
+			            </apex:pageBlockTable>
+
+						<apex:actionstatus id="CompetitorsStatus">
+				            <apex:facet name="start">
+	                			<div class="waitingSearchDiv" id="el_loading" style="background-color:#ffffff;height:100%;opacity:1;width:100%;"> 
+	                	    		<div class="waitingHolder" style="top: 74.2px; width: 91px;">
+	                    	    		<img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+	                        			<span class="waitingDescription">Loading...</span>
+	                    			</div>
+	                			</div>
+							</apex:facet>
+	        			</apex:actionstatus>
+					</div>
+
+					<div class="bottomNav">
+						<div class="paginator">
+							<span class="left">{!IF( ResultSize>0,(PageNumber*PageSize)-PageSize+1, 0)}-{!IF( ResultSize>0, MIN(PageNumber*PageSize,ResultSize), 0)} of {!ResultSize}</span>
+							<span class="prevNextLinks">
+								<apex:outputPanel rendered="{!hasPrevious}">
+									<apex:commandLink action="{!first}" reRender="CompetitorsList" status="CompetitorsStatus">First</apex:commandlink>&nbsp;
+									<apex:commandLink action="{!previous}" reRender="CompetitorsList" status="CompetitorsStatus">Previous</apex:commandlink>
+								</apex:outputPanel>
+								<apex:outputPanel rendered="{!!hasPrevious}"><span style="color:#888">First Previous</span></apex:outputPanel>&nbsp;
+								<apex:outputPanel rendered="{!hasNext}">
+									<apex:commandLink action="{!next}" reRender="CompetitorsList" status="CompetitorsStatus">Next</apex:commandlink>&nbsp;
+									<apex:commandLink action="{!last}" reRender="CompetitorsList" status="CompetitorsStatus">Last</apex:commandlink>
+								</apex:outputPanel>
+								<apex:outputPanel rendered="{!!hasNext}"><span style="color:#888">Next Last</span></apex:outputPanel>&nbsp;
+							</span>
+							<span class="right">Page {!PageNumber} of {!ceiling(ResultSize/PageSize)}</span>
+						</div>
+					</div>
+	        	</apex:pageBlock>
+	        </div>
+		</apex:form>
+	</c:SMConfigBanner>
+</apex:page>

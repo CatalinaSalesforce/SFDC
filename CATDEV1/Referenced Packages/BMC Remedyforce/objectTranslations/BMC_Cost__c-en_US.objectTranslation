@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Cost</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Costs</value>
+    </caseValues>
+    <fields>
+        <label><!-- Cost Amount --></label>
+        <name>Cost_Amount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Cost Derived Flag --></label>
+        <name>Cost_Derived_Flag__c</name>
+        <picklistValues>
+            <masterLabel>False</masterLabel>
+            <translation><!-- False --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>True</masterLabel>
+            <translation><!-- True --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Instance ID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

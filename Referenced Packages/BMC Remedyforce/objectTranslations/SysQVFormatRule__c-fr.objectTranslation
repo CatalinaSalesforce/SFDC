@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Règles de format de vue rapide</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Règles de format de vue rapide</value>
+    </caseValues>
+    <fields>
+        <label>*Description</label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label>Demande QV SYS FK</label>
+        <name>FkSYSQVQuery__c</name>
+        <relationshipLabel>Règle de format QV Sys</relationshipLabel>
+    </fields>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Position d&apos;affichage</label>
+        <name>displayPosition__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel><!-- SysQVFormatRule Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

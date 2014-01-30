@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>ファイルシステム</value>
+    </caseValues>
+    <fields>
+        <label>空き容量</label>
+        <name>Available_Space__c</name>
+    </fields>
+    <fields>
+        <label>ブロックサイズ</label>
+        <name>Block_Size__c</name>
+    </fields>
+    <fields>
+        <label>ファイルシステムのサイズ</label>
+        <name>File_System_Size__c</name>
+    </fields>
+    <fields>
+        <label>ファイルシステムのタイプ</label>
+        <name>File_System_Type__c</name>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <nameFieldLabel>ファイルシステム名</nameFieldLabel>
+</CustomObjectTranslation>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>CustomAttachment Name</value>
+    </caseValues>
+    <fields>
+        <label>添付ファイルID</label>
+        <name>AttachmentId__c</name>
+    </fields>
+    <fields>
+        <label>ファイル名</label>
+        <name>fileName__c</name>
+    </fields>
+    <fields>
+        <label>親ID</label>
+        <name>parentId__c</name>
+    </fields>
+    <fields>
+        <label>親の名前</label>
+        <name>parentName__c</name>
+    </fields>
+    <fields>
+        <label>親のタイプ</label>
+        <name>parentType__c</name>
+    </fields>
+    <fields>
+        <label>タイプ</label>
+        <name>type__c</name>
+        <picklistValues>
+            <masterLabel>File</masterLabel>
+            <translation><!-- File --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Url</masterLabel>
+            <translation><!-- Url --></translation>
+        </picklistValues>
+    </fields>
+    <nameFieldLabel><!-- CustomAttachment Name --></nameFieldLabel>
+</CustomObjectTranslation>

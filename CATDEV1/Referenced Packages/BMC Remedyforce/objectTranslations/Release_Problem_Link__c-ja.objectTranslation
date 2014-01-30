@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>リリース問題のリンク</value>
+    </caseValues>
+    <fields>
+        <label>問題</label>
+        <name>FKProblem__c</name>
+        <relationshipLabel>リンクされたリリース</relationshipLabel>
+    </fields>
+    <fields>
+        <label>リリース</label>
+        <name>FKRelease__c</name>
+        <relationshipLabel>リンクされた問題</relationshipLabel>
+    </fields>
+    <nameFieldLabel>名前</nameFieldLabel>
+    <webLinks>
+        <label>問題をリリースにリンク</label>
+        <name>Link_Problem_to_Release</name>
+    </webLinks>
+    <webLinks>
+        <label>リリースを問題にリンク</label>
+        <name>Link_Release_to_Problem</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Critère de mappage des propriétaires suggérés</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Critères de mappage des propriétaires suggérés</value>
+    </caseValues>
+    <fields>
+        <label>Mappage des propriétaires suggérés</label>
+        <name>FKSuggested_Owner_Mapping__c</name>
+        <relationshipLabel>Critères de mappage des propriétaires suggérés</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Informations du champ de modèle</label>
+        <name>Field_Info__c</name>
+    </fields>
+    <fields>
+        <label>Opérateur de fusion</label>
+        <name>Grouping_Operator__c</name>
+    </fields>
+    <fields>
+        <label>Opérande</label>
+        <name>Operand__c</name>
+    </fields>
+    <fields>
+        <label>Opérateur</label>
+        <name>Operator__c</name>
+    </fields>
+    <fields>
+        <label>Index des commandes</label>
+        <name>Order_Index__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>N° de critère de mappage des propriétair</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

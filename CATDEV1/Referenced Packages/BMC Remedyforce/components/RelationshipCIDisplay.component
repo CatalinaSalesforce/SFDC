@@ -1,0 +1,53 @@
+<apex:component selfClosing="true">
+    <apex:attribute name="InstanceTitle" description="" type="String" required="true"/>
+    <apex:attribute name="ClassID" description="" type="String" required="true"/>
+    <apex:attribute name="InstanceID" description="" type="String" required="true"/>
+    <apex:attribute name="CIName" description="" type="String" required="true"/>
+    <apex:attribute name="ClassName" description="" type="String" required="true"/>
+    <apex:attribute name="ClassID_tooltip" description="" type="String" />
+    <apex:attribute name="InstanceID_tooltip" description="" type="String" />
+    <apex:attribute name="CIName_tooltip" description="" type="String" />
+    <apex:attribute name="ClassName_tooltip" description="" type="String" />
+    
+    <div class="relationship_info_wrapper">
+        <div class="relationship_title">
+            <apex:outputLabel value="{!InstanceTitle}" />
+        </div>
+        <div class="relationship_details">
+        <table style="width:100%">
+            <tr>
+                <td class="clsInputLabelTD">
+                    <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__BMC_BaseElement__c.fields.BMCServiceDesk__ClassName__c.label}" />
+                </td>
+                <td>
+                    <input title="{!ClassName_tooltip}" type="text" readonly="readonly" class="clsInputTextBox InputVirtualReadOnly" value="{!ClassName}" />
+                </td>
+            </tr>
+            <tr>
+                <td class="clsInputLabelTD">
+                    <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__BMC_BaseElement__c.fields.BMCServiceDesk__Name__c.label}" />
+                </td>
+                <td>
+                    <input title="{!CIName_tooltip}" type="text" readonly="readonly" class="clsInputTextBox InputVirtualReadOnly" value="{!CIName}" />
+                </td>
+            </tr>
+            <tr>
+                <td class="clsInputLabelTD">
+                    <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__BMC_BaseElement__c.fields.BMCServiceDesk__ClassID__c.label}" />
+                </td>
+                <td>
+                    <input title="{!ClassID_tooltip}" type="text" readonly="readonly" class="clsInputTextBox InputVirtualReadOnly" value="{!ClassID}" />
+                </td>
+            </tr>
+            <tr>
+                <td class="clsInputLabelTD">
+                    <apex:outputLabel value="{!$ObjectType.BMCServiceDesk__BMC_BaseElement__c.fields.BMCServiceDesk__InstanceID__c.label}" />
+                </td>
+                <td>
+                    <input title="{!InstanceID_tooltip}" type="text" readonly="readonly" class="clsInputTextBox InputVirtualReadOnly" value="{!InstanceID}" />
+                </td>
+            </tr>
+        </table>
+        </div>
+    </div>
+</apex:component>

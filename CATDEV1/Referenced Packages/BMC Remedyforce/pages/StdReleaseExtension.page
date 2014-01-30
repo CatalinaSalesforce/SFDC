@@ -1,0 +1,16 @@
+<apex:page standardController="BMCServiceDesk__Release__c" extensions="BMCServiceDesk.StdReleaseExtensionController" id="releasePage" action="{!doAction}"  showHeader="false" standardStylesheets="false">
+<head>
+	<link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/NavigatorStyleSheet.css"/>
+</head>
+    <apex:form target="_parent">
+        <c:StdLayoutStageProgression ObjectName="Release__c" status="{!current_status}"/>
+        <apex:actionFunction name="refreshRelease" action="{!refreshRelease}" />
+    </apex:form>
+    <script>
+    	var errorMsg = '{!JSENCODE(messageString)}';
+    	if (errorMsg.length > 0) {
+	    	alert(errorMsg);
+	    	refreshRelease();
+    	}
+    </script>
+</apex:page>

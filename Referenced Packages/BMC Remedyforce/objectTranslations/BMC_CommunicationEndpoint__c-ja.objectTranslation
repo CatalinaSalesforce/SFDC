@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>通信のエンドポイント</value>
+    </caseValues>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>ポート番号</label>
+        <name>PortNumber__c</name>
+    </fields>
+    <nameFieldLabel><!-- BMC_CommunicationEndpoint Name --></nameFieldLabel>
+</CustomObjectTranslation>

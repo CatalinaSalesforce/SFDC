@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>RowCount / PARENTGROUPVAL(RowCount, GRAND_SUMMARY)</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA1</developerName>
+        <downGroupingContext>Incident__c$Compliant__c</downGroupingContext>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Percent of Total Requests</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <columns>
+        <field>Incident__c$Name</field>
+    </columns>
+    <columns>
+        <field>Incident__c$incidentDescription__c</field>
+    </columns>
+    <columns>
+        <field>Incident__c$Category_ID__c</field>
+    </columns>
+    <columns>
+        <field>Incident__c$Priority_ID__c</field>
+    </columns>
+    <columns>
+        <field>Incident__c.Request_Detail__r$TotalPrice__c</field>
+    </columns>
+    <columns>
+        <field>Incident__c$dueDateTime__c</field>
+    </columns>
+    <columns>
+        <field>Incident__c$closeDateTime__c</field>
+    </columns>
+    <currency>USD</currency>
+    <description>Lists all service requests and describes whether each service request was closed before the Due Date. It groups them according to whether the service requests were compliant and the percentage of service requests that were compliant.</description>
+    <filter>
+        <criteriaItems>
+            <column>Incident__c$state__c</column>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Incident__c$Compliant__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Service Request Fulfillment Report</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>ServiceRequestDetails__c</reportType>
+    <scope>user</scope>
+    <showDetails>true</showDetails>
+    <timeFrameFilter>
+        <dateColumn>Incident__c$closeDateTime__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Dossiers de vue rapide</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Dossiers de vue rapide</value>
+    </caseValues>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Système</label>
+        <name>System__c</name>
+    </fields>
+    <fields>
+        <label>Nom</label>
+        <name>folderName__c</name>
+    </fields>
+    <fields>
+        <label>Dossier parent FK</label>
+        <name>parentFolder__c</name>
+        <relationshipLabel>Dossiers QV SYS</relationshipLabel>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel><!-- SYSQVFolder Name --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

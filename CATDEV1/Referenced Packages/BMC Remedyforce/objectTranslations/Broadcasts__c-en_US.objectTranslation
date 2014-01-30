@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Broadcast</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Broadcasts</value>
+    </caseValues>
+    <fields>
+        <help><!-- From the list of options, select the broadcast&apos;s category. Categories allow you to classify the broadcast using standard classifications, which can be easily tracked for reporting purposes. --></help>
+        <label><!-- Category~ --></label>
+        <name>Category_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Staff ID of the currently logged-on staff. If required, you can use this field to select a different staff from the currently logged-on staff. --></help>
+        <label><!-- Closed By~ --></label>
+        <name>Closed_By__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if you want to display the broadcast in Self Service. --></help>
+        <label><!-- Display In Self Service --></label>
+        <name>Display_In_SelfService__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the broadcast&apos;s category. Categories allow you to classify the broadcast using standard classifications, which can be easily tracked for reporting purposes. --></help>
+        <label><!-- Category --></label>
+        <name>FKCategory__c</name>
+        <relationshipLabel><!-- Broadcasts (FKCategory) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the Staff ID of the currently logged-on staff. If required, you can use this field to select a different staff from the currently logged-on staff. --></help>
+        <label><!-- Closed By --></label>
+        <name>FKClosedBy__c</name>
+        <relationshipLabel><!-- Broadcasts (Closed By) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- From --></label>
+        <name>FKFrom__c</name>
+        <relationshipLabel><!-- Broadcasts (From) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the broadcast&apos;s level of impact. The level of impact and the urgency are used to calculate the priority of the broadcast. --></help>
+        <label><!-- Impact --></label>
+        <name>FKImpact__c</name>
+        <relationshipLabel><!-- Broadcasts --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. If required, you can use this field to select a different priority value from the calculated value. --></help>
+        <label><!-- Priority --></label>
+        <name>FKPriority__c</name>
+        <relationshipLabel><!-- Broadcasts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Staff --></label>
+        <name>FKStaff__c</name>
+        <relationshipLabel><!-- Broadcasts (Staff) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the broadcast. Status is used to display the progress of a broadcast through its stages of opening to closure. --></help>
+        <label><!-- Status --></label>
+        <name>FKStatus__c</name>
+        <relationshipLabel><!-- Broadcasts (FKStatus) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- To --></label>
+        <name>FKTo__c</name>
+        <relationshipLabel><!-- Broadcasts (To) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the broadcast needs to be resolved. The urgency and the level of impact are used to calculate the priority of the broadcast. --></help>
+        <label><!-- Urgency --></label>
+        <name>FKUrgency__c</name>
+        <relationshipLabel><!-- Broadcasts (FKUrgency) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the broadcast&apos;s level of impact. The level of impact and the urgency are used to calculate the priority of the broadcast. --></help>
+        <label><!-- Impact~ --></label>
+        <name>Impact_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Limit to Users in Accounts --></label>
+        <name>Limit_To_Account_Users__c</name>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. If required, you can use this field to select a different priority value from the calculated value. --></help>
+        <label><!-- Priority~ --></label>
+        <name>Priority_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to select the staff to whom you want to display the broadcast message. This field is enabled when you clear the To All check box. --></help>
+        <label><!-- To Profile --></label>
+        <name>Profiles__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the broadcast. Status is used to display the progress of a broadcast through its stages of opening to closure. --></help>
+        <label><!-- Status~ --></label>
+        <name>Status_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the broadcast needs to be resolved. The urgency and the level of impact are used to calculate the priority of the broadcast. --></help>
+        <label><!-- Urgency~ --></label>
+        <name>Urgency_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter a detailed description of the outage or issue. This description is appended to the Description field of incidents that are linked to the broadcast. --></help>
+        <label><!-- Description --></label>
+        <name>broadcastDescription__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter a short description of the outage or issue that should be broadcasted to users. This message scrolls across the top of the browser if you select the box Scroll Message check box. --></help>
+        <label><!-- Message --></label>
+        <name>broadcastMessage__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to specify what has been done to resolve the outage or issue. This resolution is appended to the Resolution field of incidents that are linked to the broadcast. --></help>
+        <label><!-- Resolution --></label>
+        <name>broadcastResolution__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to scroll the broadcast message across the top of the browser. --></help>
+        <label><!-- Scroll Message --></label>
+        <name>broadcastTicker__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the broadcast is closed. --></help>
+        <label><!-- Closed Date --></label>
+        <name>closeDateTime__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if you want to close all tasks linked to this broadcast. When you have resolved the broadcast, you might want to close all linked tasks because these tasks are no longer required. --></help>
+        <label><!-- Close Incident --></label>
+        <name>closeIncident__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to select the date when you want to stop displaying the broadcast message. --></help>
+        <label><!-- Expiration Date --></label>
+        <name>expirationDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the broadcast record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label><!-- Inactive --></label>
+        <name>inactive__c</name>
+    </fields>
+    <fields>
+        <label><!-- Note --></label>
+        <name>note__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the date and time at which the broadcast was created. --></help>
+        <label><!-- Post Date --></label>
+        <name>postDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays the name of the queue to which the change broadcast was last assigned. --></help>
+        <label><!-- Last Queue --></label>
+        <name>queueName__c</name>
+    </fields>
+    <fields>
+        <label><!-- State Open --></label>
+        <name>state__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if you want to display the broadcast to all staff. By default, broadcasts are displayed to all staff. If you decide to display the broadcast to a staff only, this field is cleared. --></help>
+        <label><!-- To Everyone --></label>
+        <name>toEveryone__c</name>
+    </fields>
+    <layouts>
+        <layout>Remedyforce Broadcast Light 1.0</layout>
+        <sections>
+            <label><!-- Broadcast Details --></label>
+            <section>Broadcast Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Display Broadcast --></label>
+            <section>Display Broadcast</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Remedyforce Broadcast Version 3.0</layout>
+        <sections>
+            <label><!-- Broadcast Details --></label>
+            <section>Broadcast Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Display Broadcast --></label>
+            <section>Display Broadcast</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status Details --></label>
+            <section>Status Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Please enter Broadcast Message. --></errorMessage>
+        <name>BroadcastMessage_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- This broadcast is closed. Reopen the broadcast to modify it. --></errorMessage>
+        <name>Cannot_Update_Closed_Broadcast</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Please enter Category. --></errorMessage>
+        <name>Category_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The expiration date and time should not be earlier than the current date and time or the post date and time. --></errorMessage>
+        <name>Check_ExpirationDate</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- A Broadcast record with this Broadcast ID already exists. Enter unique Broadcast ID. --></errorMessage>
+        <name>UniqueBroadcastIDCheck</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Assign_To_Suggested_Expert --></label>
+        <name>Assign_To_Suggested_Expert</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Back_to_list --></label>
+        <name>Back_to_list</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Category_Tree --></label>
+        <name>Category_Tree</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Close --></label>
+        <name>Close</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Knowledge_Articles --></label>
+        <name>Knowledge_Articles</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- New --></label>
+        <name>New</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Reopen_Broadcast --></label>
+        <name>Reopen_Broadcast</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Standard_Description_and_Resolution --></label>
+        <name>Standard_Description_and_Resolution</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>提案オーナーのマッピング</value>
+    </caseValues>
+    <fields>
+        <label>条件の詳細式</label>
+        <name>Criteria_Advanced_Expression__c</name>
+    </fields>
+    <fields>
+        <label>無効</label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <label>Postfixの条件の詳細式</label>
+        <name>Postfix_Criteria_Advanced_Expression__c</name>
+    </fields>
+    <fields>
+        <label>提案されたキュー</label>
+        <name>Suggested_Queue__c</name>
+    </fields>
+    <fields>
+        <label>提案されたスタッフ</label>
+        <name>Suggested_Staff__c</name>
+    </fields>
+    <nameFieldLabel>提案タイトル</nameFieldLabel>
+    <validationRules>
+        <errorMessage>この提案のタイトルのレコードはすでに存在しています。一意の提案のタイトルを入力してください。</errorMessage>
+        <name>NameUniqueCheck</name>
+    </validationRules>
+</CustomObjectTranslation>

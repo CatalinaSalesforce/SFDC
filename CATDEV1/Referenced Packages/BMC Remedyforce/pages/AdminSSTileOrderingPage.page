@@ -1,0 +1,183 @@
+<apex:page standardStylesheets="false" showHeader="false" sidebar="false" controller="BMCServiceDesk.AdminSSTileOrderingController" >
+
+<link rel="stylesheet" type="text/css" href="{!$Resource.ExtJS4_1_3}/resources/css/ext-all.css" id="ext-all-css"/>   
+<link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/AdminSSTileOrdering.css" />
+<link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/HelpStyles.css" />
+<style>
+.x-grid-checkheader {
+    height: 14px;
+    background-image: url('{!$Resource.ExtJS4_1_3}/resources/themes/images/default/grid/unchecked.gif');
+    background-position: 50% -2px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+.x-grid-checkheader-checked {
+    background-image: url('{!$Resource.ExtJS4_1_3}/resources/themes/images/default/grid/checked.gif');
+}
+
+</style>
+<apex:form id="tileForm">
+<script>
+
+var ssTileOrderDisplayOptions='{!JSENCODE($Label.ssTileOrderDisplayOptions)}';
+var ssTileOrderLeftDisplayOption='{!JSENCODE($Label.ssTileOrderLeftDisplayOption)}';
+var ssTileOrderRightDisplayOption='{!JSENCODE($Label.ssTileOrderRightDisplayOption)}';
+var ssTileOrderVisibleCol = '{!JSENCODE($Label.ssTileOrderVisibleCol)}';
+var ssTileOrderTitleCol = '{!JSENCODE($Label.ssTileOrderTitleCol)}';
+var ssTileOrderDescriptionCol = '{!JSENCODE($Label.ssTileOrderDescriptionCol)}';
+var ssTileOrderOrderCol = '{!JSENCODE($Label.ssTileOrderOrderCol)}';
+var ssTileOrderorderingNotSequential= '{!JSENCODE($Label.ssTileOrderorderingNotSequential)}';
+var ssTileOrdervisibleTileWithoutOrder= '{!JSENCODE($Label.ssTileOrdervisibleTileWithoutOrder)}';
+var ssTileOrdernoIntranetURL= '{!JSENCODE($Label.ssTileOrdernoIntranetURL)}';
+var ssTileOrderNoteLabel='{!JSENCODE($Label.ssTileOrderNoteLabel)}';
+var gridStore = '{!tileDataString}';
+var helpResouces = parent.getStdFormHelpPath(); 
+var AdminContextHelpText = '{!JSENCODE($Label.AdminContextHelpText)}';
+var AdminContextHelpTooltip = '{!JSENCODE($Label.AdminContextHelpTooltip)}';
+var chatterEnabled = {!isChatterEnabled};
+var saveLbl =  '{!JSENCODE($Label.Save)}';
+eval(gridStore);
+
+objFieldStore = new Ext.data.ArrayStore({
+    id:'objFieldStore',
+    fields:[
+     {name: 'visible', type:'bool'},
+     {name: 'title'},
+     {name: 'description'},
+     {name: 'order'},
+     {name: 'key'}
+    ]
+});
+objFieldStore.loadData(tileStoreData);        
+objFieldStore.sort('order');
+
+var tilePosition='{!tilePosition}';
+var isLeft,isRight;
+
+	if(tilePosition == 'RIGHT'){
+		isLeft=false;
+		isRight=true;
+	}
+	else{
+		isRight=false;
+		isLeft=true;
+	}
+	
+
+var comboStoreData = '[';
+for(var i=0; i<objFieldStore.data.length ; i++)
+	comboStoreData = comboStoreData +'[\"'+(i+1)+'\",\"'+(i+1)+'\"],';
+
+comboStoreData = comboStoreData.substring(0,comboStoreData.length -1) + ']';
+
+var comboStore = new Ext.data.ArrayStore({
+    id:'comboStore',
+    fields:[
+     {name: 'id'},
+     {name: 'value'}]
+});
+
+
+
+        function showMessage(msg){
+               Ext.MessageBox.show({
+                   id:'commonmsgbox',
+                   width: 250,
+                   title: '{!JSENCODE($Label.SStileOrdering)}',
+                   msg: msg,
+                   buttons: Ext.MessageBox.OK
+               }); 
+               waitMsg.hide();
+         }
+         
+
+    function savehandler(){
+    	waitbox(0);
+        var finalgriddata;
+	    var visibleTileWithoutOrder=false;
+	    var orderingNotSequential = false;
+        var leftRadioValue = getIsLeft();
+		if(leftRadioValue == true)
+			tilePosition = 'LEFT';
+		else
+			tilePosition='RIGHT';
+		
+		finalgriddata = '';
+		objFieldStore.sort('order','ASC');
+		var previousOrder=0,currentorder=0;
+		for (var i=0; i<objFieldStore.data.length; i++)
+		{
+			var isVisible = objFieldStore.getAt(i).get('visible');										
+			var key = objFieldStore.getAt(i).get('key');
+			var order = objFieldStore.getAt(i).get('order');
+			if(isVisible==true){
+                        if((order=='') || (order==0))
+                              visibleTileWithoutOrder=true;
+                  }
+										
+			finalgriddata += Ext.String.format('[{0}П{1}П{2}];',isVisible,key,order);							
+		}
+	
+            if(visibleTileWithoutOrder==true)
+                  showMessage(ssTileOrdervisibleTileWithoutOrder);
+			
+		else{
+			save(finalgriddata,tilePosition);			
+		}
+      }
+      var tabOutImg = "{!$Resource.SDEFExtJS}/resources/images/default/shared/blue-loading.gif";
+      function waitbox(timeout){ 
+        if(parseInt(timeout)>0) setTimeout("waitMsg.hide()", timeout);
+        waitMsg = new Ext.Window({ 
+            height      : 100, 
+            width       : 200, 
+            resizable   : false, 
+            closable    : false, 
+            header      : false,
+            frame       : false, 
+            modal       : true,
+            shadow      : false, 
+            baseCls     : 'waitboxCls', 
+            items       : [{ 
+                xtype:'panel', 
+                height:100, 
+                width:200, 
+                border: false,
+                bodyStyle:'background-color:transparent;border:none;', 
+                html: '<div align="center"><img src="' +  tabOutImg +  '"/></div>' 
+            }] 
+        }); 
+        waitMsg.show();
+    }
+</script>
+<apex:outputPanel id="gridData">
+<apex:outputPanel rendered="{!noError}">
+<script>
+var gridStore = '{!tileDataString}';
+eval(gridStore);
+objFieldStore.loadData(tileStoreData);
+</script>
+</apex:outputPanel>
+</apex:outputPanel>
+
+<apex:outputPanel id="messageID">
+<script>
+	var error_controller = '{!JSENCODE(errorMessage)}';
+	if(error_controller!='')
+		showMessage(error_controller);
+		
+</script>
+</apex:outputPanel>
+
+<apex:actionFunction action="{!save}" name="save" rerender="messageID,gridData" onComplete="" >
+	<apex:param name="finalgriddata" assignTo="{!finalgriddata}" value=""/>
+	<apex:param name="tilePosition" assignTo="{!tilePosition}" value=""/>
+</apex:actionFunction>
+<div id="mainDiv" style=""></div>
+
+</apex:form>
+<apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJS4_1_3}/ext-all.js" id="ext-all-js"/>
+<apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJS4_1_3}/src/ux/CheckColumn.js" id="CheckColumn-js"/>
+<apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/AdminSSTileOrdering.js" id="AdminTileOrdering-js"/>
+</apex:page>

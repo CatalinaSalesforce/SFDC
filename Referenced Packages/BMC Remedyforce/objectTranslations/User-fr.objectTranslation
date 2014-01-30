@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <label>ID de compte</label>
+        <name>Account_ID__c</name>
+    </fields>
+    <fields>
+        <label>Nom de compte</label>
+        <name>Account_Name__c</name>
+    </fields>
+    <fields>
+        <label>Compte</label>
+        <name>Account__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enter a value between 1 and 10,where 1=Slow and 10=Fast --></help>
+        <label>Vitesse du téléscripteur de diffusion</label>
+        <name>Broadcast_ticker_speed__c</name>
+        <picklistValues>
+            <masterLabel>1</masterLabel>
+            <translation><!-- 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>10</masterLabel>
+            <translation><!-- 10 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2</masterLabel>
+            <translation><!-- 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>3</masterLabel>
+            <translation><!-- 3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>4</masterLabel>
+            <translation><!-- 4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>5</masterLabel>
+            <translation><!-- 5 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>6</masterLabel>
+            <translation><!-- 6 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>7</masterLabel>
+            <translation><!-- 7 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>8</masterLabel>
+            <translation><!-- 8 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>9</masterLabel>
+            <translation><!-- 9 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Bâtiment</label>
+        <name>Building__c</name>
+    </fields>
+    <fields>
+        <label>ID du contact</label>
+        <name>ContactId__c</name>
+    </fields>
+    <fields>
+        <label>Extension</label>
+        <name>Extension__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field stores the Login ID of the validated BMC FootPrints Asset Core user. --></help>
+        <label>ID de connexion FootPrints</label>
+        <name>FPLoginID__c</name>
+    </fields>
+    <fields>
+        <label>Connexion à FootPrints validée</label>
+        <name>FP_Login_Validated__c</name>
+    </fields>
+    <fields>
+        <label>Nom de l&apos;image</label>
+        <name>ImageName__c</name>
+    </fields>
+    <fields>
+        <label>Absent du bureau</label>
+        <name>IsOutOfOffice__c</name>
+    </fields>
+    <fields>
+        <label>Personnel du centre de services</label>
+        <name>IsStaffUser__c</name>
+    </fields>
+    <fields>
+        <label>Gérer mb. personnel centre de services</label>
+        <name>Manage_ServiceDesk_Staff_Member__c</name>
+    </fields>
+    <fields>
+        <label>Remarque</label>
+        <name>Note__c</name>
+    </fields>
+    <fields>
+        <label>Image</label>
+        <name>Picture__c</name>
+    </fields>
+    <fields>
+        <label>Utilisateur base de connais. Remedyforce</label>
+        <name>Remedyforce_Knowledge_User__c</name>
+    </fields>
+    <fields>
+        <label>Salle</label>
+        <name>Room__c</name>
+    </fields>
+    <fields>
+        <label>Préférences Libre service</label>
+        <name>SelfService_Preferences__c</name>
+    </fields>
+    <fields>
+        <label>ID utilisateur unique dans la Source</label>
+        <name>UniqueUserIDInSource__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates if the user is VIP. --></help>
+        <label><!-- VIP --></label>
+        <name>VIP__c</name>
+    </fields>
+    <fields>
+        <label>Beeper</label>
+        <name>pager__c</name>
+    </fields>
+    <fields>
+        <label>Remarques</label>
+        <name>remarks__c</name>
+    </fields>
+    <fields>
+        <label>Passer l&apos;écran d&apos;intro de l&apos;assistant QV</label>
+        <name>skipQVWizIntro__c</name>
+    </fields>
+    <layouts>
+        <layout>Remedyforce  User</layout>
+        <sections>
+            <label><!-- BMC Remedyforce --></label>
+            <section>BMC Remedyforce</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Preferences --></label>
+            <section>Preferences</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage>Vous pouvez uniquement supprimer l&apos;ID de connexion BMC FootPrints Asset Core. Vous ne pouvez pas le modifier ici.</errorMessage>
+        <name>Validate_FootPrints_Login</name>
+    </validationRules>
+</CustomObjectTranslation>

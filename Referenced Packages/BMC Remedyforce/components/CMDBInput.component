@@ -1,0 +1,57 @@
+<apex:component controller="BMCServiceDesk.CMDBInputController">
+
+    <apex:attribute name="ApiName" type="String" assignTo="{!pApiName}" description="ToolTip"/>
+    <apex:attribute name="DisplayLabel" type="string" assignTo="{!pDisplayLabel}" description="ToolTip"/>
+    <apex:attribute name="ToolTip" type="String" assignTo="{!pToolTip}" description="ToolTip"/>
+    <apex:attribute name="Value" type="String" assignTo="{!pValue}" description="ToolTip"/>
+    <apex:attribute name="ReferenceValue" type="String" assignTo="{!pReferenceValue}" description="ToolTip"/>
+    <apex:attribute name="ObjectName" type="String" assignTo="{!pObjectName}" description="ToolTip"/>
+    <apex:attribute name="ReferenceTo" type="String" assignTo="{!pReferenceTo}" description="ToolTip"/>
+    <apex:attribute name="MultiSelectValue" type="String[]" assignTo="{!pMultiSelectValue}" description="ToolTip"/>
+    <apex:attribute name="FieldType" type="String" assignTo="{!pFieldType}" description="ToolTip" required="true" />
+    <apex:attribute name="PickListValues" type="BMCServiceDesk.PickListInfo" assignTo="{!pPickListValues}" description="ToolTip" />
+    <apex:attribute name="Required" type="boolean" assignTo="{!pRequired}" description="ToolTip" />
+    <apex:attribute name="Readonly" type="boolean" assignTo="{!pReadonly}" description="ToolTip" />
+    <apex:attribute name="HTMLUniqueID" type="String" assignTo="{!pHTMLUniqueID}" description="ToolTip"/>
+    <apex:attribute name="HTMLGroupName" type="String" assignTo="{!pHTMLGroupName}" description="ToolTip"/>
+    <apex:attribute name="StyleClass" type="String" description="ToolTip"/>
+    <apex:attribute name="MaxLength" type="Integer" description="ToolTip"/>
+    
+    <table cellpadding="0" cellspacing="0">
+    <tr><td>    
+    <apex:inputText maxlength="50" id="cmdbinputDate" styleClass="clsInputTextBox {!StyleClass}" rendered="{!IsDateTime}"  value="{!Value}" title="{!ToolTip}" disabled="{!pReadonly}"/>
+    <apex:inputText maxlength="50" id="custominputDate" styleClass="clsInputTextBox {!StyleClass}" rendered="{!IsDate}"  value="{!Value}" title="{!ToolTip}" disabled="{!pReadonly}"/>
+    <apex:image id="cmdbinputImage" rendered="{!IsDateTime}" width="20px" height="20px" rendered="false" value="http://www.istockphoto.com/file_thumbview_approve/7974345/2/istockphoto_7974345-calendar-icon.jpg" />
+    <apex:inputText maxlength="{!MaxLength}" id="cmdbinputText" styleClass="clsInputTextBox {!StyleClass}" rendered="{!IsTextBox}" value="{!Value}" title="{!ToolTip}"  disabled="{!pReadonly}"/>
+    <apex:inputCheckbox id="cmdbinputCheckBox" styleClass="clsInputCheckBox {!StyleClass}" rendered="{!IsCheckBox}" value="{!Value}" title="{!ToolTip}" />
+    <apex:inputTextarea id="cmdbinputTextArea" styleClass="clsInputTextBox single-line-textarea {!StyleClass}" rendered="{!IsTextArea}" value="{!Value}" title="{!ToolTip}" />
+    <apex:selectList id="cmdbinputDDList" styleClass="clsComboStyle {!StyleClass}" value="{!Value}" rendered="{!IsPickList}" multiselect="false"  size="1" title="{!ToolTip}" onchange="checksubserviceoflabel('{!pApiName}',this)">
+        <apex:selectOptions value="{!PickListValues.OptionValues }"/> 
+    </apex:selectList> 
+    <apex:selectList id="cmdbinputMultiSelectList" styleClass="customMultiselect {!StyleClass}" value="{!MultiSelectValue}" rendered="{!IsMultiPickList}" multiselect="true" size="3" title="{!ToolTip}" >
+        <apex:selectOptions value="{!PickListValues.OptionValues }"/> 
+    </apex:selectList> 
+    <apex:inputText id="lookupTextVar" styleClass="clsInputTextBox {!StyleClass}" rendered="{!IsLookup}" onblur="removeHiddenValue(this); showdataCMDB(event,'{!pApiName}');" value="{!ReferenceValue}" title="{!ToolTip}" disabled="{!pReadonly}"/>
+    <input type="text"  value="{!Value}" id="{!lookupIdHiddenNew}" style="display:none"/> 
+    <apex:inputhidden id="lookupHiddenVar" value="{!Value}" rendered="{!IsLookup}"/>        
+    <input type="button" class="lookupIconOn" id="LookupIdBtn" style="{!renderLookupButton} margin-left:2px; float:right;" onclick="javascript:if(typeof(BE_InstanceID) != 'undefined' && BE_InstanceID != null && BE_InstanceID != ''){checkBeforeLookup(this,'{!pApiName}','{!pObjectName}');}else{openLookupPopup1(this,'{!pApiName}','{!pObjectName}');}"/>               
+
+    </td>
+    <td>
+    <apex:image id="expandInput" rendered="{!RenderExpandImage}" styleClass="CMDB_ExpandImage {!StyleClass}" style="margin-left:2px" width="19px" height="19px" value="{!$Resource.BMCServiceDesk__SDEFStyles}/SDEFbuttons/b_textbox_popup.gif" />
+    <apex:image id="datePopupImg" rendered="{!RenderDatePicker}" styleClass="CMDB_DatePickerImage {!StyleClass}" style="margin-left:2px" width="19px" height="19px" value="{!$Resource.BMCServiceDesk__SDEFStyles}/SDEFbuttons/b_calendar_popup.gif" />
+    <apex:outputLabel value="{!AttributeTypeString}" rendered="false"></apex:outputLabel>
+    </td>
+    </tr>
+    </table>
+    <apex:outputpanel rendered="{!IsTextBox}">
+    <script>
+        if({!IsTextBox} && {!pReadonly}){setCmdbInputText('{!$Component.cmdbinputText}');}
+    </script> 
+    </apex:outputpanel>
+    <apex:outputpanel rendered="{!IsLookup}">
+    <script>
+        if({!IsLookup}){setIdForHiddenVar('{!$Component.lookupHiddenVar}','{!lookupIdHidden}','{!$Component.lookupTextVar}','{!lookupId}');}
+    </script> 
+    </apex:outputpanel>
+</apex:component>

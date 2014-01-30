@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>StdFormHelpCommonLink</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>This object allows you to store data linking between incidents and problems.</description>
+    <enableActivities>true</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>FKIncident__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field stores the foreign key value of the linked incident</description>
+        <externalId>false</externalId>
+        <label>Incident</label>
+        <referenceTo>Incident__c</referenceTo>
+        <relationshipLabel>Linked Problems</relationshipLabel>
+        <relationshipName>Incident_Problem_Links</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>FKProblem__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field stores the foreign key value of the linked problem</description>
+        <externalId>false</externalId>
+        <label>Problem</label>
+        <referenceTo>Problem__c</referenceTo>
+        <relationshipLabel>Linked Incidents</relationshipLabel>
+        <relationshipName>Incident_Problem_Links</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <label>Incident Problem Link</label>
+    <nameField>
+        <label>Incident Problem Link Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Incident Problem Links</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <webLinks>
+        <fullName>Create_Problem_and_Link_to_Incident</fullName>
+        <availability>online</availability>
+        <description>Create Problem and Link to Incident</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Create and Link to Incident</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>if({!Incident__c.state__c}){
+
+var label=&apos;{!JSENCODE(Incident__c.Id)}&apos;;
+var win = window.parent;
+if( typeof incDetailElements != &quot;undefined&quot; )
+{
+createAndLinkRecords(&apos;CreateIncidentProblemLink&apos;);
+}
+else
+{
+win.location.href=&quot;/apex/BMCServiceDesk__StdLayoutBtnToolbarPage?id=&quot;+label+&quot;&amp;action=CreateIncidentProblemLink&quot;;
+}
+
+}else
+{
+var msg=&apos;{!JSENCODE($Label.bmcservicedesk__Incident_is_Closed)}&apos;;
+alert(msg);
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Link_Incident</fullName>
+        <availability>online</availability>
+        <description>Link Incident to Problem</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Link Incident to Problem</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>var stdLayoutScreenWidth = 671;
+var stdLayoutScreenHeight = 500;
+function stdScreenLeft(){
+return parseInt((screen.availWidth/2) - (stdLayoutScreenWidth/2));
+}
+
+function stdScreenTop(){
+return parseInt((screen.availHeight/2) - (stdLayoutScreenHeight/2));
+}
+
+if({!Problem__c.State__c}){
+
+window.open(&quot;/apex/BMCServiceDesk__SearchAndLink?filterObjectId={!Problem__c.Id}&amp;parentName=Problem__c&amp;childName=Incident__c&amp;filterClause=Inactive__c=false AND State__c=true&quot;,null,&quot;status = 1,height =&quot;+ stdLayoutScreenHeight+&quot;, width = &quot;+ stdLayoutScreenWidth+&quot;,left= &quot;+stdScreenLeft()+&quot;,top=&quot;+ stdScreenTop()+&quot;, resizable = 0,scrollbars=no&quot;); 
+}
+else
+{
+var label=&apos;{!JSENCODE($Label.bmcservicedesk__problemclosed)}&apos;
+alert(label);
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Link_Problem</fullName>
+        <availability>online</availability>
+        <description>Link Problem to Incident</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Link Problem to Incident</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>var stdLayoutScreenWidth = 671;
+var stdLayoutScreenHeight = 500;
+function stdScreenLeft(){
+return parseInt((screen.availWidth/2) - (stdLayoutScreenWidth/2));
+}
+
+function stdScreenTop(){
+return parseInt((screen.availHeight/2) - (stdLayoutScreenHeight/2));
+}
+
+if({!Incident__c.state__c}){
+if( typeof incDetailElements != &quot;undefined&quot; )
+{
+window.open(&quot;/apex/BMCServiceDesk__SearchAndLink?filterObjectId={!Incident__c.Id}&amp;parentName=Incident__c&amp;isCalledFromConsole=true&amp;childName=Problem__c&amp;filterClause=Inactive__c=false AND state__c=true&quot;,null,&quot;status = 1,height =&quot;+ stdLayoutScreenHeight+&quot;, width = &quot;+ stdLayoutScreenWidth+&quot;,left= &quot;+stdScreenLeft()+&quot;,top=&quot;+ stdScreenTop()+&quot;, resizable = 0,scrollbars=no&quot;);
+}
+else
+{
+window.open(&quot;/apex/BMCServiceDesk__SearchAndLink?filterObjectId={!Incident__c.Id}&amp;parentName=Incident__c&amp;isCalledFromConsole=false&amp;childName=Problem__c&amp;filterClause=Inactive__c=false AND state__c=true&quot;,null,&quot;status = 1,height =&quot;+ stdLayoutScreenHeight+&quot;, width = &quot;+ stdLayoutScreenWidth+&quot;,left= &quot;+stdScreenLeft()+&quot;,top=&quot;+ stdScreenTop()+&quot;, resizable = 0,scrollbars=no&quot;);
+}
+
+}else
+{
+var label=&apos;{!JSENCODE($Label.bmcservicedesk__Incident_is_Closed)}&apos;;
+alert(label);
+}</url>
+    </webLinks>
+</CustomObject>

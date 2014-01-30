@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Mise en production</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Mises en production</value>
+    </caseValues>
+    <fields>
+        <label>Fin réelle du déploiement</label>
+        <name>ActualDeploymentEndDate__c</name>
+    </fields>
+    <fields>
+        <label>Début réel du déploiement</label>
+        <name>ActualDeploymentStartDate__c</name>
+    </fields>
+    <fields>
+        <label>Fin réelle de l&apos;implémentation</label>
+        <name>ActualImplementationEndDate__c</name>
+    </fields>
+    <fields>
+        <label>Début réel de l&apos;implémentation</label>
+        <name>ActualImplementationStartDate__c</name>
+    </fields>
+    <fields>
+        <label>All Tasks Closed Controller</label>
+        <name>AllTaskCloseController__c</name>
+    </fields>
+    <fields>
+        <label>Approuvé</label>
+        <name>Approved__c</name>
+    </fields>
+    <fields>
+        <label>Budget disponible</label>
+        <name>BudgetAvailable__c</name>
+    </fields>
+    <fields>
+        <label>Justification métier</label>
+        <name>Business_Justification__c</name>
+        <picklistValues>
+            <masterLabel>Business Unit Strategic</masterLabel>
+            <translation><!-- Business Unit Strategic --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Corporate Strategic</masterLabel>
+            <translation><!-- Corporate Strategic --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Customer Commitment</masterLabel>
+            <translation><!-- Customer Commitment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Defect</masterLabel>
+            <translation><!-- Defect --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Enhancement</masterLabel>
+            <translation><!-- Enhancement --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Maintenance</masterLabel>
+            <translation><!-- Maintenance --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sarbanes-Oxley</masterLabel>
+            <translation><!-- Sarbanes-Oxley --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Upgrade</masterLabel>
+            <translation><!-- Upgrade --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Catégorie~</label>
+        <name>Category_ID__c</name>
+    </fields>
+    <fields>
+        <label>Date de clôture</label>
+        <name>CloseDateTime__c</name>
+    </fields>
+    <fields>
+        <label>Commentaires de clôture</label>
+        <name>Close_Comments__c</name>
+    </fields>
+    <fields>
+        <label>Catégorie de clôture</label>
+        <name>ClosureCategory__c</name>
+        <picklistValues>
+            <masterLabel>Business Case Rejected</masterLabel>
+            <translation><!-- Business Case Rejected --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Implemented</masterLabel>
+            <translation><!-- Implemented --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Partially Implemented</masterLabel>
+            <translation><!-- Partially Implemented --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Rolled Back</masterLabel>
+            <translation><!-- Rolled Back --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Commentaires</label>
+        <name>Comments__c</name>
+    </fields>
+    <fields>
+        <label>Date de fin</label>
+        <name>CompletionDate__c</name>
+    </fields>
+    <fields>
+        <label>Type de déploiement</label>
+        <name>Deployment_Type__c</name>
+        <picklistValues>
+            <masterLabel>Non-phased</masterLabel>
+            <translation><!-- Non-phased --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Phased</masterLabel>
+            <translation><!-- Phased --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label>Date d&apos;échéance :</label>
+        <name>DueDate__c</name>
+    </fields>
+    <fields>
+        <label>Fin du déploiement</label>
+        <name>EndDeploymentDate__c</name>
+    </fields>
+    <fields>
+        <label>Fin de l&apos;implémentation</label>
+        <name>EndImplementationDate__c</name>
+    </fields>
+    <fields>
+        <label>Catégorie</label>
+        <name>FKCategory__c</name>
+        <relationshipLabel>Mises en production</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set to the User ID of the currently logged-on Change Manager. --></help>
+        <label>Clos par</label>
+        <name>FKClosedBy__c</name>
+        <relationshipLabel>Mises en production (closes par)</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the release&apos;s level of impact. The level of impact and the urgency are used to calculate the priority of the release. --></help>
+        <label><!-- Impact --></label>
+        <name>FKImpact__c</name>
+        <relationshipLabel>Mises en production</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- The priority is calculated depending on the urgency and impact values that you have selected. If required, you can use this field to select a different priority value from the calculated value. --></help>
+        <label>Priorité</label>
+        <name>FKPriority__c</name>
+        <relationshipLabel>Mises en production</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Coordinateur de mise en production</label>
+        <name>FKReleaseCoordinator__c</name>
+        <relationshipLabel>Mises en production (coordinateur de mise en production)</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Personnel</label>
+        <name>FKStaff__c</name>
+        <relationshipLabel>Mises en production (personnel)</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select the appropriate status for the release. Status is used to display the progress of an release through its stages of opening to closure. --></help>
+        <label>Statut</label>
+        <name>FKStatus__c</name>
+        <relationshipLabel>Mises en production</relationshipLabel>
+    </fields>
+    <fields>
+        <label>Modèle</label>
+        <name>FKTemplate__c</name>
+        <relationshipLabel>Mises en production</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- From the list of options, select how quickly the release needs to be resolved. The urgency and the level of impact are used to calculate the priority of the release. --></help>
+        <label>Urgence</label>
+        <name>FKUrgency__c</name>
+        <relationshipLabel>Mises en production</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the release record is no longer valid, but the record has to be retained for compliance with the records retention policy. For example, if a client has left the account, all the client&apos;s release records would be invalid. --></help>
+        <label>Inactif</label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <label>Date d&apos;ouverture</label>
+        <name>OpenDateTime__c</name>
+    </fields>
+    <fields>
+        <label>Priorité~</label>
+        <name>Priority_ID__c</name>
+    </fields>
+    <fields>
+        <label>Echec de la mise en production</label>
+        <name>Release_Failed__c</name>
+    </fields>
+    <fields>
+        <label>Sous-type</label>
+        <name>Release_Subtype__c</name>
+        <picklistValues>
+            <masterLabel>Backlog</masterLabel>
+            <translation><!-- Backlog --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Delta</masterLabel>
+            <translation><!-- Delta --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Full</masterLabel>
+            <translation><!-- Full --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Package</masterLabel>
+            <translation><!-- Package --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Titre de mise en production</label>
+        <name>Release_Title__c</name>
+    </fields>
+    <fields>
+        <label>Type de mise en production</label>
+        <name>Release_Type__c</name>
+        <picklistValues>
+            <masterLabel>Emergency</masterLabel>
+            <translation><!-- Emergency --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Major</masterLabel>
+            <translation><!-- Major --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Minor</masterLabel>
+            <translation><!-- Minor --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Licences requises vérifiées</label>
+        <name>RequiredLicensesVerified__c</name>
+    </fields>
+    <fields>
+        <label>EC requis disponibles</label>
+        <name>Required_CIs_Available__c</name>
+    </fields>
+    <fields>
+        <label>Contrats requis vérifiés</label>
+        <name>Required_Contracts_Verified__c</name>
+    </fields>
+    <fields>
+        <label>Evaluation du risque</label>
+        <name>Risk_Rating__c</name>
+        <picklistValues>
+            <masterLabel>High</masterLabel>
+            <translation><!-- High --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Low</masterLabel>
+            <translation><!-- Low --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Medium</masterLabel>
+            <translation><!-- Medium --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>Début du déploiement</label>
+        <name>StartDeploymentDate__c</name>
+    </fields>
+    <fields>
+        <label>Début de l&apos;implémentation</label>
+        <name>StartImplementationDate__c</name>
+    </fields>
+    <fields>
+        <label>Statut Ouvert</label>
+        <name>State__c</name>
+    </fields>
+    <fields>
+        <label>Statut~</label>
+        <name>Status_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Task Closed Controller --></label>
+        <name>Task_Closed_Controller__c</name>
+    </fields>
+    <fields>
+        <label>Test terminé</label>
+        <name>Testing_Completed_Date__c</name>
+    </fields>
+    <fields>
+        <label>Nombre de mises à jour d&apos;enregistrement</label>
+        <name>UpdateCount__c</name>
+    </fields>
+    <fields>
+        <help><!-- Displays the name of the queue to which the release was last assigned. --></help>
+        <label>Dernière file d&apos;attente</label>
+        <name>queueName__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field will contain value first 255 character value of description field. --></help>
+        <label>Brève description</label>
+        <name>shortDescription__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <layouts>
+        <layout>Remedyforce Release</layout>
+        <sections>
+            <label><!-- Business and Financial Details --></label>
+            <section>Business and Financial Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Release Details --></label>
+            <section>Release Details</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status Details --></label>
+            <section>Status Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Remedyforce Release Light 1.0</layout>
+        <sections>
+            <label><!-- Business and Financial Details --></label>
+            <section>Business and Financial Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Date and Time Details --></label>
+            <section>Date and Time Details</section>
+        </sections>
+        <sections>
+            <label><!-- Release Details --></label>
+            <section>Release Details</section>
+        </sections>
+        <sections>
+            <label><!-- Staff Assignment Details --></label>
+            <section>Staff Assignment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Status and Priority --></label>
+            <section>Status and Priority</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Numéro de mise en production</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage>La date de fin réelle du déploiement doit être ultérieure à la date de début réel du déploiement.</errorMessage>
+        <name>ActualDeploymentDateValidation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>La date de fin réelle de l&apos;implémentation doit être ultérieure à la date de début réel de l&apos;implémentation.</errorMessage>
+        <name>ActualImplementationDateValidation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Cette mise en production est close. Ouvrez-la à nouveau pour la modifier.</errorMessage>
+        <name>Cannot_Update_Closed_Release</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>La date de fin du déploiement doit être ultérieure à la date de début du déploiement.</errorMessage>
+        <name>DeploymentDateValidation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>La date de fin de l&apos;implémentation doit être ultérieure à la date de début de l&apos;implémentation.</errorMessage>
+        <name>ImplementationDateValidation</name>
+    </validationRules>
+    <webLinks>
+        <label>Retour à la liste</label>
+        <name>Back_to_List</name>
+    </webLinks>
+    <webLinks>
+        <label>Explorateur d&apos;EC</label>
+        <name>CI_Explorer</name>
+    </webLinks>
+    <webLinks>
+        <label>Arborescence de catégorie</label>
+        <name>Category_Tree</name>
+    </webLinks>
+    <webLinks>
+        <label>Planning de changement</label>
+        <name>Change_Schedule</name>
+    </webLinks>
+    <webLinks>
+        <label>Clore</label>
+        <name>Close</name>
+    </webLinks>
+    <webLinks>
+        <label>Recherche de connaissance</label>
+        <name>Knowledge_Articles</name>
+    </webLinks>
+    <webLinks>
+        <label>Lier tous les EC reliés</label>
+        <name>Link_All_Related_CIs</name>
+    </webLinks>
+    <webLinks>
+        <label>Nouveau</label>
+        <name>New</name>
+    </webLinks>
+    <webLinks>
+        <label>Nouveau lien</label>
+        <name>New_Link</name>
+    </webLinks>
+    <webLinks>
+        <label>Processus de gestion des mises en production</label>
+        <name>Release_Management_Process</name>
+    </webLinks>
+    <webLinks>
+        <label>Manifeste de mise en production</label>
+        <name>Release_Manifest</name>
+    </webLinks>
+    <webLinks>
+        <label>Rouvrir</label>
+        <name>Reopen</name>
+    </webLinks>
+</CustomObjectTranslation>

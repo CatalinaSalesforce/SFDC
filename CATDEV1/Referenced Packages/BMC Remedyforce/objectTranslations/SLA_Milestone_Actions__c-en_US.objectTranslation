@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SLA Milestone Action</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>SLA Milestone Actions</value>
+    </caseValues>
+    <fields>
+        <label><!-- Cc --></label>
+        <name>Cc__c</name>
+    </fields>
+    <fields>
+        <label><!-- Email Template ID --></label>
+        <name>Email_Template_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- SLA Milestone --></label>
+        <name>FKSLA_Milestone__c</name>
+        <relationshipLabel><!-- SLA Milestone Actions --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- To --></label>
+        <name>To__c</name>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>Type__c</name>
+        <picklistValues>
+            <masterLabel>Send Email</masterLabel>
+            <translation><!-- Send Email --></translation>
+        </picklistValues>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

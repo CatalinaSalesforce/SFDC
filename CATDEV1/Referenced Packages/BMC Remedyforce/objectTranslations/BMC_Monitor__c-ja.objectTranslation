@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>モニター</value>
+    </caseValues>
+    <fields>
+        <label>帯域幅</label>
+        <name>Bandwidth__c</name>
+    </fields>
+    <fields>
+        <label>ディスプレイの種類</label>
+        <name>Display_Type__c</name>
+        <picklistValues>
+            <masterLabel>Fixed Frequency Color</masterLabel>
+            <translation><!-- Fixed Frequency Color --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Fixed Frequency Monochrome</masterLabel>
+            <translation><!-- Fixed Frequency Monochrome --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Multiscan Color</masterLabel>
+            <translation><!-- Multiscan Color --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Multiscan Monochrome</masterLabel>
+            <translation><!-- Multiscan Monochrome --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unknown</masterLabel>
+            <translation><!-- Unknown --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>インスタンスID</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>論理インチあたりの縦のピクセル数</label>
+        <name>Pixels_Per_X_Logical_Inch__c</name>
+    </fields>
+    <fields>
+        <label>論理インチあたりの横のピクセル数</label>
+        <name>Pixels_Per_Y_Logical_Inch__c</name>
+    </fields>
+    <fields>
+        <label>画面の高さ</label>
+        <name>Screen_Height__c</name>
+    </fields>
+    <fields>
+        <label>画面の幅</label>
+        <name>Screen_Width__c</name>
+    </fields>
+    <nameFieldLabel>モニター名</nameFieldLabel>
+</CustomObjectTranslation>

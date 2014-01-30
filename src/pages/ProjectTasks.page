@@ -1,0 +1,175 @@
+<apex:page standardController="Project__c" extensions="GanttGeneratorDetailViewController,ProductTrackerCls"> 
+<style>
+.fewerMore { display: none;} 
+</style>
+<apex:form >
+
+<apex:detail relatedList="true" ></apex:detail>
+
+    <apex:stylesheet value="{!URLFOR($Resource.JSGantt, 'jsgantt.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.JSGantt, 'jsgantt.js')}"/>
+
+
+<!-- <apex:pageBlock mode="maindetail" title="">
+        <apex:pageblockButtons location="top">
+        <apex:commandButton value="New Note" action="{!newRecords}" rerender="hiddenBlock">
+            <apex:param name="objectName" value="Note" assignTo="{!objNameParam}"/>
+            <apex:param name="productFeatureName" value="{!Project__c.Name}" assignTo="{!prodReleaseFeatureNameParam}"/>
+        </apex:commandButton>
+
+        <apex:commandButton value="Attach File" action="{!newRecords}" rerender="hiddenBlock">
+            <apex:param name="objectName" value="Attachment" assignTo="{!objNameParam}"/>
+            <apex:param name="productFeatureName" value="{!Project__c.Name}" assignTo="{!prodReleaseFeatureNameParam}"/>
+        </apex:commandButton>
+        
+        </apex:pageblockButtons>
+            <apex:pageBlockSection columns="1" title="Notes & Attachments">
+                <apex:outputPanel id="main" rendered="{!IF(dList.size!=0,true,false)}">
+                    <table width="100%" class="list" border="0" cellspacing="0" cellpadding="0">
+                        <tr class="headerRow">
+                            <th scope="col" width="5%">
+                                <apex:outputlabel value="Action"></apex:outputlabel> 
+                            </th>
+                            <th class="headerRow">
+                                <apex:outputlabel value="Type"></apex:outputlabel> 
+                            </th>
+                            <th class="headerRow">
+                                <apex:outputlabel value="Title"></apex:outputlabel> 
+                            </th>
+                            <th class="headerRow">
+                                <apex:outputlabel value="Last Modified"></apex:outputlabel> 
+                            </th>
+                            <th class="headerRow">
+                                <apex:outputlabel value="Created By"></apex:outputlabel> 
+                            </th>
+                        </tr>
+                        <apex:repeat value="{!dList}" var="r">
+                            <tr class="dataRow even first">
+                                <td>
+                                <apex:commandLink value="Edit" action="{!editNoteAttachRecord}" style="color:#488AC7">
+                                    <apex:param name="cid" value="{!r.rID}" assignTo="{!editId}"/>
+                                </apex:commandlink><apex:outputPanel >&nbsp;|&nbsp;</apex:outputPanel>
+                                <apex:commandLink value="Del" action="{!delNoteAttachRecord}" style="color:#488AC7" onclick="if(!confirm('Are you sure?')) return false;" reRender="main">
+                                    <apex:param name="cid" value="{!r.rID}" assignTo="{!delId}"/>
+                                </apex:commandLink>
+                                </td>
+                                <td><apex:outputText value="{!r.rType}"/></td>
+                                <td><apex:outputlink value="/{!r.rId}" target="_blank">{!r.rName}</apex:outputlink></td>
+                                <td><apex:outputText value=" {!r.rLMdate}"/></td>
+                                <td><apex:outputlink value="/{!r.rCById}" target="_blank">{!r.rCByName}</apex:outputlink></td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(dList.size==0,true,false)}">
+                    <table class="list" border="0" cellspacing="0" cellpadding="0"><tr bgcolor="#f8f8f8"><td>No records to display</td></tr></table>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+
+    
+    <apex:pageBlock mode="maindetail" title="">
+        <apex:pageBlockButtons location="top">
+        <apex:commandButton value="New Project Task" action="{!newTask}"></apex:commandButton>
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection columns="1" title="Project Tasks">
+             
+            <apex:pageMessage summary="No Project Task available for this Project" severity="info" strength="1" rendered="{!IF(lstChartItems.size == 0, true, false)}"/>            
+          
+            <div class="gantt" id="GanttChartDIV"></div>    
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    
+    <script>
+        var g = new JSGantt.GanttChart('g',document.getElementById('GanttChartDIV'), 'month');
+        g.setShowRes(1); // Show/Hide Responsible (0/1)
+        g.setShowDur(1); // Show/Hide Duration (0/1)
+        g.setShowComp(0); // Show/Hide % Complete(0/1)
+        g.setShowHealth(1); //Show/Hide health
+        g.setShowApplication(1); //Show/Hide Application
+        g.setCaptionType('Resource');  // Set to Show Caption
+    </script>
+    <apex:repeat value="{!lstChartItems}" var="item">
+        <script>
+            g.AddTaskItem(new JSGantt.TaskItem({!item.pID},'{!item.pName}','{!item.pStart}','{!item.pEnd}','00008B','{!item.pLink}',{!item.pMile},'{!item.pRes}',{!item.pComp},{!item.pGroup},{!item.pParent},{!item.pOpen},'{!item.pDepend}','{!item.pCaption}','{!item.pHealth}','{!item.pGroupName}'));
+        </script>
+    </apex:repeat>
+    <script>
+        g.Draw();
+        g.DrawDependencies();
+    </script>
+-->
+</apex:form>
+
+<c:GantComponent DataType="Project" MasterValue="{!Project__c.Id}" PBSTitle="Project Tasks"/>
+
+<apex:form >
+<apex:pageBlock mode="maindetail" title="">
+<apex:pageblockButtons location="top">
+<apex:commandButton value="New Risk" action="{!newRecords}" rerender="hiddenBlock">
+<apex:param name="recType" value="Project Risk" assignTo="{!recTypeNameParam}"/>
+<apex:param name="objectName" value="Task" assignTo="{!objNameParam}"/>
+</apex:commandButton>
+</apex:pageblockButtons>
+<apex:pageBlockSection columns="1" title="Risks">
+<c:ProductTrackerComponent object="Task" objId="{!$CurrentPage.parameters.Id}" rType="Project Risk" cField="WhatId"/>
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+<apex:pageBlock mode="maindetail" title="">
+<apex:pageblockButtons location="top">
+<apex:commandButton value="New Product-Project" action="{!newRecords}" rerender="hiddenBlock">
+<apex:param name="objectName" value="Product_Project__c_Project__c" assignTo="{!objNameParam}"/>
+<apex:param name="productFeatureName" value="{!Project__c.Name}" assignTo="{!prodReleaseFeatureNameParam}"/>
+</apex:commandButton>
+</apex:pageblockButtons>
+<apex:pageBlockSection columns="1" title="Product-Projects">
+<c:ProductTrackerComponent object="Product_Project__c" objId="{!$CurrentPage.parameters.Id}" rType="" cField="Project__c"/>
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+
+<apex:pageBlock mode="maindetail" title="">
+<apex:pageblockButtons location="top">
+<apex:commandButton value="New Project-Release" action="{!newRecords}" rerender="hiddenBlock">
+<apex:param name="objectName" value="Project_Release__c" assignTo="{!objNameParam}"/>
+<apex:param name="productFeatureName" value="{!Project__c.Name}" assignTo="{!prodReleaseFeatureNameParam}"/>
+</apex:commandButton>
+</apex:pageblockButtons>
+<apex:pageBlockSection columns="1" title="Project-Releases">
+<c:ProductTrackerComponent object="Project_Release__c" objId="{!$CurrentPage.parameters.Id}" rType="" cField="Project__c"/>
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+<apex:pageBlock mode="maindetail" title="">
+<apex:pageblockButtons location="top">
+<apex:commandButton value="New Change Request" action="{!newRecords}" rerender="hiddenBlock">
+<apex:param name="recType" value="Change Request" assignTo="{!recTypeNameParam}"/>
+<apex:param name="objectName" value="Task" assignTo="{!objNameParam}"/>
+</apex:commandButton>
+</apex:pageblockButtons>
+<apex:pageBlockSection columns="1" title="Change Requests">
+<c:ProductTrackerComponent object="Task" objId="{!$CurrentPage.parameters.Id}" rType="Change Request" cField="WhatId"/>
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+<apex:pageBlock mode="maindetail" title="">
+<apex:pageblockButtons location="top">
+<apex:commandButton value="New Task" action="{!newRecords}" rerender="hiddenBlock">
+<apex:param name="recType" value="Project" assignTo="{!recTypeNameParam}"/>
+<apex:param name="objectName" value="Task" assignTo="{!objNameParam}"/>
+</apex:commandButton>
+</apex:pageblockButtons>
+<apex:pageBlockSection columns="1" title="Tasks">
+<c:ProductTrackerComponent object="Task" objId="{!$CurrentPage.parameters.Id}" cField="WhatId"/>
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+
+
+</apex:form>
+
+
+
+</apex:page>

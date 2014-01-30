@@ -1,0 +1,2342 @@
+<apex:page standardStylesheets="false" showHeader="false" controller="BMCServiceDesk.AppAdminController">
+    <c:CommonIncludes />
+    <link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/Knowledge.css" />
+    <link rel="Stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/AppAdmin.css" />
+    <script type="text/javascript" src="{!$Resource.SDEFCommonJS}/Vtabpanel.js"></script>
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/AppAdminItemselector.js" id="itemselector"/>
+      
+<body id="bodyContents">
+<style>
+    #itemProfileselectorDiv,
+    #itemselectorDiv{
+        width: 550px !important;
+    }
+    #AccountLabelId, #ProfileDesc, #CurrencyDesc{
+        padding-right: 5px;
+    }
+    .checkboxClass{
+       vertical-align:middle;  
+    }
+    .cellspace {
+    	padding-bottom:5px;
+    }
+    
+    .checkboxClass1{
+        vertical-align:none;
+    } 
+    #generalContents,
+    #urgencyContents,
+    #customfields,
+    #customfieldsContents,
+    #formAssignment,
+    #formAssignmentContents{ 
+        width: 900px !important;
+    }
+	#SRMTab,#SRMTabContents, #accountContents,#account{
+      width: 450px !important;
+      
+    }
+    #generalContents .x-panel-bwrap .x-panel-body .x-form-check-wrap{
+        display:block;
+        height:25px !important;
+        line-height:9px !important;
+    }
+    #generalContents .x-panel-bwrap .x-panel-body .x-form-check-wrap{
+        display:block;
+        height:25px !important;
+        line-height:9px !important;
+       
+    }
+
+    #urgencyContents .x-panel-bwrap .x-panel-body .x-form-check-wrap{
+        display:block;
+        line-height:13px !important;
+        height:50px !important;
+    }
+    #ProfileDesc,
+    #CurrencyDesc,
+    #CustomObjDesc
+    {
+        padding-top : 4px;
+        padding-bottom: 15px;
+        width:200px;
+    }
+    #defaultclientprofile,
+    #customobject,
+    #importProfileCombo,
+    #importTimezoneCombo,
+    #importLocaleCombo,
+    #importLanguageCombo,
+    #importEmailEncodeCombo,
+    #formToAssignComboId
+    
+    {
+        width: 195px;
+        height: 15px;
+        font-family: tahoma !important;
+        font-size: 11px;
+        color: #000000;
+        margin: 0px;
+        padding-bottom: 2px; 
+        *padding-bottom: 3px; 
+    }
+    
+    #orgemailAddress
+    {
+        width: 195px;
+        height: 15px;
+        font-family: tahoma;
+        font-size: 11px;
+        color: #000000;
+        margin: 0px;
+        padding-bottom: 2px;
+        *padding-bottom: 3px; 
+    }
+    
+   
+    .x-form-field-wrap img{
+        height: 20px !important;
+    }
+
+    .x-list-selected{
+        background-color: #D4EB79 !important;
+    } 
+    /* Style for Custom Fields Settings*/
+    #customfieldsContents{padding-top: 15px;}
+    #formAssignmentContents{padding-top: 15px;}
+    
+    #CustomObjNamePanel{padding-bottom: 15px;}
+    #formAssignPanelId{padding-bottom: 12px;}
+    
+    #CustomObjNamePanel table td{width: 200px;}
+    #formAssignPanelId table td{width: 120px;}
+    
+    #CustomObjFieldsSelectionLabels table td{width: 248px; padding-bottom: 5px;}
+    #assignFormLabelPanelId table td{width: 248px; padding-bottom: 8px;}
+    
+    #lblAssignStandardFormId,
+    #lblAssignCustomFormId,
+    #CustomObjAvailableFields,
+    #CustomObjSelectedFields{
+        width: 210px;
+        padding-right: 37px;
+        color:#004376;
+        font:bold 11px Tahoma,MS Sans Serif;
+        padding-bottom:5px;
+    }
+    #standardProfileList,
+    #customFieldList1{margin-right: 10px;}
+    #customProfileList,
+    #selectedFieldList1{margin-left: 10px; margin-right: 5px;}
+    #iconRightId{background-image: url({!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_R_new.gif);}
+    /*By USHA*/
+    .x-form-cb-label{
+        font:11px Tahoma,MS Sans Serif;
+    }
+
+    #profilepanelid{
+        padding-bottom: 10px;
+    }
+    
+/* Assign Incident To Queue style */
+    #lookupvalueid{
+        margin:0px 0px 0px 10px;
+        font-family: tahoma;
+        font-size: 11px;
+        color: #000000;
+    }   
+    
+    
+    #AccountLookupButtonId{
+        margin-left: 5px;
+    }
+    
+    
+    #updateReferenceIDLabel{
+        padding-top : 34px;
+        padding-bottom: 3px;
+        width:200px;
+    }
+    /*Style for Email Conversation*/
+    
+    #emailConversationlabel{
+        padding-top : 4px;
+        padding-bottom: 3px;
+        width:200px;
+    }
+    #OrgWideEmailDesc{
+        padding-top : 4px;
+        padding-bottom: 5px;
+        padding-right: 10px;
+        width:200px;
+    }
+    #OrgWideEmailPanel{
+        padding-top:5px;
+        padding-bottom:10px;
+        
+    }
+    
+    /*Style for Import Setting Fields*/
+    #AccountLookupId{
+        color: #000000;
+        font-family: Tahoma, MS Sans Serif;
+        font-size: 8pt;
+        vertical-align: top;
+    }
+    #accountContents .clsSelectList{
+        color: #000000;
+        font-family: Tahoma, MS Sans Serif;
+        font-size: 8pt;
+        vertical-align: top;
+        margin: 0px;
+    }
+    #accountContents .clsInputTextBox{
+        vertical-align: top;
+        color: #000000;
+        width: 210px;
+        height: 13px;
+        *height: 19px;
+        font-family: Tahoma, MS Sans Serif;
+        font-size: 11px;
+        padding: 2px;
+        margin: 0px;
+        padding-left: 5px; 
+    }
+    #userFieldsId table td{
+        padding: 0px 10px 10px 0px;
+    }
+    #ClientAccountPanelId table td{
+        padding: 0px !important;
+    }
+    #userFieldsId{
+        padding: 10px 0px 10px 0px;
+    }
+    
+    #accountContents .clsInputBoldLabelTDI{
+        padding: 0px; 
+    }
+    #actionButtonPanel{
+        padding-top: 10px; 
+    }
+    #rolePopulationBtnPnl{
+        padding-top: 10px;
+    }
+    
+    #rolePopulationBtn .x-btn-tl, #rolePopulationBtn .x-btn-tr, #rolePopulationBtn .x-btn-tc, 
+    #rolePopulationBtn .x-btn-ml, #rolePopulationBtn .x-btn-mr, #rolePopulationBtn .x-btn-mc,
+    #rolePopulationBtn .x-btn-bl, #rolePopulationBtn .x-btn-br, #rolePopulationBtn .x-btn-bc{
+        background-image: none;
+    }
+    #rolePopulationBtn .x-btn-text{
+        color: #004376;
+    }
+    
+    #deleteBtn .x-btn-tl, #deleteBtn .x-btn-tr, #deleteBtn .x-btn-tc, 
+    #deleteBtn .x-btn-ml, #deleteBtn .x-btn-mr, #deleteBtn .x-btn-mc,
+    #deleteBtn .x-btn-bl, #deleteBtn .x-btn-br, #deleteBtn .x-btn-bc{
+        background-image: none;
+    }
+    #deleteBtn .x-btn-text{
+        color: #004376;
+    } 
+    
+    #updateIdBtn .x-btn-tl, #updateIdBtn .x-btn-tr, #updateIdBtn .x-btn-tc, 
+    #updateIdBtn .x-btn-ml, #updateIdBtn .x-btn-mr, #updateIdBtn .x-btn-mc,
+    #updateIdBtn .x-btn-bl, #updateIdBtn .x-btn-br, #updateIdBtn .x-btn-bc{
+        background-image: none;
+    }
+    #updateIdBtn .x-btn-text{
+        color: #004376;
+    } 
+    
+    /*Style for Client User Include*/
+    
+    #Clientuserlabel{
+        padding-top : 2px;
+        padding-bottom: 3px;
+        width:200px;
+    }
+    
+    .x-item-disabled{
+       opacity:5.0;
+    }
+    .x-tab-panel-bwrap{
+         *width:87.5% !important;
+         width /*\**/:90.5%\9!important;
+    } 
+    /*Style added for defect 60892 to display text in tab in 2 lines */ 
+    .x-tab-strip span.x-tab-strip-text {
+        white-space:normal;
+    }
+</style>
+
+<script>
+    var currencyLengthValidationMsg = '{!JSENCODE($Label.defaultCurrencyLengthValidation)}';
+    var lblEnableCustomFieldMapping = '{!JSENCODE($Label.EnableCustomFieldMapping)}';
+    var propEnableCustomFieldMapping = {!enableCustomFieldMapping};
+    var SDEFStyles = '{!$Resource.SDEFStyles}';
+    var enablesavebtn = {!enablesavebutton};
+    var ProcessQueueAssignment = new Ext.form.Label({id: 'ProcessQueueAssignmentId',text: '{!JSENCODE($Label.ChildProcessQueueAssignment)}', cls: 'clsInputBoldLabelTDI'});
+    var TaskQueueLabel = new Ext.form.Label({id: 'TaskQueueLabel',text: '{!JSENCODE($Label.TaskAssignment)}'});
+    var CRQueueLabel = new Ext.form.Label({id: 'CRQueueLabel',text: '{!JSENCODE($Label.CRAssignment)}'});
+    
+    function QueueAssignment(process) {
+        document.getElementById('{!$Component.myForm.queueAssignment}').value = process;
+    }
+    function setPropCustomFieldMapping(status) {
+        document.getElementById('{!$Component.myForm.enableCustomFieldMap}').value = status;
+    }
+</script>
+
+<script type="text/javascript" src="{!$Resource.SDEFCommonJS}/AppAdmin.js"></script>
+    
+<apex:outputPanel id="loadCustomFields">
+<script>
+    //custom object field setting
+    var AvailableCustomFields = new Array();
+    var AutomaticallyCalculateDueDate = '{!JSENCODE($Label.AutomaticallyCalculateDueDate)}'; 
+    var SelectedCustomFields = new Array();
+    var selectedCustomObject = '{!JSENCODE(SelectedObjName)}';      
+    var i=0; 
+    <apex:repeat value="{!customFieldNameList}" var="customFieldNameList" >    
+        AvailableCustomFields[i] = new Array(2);
+        AvailableCustomFields[i++][0]='{!customFieldNameList}';
+    </apex:repeat>
+    
+    i=0;
+    <apex:repeat value="{!customFieldLabelList}" var="customFieldLabelList" >    
+        AvailableCustomFields[i++][1]='{!customFieldLabelList}';
+    </apex:repeat>
+    
+    i=0;
+    <apex:repeat value="{!selectedFieldNameList}" var="selectedFieldNameList" >    
+        SelectedCustomFields[i] = new Array(2);
+        SelectedCustomFields[i++][0]='{!selectedFieldNameList}';
+    </apex:repeat>
+    
+    i=0;
+    <apex:repeat value="{!selectedFieldLabelList}" var="selectedFieldLabelList" >    
+        SelectedCustomFields[i++][1]='{!selectedFieldLabelList}';
+    </apex:repeat>
+</script>
+</apex:outputPanel>
+<apex:outputPanel id="loadformAssignments">
+<script>
+    var assignedStdForms = new Array();
+    var assignedCustomForms = new Array();
+    var selectedFormAssignment = '{!JSENCODE(SelectedFormAssignment)}';
+    var i=0;
+    <apex:repeat value="{!standardFormAssigned}" var="stdAssigned">
+        assignedStdForms[i++] = ['{!stdAssigned.id}', '{!JSINHTMLENCODE(stdAssigned.name)}'];
+    </apex:repeat>
+    i=0;
+    <apex:repeat value="{!customFormAssigned}" var="customAssigned">
+        assignedCustomForms[i++] = ['{!customAssigned.id}', '{!JSINHTMLENCODE(customAssigned.name)}'];
+    </apex:repeat>
+</script>   
+</apex:outputPanel>
+
+<script type="text/javascript"> 
+var classForCheckbox = 'checkboxClass';
+var isBannarTab=false;
+var isClientImportTab = false;
+var ds, ds1;
+var isCMDBTab=false;
+var isSLMWarningTab = false;
+var isAutoAssignmentTab = false;
+var isIncidentEmailsettingTab = false;
+var isBmcFpTab=false;
+var isBmcDKTab= false;
+var isSaveDone=false;
+var bmcFpError='';
+var bmcDKError='';
+var showACConfigErr=false;
+//For Defect:61717
+//tabCount variable is used for counting the number of tabs that will sent a post request after click of save button
+//completedCount variable is used for counting the number of post requests that has been completed
+//Developer should increment tabcount variable whenever a new tab is added into this page
+ 
+var tabCount,completedCount;
+
+
+   function getInternetExplorerVersion() {
+        var rv = -1; // Return value assumes failure.
+        if (navigator.appName == 'Microsoft Internet Explorer') {
+            var ua = navigator.userAgent;
+            var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    
+            if (re.exec(ua) != null)
+                rv = parseFloat(RegExp.$1);
+        }
+        return rv;
+    }
+    
+    var ver = getInternetExplorerVersion();
+
+    if (ver > -1) {
+        if (ver >= 8.0){
+            classForCheckbox = 'checkboxClass1';
+        }        
+    }
+    var ObjectCustomFields = "";
+
+Ext.onReady(function() {
+    var urgencyGrid = null, store = null, splitedIncidentAssignedTo;
+    var applicationTabPanel = null;
+    var updateTabPanel = null;
+    var AppAdm = {!store};
+    var apivalues = {!apivalues};
+    var existingClientProfile = "{!JSENCODE(selectedProfileValue)}";
+    var existingOrgWideId = "{!JSENCODE(selectedOrgWideEmailValue)}";
+    var urgencyHierarchyArray = AppAdm[0].split(';');
+    var urgencyApivaluesArray = apivalues.split(';');
+    var urgencyArray = new Array(); 
+    var defaultImportProfileValue = '{!JSENCODE(ImportProfileValue)}';
+    var TimezoneValue = '{!JSENCODE(TimezoneValue)}';
+    var LocaleValue = '{!JSENCODE(LocaleValue)}';
+    var LanguageValue = '{!JSENCODE(LanguageValue)}';
+    var EmailEncodingValue = '{!JSENCODE(EmailEncodingValue)}';
+    
+    for(var i = 0; i < urgencyHierarchyArray.length; i++){
+        urgencyArray[i] = new Array(2);
+        for(var j = 0; j < urgencyArray[i].length; j++){
+            if(j == 0){
+                urgencyArray[i][j] = urgencyHierarchyArray[i];            
+            } else {
+                urgencyArray[i][j] = urgencyApivaluesArray[i];
+            }
+        }
+    }
+    var selectedIndex = 0, FormDataString = null, selectedProfile = null,selectedOrgWideEmailAddress= null;
+    var propCalculateUrgency = false, propAddTimeUserIDToNote = false, propDisableNewButton = false, propEnableWordWrapping = false, scrollBroadcastMessage = false, dueDateByBusinessHours = false, propOverwriteRecord = false,includeLeadforclient=false,includeContactforclient=false,userSegrChk=false;
+    var enableEmailToField = false, enableEmailTemplateField = false ,ApplyTemplate = false ,propDontcloseIncAssociatedTask =false ,propDontcloseChngAssociatedTask = false,propDontcloseProbAssociatedTask = false,propDontCloseReleaseAssociatedTask = false ;
+    var propAutomaticallyRecalculateDueDate = false;
+    var propDisableRFChatter = {!DisableRemedyforceChatter};
+     // US131502
+    var propEnableQueueAndUserAssignment = {!EnableQueueAndUserAssignment};
+    if(AppAdm[1] == 'TRUE'){
+        propCalculateUrgency = true;
+    }
+    
+    if(AppAdm[2] == 'TRUE'){
+        propAddTimeUserIDToNote = true;
+    }
+
+    if(AppAdm[3] == 'TRUE'){
+        propDisableNewButton = true;
+    }
+
+    if(AppAdm[4] == 'TRUE'){
+        propEnableWordWrapping = true;
+    }      
+    
+    if(AppAdm[5] == 'TRUE'){
+        scrollBroadcastMessage = true;
+    }      
+    if(AppAdm[6] == 'TRUE'){
+        propOverwriteRecord = true;
+    }
+    
+     if(AppAdm[7] == 'TRUE'){
+        includeLeadforclient = true;
+    }
+    if(AppAdm[8] == 'TRUE'){
+        includeContactforclient = true;
+    }
+    if(AppAdm[9] == 'TRUE'){
+        enableEmailToField = true;
+    }
+    if(AppAdm[10] == 'TRUE'){
+        enableEmailTemplateField = true;
+    }
+    if(AppAdm[11] == 'TRUE'){
+    
+        propAutomaticallyRecalculateDueDate = true;
+    }
+    if(AppAdm[12] == 'TRUE'){
+    
+        ApplyTemplate = true;
+    }
+    if(AppAdm[13] == 'TRUE'){
+        userSegrChk = true;
+    }
+    if(AppAdm[14] == 'TRUE'){
+    	propDontcloseIncAssociatedTask = true ;
+    }
+    if(AppAdm[15] == 'TRUE'){
+    	propDontcloseChngAssociatedTask = true ;
+    }
+    if(AppAdm[16] == 'TRUE'){
+    	propDontcloseProbAssociatedTask = true ;
+    }
+    if(AppAdm[17] == 'TRUE'){
+    	propDontCloseReleaseAssociatedTask = true ;
+    }
+    
+    dueDateByBusinessHours = '{!JSENCODE(dueDateByBusinessHoursValue)}';
+    if (dueDateByBusinessHours == 'TRUE')
+        dueDateByBusinessHours = true;
+    else
+        dueDateByBusinessHours =false;
+    
+    var savehandler = function(button,event){
+        //Ext.getCmp('actionsave_id').setDisabled(true);
+        isSaveDone=false;
+        //tabCount is set to 1 for general tab and it will be incremented in whenever other tabs are selected.
+        tabCount = 1;
+        completedCount = 0;
+        
+        var cont = true ;
+        if(isSLMWarningTab){
+            cont = document.getElementById('SLMSettingPage').contentWindow.SLMWarningSaveHandler();
+            tabCount++;
+        }
+        if(isIncidentEmailsettingTab){
+            var incidentemailset = document.getElementById('Incident_Email_Setting').contentWindow.savegrid();
+            tabCount++;
+        }
+        
+        /* Defect #62678
+          * Description:  "Record has been saved successfully." message should not be displayed 
+                          if "Create an incident only when the email subject contains: *" field is blank.
+           *Dev: Neha
+        */      
+        if(incidentemailset == false){
+            return false;
+        }
+        if(cont == false){
+            searchTabs = Ext.getCmp('AppSettingId');
+            searchTabs.setActiveTab(7);
+            
+         }
+    	
+        if (cont == true){
+     	
+     	if(isBmcFpTab){
+    		var allValuesEntered = document.getElementById('bmcFootPrints').contentWindow.allValuesEntered();
+    		var isBmcFpChanged = document.getElementById('bmcFootPrints').contentWindow.isChanged;
+    		var acEnabled = document.getElementById('bmcFootPrints').contentWindow.getACEnableEle().checked;
+    		if(acEnabled && isBmcFpChanged){
+    			if(allValuesEntered){
+    				document.getElementById('bmcFootPrints').contentWindow.SaveBtnHandler();
+    			}else{
+    				showACConfigErr=true;
+    				completedCount++;
+    			}
+    		}else{
+    		document.getElementById('bmcFootPrints').contentWindow.SaveBtnHandler();
+    		}
+    		tabCount++;
+     	}
+     	
+     	if(isBmcDKTab)
+     	{
+    		document.getElementById('bmcdellkaces').contentWindow.SaveBtnHandler();
+    		tabCount++;
+     	}
+     	
+        if(isAutoAssignmentTab){
+           document.getElementById('AutoAssignment').contentWindow.AutoAssignmnentSave();
+           tabCount++;
+        }
+        //Validation for Domain Name in Import Setting
+        if(isClientImportTab){
+            var strDomain = document.getElementById('domainName').value.trim();
+            if(strDomain.length > 0 ){
+                var pos = strDomain.indexOf('.');
+                var re = /^[a-zA-Z_0-9]+[\-|.|a-zA-Z_0-9]*[a-zA-Z_0-9]$/;
+                if(pos < 0){
+                    Ext.MessageBox.show({
+                       width: 250,
+                       title: '',
+                       msg: '{!JSENCODE($Label.ExtensionError)}',
+                       buttons: Ext.MessageBox.OK
+                   });
+                   return;
+                }
+                if (!re.test(strDomain)) {
+                    Ext.MessageBox.show({
+                       width: 250,
+                       title: '',
+                       msg: '{!JSENCODE($Label.InvalidDomainName)}',
+                       buttons: Ext.MessageBox.OK
+                   });
+                   return;
+                }
+            }
+        }
+        
+        if(isBannarTab){
+            document.getElementById('Branding').contentWindow.SaveBtnHandler();
+        }
+        if(isCMDBTab){          
+            document.getElementById('CMDBCustomization').contentWindow.CMDBCustomizationsavehandler();
+            tabCount++;
+        }
+        FormDataString = null;
+        for(var i = 0; i < urgencyArray.length; i++){
+            if(FormDataString == null){
+                FormDataString = urgencyArray[i][1]+";";
+            } else {
+                if(i == urgencyArray.length-1){
+                    FormDataString += urgencyArray[i][1]+",";                            
+                } else {
+                    FormDataString += urgencyArray[i][1]+";";            
+                }
+            }
+        }
+        
+        if(propCalculateUrgency == true){
+            FormDataString += 'TRUE'+",";
+        } else {
+            FormDataString += 'FALSE'+",";        
+        }
+
+        if(propAddTimeUserIDToNote == true){
+            FormDataString += 'TRUE'+",";
+        } else {
+            FormDataString += 'FALSE'+",";        
+        }
+
+        if(propDisableNewButton == true){
+            FormDataString += 'TRUE'+",";
+        } else {
+            FormDataString += 'FALSE'+",";        
+        }
+
+        if(propEnableWordWrapping == true){
+            FormDataString += 'TRUE'+",";
+        } else {
+            FormDataString += 'FALSE'+",";        
+        }
+        
+        if(scrollBroadcastMessage == true){
+            FormDataString += 'TRUE'+",";
+        } else {
+            FormDataString += 'FALSE'+",";        
+        }
+        if(propOverwriteRecord == true){
+            FormDataString += 'TRUE'+",";
+        } else {
+            FormDataString += 'FALSE'+",";        
+        }
+        if(clientuserLeadCheckbox.getValue()){
+            FormDataString += 'TRUE'+",";
+        } else {
+            FormDataString += 'FALSE'+",";        
+        }
+        
+        if(clientuserContactCheckbox.getValue()){
+            FormDataString += 'TRUE'+",";
+        } else {
+            FormDataString += 'FALSE'+",";        
+        }
+        
+        if(enableEmailToFieldCheckBox.getValue()){
+            FormDataString += 'TRUE'+",";
+        } else {
+            FormDataString += 'FALSE'+",";        
+        }
+
+        if(enableEmailTemplateFieldCheckBox.getValue()){
+            FormDataString += 'TRUE'+",";
+        } else {
+            FormDataString += 'FALSE'+",";        
+        }
+       
+       if(ApplyTemplate == true){
+            FormDataString += 'TRUE'+",";     
+        } else {
+            FormDataString += 'FALSE'+",";            
+        }
+        if(propAutomaticallyRecalculateDueDate == true){
+            FormDataString += 'TRUE'+",";     
+        } else {
+            FormDataString += 'FALSE'+",";            
+        }
+       
+         var currencyVal = document.getElementById('defaultCurrency').value.trim();
+         if (currencyVal.length > 3)
+         {
+            showMessage(currencyLengthValidationMsg);
+            event.stopEvent();
+            return false;
+         }
+         FormDataString += document.getElementById('defaultCurrency').value.trim();
+         if(userSegrChk == true){
+ 		 	FormDataString += ',TRUE'+",";
+
+         }else{
+ 		 	FormDataString += ',FALSE'+",";
+ 		 }
+ 		  if(propDontcloseIncAssociatedTask == true){
+            FormDataString += 'TRUE'+",";     
+        } else {
+            FormDataString += 'FALSE'+",";            
+        }
+        if(propDontcloseChngAssociatedTask == true){
+            FormDataString += 'TRUE'+",";     
+        } else {
+            FormDataString += 'FALSE'+",";            
+        }
+        if(propDontcloseProbAssociatedTask == true){
+            FormDataString += 'TRUE'+",";     
+        } else {
+            FormDataString += 'FALSE'+",";            
+         }
+         if(propDontCloseReleaseAssociatedTask == true){
+            FormDataString += 'TRUE'+",";     
+        } else {
+            FormDataString += 'FALSE'+",";            
+         }
+         
+         
+         if(propEnableQueueAndUserAssignment == true){
+            FormDataString += 'TRUE'+"";     
+        } else {
+            FormDataString += 'FALSE'+"";            
+        }
+		
+        /*Ext.getCmp('actionsave_id').setDisabled(true);*/
+        waitbox(0); 
+        selectedProfile = document.getElementById('ClientProfile').value;
+        selectedOrgWideEmailAddress = document.getElementById('OrgWideEmail').value;
+        ObjectCustomFields = "";
+        //incident form custom field setting
+        if(Ext.getCmp('selectedFieldList1'))
+        {
+            var record = Ext.getCmp('selectedFieldList1').store;        
+            var rowCount=record.data.length;
+            //alert(rowCount);
+            var fieldCount = 0;
+            //alert(fieldCount);
+            while(rowCount > fieldCount){
+                var cField = record.getAt(fieldCount); 
+                fieldCount++;
+                if(rowCount == fieldCount){
+                    ObjectCustomFields = ObjectCustomFields +cField.get('value');
+                } else {
+                    ObjectCustomFields = ObjectCustomFields +cField.get('value')+ ',';                       
+                }
+            }
+            tabCount++;   
+             savemodifiedData1(ObjectCustomFields);
+        }
+        
+        var customformAssigned = '';
+        if (Ext.getCmp('customProfileList')){
+            var record = Ext.getCmp('customProfileList').store;
+            record.data.each(function(item, index, totalItems) { 
+                customformAssigned += item.get('ProfileId') + ',';
+            });
+        }
+        else{
+            for (var i=0; i<assignedCustomForms.length; i++){
+                customformAssigned += assignedCustomForms[i][0] + ',';
+            }
+        }
+       
+                //To Collect Import Setting Fields
+                var importSettingFields = null;
+                if(isClientImportTab){
+			        if(strDomain != null)
+					importSettingFields = strDomain;
+					
+                    importSettingFields += ',,,,,,' + document.getElementById('ImportProfile').value;
+                    importSettingFields += ',,,,,,' + document.getElementById('ImportTimezone').value;
+                    importSettingFields += ',,,,,,' + document.getElementById('ImportLocale').value;
+                    importSettingFields += ',,,,,,' + document.getElementById('ImportLanguage').value;
+                    importSettingFields += ',,,,,,' + document.getElementById('ImportEmailEncode').value;
+                }
+                
+                var IncidentChatterPostsContentsFrame = document.getElementById("IncidentChatterPostsContents");
+                if(IncidentChatterPostsContentsFrame
+                    && IncidentChatterPostsContentsFrame!=null
+                    && IncidentChatterPostsContentsFrame.contentWindow
+                    && IncidentChatterPostsContentsFrame.contentWindow.Save) {
+                        tabCount++;
+                        
+                        IncidentChatterPostsContentsFrame.contentWindow.Save();
+                }
+             // US 131502   
+             savemodifiedData(FormDataString, selectedProfile, ObjectCustomFields,selectedOrgWideEmailAddress,importSettingFields,dueDateByBusinessHours,customformAssigned, propDisableRFChatter, propEnableQueueAndUserAssignment);         
+        
+            
+        }
+    }   
+    
+    var DeleteHandler = function(button,event){
+        deleteClientImport();
+    }
+    var rolePopulationHandler = function(button, event){
+        button.disabled = true;
+        populateRoleHierarchy();
+    }
+    
+    function findNameFieldForAccount(clientAccountid){
+        getAccountName(clientAccountid);
+    }
+    
+    var savetoolbar = new Ext.Toolbar({
+        id:'toolBarId',
+        renderTo: 'savetoolbar',
+        cls:'toolSpCls',
+        height:35,
+        items: [{
+            xtype: 'tbbutton',
+            autoEl: {tag: 'img', title:'{!JSENCODE($Label.Up)}'},
+            id: 'actionsave_id',
+            tooltipType : 'title',
+            tooltip: '{!JSENCODE($Label.save)}',
+            icon: '{!$Resource.SDEFStyles}/SDEFbuttons/b_save.gif',
+            listeners: {
+                mouseover: function(){
+                    this.setIconClass('bmcSaveOn');    
+                },
+                mouseout: function(){
+                    this.setIconClass('bmcSave');          
+                }
+            },
+            handler: savehandler
+        }]
+    });
+    
+    var insertLoggedInIdCheckbox = new Ext.form.Checkbox({
+         id:'insertLoggedInIdChk',
+         cls:classForCheckbox ,
+         boxLabel: '{!JSENCODE($Label.InsertLoggedInUserId)}',
+         checked: propAddTimeUserIDToNote ,
+         handler: function() {
+            propAddTimeUserIDToNote = this.getValue();
+         }
+    });
+    var RecordClosingSectionLabel = new Ext.form.Label({
+        id:'RecordClosingSection',
+        text:'{!JSENCODE($Label.CloseRecords)}',
+        cellCls: 'cellspace',
+        style:'margin-top:10px;padding-bottom:10px;color:#004376;font-size:13px;font-weight: bold;font-family:tahoma,arial,helvetica,sans-serif !important;'
+    });	
+     var RecordClosingLabel = new Ext.form.Label({
+        id:'RecordClosingLabel',
+        text:'{!JSENCODE($Label.LinkedOpenTasks)}',
+        style:'font-size:13px;font-family:tahoma,arial,helvetica,sans-serif !important;'
+    });	
+     var RecordClosingHeaders = new Ext.Panel({
+        id: 'RecordClosingHeaders',
+        border:false,
+        layout:'table',
+        layoutConfig:{ columns: 1},
+        items:[RecordClosingSectionLabel,RecordClosingLabel]
+    
+    });
+    var DontcloseIncAssociatedTaskLabel = new Ext.form.Label({
+        id:'DontcloseIncAssociatedTaskLabel',
+        text:'{!JSENCODE($ObjectType.Incident__c.LabelPlural)}',
+        style:'font-size:11px;padding-left:5px;font-family:tahoma,arial,helvetica,sans-serif !important;'
+    });	
+    
+	 var dontCloseIncAssociatedTaskCheckbox = new Ext.form.Checkbox({
+         id:'dontCloseIncAssociatedTask',
+         cls:classForCheckbox ,
+       	 style: 'margin-top:6px;',
+         checked: propDontcloseIncAssociatedTask ,
+         handler: function() {
+            propDontcloseIncAssociatedTask = this.getValue();
+         }
+    });
+    var dontCloseIncAssociatedPanel = new Ext.Panel({
+        id: 'dontCloseIncAssociatedPanel',
+        border:false,
+        layout:'table',
+        style:'margin-top:6px;margin-bottom:6px;',
+        items:[dontCloseIncAssociatedTaskCheckbox,DontcloseIncAssociatedTaskLabel]
+    
+    });
+     var dontCloseChngAssociatedTaskCheckbox = new Ext.form.Checkbox({
+         id:'dontCloseChngAssociatedTask',
+         cls:classForCheckbox ,
+     
+         boxLabel:'{!JSENCODE($ObjectType.Change_Request__c.LabelPlural)}',
+         checked: propDontcloseChngAssociatedTask ,
+         handler: function() { 
+            propDontcloseChngAssociatedTask = this.getValue();
+         }
+    });
+     var dontCloseProbAssociatedTaskCheckbox = new Ext.form.Checkbox({
+         id:'dontCloseProbAssociatedTask',
+         cls:classForCheckbox ,
+        
+         boxLabel:'{!JSENCODE($ObjectType.Problem__c.LabelPlural)}',
+         checked: propDontcloseProbAssociatedTask ,
+         handler: function() {
+            propDontcloseProbAssociatedTask = this.getValue();
+         }
+    });
+    var dontCloseReleaseAssociatedTaskCheckbox = new Ext.form.Checkbox({
+         id:'dontCloseReleaseAssociatedTask',
+         cls:classForCheckbox ,
+        
+         boxLabel:'{!JSENCODE($ObjectType.Release__c.LabelPlural)}',
+         checked: propDontCloseReleaseAssociatedTask ,
+         handler: function() {
+            propDontCloseReleaseAssociatedTask = this.getValue();
+         }
+    });
+
+    //Checkbox to overwite template values (US112283) 
+     var ovewriteTemplateCheckbox = new Ext.form.Checkbox({
+         id:'ovewriteTemplateChk',
+         cls:classForCheckbox ,
+         boxLabel:'{!JSENCODE($Label.Replace_Incident_Field)}',
+         checked: propOverwriteRecord ,
+         handler: function() {
+            propOverwriteRecord = this.getValue();
+         }
+    });
+    
+    
+        var CurrencyDesc = new Ext.form.Label ({
+        id:'CurrencyDesc',
+        text: '{!JSENCODE($Label.DefaultCurrency)}'
+    });
+    
+     var DefaultCurrencyTextField = new Ext.form.TextField({
+        name: "DefaultCurrencyvalue",
+        height: 20,
+        id:'defaultCurrency',
+        cls: 'clsInputTextBox',
+        value:'{!JSENCODE(defaultCurrency)}'
+    });
+    
+   
+    var newButtonCheckbox = new Ext.form.Checkbox({
+         id:'newButtonChk',
+         cls:classForCheckbox ,
+         boxLabel: '{!JSENCODE($Label.NotIncludeNewButton)}',
+         checked: propDisableNewButton,
+         handler: function() {
+            propDisableNewButton = this.getValue();
+         }
+    });
+
+    var enableWordWrappingCheckbox = new Ext.form.Checkbox({
+         id:'enableWordWrappingchk',
+         cls:classForCheckbox ,
+         boxLabel: '{!JSENCODE($Label.EnableWordWrapping)}',
+         checked: propEnableWordWrapping ,
+         style: 'width:13px;',
+         handler: function() {
+            propEnableWordWrapping = this.getValue();
+         }
+    });
+    
+    //added for enabling Template Icon on existing records
+    var checkTemplate  = new Ext.form.Checkbox({
+        id:'chktemplateChk',
+        cls:classForCheckbox,
+        boxLabel: '{!JSENCODE($Label.EnableApplyTemplateIcon)}', 
+        checked: ApplyTemplate,
+        style: 'width:13px;',
+        handler: function() {
+            ApplyTemplate = this.getValue();
+         }
+    });
+     var checkautomaticrecalculateduedate  = new Ext.form.Checkbox({
+        id:'chkrecalculateduedateChk',
+        cls:classForCheckbox,
+        boxLabel: '{!JSENCODE($Label.AutomaticallyCalculateDueDate)}', 
+        checked: propAutomaticallyRecalculateDueDate,
+        style: 'width:13px;',
+        handler: function() {
+            propAutomaticallyRecalculateDueDate = this.getValue();
+         }
+    });
+      // US131502
+     var EnableQueueAndUserAssignmentCheckbox = new Ext.form.Checkbox({
+         id:'EnableQueueAndUserAssignment',
+         cls:classForCheckbox ,
+         boxLabel: '{!JSENCODE($Label.Enable_Queue_and_User_Assignment)}', 
+         checked: propEnableQueueAndUserAssignment,
+         style: 'width:13px;',
+         handler: function() {
+            propEnableQueueAndUserAssignment = this.getValue();            
+         }
+    });
+     	
+     var EnableRFChatterCheckbox = new Ext.form.Checkbox({
+         id:'EnableRFChatterChk',
+         cls:classForCheckbox ,
+         boxLabel: '{!JSENCODE($Label.DisableRemedyforceChatter)}', 
+         checked: propDisableRFChatter,
+         style: 'width:13px;',
+         handler: function() {
+            propDisableRFChatter = this.getValue()+'';
+         }
+    });
+     if(!enablesavebtn)
+     {
+        
+        Ext.getCmp('actionsave_id').setDisabled(true);
+     }
+    eval('{!ProfileList}');
+    
+    var ProfileStore = new Ext.data.ArrayStore({
+            id:'ProfileStore',
+            fields:[
+                {name:'Id'},
+                {name:'ProfileLabel'}
+            ]
+        });
+        
+    ProfileStore.loadData(ProfileData);
+        
+    ProfileStore.sort('ProfileLabel');
+    var profileExist = ProfileStore.findExact('Id', existingClientProfile);
+    if(parseInt(profileExist) < 0){
+    	existingClientProfile = String('-1');
+    }
+    
+    var ProfileCombo = new Ext.form.ComboBox({
+        id:'defaultclientprofile',
+        fieldLabel: 'ProfileLabel',
+        hiddenName:'ClientProfile',
+        store: ProfileStore,
+        valueField:'Id',
+        displayField:'ProfileLabel',
+        typeAhead: false,
+        mode: 'local',
+        editable:false,
+        value : existingClientProfile,
+        triggerAction: 'all',
+        forceSelection:true,
+        selectOnFocus:true
+        });
+        
+    var ProfileDesc = new Ext.form.Label({
+        id:'ProfileDesc',
+        text:'{!JSENCODE($Label.DefaultClientProfile)}'
+    });
+    
+    var ProfilePanel = new Ext.Panel({
+        border:false,
+        id:'profilepanelid',
+        layout:'table',
+        layoutConfig:{ columns: 2},     
+        items:[ProfileDesc, ProfileCombo,
+            {
+                id:'BlankLabel',
+                border:false,
+                html: '<div>&nbsp</div>'
+            }, 
+            {
+                id:'BlankLabel1',
+                border:false,
+                html: '<div>&nbsp</div>'
+            },
+            CurrencyDesc, DefaultCurrencyTextField]
+    });
+     // code Added for Email Conversation
+     
+     eval('{!OrgWideEmailList}');
+     
+     var OrgWideEmailStore = new Ext.data.ArrayStore({
+            id:'OrgWideEmailStore',
+            fields:[
+                {name:'Id'},
+                {name:'displayNameEmailAdd'}
+            ]
+        });
+     OrgWideEmailStore.loadData(OrgWideEmailData);
+        
+     OrgWideEmailStore.sort('displayNameEmailAdd');
+     
+     var EmailAddressCombo = new Ext.form.ComboBox({
+        id:'orgemailAddress',
+        fieldLabel: 'displayNameEmailAdd',
+        hiddenName:'OrgWideEmail',
+        store: OrgWideEmailStore,
+        valueField:'Id',
+        tooltipType : 'title',
+        tpl: '<tpl for="."><div class="x-combo-list-item" ext:qtip="{displayNameEmailAdd}">{displayNameEmailAdd}</div></tpl>',
+        displayField:'displayNameEmailAdd',
+        typeAhead: false,
+        mode: 'local',
+        width:350,
+        editable:false,
+        value : existingOrgWideId,
+        triggerAction: 'all',
+        forceSelection:true,
+        selectOnFocus:true
+        /*,
+        listeners:{
+            'beforeselect': function(combo,selectedRecord,index){
+                 var record = this.findRecord(this.valueField, this.getValue());
+                 var value=record.get(this.displayField);
+                 //var temp= value.rep(&lt,<)
+                 var somevalue= "<" + value + ">";
+                record.set(this.displayField, somevalue);
+            },
+            'select':function(index,scrollIntoView ){
+                 var record = this.findRecord(this.valueField, this.getValue());
+                 var value=record.get(this.displayField);
+                 //var temp= value.rep(&lt,<)
+                 var somevalue= "&lt;" + value + "&gt;";
+                record.set(this.displayField,somevalue);
+            },
+        }*/
+            
+        });
+        
+        
+    var OrgWideEmailDesc = new Ext.form.Label({
+        id:'OrgWideEmailDesc',
+        text:'{!JSENCODE($Label.DefaultOrgwideEmailAddress)}'
+    });
+     
+     
+     var OrgWideEmailPanel = new Ext.Panel({
+        id:'OrgWideEmailPanel',
+        border:false,
+        layout:'table',
+        layoutConfig:{ columns: 2},     
+        items:[OrgWideEmailDesc,EmailAddressCombo]
+    });
+    
+    var enableEmailToFieldCheckBox = new Ext.form.Checkbox({
+         id:'enableEmailToFieldChk',
+         cls:classForCheckbox ,
+         boxLabel: '{!JSENCODE($Label.EmailConvToFieldEnabled)}',
+         checked:  enableEmailToField,
+         style: 'width:13px;',
+         handler: function() {
+            enableEmailToField = this.getValue();
+         }
+    });
+    
+    var enableEmailTemplateFieldCheckBox = new Ext.form.Checkbox({
+         id:'enableEmailTemplateFieldChk',
+         cls:classForCheckbox ,
+         boxLabel: '{!JSENCODE($Label.EmailConvEmailTemplEnabled)}',
+         checked:  enableEmailTemplateField,
+         style: 'width:13px;',
+         handler: function() {
+            enableEmailTemplateField = this.getValue();
+         }
+    });
+
+
+    
+
+    var emailConversationlabel = new Ext.form.Label({
+        id:'emailConversationlabel',
+        text:'{!JSENCODE($Label.ApplicationSetting_EmailConversation)}',
+        style:'color:#004376;font-size:13px;font-weight: bold;font-family:tahoma,arial,helvetica,sans-serif !important;'
+    });
+    
+    
+    var scrollBroadcastMessageCheckbox = new Ext.form.Checkbox({
+         id:'scrollBroadcastMessageChk',
+         cls:classForCheckbox ,
+         boxLabel: '{!JSENCODE($Label.ScrollBroadcastMessage)}',
+         checked: scrollBroadcastMessage ,
+         style: 'width:13px;',
+         handler: function() {
+            scrollBroadcastMessage = this.getValue();
+         }
+    });
+    
+    var dueDateByBusinessHoursCheckbox = new Ext.form.Checkbox({
+         id:'dueDateByBusinessHoursChk',
+         cls:classForCheckbox ,
+         boxLabel: "{!JSENCODE($Label.DueDateByBusinessHours)}",
+         checked: dueDateByBusinessHours ,
+         style: 'width:13px;',
+         handler: function() {
+            dueDateByBusinessHours = this.getValue();
+         }
+    });
+
+    var recalculateUrgencyCheckbox = new Ext.form.Checkbox({
+         id:'recalculateUrgencyChk',
+         cls:classForCheckbox ,
+         boxLabel: '{!JSENCODE($Label.RecalculateUrgency)}',
+         checked: propCalculateUrgency,
+         style: 'width:13px;',
+         handler: function() {
+            propCalculateUrgency = this.getValue();
+         }         
+    });
+     
+    var urgencyToolbar = new Ext.Toolbar({
+        height: 30,
+        width: 509,
+        border:true,
+        items: [{
+            xtype: 'box',
+            id: 'btnMoveUp',                    
+            autoEl: {tag: 'img', src:'{!$Resource.SDEFStyles}/SDEFbuttons/b_control_up_disable.png',title:'{!JSENCODE($Label.Up)}',name:'btnMoveUp'},
+            style : 'cursor:default;padding-left:5px;',
+//            disabled:true,
+            listeners:{
+                render: function(c) {
+                    c.getEl().on('load', function(){
+                        if (document.images['btnMoveUp'].getAttribute('isBtnDisabled') == null)
+                            document.images['btnMoveUp'].setAttribute('isBtnDisabled',true);
+                        });
+                    c.getEl().on('click', function(){
+                        if (document.images['btnMoveUp'].getAttribute('isBtnDisabled') == false || document.images['btnMoveUp'].getAttribute('isBtnDisabled') == "false")
+                            moveSelectedRow(urgencyGrid, -1);
+                        });
+                    }
+                 }
+             },{
+            xtype: 'box',
+            id: 'btnMoveDown',                    
+            autoEl: {tag: 'img', src:'{!$Resource.SDEFStyles}/SDEFbuttons/b_control_down_disable.png',title:'{!JSENCODE($Label.Down)}',name:'btnMoveDown'},
+            style : 'cursor:default;',
+//          disabled:true,
+            listeners:{
+                render: function(c) {
+                    c.getEl().on('load', function(){
+                        if(document.images['btnMoveDown'].getAttribute('isBtnDisabled') == null)
+                            document.images['btnMoveDown'].setAttribute('isBtnDisabled',true);
+                        });
+                    c.getEl().on('click', function(){
+                        if(document.images['btnMoveDown'].getAttribute('isBtnDisabled') == "false" || document.images['btnMoveDown'].getAttribute('isBtnDisabled') == false){
+                            moveSelectedRow(urgencyGrid, 1);                    
+                        }
+                    });
+                }
+            }
+        }]
+    });
+        
+    store = new Ext.data.ArrayStore({
+        fields: [
+            {name: 'urgency'}
+        ]
+    });
+
+    store.loadData(urgencyHierarchyArray);
+
+    urgencyGrid = new Ext.grid.GridPanel({
+        store: urgencyHierarchyArray,
+        columns: [
+            {id:'urgency', width: 505, header:'{!JSENCODE($Label.UrgencyOrder)}'}
+        ],
+        stripeRows: false,
+        sortable: false,
+        enableHdMenu:false,
+        width: 509,
+        height: 110,
+        stateful: true,
+        stateId: 'grid',
+        id:'urgency_grid',
+        border:false,
+        sm: new Ext.grid.RowSelectionModel({singleSelect:true})
+    }); 
+            
+    eval('{!CustomObjectsList}');
+    var CustomObjStore = new Ext.data.ArrayStore({
+            id:'CustomObjStore',
+            fields:[
+                {name:'Id'},
+                {name:'CustomObjFieldLabel'}
+            ]
+        });
+        
+    CustomObjStore.loadData(CustomObjectsListData);
+        
+    CustomObjStore.sort('CustomObjFieldLabel');
+
+    var CustomObjDesc = new Ext.form.Label({
+        id:'CustomObjDesc',
+        text:'{!JSENCODE($Label.CustomFieldstoDisplayFor)}'
+    });
+    
+    var CustomObjCombo = new Ext.form.ComboBox({
+        id: 'customobject',
+        fieldLabel: '',
+        hiddenName:'ClientObject',
+        store: CustomObjStore,
+        valueField:'Id',
+        displayField:'CustomObjFieldLabel',
+        typeAhead: false,
+        mode: 'local',
+        editable:false,
+        triggerAction: 'all',
+        forceSelection:true,
+        selectOnFocus:true,
+        value: selectedCustomObject
+    });
+    CustomObjCombo.on('select', function(){
+        var customFieldComboValue = CustomObjCombo.getValue();
+        //alert(customFieldComboValue);
+        SelectObjectCustomFields(customFieldComboValue);
+    });
+
+    var CustomObjNamePanel = new Ext.Panel({
+        id: 'CustomObjNamePanel',
+        border:false,
+        layout:'table',
+        items:[CustomObjDesc, CustomObjCombo]
+    });
+        
+    // Custom fields in Incident Form
+    ds = new Ext.data.ArrayStore({
+        data: AvailableCustomFields,
+        fields: ['value','text']
+        
+    });
+
+    ds1 = new Ext.data.ArrayStore({
+        data: SelectedCustomFields,
+        fields: ['value','text']
+       
+    });    
+            
+    var CustomObjAvailableFields = new Ext.form.Label({
+        id:'CustomObjAvailableFields',
+        text:'{!JSENCODE($Label.AvailableFields)}'
+    });
+
+    var CustomObjSelectedFields = new Ext.form.Label({
+        id:'CustomObjSelectedFields',
+        text:'{!JSENCODE($Label.SelectedFields)}'
+    });
+
+    var CustomObjFieldsSelectionLabels = new Ext.Panel({
+        id: 'CustomObjFieldsSelectionLabels',
+        border:false,
+        layout:'table',
+        items:[CustomObjAvailableFields, CustomObjSelectedFields]
+    });
+     
+    var CustomFieldsSettingForm = new Ext.form.FormPanel({
+        id: 'CustomFieldsSettingForm',
+        width:550,
+        border:false,
+        layout:'column',
+        items:[{
+            xtype: 'itemselector',
+            id: 'itemselectorDiv',
+            name: 'itemselector',
+            fieldLabel: 'ItemSelector',
+            drawLeftIcon:true,
+            drawRightIcon:true,
+            iconUp:'b_darrow_U_disable_custom.gif',
+            iconDown:'b_darrow_D_disable_custom.gif',
+            iconLeft:'b_darrow_L_disable_custom.gif',
+            iconRight:'b_darrow_R_disable_custom.gif',
+            imagePath: '{!$Resource.SDEFStyles}/SDEFbuttons/',
+            multiselects: [{
+                id:'customFieldList1',
+                legend: false,
+                width: 200,
+                height: 146,
+                store: ds,
+                displayField: 'text',
+                valueField: 'value',
+                listeners:{
+                    click:function(c){
+                        document.getElementById('iconRightId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_R_new.gif';
+                        document.getElementById('iconLeftId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_L_disable_custom.gif';
+                    }
+                }
+            },{
+                id:'selectedFieldList1',
+                legend: false,
+                width: 200,
+                height: 146,
+                store: ds1,
+                displayField: 'text',
+                valueField: 'value',
+                listeners:{
+                    click:function(c){
+                        var index = 0;
+                        for(var i = 0; i < c.store.data.length; i++){
+                            if(c.store.getAt(i).get('value') == c.getValue()){
+                                index = i;
+                                break;                          
+                            }
+                        }
+                        if(index == 0){
+                            document.getElementById('iconRightId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_R_disable_custom.gif';
+                            document.getElementById('iconLeftId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_L_new.gif';
+                            document.getElementById('iconDownId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_D_new.gif';
+                            document.getElementById('iconUpId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_U_disable_custom.gif';
+                        } else if(index == c.store.data.length-1){
+                            document.getElementById('iconRightId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_R_disable_custom.gif';
+                            document.getElementById('iconLeftId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_L_new.gif';
+                            document.getElementById('iconDownId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_D_disable_custom.gif';
+                            document.getElementById('iconUpId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_U_new.gif';                     
+                        } else {
+                            document.getElementById('iconRightId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_R_disable_custom.gif';
+                            document.getElementById('iconLeftId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_L_new.gif';
+                            document.getElementById('iconDownId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_D_new.gif';
+                            document.getElementById('iconUpId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_U_new.gif';                                             
+                        }
+                    }
+                }                                                  
+            }]
+        }]
+    });        
+    
+    /* Sameer: Import Setting Tab New UI */
+    
+    //var BlankLabel = new Ext.form.Label({id: 'BlankLabelId',text: ' '});
+    var ImportDefaultsLabel = new Ext.form.Label({id: 'ImportDefaultsId',text: '{!JSENCODE($Label.ImportDefaults)}', cls: 'clsInputBoldLabelTDI'});
+    var DefaultClientAccountLabel = new Ext.form.Label({id: 'DefaultClientAccountLabel',text: '{!JSENCODE($Label.DefaultClientAccount)}'});
+    var DefaultClientProfileLabel = new Ext.form.Label({id: 'DefaultClientProfileLabel',text: '{!JSENCODE($Label.DefaultClientProfile)}'});
+    var DomainNameLabel = new Ext.form.Label({id: 'DomainNameLabel',text: '{!JSENCODE($Label.DomainName)}'});
+    var DomainNameHelpText = new Ext.form.Label({id: 'DomainNameHelpTextLabel',text: '{!JSENCODE($Label.DomainNameHelpText)}', cls: 'EmailAdddressHelpTextCls'});
+    var Timezonelbl = new Ext.form.Label({id: 'Timezonelbl',text: '{!JSENCODE($ObjectType.User.fields.TimeZoneSidKey.label)}'});
+    var Localelbl = new Ext.form.Label({id: 'Localelbl',text: '{!JSENCODE($ObjectType.User.fields.LocaleSidKey.label)}'});
+    var Languagelbl = new Ext.form.Label({id: 'Languagelbl',text: '{!JSENCODE($ObjectType.User.fields.LanguageLocaleKey.label)}'});
+    var EmailEncodelbl = new Ext.form.Label({id: 'EmailEncodelbl',text: '{!JSENCODE($ObjectType.User.fields.EmailEncodingKey.label)}'});
+    var TemporaryClientdataLabel = new Ext.form.Label({id: 'TemporaryClientdataLabel',text: '{!JSENCODE($Label.TemporaryClientdata)}', cls: 'clsInputBoldLabelTDI'});
+  
+    
+    var ClientAccountPanel = new Ext.Panel({
+        id: 'ClientAccountPanelId',
+        border:false,
+        layout:'table',
+        //renderTo: 'DefaultAccountNameDiv',
+        items:[{
+            xtype: "textfield",
+            name: "lookupvalue",
+            readOnly: true,
+            height: 20,
+            cls: 'clsInputTextBox',
+            id:'AccountLookupId',
+            value:'{!JSENCODE(daccountName)}'
+        },{
+            xtype: "box",
+            autoEl: {tag: 'img', src:'{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_D.gif'},         
+            name: "AccountLookupButton",
+            id:'AccountLookupButtonId',
+            cls:'lookupbuttontest',
+            listeners:{
+                render: function(c) {
+                    
+                    c.getEl().on('click', function(){
+                        popupId = 'Organization';
+                        srchPageUrl = 'SearchPage?popupId='+popupId+'&isLookup=true';                       
+                        window.parent.openPopup(srchPageUrl, findNameFieldForAccount);
+                                            
+                    });
+                 }
+             }
+             }] 
+    });
+    
+    var DomainNameTextField = new Ext.form.TextField({
+        name: "DomainNamevalue",
+        height: 20,
+        id:'domainName',
+        cls: 'clsInputTextBox',
+        value:'{!JSENCODE(DomainNameValue)}'
+    });
+    
+    var actionButtonPanel = new Ext.Panel({
+        id: 'actionButtonPanel',
+        title: '',
+        width : '100%',
+        border : false,
+        items:[{
+            id: 'deleteBtn',
+            xtype: 'tbbutton',
+            cls: 'bgBtnGrey',
+            text: '{!JSENCODE($Label.Delete)}',
+            tooltip: '{!JSENCODE($Label.tooltipDeleteImportSetting)}',
+            tooltipType: 'title', 
+            handler: DeleteHandler
+        }]
+    });
+    
+    eval('{!TimeZoneList}');
+    var TimezoneStore = new Ext.data.ArrayStore({
+            id:'TimezoneStore',
+            fields:[
+                {name:'Id'},
+                {name:'TimezoneLabel'}
+            ]
+    });
+    TimezoneStore.loadData(TimeZoneListData);
+    
+    var importTimezoneCombo = new Ext.form.ComboBox({
+        id:'importTimezoneCombo',
+        cls: 'clsSelectList',
+        fieldLabel: 'TimezoneLabel',
+        hiddenName:'ImportTimezone',
+        store: TimezoneStore,
+        valueField:'Id',
+        displayField:'TimezoneLabel',
+        typeAhead: false,
+        mode: 'local',
+        editable:false,
+        value : TimezoneValue,
+        triggerAction: 'all',
+        forceSelection:true,
+        selectOnFocus:true
+    });
+    
+    eval('{!LocaleList}');
+    var LocaleStore = new Ext.data.ArrayStore({
+            id:'LocaleStore',
+            fields:[
+                {name:'Id'},
+                {name:'LocaleLabel'}
+            ]
+    });
+    LocaleStore.loadData(LocaleListData);
+    
+    var importLocaleCombo = new Ext.form.ComboBox({
+        id:'importLocaleCombo',
+        cls: 'clsSelectList',
+        fieldLabel: 'LocaleLabel',
+        hiddenName:'ImportLocale',
+        store: LocaleStore,
+        valueField:'Id',
+        displayField:'LocaleLabel',
+        typeAhead: false,
+        mode: 'local',
+        editable:false,
+        value : LocaleValue,
+        triggerAction: 'all',
+        forceSelection:true,
+        selectOnFocus:true
+    });
+    
+    eval('{!LanguageList}');
+    var LanguageStore = new Ext.data.ArrayStore({
+            id:'LanguageStore',
+            fields:[
+                {name:'Id'},
+                {name:'LanguageLabel'}
+            ]
+    });
+    LanguageStore.loadData(LanguageListData);
+    
+    var importLanguageCombo = new Ext.form.ComboBox({
+        id:'importLanguageCombo',
+        cls: 'clsSelectList',
+        fieldLabel: 'LanguageLabel',
+        hiddenName:'ImportLanguage',
+        store: LanguageStore,
+        valueField:'Id',
+        displayField:'LanguageLabel',
+        typeAhead: false,
+        mode: 'local',
+        editable:false,
+        value : LanguageValue,
+        triggerAction: 'all',
+        forceSelection:true,
+        selectOnFocus:true
+    });
+    
+    eval('{!EmailEncodeList}');
+    var EmailEncodeStore = new Ext.data.ArrayStore({
+            id:'EmailEncodeStore',
+            fields:[
+                {name:'Id'},
+                {name:'EmailEncodeLabel'}
+            ]
+    });
+    EmailEncodeStore.loadData(EmailEncodeListData);
+    
+    var importEmailEncodeCombo = new Ext.form.ComboBox({
+        id:'importEmailEncodeCombo',
+        cls: 'clsSelectList',
+        fieldLabel: 'EmailEncodeLabel',
+        hiddenName:'ImportEmailEncode',
+        store: EmailEncodeStore,
+        valueField:'Id',
+        displayField:'EmailEncodeLabel',
+        typeAhead: false,
+        mode: 'local',
+        editable:false,
+        value : EmailEncodingValue,
+        triggerAction: 'all',
+        forceSelection:true,
+        selectOnFocus:true
+    });
+    
+    var importProfileCombo = new Ext.form.ComboBox({
+        id:'importProfileCombo',
+        cls: 'clsSelectList',
+        fieldLabel: 'ProfileLabel',
+        hiddenName:'ImportProfile',
+        store: ProfileStore,
+        valueField:'Id',
+        displayField:'ProfileLabel',
+        typeAhead: false,
+        mode: 'local',
+        editable:false,
+        value : defaultImportProfileValue,
+        triggerAction: 'all',
+        forceSelection:true,
+        selectOnFocus:true
+    });
+    // Import Settings User Fieldds
+    var userFieldsPanel = new Ext.Panel({
+        border:false,
+        id:'userFieldsId',
+        layout:'table',
+        layoutConfig:{ columns: 2},     
+        items:[
+            DefaultClientAccountLabel,ClientAccountPanel,
+            DefaultClientProfileLabel,importProfileCombo,
+            DomainNameLabel,DomainNameTextField,
+            {
+                id:'BlankLabel',
+                border:false,
+                html: '<div style="padding-bottom: 5px;">&nbsp</div>'
+            },DomainNameHelpText,
+            Timezonelbl,importTimezoneCombo,
+            Localelbl,importLocaleCombo,
+            Languagelbl,importLanguageCombo,
+            EmailEncodelbl,importEmailEncodeCombo
+        ]
+        
+    });
+   
+   /* Client Users Include  */
+        
+    var Clientuserlabel = new Ext.form.Label({
+        id:'Clientuserlabel',
+        text:'{!JSENCODE($Label.Client_Users_Include)}',
+        style:'margin-top:20px;color:#004376;font-size:13px;font-weight: bold;font-family:tahoma,arial,helvetica,sans-serif !important;'
+    }); 
+        
+     var clientuserCheckbox = new Ext.form.Checkbox({
+         id:'clientuserChk',
+         cls:classForCheckbox ,
+         checked: true,
+         style: 'width:13px;margin-top:5px;',
+         disabled:true
+         
+    });
+    
+    var userlabel = new Ext.form.Label({
+        id:'userlabel',
+        text:'{!JSENCODE(LabelUser)}',
+        style:'font-size:11px;padding-left:5px;font-family:tahoma,arial,helvetica,sans-serif !important;'
+    }); 
+    
+    
+    var clientuserLeadCheckbox = new Ext.form.Checkbox({
+         id:'clientuserLeadChk',
+         cls:classForCheckbox ,
+         boxLabel:'{!JSENCODE(LabelLead)}',
+         style: 'width:13px;',
+         checked:includeLeadforclient,
+          handler: function() {
+            includeLeadforclient = this.getValue(); 
+         }
+    });
+    
+    if('{!Leadflag}'=='false'){
+        clientuserLeadCheckbox.hide();
+    }
+    var clientuserContactCheckbox = new Ext.form.Checkbox({
+         id:'clientuserContactChk',
+         cls:classForCheckbox ,
+         boxLabel: '{!JSENCODE(LabelContact)}',
+         style: 'width:13px;margin-top:2px;',
+         checked:includeContactforclient,
+         handler: function() {
+            includeContactforclient = this.getValue();
+         }
+    });
+    var UsercheckboxPanel = new Ext.Panel({
+        id: 'UsercheckboxPanel',
+        border:false,
+        layout:'table',
+        style:'margin-top:6px;',
+        items:[clientuserCheckbox,userlabel]
+        
+    });
+    /* For Configuration and Segregation setting */
+    var ConfSeggLabel = new Ext.form.Label({
+        id:'ConfSeggLabelId',
+        text:'{!JSENCODE($Label.ConfigurationSegregation)}',
+        style:'margin-top:20px;color:#004376;font-size:13px;font-weight: bold;font-family:tahoma,arial,helvetica,sans-serif !important;'
+    }); 
+    var rolehierarchyPopulationBtn = new Ext.Button({
+        id: 'rolePopulationBtn',
+        xtype: 'tbbutton',
+        cls: 'bgBtnGrey',
+        text:'{!JSENCODE($Label.PopulateRoleHierarchyData)}',
+        tooltip: '',
+        tooltipType: 'title',
+		style:'margin-left:0px;margin-top:5px;margin-bottom:10px', 
+        handler: rolePopulationHandler
+    });
+   var userSeggLabel = new Ext.form.Label({
+        id:'userSegglabel',
+        text:'{!JSENCODE($Label.SegregateUsers)}',
+        style:'font-size:11px;padding-left:5px;font-family:tahoma,arial,helvetica,sans-serif !important;'
+    });     
+    var userSeggCheckbox = new Ext.form.Checkbox({
+         id:'userSeggChk',
+         cls:classForCheckbox,
+         checked: userSegrChk,
+         style: 'width:13px;margin-top:5px;margin-bottom:5px;',
+         handler: function(){
+            userSegrChk = this.getValue();
+         },
+         disabled:false
+    });
+    var UserSeggregation = new Ext.Panel({
+        id: 'UserSeggregationPanel',
+        border:false,
+        layout:'table',
+        style:'margin-top:6px;',
+        items:[userSeggCheckbox,userSeggLabel]
+    
+    });
+        /*FORM ASSIGNMENT - START*/
+    eval('{!FormAssignList}');
+    
+    var formAssignStore = new Ext.data.ArrayStore({
+            id:'formAssignStoreId',
+            fields:[
+                {name:'page'},
+                {name:'objectLabel'}
+            ]
+        });
+        
+    formAssignStore.loadData(strFormAssignList);
+        
+    formAssignStore.sort('objectLabel');
+    
+    var formToAssignCombo = new Ext.form.ComboBox({
+        id:'formToAssignComboId',
+        fieldLabel: 'lblFormToAssign',
+        store: formAssignStore,
+        valueField:'page',
+        displayField:'objectLabel',
+        typeAhead: false,
+        mode: 'local',
+        editable:false,
+        triggerAction: 'all',
+        forceSelection:true,
+        selectOnFocus:true,
+        value:selectedFormAssignment
+        });
+    
+    formToAssignCombo.on('select', function(){
+        var selectedFormToAssign = formToAssignCombo.getValue();
+        selectFormToAssignCombo(selectedFormToAssign);
+    });
+        
+    var lblFormToAssign = new Ext.form.Label({
+        id:'lblFormToAssignId',
+        text:'{!JSENCODE($Label.ApplicationSetting_FormToAssign)}',
+        style: {paddingRight:'10px'}
+    });
+    
+    var formAssignPanel = new Ext.Panel({
+        border:false,
+        id:'formAssignPanelId',
+        layout:'table',
+        layoutConfig:{ columns: 2},     
+        items:[lblFormToAssign, formToAssignCombo]
+    });
+    
+    //
+    dsAssignedStdForms = new Ext.data.ArrayStore({
+        data: assignedStdForms,
+        fields: ['ProfileId','profileLabel'],
+        sortInfo: {
+            field: 'profileLabel',
+            direction: 'ASC'
+        }
+    });
+
+    dsAssignedCustomForms = new Ext.data.ArrayStore({
+        data: assignedCustomForms,
+        fields: ['ProfileId','profileLabel'],
+        sortInfo: {
+            field: 'profileLabel',
+            direction: 'ASC'
+        }
+    });
+    
+    var lblAssignStandardForm = new Ext.form.Label({
+        id:'lblAssignStandardFormId',
+        text:'{!JSENCODE($Label.ApplicationSetting_AssignStandardForm)}'
+    });
+
+    var lblAssignCustomForm = new Ext.form.Label({
+        id:'lblAssignCustomFormId',
+        text:'{!JSENCODE($Label.ApplicationSetting_AssignCustomForm)}'
+    });
+    
+    var assignFormLabelPanel = new Ext.Panel({
+        id: 'assignFormLabelPanelId',
+        border:false,
+        layout:'table',
+        items:[lblAssignStandardForm, lblAssignCustomForm]
+    });
+    
+    var formAssignToProfile = new Ext.Panel({
+        id: 'formAssignToProfileId',
+        width:550,
+        border:false,
+        layout:'column',
+        items:[{
+            xtype: 'itemselector',
+            id: 'itemProfileselectorDiv',
+            name: 'itemProfileselector',
+            fieldLabel: 'lblItemProfileselector',
+            drawLeftIcon:true,
+            drawRightIcon:true,
+            drawUpIcon:false,
+            drawDownIcon:false,
+            iconLeft:'b_darrow_L_disable_custom.gif',
+            iconRight:'b_darrow_R_disable_custom.gif',
+            imagePath: '{!$Resource.SDEFStyles}/SDEFbuttons/',
+            multiselects: [{
+                id:'standardProfileList',
+                legend: false,
+                width: 200,
+                height: 260,
+                store: dsAssignedStdForms,
+                displayField: 'profileLabel',
+                valueField: 'ProfileId',
+                listeners:{
+                    click:function(c){
+                        document.getElementById('iconRightId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_R_new.gif';
+                        document.getElementById('iconLeftId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_L_disable_custom.gif';
+                    }
+                }
+            },{
+                id:'customProfileList',
+                legend: false,
+                width: 200,
+                height: 260,
+                store: dsAssignedCustomForms,
+                displayField: 'profileLabel',
+                valueField: 'ProfileId',
+                listeners:{
+                    click:function(c){
+                        var index = 0;
+                        for(var i = 0; i < c.store.data.length; i++){
+                            if(c.store.getAt(i).get('ProfileId') == c.getValue()){
+                                index = i;
+                                break;                          
+                            }
+                        }
+                        if(index == 0){
+                            document.getElementById('iconRightId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_R_disable_custom.gif';
+                            document.getElementById('iconLeftId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_L_new.gif';
+                            document.getElementById('iconDownId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_D_new.gif';
+                            document.getElementById('iconUpId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_U_disable_custom.gif';
+                        } else if(index == c.store.data.length-1){
+                            document.getElementById('iconRightId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_R_disable_custom.gif';
+                            document.getElementById('iconLeftId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_L_new.gif';
+                            document.getElementById('iconDownId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_D_disable_custom.gif';
+                            document.getElementById('iconUpId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_U_new.gif';                     
+                        } else {
+                            document.getElementById('iconRightId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_R_disable_custom.gif';
+                            document.getElementById('iconLeftId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_L_new.gif';
+                            document.getElementById('iconDownId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_D_new.gif';
+                            document.getElementById('iconUpId').src = '{!$Resource.SDEFStyles}/SDEFbuttons/b_darrow_U_new.gif';                                             
+                        }
+                    }
+                }                                                  
+            }]
+        }]
+    });
+    /*FORM ASSIGNMENT - END*/
+        
+     applicationTabPanel =  new Ext.ux.TabPanel({
+//        renderTo: 'tabpanelDiv',
+        id:'AppSettingId',
+        deferredRenderer:false,
+        layoutOnTabChange: true,
+        tabPosition:'left',  //choose 'left' or 'right' for vertical tabs; 'top' or 'bottom' for horizontal tabs
+        textAlign:'right',
+        tabWidth:160,
+        tabHeight:160,
+        activeTab:0,
+        items:[{
+            id: 'general',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.general)}',
+            border:false,
+            items:[{
+                id: 'generalContents',
+                border:false,
+                items:[ProfilePanel, insertLoggedInIdCheckbox, checkTemplate, ovewriteTemplateCheckbox, enableWordWrappingCheckbox, scrollBroadcastMessageCheckbox,dueDateByBusinessHoursCheckbox,checkautomaticrecalculateduedate, EnableRFChatterCheckbox, EnableQueueAndUserAssignmentCheckbox,RecordClosingHeaders,dontCloseIncAssociatedPanel,dontCloseChngAssociatedTaskCheckbox,dontCloseProbAssociatedTaskCheckbox,dontCloseReleaseAssociatedTaskCheckbox, emailConversationlabel, OrgWideEmailPanel,enableEmailToFieldCheckBox,enableEmailTemplateFieldCheckBox,Clientuserlabel,UsercheckboxPanel,clientuserContactCheckbox,clientuserLeadCheckbox,ConfSeggLabel,UserSeggregation,rolehierarchyPopulationBtn]
+            }]
+        },{
+            id: 'AutoAssignmentId',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.AutoAssignment)}',
+            border:false,
+            html :'<iframe id=\"AutoAssignment\" frameborder=\"0\" src=\"'+'/apex/AutoAssignment'+'\" style=\"width:100%;height:100%;border:none;\"></iframe>'
+            
+        },{
+            id: 'bmcFootPrintsId',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.BMCFootPrints)}',
+            border:false,
+            style:'padding-left:0px',
+            html :'<iframe id=\"bmcFootPrints\" frameborder=\"0\" src=\"'+'/apex/ACConfiguration'+'\" style=\"width:100%;height:100%;border:none;\"></iframe>'
+            
+        },{
+            id: 'bmcDellKacesId',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.DellKace)}',
+            border:false,
+            style:'padding-left:0px',
+            html :'<iframe id=\"bmcdellkaces\" frameborder=\"0\" src=\"'+'/apex/DellKaceConfiguration'+'\" style=\"width:100%;height:100%;border:none;\"></iframe>'
+            
+        },{
+            id: 'urgency',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.urgency)}',
+            border:false,
+            items:[{
+                id: 'urgencyContents',
+                border:false,
+                items:[urgencyToolbar, urgencyGrid, recalculateUrgencyCheckbox]
+            }]
+        },{
+            id: 'CMDBCustomizationId',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.CMDBCustomization)}',
+            border:false,
+            html :'<iframe id=\"CMDBCustomization\" frameborder=\"0\" src=\"'+'/apex/CMDBFormCustomization'+'\" style=\"width:100%;height:100%;border:none;\"></iframe>'
+            
+        },{
+            id: 'customfields',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.CustomFieldsAppSetting)}',
+            border:false,
+            items:[{
+                id: 'customfieldsContents',
+                border:false,
+                items:[CustomObjNamePanel, CustomObjFieldsSelectionLabels, CustomFieldsSettingForm]
+        }]
+        },
+        <apex:outputText rendered="{!ShowIncidentChatterPosts}">
+        {
+            id: 'incidentChatterPosts',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.IncidentChatterPosts)}',
+            border:false,
+            html :'<iframe id=\"IncidentChatterPostsContents\" frameborder=\"0\" src=\"'+'/apex/ChatterPostsConfig'+'\" style=\"width:100%;height:100%;border:none;\"></iframe>'
+        },
+        </apex:outputText>
+        {
+            id:'formAssignment',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.ApplicationSetting_FormAssignment)}',
+            border:false,
+            items:[{
+                id: 'formAssignmentContents',
+                border:false,
+                items:[formAssignPanel, assignFormLabelPanel, formAssignToProfile]
+            }]
+        },{
+            id: 'Logo',
+            title: '{!JSENCODE($Label.Branding)}',
+            cls:'tabContainer',
+            border:false,
+            html :'<iframe id=\"Branding\" frameborder=\"0\" src=\"'+'/apex/SelectLogo'+'\" style=\"width:100%;height:100%;border:none;\"></iframe>'
+        },{
+            id: 'account',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.ClientImportSettings)}',
+            border:false,
+            items:[{
+                id: 'accountContents',
+                border:false,
+                items:[ImportDefaultsLabel,userFieldsPanel,TemporaryClientdataLabel,actionButtonPanel]
+            }]
+        },{
+            id: 'SLMId',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.SLM_Warnings)}',
+            border:false,
+            html :'<iframe id=\"SLMSettingPage\" frameborder=\"0\" src=\"'+'/apex/SLMSettingPage'+'\" style=\"width:100%;height:100%;border:none;\"></iframe>'
+        },{
+            id: 'SRMTab',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.SSMyHelpRequests)}',
+            border:false,
+            items:[{
+                id: 'SRMTabContents',
+                border:false,
+                items:[enableCustomFieldMappingCheck, ProcessQueueAssignment, processAssignmentPanel]
+            }]
+        },{
+            id: 'IncidentEmail',
+            cls:'tabContainer',
+            autoScroll: true,
+            title: '{!JSENCODE($Label.Incident_Email_Setting)}',
+            border:false,
+            html :'<iframe id=\"Incident_Email_Setting\" frameborder=\"0\" src=\"'+'/apex/Incident_Email_Setting_Page'+'\" style=\"width:100%;height:100%;border:none;\"></iframe>'
+        }],
+        listeners: {
+                     tabchange: function (container,tab){
+                        if(tab.id == 'Logo'){
+                             //Ext.getCmp('toolBarId').setDisabled(false);
+                             isBannarTab = true;
+                            
+                        }
+                        if(tab.id == 'CMDBCustomizationId'){
+                            isCMDBTab = true;
+                        }
+                        if(tab.id == 'account'){
+                            isClientImportTab = true;
+                        }
+                        if(tab.id == 'SLMId'){
+                            isSLMWarningTab = true;                             
+                        }
+                        if(tab.id == 'AutoAssignmentId'){
+                          isAutoAssignmentTab = true ;
+                        }
+                        if(tab.id == 'IncidentEmail'){
+                            isIncidentEmailsettingTab = true;                           
+                        }
+                        if(tab.id == 'bmcFootPrintsId'){
+                        	isBmcFpTab = true;
+                        }
+                        if(tab.id == 'bmcDellKacesId'){
+                        	isBmcDKTab = true;
+                        }
+                     }
+                    
+                  }
+                    
+    });   
+
+    var viewport = new Ext.Viewport({
+        layout:'border',
+        border:false,
+        items:[
+              {region:'center', id:'appadminpanelDiv', layout:'fit', margins:'35 0 0 0',items:[applicationTabPanel]}
+            //{ id: 'tabpanelDiv', region:'center', margins:'40 0 0 0', xtype: 'container', layout: 'fit'}
+        ]
+    });
+    
+    function moveSelectedRow(grid, direction) {
+        var record = grid.getSelectionModel().getSelected();
+        if (!record) {
+            return;
+        }
+        var index = grid.getStore().indexOf(record);
+        selectedIndex = index;
+        if (direction < 0){
+            var swap = urgencyHierarchyArray[selectedIndex];
+            urgencyHierarchyArray[selectedIndex] = urgencyHierarchyArray[selectedIndex-1];
+            urgencyHierarchyArray[selectedIndex-1] = swap;
+
+            var swap = urgencyArray[selectedIndex];
+            urgencyArray[selectedIndex] = urgencyArray[selectedIndex-1];
+            urgencyArray[selectedIndex-1] = swap;
+            
+            selectedIndex--;
+            checkSelectedIndex();
+            index--;
+            if (index < 0) {
+                return;
+            }
+        } else {
+            var swap = urgencyHierarchyArray[selectedIndex];
+            urgencyHierarchyArray[selectedIndex] = urgencyHierarchyArray[selectedIndex+1];
+            urgencyHierarchyArray[selectedIndex+1] = swap;
+
+            var swap = urgencyArray[selectedIndex];
+            urgencyArray[selectedIndex] = urgencyArray[selectedIndex+1];
+            urgencyArray[selectedIndex+1] = swap;
+
+            selectedIndex++;
+            checkSelectedIndex();
+            index++;
+            if (index >= grid.getStore().getCount()) {
+                return;
+            }
+        }
+        grid.getStore().remove(record);
+        grid.getStore().insert(index, record);
+        grid.getSelectionModel().selectRow(index, true);                    
+    }
+
+    function enableDisableMoveUp(boolTrueFalse){
+        var MoveUpbtn = document.images['btnMoveUp'];
+        if(boolTrueFalse){
+            MoveUpbtn.src='{!$Resource.SDEFStyles}/SDEFbuttons/b_control_up.png';
+            MoveUpbtn.style.cursor = 'pointer';
+            MoveUpbtn.setAttribute('isBtnDisabled',false);
+        } else {
+            MoveUpbtn.src='{!$Resource.SDEFStyles}/SDEFbuttons/b_control_up_disable.png';
+            MoveUpbtn.style.cursor = 'default';
+            MoveUpbtn.setAttribute('isBtnDisabled',true);        
+        }
+    }
+
+    function enableDisableMoveDown(boolTrueFalse){
+        var MoveDownbtn = document.images['btnMoveDown'];
+        if(boolTrueFalse){
+            MoveDownbtn.src='{!$Resource.SDEFStyles}/SDEFbuttons/b_control_down.png';
+            MoveDownbtn.style.cursor = 'pointer';
+            MoveDownbtn.setAttribute('isBtnDisabled', false);
+        } else {
+            MoveDownbtn.src='{!$Resource.SDEFStyles}/SDEFbuttons/b_control_down_disable.png';
+            MoveDownbtn.style.cursor = 'default';
+            MoveDownbtn.setAttribute('isBtnDisabled',true);
+        }
+    }
+
+    function checkSelectedIndex(){
+       if(selectedIndex == 0){
+            enableDisableMoveUp(false);
+            enableDisableMoveDown(false);
+        } else if(selectedIndex == 1){
+            enableDisableMoveUp(false);
+            enableDisableMoveDown(true);    
+        } else if(selectedIndex == urgencyHierarchyArray.length-1){
+            enableDisableMoveUp(true);
+            enableDisableMoveDown(false);            
+        } else {
+            enableDisableMoveUp(true);
+            enableDisableMoveDown(true);                    
+        }    
+    }
+    
+    urgencyGrid.on('click', function() {
+        var record = urgencyGrid.getSelectionModel().getSelected();
+        if (!record) {
+            return;
+        }
+        selectedIndex = urgencyGrid.getStore().indexOf(record);
+        checkSelectedIndex();
+    });   
+    
+   var stdLayout = '{!JSENCODE($CurrentPage.parameters.standardLayout)}'; 
+    if(stdLayout !=null && stdLayout !='undefined' && stdLayout == 'true'){
+        applicationTabPanel.remove(Ext.getCmp('customfields'));
+        applicationTabPanel.remove(Ext.getCmp('Logo'));
+        enableWordWrappingCheckbox.hide();
+    }
+   
+    
+});
+
+    function showMessage(msg){
+           Ext.MessageBox.show({
+               id:'commonmsgbox',
+               width: 250,
+               title: '{!JSENCODE($Label.ApplicationSettingsTitle)}',
+               msg: msg,
+               buttons: Ext.MessageBox.OK
+           }); 
+     }  
+     function showACErrMsg(msg,err,onSave){
+     	   var extIcon;
+     	   if(err){
+     	   	extIcon = Ext.MessageBox.ERROR		
+     	   }else{
+     	   	extIcon = Ext.MessageBox.INFO
+     	   }
+     	   var msgTitle = '';
+     	   if(onSave != null && onSave){
+     	   		msgTitle = '{!JSENCODE($Label.BMCFootPrints)}';
+     	   }else{
+     	   		msgTitle = '{!JSENCODE($Label.ValidateCredentials)}'
+     	   }
+     	   	
+           Ext.MessageBox.show({
+               id:'scMsgBox',
+               title: msgTitle,
+               msg: msg,
+               buttons: Ext.MessageBox.OK,
+               icon:extIcon,
+               width:350
+           }); 
+     }
+    function setData(){
+        ds.loadData(AvailableCustomFields); 
+        ds1.loadData(SelectedCustomFields);
+    }
+    
+    function setformAssignmentData(){
+        dsAssignedStdForms.loadData(assignedStdForms);
+        dsAssignedCustomForms.loadData(assignedCustomForms);
+    }
+    
+</script>
+<apex:outputPanel id="successId">
+    <script>
+        propDisableRFChatter = {!DisableRemedyforceChatter};
+         // US131502
+        propEnableQueueAndUserAssignment = {!EnableQueueAndUserAssignment};
+        function enableSaveButton() {
+            Ext.getCmp('actionsave_id').setDisabled(false);
+        }
+        
+        function saveDone(messageText){
+            var success_message = '{!success}'; 
+            document.getElementById('defaultCurrency').value = document.getElementById('defaultCurrency').value.toUpperCase();
+            if(isBannarTab){
+            	if(messageText != null && typeof(messageText) != 'undefined' &&  messageText !='' ){
+                    showMessage(messageText);
+                }
+            }else if(isBmcFpTab && (bmcFpError != '' || showACConfigErr)){
+            	if(showACConfigErr){
+            		showACConfigErr=false;
+            		showACErrMsg('{!JSENCODE($Label.ACconfigMissingError)}',true,true);
+            	}else{
+            	showACErrMsg(bmcFpError,true,true);
+            	}
+            }else if(isBmcDKTab && bmcDKError != ''){
+            	showMessage(bmcDKError);
+            }
+            else{
+            	if(isSaveDone){
+            		if((success_message == 'success' || success_message == '')){
+	                	showMessage('{!JSENCODE($Label.SavedSuccessfully)}');
+	                }else{
+	                	showMessage('{!JSENCODE($Label.MsgSaveError)}'+success_message);
+	                }
+                }
+            }
+            
+        }
+        function chkIfBatchJobALreadyRunning(){
+            showMessage('{!batchJobStatusMessage}');
+            var btn = Ext.getCmp('rolePopulationBtn');
+            if(btn != null){
+                btn.disabled = false;
+            }
+        } 
+function saveDone1(){}
+        
+    </script>
+</apex:outputPanel>
+
+<apex:outputPanel id="setAccountValue">
+    <script>
+    var accountLookupValue = Ext.getCmp('AccountLookupId');
+    if(accountLookupValue!=null && accountLookupValue!='undefined'){
+        accountLookupValue.setValue('{!selectedAccountName}');
+    }
+    </script>
+</apex:outputPanel>
+
+<apex:outputPanel id="setChaildProcessQueues">
+    <script>
+        var TaskQueLookupId = Ext.getCmp('TaskQueLookupId');
+        if(TaskQueLookupId!=null && TaskQueLookupId!='undefined'){
+            TaskQueLookupId.setValue('{!JSENCODE(taskQueue)}');
+            
+            if(document.getElementById('{!$Component.myForm.blankTaskQueue}')!=null)
+                document.getElementById('{!$Component.myForm.blankTaskQueue}').value = '{!JSENCODE(taskQueue)}';
+        }
+        
+        var CRQueLookupId = Ext.getCmp('CRQueLookupId');
+        if(CRQueLookupId!=null && CRQueLookupId!='undefined'){
+            CRQueLookupId.setValue('{!JSENCODE(CRQueue)}');
+            
+            if(document.getElementById('{!$Component.myForm.blankCRQueue}')!=null)
+                document.getElementById('{!$Component.myForm.blankCRQueue}').value = '{!JSENCODE(CRQueue)}';
+        }
+        
+        function setBlankValues(process) {
+            if(process.toLowerCase()=='task') {
+                document.getElementById('{!$Component.myForm.blankTaskQueue}').value = '';
+                    
+            }else if(process.toLowerCase()=='change request') {
+                document.getElementById('{!$Component.myForm.blankCRQueue}').value = '';
+            }
+        }
+        
+        //This function is called from 6 different pages(AppAdmin, Incident_Email_Setting_Page, SLMSetting, AutoAssignment, CMDBFormCustomization, ChatterPostsConfig)
+        //And it hides the wait message and calls saveDone() after all action functions execution completed.
+        function isComplete(){
+            completedCount++;
+            if(tabCount == completedCount){
+                if(typeof(waitMsg) != 'undefined' && waitMsg != 'undefined' && waitMsg != null)
+                	waitMsg.hide();
+                saveDone(null);enableSaveButton();
+            } 
+        }
+    </script>
+</apex:outputPanel>
+
+
+<apex:outputPanel id="tabVisibilityId">
+<script>
+  
+</script>
+</apex:outputPanel>
+<apex:form id="myForm">
+<div id="savetoolbar"></div>
+<div id="applicationsettingsDiv"></div>
+<apex:actionFunction name="savemodifiedData" action="{!SaveNewSettings}" onComplete="isSaveDone=true;isComplete();" reRender="successId">
+<apex:param assignTo="{!FormDataString}" name="FormDataString" value=""/>
+<apex:param assignTo="{!selectedProfileValue}" name="selectedProfileValue" value=""/>
+<apex:param assignTo="{!selectedFields}" name="ObjectCustomFields" value=""/>
+<apex:param assignTo="{!selectedOrgWideEmailValue}" name="selectedOrgWideEmailAddress" value=""/>
+<apex:param assignTo="{!strImportSettingFields}" name="importSettingFields" value=""/>
+<apex:param assignTo="{!dueDateByBusinessHoursValue}" name="dueDateByBusinessHours" value=""/>
+<apex:param assignTo="{!strCustomFormAssigned}" name="customformAssigned" value=""/>
+<apex:param assignTo="{!DisableRemedyforceChatter}" name="DisableRemedyforceChatter" value=""/>
+<apex:param assignTo="{!EnableQueueAndUserAssignment}" name="propEnableQueueAndUserAssignment" value=""/>
+
+</apex:actionFunction>
+<apex:actionFunction name="savemodifiedData1" action="{!updatecustomobj}" onComplete="saveDone1();isComplete();" reRender="successId">
+<apex:param assignTo="{!selectedFields}" name="ObjectCustomFields" value=""/>
+</apex:actionFunction>
+
+<apex:actionFunction name="getAccountName" action="{!getAccountName}" onComplete="" reRender="setAccountValue">
+<apex:param assignTo="{!assignAccountId}" name="clientAccountid" value=""/>
+</apex:actionFunction>
+
+<apex:actionFunction name="childProcessQueueAssignment" action="{!childProcessQueueAssignment}"  rerender="setChaildProcessQueues" > 
+    <apex:param assignTo="{!savedID}" name="savedName" value=""/>
+</apex:actionFunction>
+    
+
+<apex:actionFunction name="deleteClientImport" action="{!deleteClientImport}" onComplete="chkIfBatchJobALreadyRunning();" reRender="successId">
+</apex:actionFunction>
+<apex:actionregion >
+<apex:actionFunction name="populateRoleHierarchy" action="{!populateRoleHierarchy}" onComplete="chkIfBatchJobALreadyRunning();" reRender="successId"/>
+</apex:actionregion>
+
+<apex:actionFunction name="SelectObjectCustomFields" action="{!getSelectedObjectCustomFields}" onComplete="setData();" reRender="loadCustomFields">
+<apex:param assignTo="{!SelectedObjName}" name="customFieldComboValue" value=""/>
+</apex:actionFunction>
+
+<apex:actionFunction name="selectFormToAssignCombo" action="{!getProfilesForFormAssign}" onComplete="setformAssignmentData();" reRender="loadformAssignments">
+<apex:param assignTo="{!SelectedFormAssignment}" name="selectedFormToAssign" value=""/>
+</apex:actionFunction>
+
+<apex:inputhidden id="queueAssignment" value="{!queueAssignment}" />
+
+<apex:inputhidden id="blankTaskQueue" value="{!taskQueue}" />
+
+<apex:inputhidden id="blankCRQueue" value="{!CRQueue}" />
+
+<apex:inputHidden id="enableCustomFieldMap" value="{!enableCustomFieldMapping}"/>
+</apex:form>
+</body>
+</apex:page>

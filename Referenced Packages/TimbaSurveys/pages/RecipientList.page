@@ -1,0 +1,90 @@
+<apex:page controller="TIMBASURVEYS.RecipientListController" standardstylesheets="false" sidebar="false" showHeader="false">
+    
+    <div class="hr"></div>
+    <div id="{!LIST_TYPE}-loader" class="loader" style="display:none;">
+        <img src="{!URLFOR($Resource.TIMBASURVEYS__SurveyResources, 'imgs/common/horizontalpreloader.gif')}" />
+    </div>
+    
+    <div class="recipientlistActions">
+        <!-- search box  -->    
+        <apex:outputpanel layout="block" styleClass="half searchContainer">
+            <apex:outputText value="{!$Label.timbasurveys__timbasurveys_RecipientList_Search}:"/> 
+            <input type="text" id="{!LIST_TYPE}-search" value="{!currentSearchParam}" onkeydown="if(event.keyCode==13) recipientSearch('{!LIST_TYPE}');" />
+            <span class="dijit dijitReset dijitLeft dijitInline dijitButton">
+                <a class="dijitReset dijitInline dijitButtonNode customDijitLinks" href="javascript:;" onclick="recipientSearch('{!LIST_TYPE}');">Go!</a>
+            </span>
+        </apex:outputpanel>
+        
+        <!-- top controls -->
+        <apex:outputpanel layout="block" rendered="{!renderPagination}" styleClass="half pagination">
+            
+                <apex:outputpanel rendered="{!renderPrevPage}">
+                    <span class="dijit dijitReset dijitLeft dijitInline dijitButton">
+                        <a class="dijitReset dijitInline dijitButtonNode customDijitLinks" href="javascript:;" onclick="pageChange('{!prevCountStart}','{!LIST_TYPE}');">&lt;&lt; {!$Label.timbasurveys__timbasurvey_surveyFiller_Previous_Page}</a>
+                    </span>
+                </apex:outputpanel>
+                <apex:outputText value="{!currentPageMessage}" /> 
+                <apex:outputpanel rendered="{!renderNextPage}">
+                    <span class="dijit dijitReset dijitLeft dijitInline dijitButton">
+                        <a class="dijitReset dijitInline dijitButtonNode customDijitLinks" href="javascript:;" onclick="pageChange('{!nextCountStart}','{!LIST_TYPE}');">{!$Label.timbasurveys__timbasurvey_surveyFiller_Next_Page} &gt;&gt;</a>
+                    </span> 
+                </apex:outputpanel> 
+            
+        </apex:outputpanel>     
+        <!-- /top controls -->
+    </div>
+    <div class="hr"></div>
+    
+    <!-- data -->
+    <apex:outputpanel rendered="{!IF(OR(LIST_TYPE == 'contact',LIST_TYPE == 'contactRecipients'),true,false)}" layout="block">
+        <table>
+            <tr class="header">
+                <td style="{!IF(LIST_TYPE != 'contact','display:none;','')}" >
+                    <input type="checkbox" onclick="handleCheckbox(this,'all','{!LIST_TYPE}');" id="check_all" />               
+                </td>
+                <td><apex:outputText value="{!$Label.timbasurveys__timbasurvey_surveylist_Name}"/></td>               
+                <td><apex:outputText value="{!$Label.timbasurveys__timbasurveys_RecipientList_Email}"/></td>
+                <td><apex:outputText value="{!$Label.timbasurveys__timbasurveys_RecipientList_Account}"/></td>
+            </tr>
+            <apex:repeat value="{!OrgContacts}" var="Contact" >    
+                <apex:repeat rendered="{!IF(LIST_TYPE != 'contact',true,false)}" value="{!Contact.Recipient__r}" var="recipientValues">
+                    <tr class="{!IF(recipientValues.TIMBASURVEYS__Collected__c,'collected',IF(recipientValues.TIMBASURVEYS__isAnonymous__c,'invitation_sent','waiting' ))}">            
+                </apex:repeat>          
+                    <td style="{!IF(LIST_TYPE != 'contact','display:none;','')}" >
+                        <input type="checkbox" id="{!HTMLENCODE(Contact.Id)}" onClick="handleCheckbox(this,'{!JSENCODE(Contact.Id)}','{!JSENCODE(LIST_TYPE)}');" class="checkbox"/>
+                    </td>                               
+                    <td id="name-{!HTMLENCODE(Contact.id)}"><apex:outputText value="{!Contact.Name}" /></td>
+                    <td><apex:outputText value="{!Contact.Email}" /></td>
+                    <td><apex:outputText value="{!Contact.Account.Name}" /></td>
+                </tr>
+            </apex:repeat> 
+        </table>
+    </apex:outputpanel>
+    <!-- /data -->
+    
+    <apex:outputpanel rendered="{!IF(OR(LIST_TYPE == 'users',LIST_TYPE == 'userRecipients'),true,false)}" layout="block">
+        <table>
+            <tr class="header">
+                <td style="{!IF(LIST_TYPE != 'users','display:none;','')}" >
+                    <input type="checkbox" onClick="handleCheckbox(this,'all','{!JSENCODE(LIST_TYPE)}');" />                
+                </td>
+                <td><apex:outputText value="{!$Label.timbasurveys__timbasurvey_surveylist_Name}"/></td>
+                <td><apex:outputText value="{!$Label.timbasurveys__timbasurveys_RecipientList_Email}"/></td>              
+            </tr>
+            <apex:repeat value="{!OrgUsers}" var="User" >    
+                <apex:repeat rendered="{!IF(LIST_TYPE != 'users',true,false)}" value="{!User.Recipient__r}" var="recipientValues">
+                    <tr class="{!IF(recipientValues.TIMBASURVEYS__Collected__c,'collected',IF(recipientValues.TIMBASURVEYS__isAnonymous__c,'invitation_sent','waiting' ))}">            
+                </apex:repeat>          
+                    <td style="{!IF(LIST_TYPE != 'users','display:none;','')}" >
+                        <input type="checkbox" id="{!User.Id}" onClick="handleCheckbox(this,'{!User.Id}','{!LIST_TYPE}');" class="checkbox"/>
+                    </td>   
+                    <td id="name-{!User.id}"><apex:outputText value="{!User.Name}" /></td>
+                    <td><apex:outputText value="{!User.Email}" /></td>
+                </tr>
+            </apex:repeat> 
+        </table>    
+    </apex:outputpanel> 
+    <apex:outputpanel rendered="{!IF(LEN(searchRelatedMessage) > 0,true,false)}" >
+        <apex:outputText value="{!searchRelatedMessage}" />
+    </apex:outputpanel>
+</apex:page>

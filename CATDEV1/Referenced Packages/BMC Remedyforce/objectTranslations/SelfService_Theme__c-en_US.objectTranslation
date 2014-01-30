@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>SelfService Theme</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>SelfService Themes</value>
+    </caseValues>
+    <fields>
+        <label><!-- Active --></label>
+        <name>Active__c</name>
+    </fields>
+    <fields>
+        <label><!-- Company URL --></label>
+        <name>Company_URL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Resource File Name --></label>
+        <name>Resource_File_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Sequence Id --></label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label><!-- Theme Description --></label>
+        <name>Theme_Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- Theme Name --></label>
+        <name>Theme_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- URL Tip Text --></label>
+        <name>URL_Tip_Text__c</name>
+    </fields>
+    <fields>
+        <label><!-- Use Default Images --></label>
+        <name>Use_Default_Images__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Lecteur de CD-ROM</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Lecteurs de CD-ROM</value>
+    </caseValues>
+    <fields>
+        <label>ID instance</label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label>Longueur de composant maximale</label>
+        <name>Max_Component_Length__c</name>
+    </fields>
+    <fields>
+        <label>Taux de transfert</label>
+        <name>Transfer_Rate__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Nom de lecteur de CD-ROM</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

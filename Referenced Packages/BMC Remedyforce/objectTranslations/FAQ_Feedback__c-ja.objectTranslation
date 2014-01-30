@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>フィードバック番号</value>
+    </caseValues>
+    <fields>
+        <label>コメント</label>
+        <name>Comment__c</name>
+    </fields>
+    <fields>
+        <label>クライアント</label>
+        <name>FKClient__c</name>
+        <relationshipLabel>FAQフィードバック</relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- FAQ --></label>
+        <name>FKFAQ__c</name>
+        <relationshipLabel>FAQフィードバック</relationshipLabel>
+    </fields>
+    <fields>
+        <label>無効</label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <label>評価</label>
+        <name>Rating__c</name>
+    </fields>
+    <fields>
+        <label>送信</label>
+        <name>Submitted__c</name>
+    </fields>
+    <nameFieldLabel><!-- Feedback Number --></nameFieldLabel>
+</CustomObjectTranslation>

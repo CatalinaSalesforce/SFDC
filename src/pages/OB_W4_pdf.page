@@ -1,0 +1,39 @@
+<apex:page standardController="Candidate__c"
+    extensions="OB_CandidateStatusController"
+    tabStyle="Candidate_Status__c" showHeader="false" renderAs="PDF">
+    <apex:pageBlock >
+        <apex:pageBlockSection columns="1" title="Personal Information">
+            <apex:outputText value="Personal Information for your Employee File"></apex:outputText>
+            <br />
+           <apex:outputField value="{!candidate.First_Name__c}" />
+           <apex:outputField value="{!candidate.Middle_Name__c}" />
+           <apex:outputField value="{!candidate.Last_Name__c}" />
+           <apex:outputField value="{!candidate.Nickname__c}" />
+           <apex:outputField value="{!candidate.Gender__c}" />
+           <apex:outputField value="{!candidate.Date_of_Birth__c}" />
+           <apex:outputField value="{!candidate.SSN__c}" />
+           <apex:outputField value="{!candidate.Name_as_in_SSN_Card__c}" />
+           <apex:outputField value="{!candidate.Ethnicity__c}" />
+           <apex:outputField value="{!candidate.Marital_Status__c}" />
+        </apex:pageBlockSection>
+
+        <apex:pageBlockSection columns="1"
+            title="Personal Contact Information">
+            <apex:outputField value="{!candidate.Phone_No_H__c}" />
+            <apex:outputField value="{!candidate.Phone_No_M__c}" />
+            <apex:outputField value="{!candidate.Address_1__c}" />
+            <apex:outputField value="{!candidate.Address_2__c}" />
+            <apex:outputField value="{!candidate.City__c}" />
+            <apex:outputField value="{!candidate.State__c}" />
+            <apex:outputField value="{!candidate.Zip__c}" />
+        </apex:pageBlockSection>
+
+        <apex:pageBlockSection title="W4 Filing Information" columns="1">
+            <apex:outputField value="{!candidate.W4_Marital_Status__c}" />
+            <apex:outputField value="{!candidate.W4_Number_of_Witholdings__c}" />
+            <apex:outputField value="{!candidate.W4_Additional_Amount__c}" />
+            <apex:outputField value="{!candidate.W4_Claim_Exemption__c}" />
+            <apex:outputField value="{!candidate.W4_Initials__c}" />
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

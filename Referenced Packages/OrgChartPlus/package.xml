@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OrgChartPlus</fullName>
+    <apiAccessLevel>Unrestricted</apiAccessLevel>
+    <namespacePrefix>OrgChartPlus</namespacePrefix>
+    <types>
+        <members>ADP_OrgChart_WebService</members>
+        <members>MSO_OrgChart2_WebService</members>
+        <members>SM_AuthSession</members>
+        <members>SM_DeleteContacts</members>
+        <members>SM_Subscription</members>
+        <members>SM_TeamMemberList</members>
+        <members>VisualforceFlashBugWorkaround</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>SMConfigBanner</members>
+        <name>ApexComponent</name>
+    </types>
+    <types>
+        <members>ADPOrgChartView</members>
+        <members>MSOOrgChartView2</members>
+        <members>SMAcceptNewContact</members>
+        <members>SMAuthSession</members>
+        <members>SMCompetitorList</members>
+        <members>SMConfig</members>
+        <members>SMSubscription</members>
+        <members>SMTeamMemberList</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>DeleteCompetitor</members>
+        <members>DeleteContact</members>
+        <members>DeleteNonSFDCPerson</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>ADP_OrgChartEntityCommon__c.Account__c</members>
+        <members>ADP_OrgChartEntityCommon__c.Contact__c</members>
+        <members>ADP_OrgChartEntityCommon__c.Influence__c</members>
+        <members>ADP_OrgChartEntityCommon__c.MatrixText__c</members>
+        <members>ADP_OrgChartEntityCommon__c.Opinion__c</members>
+        <members>ADP_OrgChartEntity__c.ChartPosX__c</members>
+        <members>ADP_OrgChartEntity__c.ChartPosY__c</members>
+        <members>ADP_OrgChartEntity__c.DisplayOrder__c</members>
+        <members>ADP_OrgChartEntity__c.EntityCommon__c</members>
+        <members>ADP_OrgChartEntity__c.MoleculePosX__c</members>
+        <members>ADP_OrgChartEntity__c.MoleculePosY__c</members>
+        <members>ADP_OrgChartEntity__c.OrgChart__c</members>
+        <members>ADP_OrgChartEntity__c.ShowFlags__c</members>
+        <members>ADP_OrgChartRelationship__c.ChildEntity__c</members>
+        <members>ADP_OrgChartRelationship__c.OrgChart__c</members>
+        <members>ADP_OrgChartRelationship__c.ParentEntity__c</members>
+        <members>ADP_OrgChartRelationship__c.Type__c</members>
+        <members>ADP_OrgChartTeamMember__c.Competitor__c</members>
+        <members>ADP_OrgChartTeamMember__c.Contact__c</members>
+        <members>ADP_OrgChartTeamMember__c.DisplayOrder__c</members>
+        <members>ADP_OrgChartTeamMember__c.Name__c</members>
+        <members>ADP_OrgChartTeamMember__c.NonSFDCPerson__c</members>
+        <members>ADP_OrgChartTeamMember__c.OrgChart__c</members>
+        <members>ADP_OrgChartTeamMember__c.User__c</members>
+        <members>ADP_OrgChart__c.Account__c</members>
+        <members>ADP_OrgChart__c.AutomaticChart__c</members>
+        <members>Company_Account__c.Account__c</members>
+        <members>MSO_OrgChart2EntityCommon__c.Contact__c</members>
+        <members>MSO_OrgChart2EntityCommon__c.Influence__c</members>
+        <members>MSO_OrgChart2EntityCommon__c.MatrixText__c</members>
+        <members>MSO_OrgChart2EntityCommon__c.Opinion__c</members>
+        <members>MSO_OrgChart2EntityCommon__c.Opportunity__c</members>
+        <members>MSO_OrgChart2Entity__c.ChartPosX__c</members>
+        <members>MSO_OrgChart2Entity__c.ChartPosY__c</members>
+        <members>MSO_OrgChart2Entity__c.DisplayOrder__c</members>
+        <members>MSO_OrgChart2Entity__c.EntityCommon__c</members>
+        <members>MSO_OrgChart2Entity__c.MoleculePosX__c</members>
+        <members>MSO_OrgChart2Entity__c.MoleculePosY__c</members>
+        <members>MSO_OrgChart2Entity__c.OrgChart__c</members>
+        <members>MSO_OrgChart2Entity__c.ShowFlags__c</members>
+        <members>MSO_OrgChart2Relationship__c.ChildEntity__c</members>
+        <members>MSO_OrgChart2Relationship__c.OrgChart__c</members>
+        <members>MSO_OrgChart2Relationship__c.ParentEntity__c</members>
+        <members>MSO_OrgChart2Relationship__c.Type__c</members>
+        <members>MSO_OrgChart2TeamMember__c.Competitor__c</members>
+        <members>MSO_OrgChart2TeamMember__c.Contact__c</members>
+        <members>MSO_OrgChart2TeamMember__c.DisplayOrder__c</members>
+        <members>MSO_OrgChart2TeamMember__c.Name__c</members>
+        <members>MSO_OrgChart2TeamMember__c.NonSFDCPerson__c</members>
+        <members>MSO_OrgChart2TeamMember__c.OrgChart__c</members>
+        <members>MSO_OrgChart2TeamMember__c.User__c</members>
+        <members>MSO_OrgChart2__c.AutomaticChart__c</members>
+        <members>MSO_OrgChart2__c.Opportunity__c</members>
+        <members>SM_Intimacy__c.Contact__c</members>
+        <members>SM_Intimacy__c.Intimacy__c</members>
+        <members>SM_Intimacy__c.TeamMember_Competitor__c</members>
+        <members>SM_Intimacy__c.TeamMember_Contact__c</members>
+        <members>SM_Intimacy__c.TeamMember_NonSFDC__c</members>
+        <members>SM_Intimacy__c.TeamMember_User__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>ADP_OrgChartEntityCommon__c</members>
+        <members>ADP_OrgChartEntity__c</members>
+        <members>ADP_OrgChartRelationship__c</members>
+        <members>ADP_OrgChartTeamMember__c</members>
+        <members>ADP_OrgChart__c</members>
+        <members>Company_Account__c</members>
+        <members>MSO_OrgChart2EntityCommon__c</members>
+        <members>MSO_OrgChart2Entity__c</members>
+        <members>MSO_OrgChart2Relationship__c</members>
+        <members>MSO_OrgChart2TeamMember__c</members>
+        <members>MSO_OrgChart2__c</members>
+        <members>SM_Competitor__c</members>
+        <members>SM_Intimacy__c</members>
+        <members>SM_NonSFUser__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>SM_Config</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>ADP_OrgChartEntityCommon__c-ADP OrgChart Entity Common Layout</members>
+        <members>ADP_OrgChartEntity__c-ADP OrgChart Entity Layout</members>
+        <members>ADP_OrgChartRelationship__c-ADP OrgChart Relationship Layout</members>
+        <members>ADP_OrgChartTeamMember__c-ADP OrgChart TeamMember Layout</members>
+        <members>ADP_OrgChart__c-ADP OrgChart Layout</members>
+        <members>Company_Account__c-Company Account Layout</members>
+        <members>MSO_OrgChart2EntityCommon__c-MSO OrgChart Entity Common Layout</members>
+        <members>MSO_OrgChart2Entity__c-MSO OrgChart Entity Layout</members>
+        <members>MSO_OrgChart2Relationship__c-MSO OrgChart Relationship Layout</members>
+        <members>MSO_OrgChart2TeamMember__c-MSO OrgChart TeamMember Layout</members>
+        <members>MSO_OrgChart2__c-MSO OrgChart Layout</members>
+        <members>SM_Competitor__c-Competitor Layout</members>
+        <members>SM_Intimacy__c-Contact Intimacy Layout</members>
+        <members>SM_NonSFUser__c-Non-SFDC Person Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>BannerOCP</members>
+        <members>HelpIcon</members>
+        <members>HelpZip</members>
+        <members>SMOrgChart</members>
+        <name>StaticResource</name>
+    </types>
+    <types>
+        <members>Account.OrgChartPlus</members>
+        <members>Opportunity.OrgChartPlus</members>
+        <name>WebLink</name>
+    </types>
+    <version>29.0</version>
+</Package>

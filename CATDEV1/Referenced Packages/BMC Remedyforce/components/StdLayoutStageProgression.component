@@ -1,0 +1,42 @@
+<apex:component controller="BMCServiceDesk.StdLayoutStageProgressionController">
+    <apex:attribute name="status" type="String" description="Stage status" assignTo="{!current_status}"/>
+    <apex:attribute name="ObjectName" type="string" description="Object name" assignTo="{!ObjectName}" />
+	<apex:attribute name="ServiceTargetStatus" type="string" description="Set the Service Target Status"  />
+    <apex:attribute default="false" name="ShowServiceTargetsIcon" type="boolean" description="Show service targets"  />
+
+	
+<apex:includeScript value="{!$Resource.BMCServiceDesk__SDEFCommonJS}/handleDomInserts.js" />
+<script>
+    var showServiceTargetsIcon = {!ShowServiceTargetsIcon};
+    var stageHTMLPrev = '{!JSENCODE(StageHTML)}';
+    var serviceTargetStatus = '{!JSENCODE(ServiceTargetStatus)}';
+    var targets_icon_html = '&nbsp;';
+    
+    var img_targets='b_svts.png';
+    
+    if(showServiceTargetsIcon) {
+    
+    	if(serviceTargetStatus == '')
+    	{
+    		img_targets = 'b_svts_disable.png';
+    	}
+    	else if(serviceTargetStatus == '{!JSENCODE($Label.ServiceTargetStatus_OK)}')
+    	{
+    		img_targets = 'b_svts.png'
+    	}
+    	else if(serviceTargetStatus == '{!JSENCODE($Label.ServiceTargetStatus_Warning)}')
+    	{
+    		img_targets = 'b_SVTs_warning.png';
+    	}
+    	else if(serviceTargetStatus == '{!JSENCODE($Label.ServiceTargetStatus_Missed)}')
+    	{
+    		img_targets = 'b_SVTs_breach.png';
+    	}
+    
+        targets_icon_html = '<img src="{!$Resource.SDEFStyles}/SDEFbuttons/'+img_targets+'" style="width:22px;height:22px">';
+    }
+	
+    insertStageProgression(stageHTMLPrev, targets_icon_html);
+</script>
+
+</apex:component>

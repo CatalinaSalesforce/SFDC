@@ -1,0 +1,21 @@
+<apex:page tabStyle="Remedyforce_Administration__tab"  controller="BMCServiceDesk.AdminHomePageController"  action="{!loadData}" title="{!JSENCODE($Label.bmcservicedesk__Remedyforce_Administration)}">
+	<style>
+		#bodyCell{ padding-top: 10px; }		
+		@media screen and (-webkit-min-device-pixel-ratio:0)
+		{
+			#handlebarContainer {
+				left: 208px;
+			}
+			.sidebarCollapsible {
+				padding-left: 3px;
+			}
+		}
+	</style>
+	
+	<iframe src="/apex/BMCServiceDesk__adminhome" width="100%" height="835" frameBorder="0" style='border-color: transparent;'/>
+	<apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJS4_1_3}/ext-all.js" id="ext-js"/>	
+	<script>
+		var openCategory = "{!$CurrentPage.parameters.Opencategory}";
+		var isOpenSSGeneral = "{!$CurrentPage.parameters.openSSGeneral}";
+	</script>
+</apex:page>

@@ -1,0 +1,1688 @@
+<apex:component controller="BMCServiceDesk.DetailSectionCont" allowDML="true">
+	<script>
+    var isConsoleEnabled = {!isConsoleEnabled};
+	var rfCMDBwin;
+	var composeEmailPageHeaderLabel = '{!JSENCODE($Label.ComposeEmailPageHeader)}';
+	var composeEmailChangePageHeaderLabel = '{!JSENCODE($Label.ComposeEmailChangePageHeader)}';
+	var siservertime = '';
+	var sistart = '{!sistarttime}';
+	var idsArray = '';
+          function SIIdsArray(){
+    		return idsArray;
+    	  }
+	function showTabLabelToolTip(eventObject){
+		var target=eventObject.target;
+		if(target == null) 
+			target = eventObject.srcElement;                              	
+		var mainId = target.id;
+		
+		if (mainId != "noteImg_Auditing" && document.getElementById('tabid_'+mainId) != 'undefined')
+		{		
+			new Ext.ToolTip({
+				target: mainId ,
+				anchor: 'right',			
+				bodyStyle:'font: 11px Tahoma, MS Sans Serif; color:black;border-color:black;',
+				dismissDelay: 15000,
+				html:document.getElementById('tabid_'+mainId).innerHTML
+			}).show();
+		}
+	}
+	var clickedId;   
+	</script>
+    <c:CommonIncludes ></c:CommonIncludes>
+     <!-- overrides to base library -->
+    <link rel="stylesheet" type="text/css" href="{!$Resource.ExtJSUX}/ex/ux/css/Portal.css" />
+    <link rel="stylesheet" type="text/css" href="{!$Resource.ExtJSUX}/ex/ux/css/GroupTab.css" />
+    <link rel="stylesheet" type="text/css" href="{!$Resource.SDEFStyles}/SIStyleSheet.css"/>
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/GroupTabPanel.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/GroupTab.js" />    
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/Portal.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/PortalColumn.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/ux/Portlet.js" />
+    <apex:includeScript value="{!$Resource.BMCServiceDesk__ExtJSUX}/ex/portal/sample-grid.js" />
+
+	<apex:attribute name="setinactive" assignTo="{!setinactive}"
+        description="" required="false" type="String" />
+        
+    <apex:attribute name="objectName" assignTo="{!strObject}"
+        description="" required="true" type="String" />
+    <apex:attribute name="isStandardLayout" assignTo="{!isStandardLayout}"
+        description="" required="false" type="boolean" />
+        
+    <apex:attribute name="fKeyValue" assignTo="{!strValue}" description=""
+        type="string" required="true" />
+    <apex:attribute name="multiSelectOption" assignTo="{!multiSelectOption}" description=""
+        type="boolean"/>
+         <apex:attribute name="urlForStaticResource" assignTo="{!urlForStaticResource}" description=""
+        type="string"  />
+      <apex:inputtext value="{!myId}"  id="str_id" style="display:none"/>  
+      <apex:inputtext value="{!closeCheck}"  id="str_CloseId" style="display:none"/>  
+   
+<apex:actionFunction name="getIncidentHistoryRenderer" rerender="incidentHistoryIdsArrayPanel" onComplete="reloadSupportInfo();"/>
+
+<apex:actionFunction name="refreshProfile" action="{!populateSelectedProfiles}" rerender="profileId"/>
+    <apex:actionFunction name="initializeResultSet"
+        action="{!initResultSet}" rerender="wholePage">
+        <apex:param name="tabid" value="" assignTo="{!tabId}" />
+    </apex:actionFunction>
+    <apex:actionFunction name="allFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+    <apex:actionFunction name="openFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="updateResultSet" rerender="wholePage"></apex:actionFunction>
+
+    <apex:actionFunction name="acknowledgedFilter"
+        action="{!initResultSet}" rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="inProgressFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="closedFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+
+    <apex:actionFunction name="userEntriesFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="systemEntriesFilter"
+        action="{!initResultSet}" rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="allEntriesFilter" action="{!initResultSet}"
+        rerender="wholePage">
+        <apex:param name="childObj" value="" />
+        <apex:param name="filterVal" assignTo="{!filterValue}" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="tabReload" action="{!initResultSet}"
+        rerender="wholePage,divpanelid">
+        <apex:param name="childObj" value="" />
+        <apex:param name="parId" value="" /> 
+    </apex:actionFunction>
+    <apex:actionFunction name="tabReloadOnStart" action="{!initResultSet}"
+        rerender="wholePage,divpanelid" onComplete="afterResetSI()">
+        <apex:param name="childObj" value="" />
+        <apex:param name="parId" value="" /> 
+    </apex:actionFunction>
+    <apex:actionFunction name="initPage" action="{!initializePage}"
+        rerender="wholePage,divpanelid" onComplete="changeFlag();">
+        <apex:param name="childObj" value="" />
+        <apex:param name="parId" value="" /> 
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkToInc" action="{!linkBroadcastInc}"
+        rerender="wholePage" onComplete="showLinkError();"> 
+        <apex:param name="incId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkStaffToCategory" action="{!linkStaffCategory}"
+        onComplete="tabReload(childObject);">
+        <apex:param name="clntId" value="" />
+    </apex:actionFunction>
+	<apex:actionFunction name="linkQueueToCategory" action="{!linkQueueCategory}"
+        onComplete="tabReload(childObject);">
+        <apex:param name="queueId" value="" />
+    </apex:actionFunction>    
+    <apex:actionFunction name="unLinkStaffCategory" action="{!unLinkStaffCategory}"
+         rerender="wholePage" onComplete="tabReload(childObject);showErrorMsg();">
+        <apex:param name="unlinkClntId"  value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="addNewHistory" action="{!addToHistory}"
+        rerender="wholePage" onComplete="afterModifyCheckFunction(); showErrorMsg();">
+        <!-- apex:param name="actionId" value="" /-->
+        <apex:param name="childObj" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkTemplateToParent" action="{!linkToParent}"
+         rerender="wholePage" onComplete="showLinkError();">
+        <apex:param name="childTemplateId" value="" />
+        <apex:param name="parentTemplateId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkCITask" action="{!linkCITask}"
+         onComplete="AlterCIExpBtnStatus();tabReload(childObject);">
+        <apex:param name="ciId" value="" />
+        <apex:param name="newTaskId" value="" assignTo="{!currentTaskId}"/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkCIClient" action="{!linkCIClient}"
+         onComplete="AlterCIExpBtnStatus();tabReload(childObject);">
+        <apex:param name="ciId" value="" />
+        <apex:param name="newTaskId" value="" assignTo="{!currentTaskId}"/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="linkCIAccount" action="{!linkCIAccount}"
+          onComplete="tabReload(childObject);showErrorMsg();">
+        <apex:param name="ciId" value="" />
+        <apex:param name="newAccountId" value="" assignTo="{!currentAccountId}"/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkTemplateFromParent" action="{!UnLinkFromParent}"
+         onComplete="tabReload(childObject);showErrorMsg();">
+        <apex:param name="childTemplateId" value="" />
+        <apex:param name="parentTemplateId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkCITask" action="{!unLinkCITask}"
+         onComplete="AlterCIExpBtnStatus();tabReload(childObject);">
+        <apex:param name="ciId" value="" />
+        <apex:param name="newTaskId" value="" assignTo="{!currentTaskId}"/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkCIClient" action="{!unLinkCIClient}"
+         onComplete="AlterCIExpBtnStatus();tabReload(childObject);">
+        <apex:param name="ciId" value="" />
+        <apex:param name="newTaskId" value="" assignTo="{!currentTaskId}"/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkCIAccount" action="{!unLinkCIAccount}"
+         onComplete="tabReload(childObject);showErrorMsg();">
+        <apex:param name="ciId" value="" />
+        <apex:param name="newAccountId" value="" assignTo="{!currentAccountId}"/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="deleteThisFile" action="{!deleteThisAttachment}"
+       onComplete="tabReload(childObject);">
+        <apex:param name="delId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="openAttachId" action="{!openAttchment}"
+        rerender="attpanel" onComplete="filePopUp(attId);">
+        <apex:param name="selectedRowId" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="checkAutoModify" action="{!checkAutoModify}"
+        rerender="wholePage" onComplete="afterModifyCheckFunction(); showErrorMsg();">
+        <apex:param name="actionId" assignTo="{!actionId}" value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="unLinkIncident" action="{!unLinkIncident}"
+        onComplete="tabReload(childObject);">
+        <apex:param name="incidentIdtobeUnlinked"  value="" />
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="doNothing" action="{!assignId}" oncomplete="tabReload(childObject);"/>
+    <apex:actionFunction name="doNothingOnSave" action="{!assignId}" oncomplete="tabReloadOnStart(childObject);"/>
+    
+     <apex:actionFunction name="handleResize" action="{!handleresize}" oncomplete="tabReload(childObject);" reRender="">
+        <apex:param name="gridHeight" value="" assignTo="{!gridHeight}"/>
+        <apex:param name="handleResizeCalled" value="" assignTo="{!handleResizeCalled}" />
+    </apex:actionFunction>
+    <apex:actionFunction name="handleColumnClick" action="{!handleColumnClick}" reRender="dataPanel,statePanel,wholePage,divpanelid">
+        <apex:param name="sortColumn" value="" assignTo="{!sortColumn}"/>
+        <apex:param name="sortDirection" value="" assignTo="{!sortDirection}"/>
+        <apex:param name="childObj" value="" />
+    </apex:actionFunction>
+        
+    <apex:actionFunction action="{!handleNextClick}" name="doNext" oncomplete="tabReload(childObject);" reRender=""/>
+    <apex:actionFunction action="{!handlePreviousClick}" name="doPrevious" oncomplete="tabReload(childObject);" reRender=""/>
+    <apex:actionFunction name="fetchData" action="{!fetchData}" reRender="accessPanel" oncomplete="edit(editLink,selectedId);">
+        <apex:param name="pagename" value="" assignTo="{!pagename}"/>
+        <apex:param name="objid" value="" assignTo="{!objid}" />
+    </apex:actionFunction>
+   
+   <apex:outputPanel id="attpanel" rendered="true">
+    
+        <script>  
+            var attId = '{!selectedAttacmentId}';
+        </script>  
+    </apex:outputPanel>
+    <apex:outputPanel id="incidentHistoryIdsArrayPanel">
+    <script>
+            //initialized here since it was throwing JS Error
+            var pageName='{!strObject}';
+    		if(pageName.toLowerCase() == 'incident__c' && tabName.toLowerCase() == 'history'){
+		    	var incidentHistoryRecords = '{!EmailIncidentHistoryRecIds}';
+	    	}
+	    	else if(pageName.toLowerCase() == 'change_request__c' && tabName.toLowerCase() == 'history'){
+		    	var changeHistoryRecords = '{!EmailChangeHistoryRecIds}';
+		    }
+			</script>            
+		</apex:outputPanel>
+    <style>
+        {!enableWordWrap}
+    </style>
+   
+    <script>
+
+////////////////////////////// Tab switch JS error ////////////////////////////////////////
+
+Ext.override(Ext.layout.ToolbarLayout, { fitToSize:function(n){if(this.container.enableOverflow===false){return}var m=n.dom.clientWidth;var b=this.lastWidth||0;this.lastWidth=m;var d=Ext.isIE ? document.documentElement.firstChild.offsetWidth :n.dom.firstChild.offsetWidth;var l=m-this.triggerWidth;var k=-1;if(d>m||(this.hiddens&&m>=b)){var e,h=this.container.items.items,g=h.length,j;var a=0;for(e=0;e<g;e++){j=h[e];if(!j.isFill){a+=this.getItemWidth(j);if(a>l){if(!j.xtbHidden){this.hideItem(j)}}else{if(j.xtbHidden){this.unhideItem(j)}}}}}if(this.hiddens){this.initMore();if(!this.lastOverflow){this.container.fireEvent("overflowchange",this.container,true);this.lastOverflow=true}}else{if(this.more){this.clearMenu();this.more.destroy();delete this.more;if(this.lastOverflow){this.container.fireEvent("overflowchange",this.container,false);this.lastOverflow=false}}}}
+});
+
+
+////////////////////////////// End of Tab switch JS error //////////////////////////////////
+      var initFlag = false;
+      var alreadyRun = false;
+      var sortColumnIndex = null;
+      var parentPageId = "{!strValue}";
+      var runCount = 0;
+     var elem;
+     var grid;
+      var gtabpanel ;
+      var sortColumnName = 'name';
+      var sortDirection = 'ASC';
+       var detailsPanel ;
+       var listPanel2 ;
+       var msgBox;
+       var isResizable = true;
+       var customHeight;
+        //var pageName='{!strObject}';
+       var isaccess = {!isAccessable};
+        var dispalyTitle;
+		var panelHeight=180;
+		var panelHeightIE=182;
+		var panelHeightIE7=182;
+        var labelSupportingInformation = '{!JSENCODE($Label.SupportingInformation)}';
+		var labelLinkedTemplates = '{!JSENCODE($Label.LinkedTemplates)}';
+		function changeFlag(){
+            initFlag = false;
+        }
+        
+        if(pageName=='IncidentTemplate__c' || pageName=='TaskTemplate__c'){
+            dispalyTitle=labelLinkedTemplates;
+            isResizable = false;
+            customHeight = 175;
+        }else{
+            dispalyTitle=labelSupportingInformation;
+            isResizable = true;
+            customHeight = 186;            
+            if(pageName == 'User') {	            
+			panelHeightIE = 205;
+			panelHeightIE7 =205;
+			panelHeight = 205;							
+			}else {
+			panelHeightIE = 182;
+			panelHeightIE7 =182;
+			panelHeight = 180;			
+		}
+        }
+     Ext.onReady(function () {
+
+	    Ext.override(Ext.data.Store, {
+	        sortData : function(f, direction){
+	            direction = direction || 'ASC';
+	            var st = this.fields.get(f).sortType;
+	            var fn = function(r1, r2){
+	                var v1 = st(r1.data[f]), v2 = st(r2.data[f]);
+					if(typeof(v1.toLowerCase) == 'function'){
+						v1 = v1.toLowerCase();
+						v2 = v2.toLowerCase();
+					}
+	                return v1 > v2 ? 1 : (v1 < v2 ? -1 : 0);
+	            };
+	            this.data.sort(direction, fn);
+	            if(this.snapshot && this.snapshot != this.data){
+	                this.snapshot.sort(direction, fn);
+	            }
+	        }
+	    });
+        Ext.QuickTips.init();
+        document.getElementById('urlForStaticResourceId').value='{!$Resource.SDEFStyles}';
+
+        
+           
+          var gtabpanel = {
+                xtype: 'grouptabpanel',
+                activeGroup: 0,
+                id: 'grptabpanel',    
+                tabWidth: 135,              
+                items: <apex:outputtext value="{!strGrpTab}" escape="false"/>
+        };
+        
+       
+        
+        detailsPanel = new Ext.Panel({
+            title:dispalyTitle,
+// IE7-8 Related Changes -- uncommented render
+            renderTo: 'detailsDiv',            
+            
+                region:'south',
+                id:'south-panel',
+                width:'100%',
+                split:isResizable ,
+                layout: 'fit',
+                overflow:'auto',
+                autoScroll:false,
+// IE7-8 Related Changes
+                //height:Ext.isIE ?182:180,
+                height:Ext.isIE7 ?panelHeightIE7:Ext.isIE ?panelHeightIE:panelHeight,
+                cls:'detailsSectionCls',
+                collapseMode: 'mini',
+                items: [gtabpanel] ,
+        tools:[
+                    {
+                        id: 'minimize',
+                        qtip: '{!JSENCODE($Label.TooltipMinimize)}',
+                        handler: function() {
+                            Ext.getCmp('southPanelSI').collapse();
+                        }
+                    
+                    },
+                    {
+                        id: 'maximize',
+                        qtip:  '{!JSENCODE($Label.TooltipMaximize)}',
+                        handler: function() {
+                            Ext.getCmp('south-panel').tools['maximize'].hide();
+                            Ext.getCmp('south-panel').tools['restore'].show();
+                            var height= Ext.isIE7 ? 660: Ext.isIE ? 664:Ext.isSafari ? 685:670;
+                            Ext.getCmp('southPanelSI').setHeight(height);
+                            
+                            Ext.getCmp('canvasPanelId').doLayout(true,true);
+                            
+                           
+                        }
+                    },
+                    {
+                        id: 'restore',
+                        qtip: '{!JSENCODE($Label.TooltipRestore)}',
+                        hidden:true,
+                        handler: function() {
+                            Ext.getCmp('south-panel').tools['maximize'].show();
+                            Ext.getCmp('south-panel').tools['restore'].hide();
+                            var heightCanvasPanel=Ext.isIE7 ? 670: Ext.isIE ? 674:Ext.isSafari ? 695:680;
+                            var heightSotuhPanel=Ext.isIE ?182:180;
+                            Ext.getCmp('canvasPanelId').setHeight(heightCanvasPanel);
+                            
+                            Ext.getCmp('southPanelSI').setHeight(heightSotuhPanel);
+                            Ext.getCmp('canvasPanelId').doLayout(true,true);
+                        }
+                    
+                    }
+                    ]
+            });
+
+// IE7-8 Related Changes -- Commented class            
+        /* var viewport = new Ext.Viewport({
+         layout:'border',
+         items:[ incidentPanel,detailsPanel ]
+        });*/
+    
+
+    });
+
+    </script>
+    
+     <apex:outputPanel id="accessPanel" rendered="true">
+        <script>  
+          isaccess = {!isAccessable};
+        </script>  
+    </apex:outputPanel>
+    <apex:outputPanel id="wholePage" rendered="true">
+
+        <script>
+        idsArray = new Array({!resultSet.size});
+     var err = '{!JSENCODE(errorMsg)}';
+     var selectedPro = "{!JSENCODE(selectedProfiles)}";  
+        
+    var resultSet= new Array({!resultSet.size});  
+    
+     function splitInTwo(str,splitVal){
+        var ret = new Array();
+        var splitIndex = str.indexOf('=');
+        ret[0] = str.substring(0,splitIndex );
+        ret[1] = str.substring(splitIndex +1,str.length);
+        return ret;
+    }
+    
+    function showStateToolTip(eventObject){
+         var target=eventObject.target;
+        if(target == null) 
+            target = eventObject.srcElement;                              
+        
+        var mainId = target.id;
+        if (mainId != "noteImg_Auditing")
+        {
+            var note = target.getAttribute('nt');
+        //alert(note);
+        new Ext.ToolTip({
+        target: mainId ,
+        anchor: 'right',
+        //trackMouse: true,
+        shadow :'sides',
+        baseCls:'noteToolTipCls',
+        bodyStyle:'font: 11px Tahoma, MS Sans Serif; color:black;border-color:black;',
+        dismissDelay: 15000,
+        html:'<div style="background-color:#DDDDDD;"><div  style="background-color:#FFFFFF;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;">{!JSENCODE($Label.Record_Count)}'+note+'</div></div>'
+    }).show();
+   }
+   }
+   
+   function processTabRecCount(map){
+        if(map!=null && typeof(map)!='undefined' && map.length > 2){
+          
+            map = map.substring(1,map.length-1);
+            var rec = map.split(',');
+            for(var i =0;i<rec.length;i++){
+                var idVal = splitInTwo(rec[i],'=');
+                idVal[0] = idVal[0].replace(' ','');
+                var elem = document.getElementById(idVal[0]);
+                if(elem != null && typeof(elem )!='undefined'){ 
+                    elem.innerHTML = idVal[1]+'';
+                }
+            }
+        }
+    
+    }
+    
+    processTabRecCount('{!tabRecCountMap}');
+    
+    var colsSize = 0;
+    var noName = false;    
+    var j=0, k=0;</script>
+        <apex:repeat value="{!resultSet}" var="obj">
+            <script>k=0;colsSize={!obj.fields.size}; resultSet[j] = new Array(colsSize); </script>
+            <apex:repeat value="{!obj.fields}" var="objflds">
+                <script>
+                resultSet[j][k]="{!(objflds.value)}";
+                if(resultSet[j][k]=="")resultSet[j][k]="-";k++; 
+                </script>
+            </apex:repeat>
+            <script>idsArray[j] = resultSet[j][0];j++;</script>
+        </apex:repeat>
+        <script>var idFld='fld0';
+    //Set columnn headers
+    var colsHdrs = new Array(colsSize);j=0;
+    </script>
+        <apex:repeat value="{!headers}" var="hdr">
+            <script>colsHdrs[j++]="{!hdr}";</script>
+        </apex:repeat>
+
+        <script>//Set columnn names
+    var cols = new Array(colsSize);j=0;</script>
+        <apex:repeat value="{!cols}" var="col">
+            <script>cols[j++]="{!col}";</script>
+        </apex:repeat>
+
+ <script>//Set columnn names
+    var colwidth = new Array(colsSize);j=0;</script>
+        <apex:repeat value="{!columnWidth}" var="colwidth">
+            <script>colwidth[j++]=parseInt("{!colwidth}");</script>
+        </apex:repeat>
+
+        <script>
+    function filePopUp(attachmentId){
+        
+        if(attachmentId!=null && attachmentId != ''){
+            if(attachmentId.indexOf('[url]')>0){
+                var newUrl = attachmentId.split('[url]')[0];
+                if(newUrl.match('http:')!=null || newUrl.match('https:')!=null){
+                    newUrl = newUrl;
+                }else{
+                    newUrl = 'http://' + newUrl;
+                }
+                window.open(newUrl,'','scrollbars=yes,menubar=no,height=1000,width=1000,resizable=yes,toolbar=no,location=yes,status=no');
+            }else{
+        window.open('FileDownloadPage?attachmentId='+attachmentId);
+           // window.showModalDialog("/servlet/servlet.FileDownload?file="+attachmentId,"pageName","dialogWidth=600px; dialogHeight=600px; resizable=yes");
+            //selectedId=null;
+            }
+        }else{
+            checkValidity();    
+        }
+    }
+    
+    function openURL(url){
+        var newUrl;
+        if(url.match('http:')!=null || url.match('https:')!=null){
+            newUrl = url;
+        }else{
+            newUrl = 'http://' + url;
+        }
+        window.open(newUrl,'','scrollbars=yes,menubar=no,height=1000,width=1000,resizable=yes,toolbar=no,location=yes,status=no');
+    }
+    
+    function openFile(data, metadata, record, rowIndex, columnIndex, store){
+        if(record.get(type) == 'File')
+           return '<a onclick="filePopUp(\''+record.get(attachId)+'\')">'+data+'</a>';
+        else if(record.get(type) == 'Url')  
+            return '<a onclick="openURL(\''+record.get(urlName)+'\')">'+data+'</a>';   
+    }
+    
+     var note;
+    var v ='';
+    function showNote(value, p, record){
+                  var imgPath = '';
+                  
+                  if(value!='')
+                  {
+                        note = value;
+                        if(record.get(noteField)!='-' && record.get(noteField)!='' && record.get(noteField)!=null){
+                          imgPath = '{!$Resource.SDEFStyles}/SDEFimages/Pin.png';
+                          //v ='<img style="width:16px;height:16px" src="'+ imgPath+  '"  id="img_' +record.get(noteField)+ '" ext:qtip="' + value + '" />';
+                          var tooltipValue =record.get(noteField);
+                          v ='<div align="center" style="width:100%"><img style="width:16px;height:16px" src="'+ imgPath+  '" id="img_' +escape(tooltipValue) +'" onmouseover="showToolTip('+'\''+escape(tooltipValue)+'\''+');"/></div>';
+                        }else{
+                            //imgPath = '{!$Resource.SDEFStyles}/SDEFimages/pin_unselected.gif';
+                            //v ='<img style="width:16px;height:16px" src="'+ imgPath+ '" />';
+                            v = '';
+                        }
+                  }
+                  else
+                  {
+                      v=''; 
+                  }
+
+                return v;
+    }
+        
+     function showToolTip(id){
+     var text= Ext.util.Format.ellipsis(id, 130);
+     new Ext.ToolTip({
+        target: 'img_'+id,
+        anchor: 'left',
+        trackMouse: false,
+        anchorOffset:10,
+        width: 300,
+        shadow :'sides',
+        baseCls:'noteToolTipCls',
+        bodyStyle:'font: 11px Tahoma, MS Sans Serif; color:black;padding-top:10px;padding-bottom:10px;padding-left:10px;padding-right:10px;width:2%;border-color:black;',
+        dismissDelay: 15000,
+        html:'<div  style="background-color:#DDDDDD;"><div  style="background-color:#FFFFFF;border:1px solid grey;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;"><b>Note:</b><br/>'+unescape(text)+'</div></div>'
+    });
+   }
+
+        
+    function shState(data, metadata, record, rowIndex, columnIndex, store){
+        return ""+data=="true" ? "Opened" : "Closed";        
+        }      
+    
+     function colRenderer(data, metadata, record, rowIndex, columnIndex, store){
+        if(data==null) data="";
+        //if(1>rowIndex) alert(columnIndex +":"+ cols[columnIndex]+":"+colsHdrs[columnIndex]);
+        if(cols[columnIndex].toLowerCase()=='state__c')
+            return shState(data, metadata, record, rowIndex, columnIndex, store);
+        else
+            return data;
+            
+    }
+        
+  var addEditLink;
+  var selectedId;
+  var childObject;
+  var parentObject;
+  var childObjectName;
+  var editLink;
+  var flag=true;
+  var noteField;
+  var attachId;
+  var urlName;
+  var type;
+  parentPageId = "{!strValue}";
+  var idArray= new Array('fileOpen','fileDelete','editTask','editHistory','editIncBroadcast','editIncPriority','editIncCategory','editCategory','editStandardDesc','editStandardRes','editAction','editClient','editOrganization','unAssignSuppExp','unLinkTemplates','editIncTemp','unLinkCI','unLinkToIncident');
+  if(parentPageId==null || parentPageId==''){
+      parentPageId = "{!JSENCODE(myId)}";
+  }
+  var tabName = "{!tabName}";
+  var instancdIdField, nameField, idField, assemblyField;
+  var flds = new Array(colsHdrs.length);
+    for(i=0;i<colsHdrs.length;i++){
+        flds[i]='fld'+i;
+    }
+   var recId = flds[0];
+    var nameFld;
+    var NameVal;
+    var sortFlag = false;
+    var arrCols = new Array(colsSize);
+    for(j=0; colsHdrs.length > j;j++){
+        if(j==0){            
+            arrCols[j] = {id:flds[j], header: colsHdrs[j], width: 10, dataIndex: flds[j], hideable: false, hidden: true};
+        }else {
+            if(cols[j].toLowerCase()=='attachmentid__c'){
+                attachId = flds[j];
+                arrCols[j] = {header: colsHdrs[j],width:colwidth[j-1], sortable: sortFlag, dataIndex: flds[j],hidden: true};
+            }else if(cols[j].toLowerCase()=='type__c'){
+                type = flds[j];
+                arrCols[j] = {header: colsHdrs[j],width:colwidth[j-1], sortable: sortFlag, dataIndex: flds[j],hidden: true};
+            }else if(cols[j].toLowerCase()=='filename__c'){
+                urlName = flds[j];
+                arrCols[j] = {header: colsHdrs[j],width:colwidth[j-1], sortable: sortFlag, dataIndex: flds[j],renderer:openFile};
+            }else if(cols[j].toLowerCase()=='note__c'){
+                noteField = flds[j];
+                arrCols[j] = {header: colsHdrs[j],width:colwidth[j-1],  sortable: sortFlag, dataIndex: flds[j],renderer:showNote};
+            }else if(cols[j].toLowerCase()=='assemblyid__c'){
+                arrCols[j] = {id:flds[j], header: colsHdrs[j], width: 10, dataIndex: flds[j], hideable: false, hidden: true};
+            }else{
+                arrCols[j] = {header: colsHdrs[j],width:colwidth[j-1], sortable: sortFlag, dataIndex: flds[j],renderer: colRenderer};
+            }
+        }
+        if(cols[j].toLowerCase()=='name'){
+                nameFld = flds[j];
+    }
+    if (cols[j].toLowerCase() == 'instanceid__c') { instancdIdField = flds[j]; }
+    if (cols[j].toLowerCase() == 'name__c') { nameField = flds[j]; }
+    if (cols[j].toLowerCase() == 'id') { idField = flds[j]; }
+    if (cols[j].toLowerCase() == 'assemblyid__c') { assemblyField = flds[j]; }
+    }
+    var objList;
+    var idList; 
+   DataGrid = function() {
+        //Ext.state.Manager.setProvider(new Ext.state.CookieProvider());    
+
+        // create the data store
+        var store = new Ext.data.ArrayStore({
+            fields: flds ,
+            data:resultSet
+        });
+        //store.loadData(resultSet);
+        // create the Grid
+        grid = new Ext.grid.GridPanel({
+             border:false,
+            tbar: {!strItem},
+            id: 'HistoryTab',
+            store: store,
+            columns: arrCols,
+            stripeRows:true,            
+           enableHdMenu :false, 
+           sortInfo: {
+    			field: "{!JSENCODE(sortColumn)}",
+    			direction: "{!JSENCODE(sortDirection)}"
+			},
+// IE7-8 Related Changes     
+            cls:'detailSectionGridCls toolSpCls',
+          listeners: {
+                    rowclick: function(grid, rowIndex, e) {                     
+						//added to fixed bug 1634
+                    	if(grid.getSelectionModel().getSelected() != null){                 
+                        selectedId = grid.getSelectionModel().getSelected().get(recId);                        
+                        NameVal = grid.getSelectionModel().getSelected().get(nameFld);                        
+                        } else {
+                        	selectedId = '';
+                        }     
+                        if("{!JSENCODE(closeCheck)}" == null || "{!JSENCODE(closeCheck)}" == '' || "{!JSENCODE(closeCheck)}" == 'null'){
+                            for(var i = 0; i < idArray.length; i++){
+                                if(typeof(Ext.getCmp(idArray[i]))!='undefined')
+									Ext.getCmp(idArray[i]).setDisabled(false);
+                            }
+                        }
+                        
+                        if({!multiSelectOption}){
+                            objList = grid.getSelectionModel().getSelections();
+                            idList = '';
+                            var addFlag = true
+                            var i=0;
+                            while(addFlag){
+                                if(objList[i] != null){
+                                    idList = idList+ objList[i].get(flds[0])+ ',';
+                                }                           
+                                i++;
+                                if(i>objList.length){
+                                    addFlag = false;
+                                }                           
+                            }
+                        }                                               
+                    },
+                    headerclick : function(grid, columnIndex,e ) {
+                        var sortableColumn = true;
+                        for(j=0; unsortableCols.length > j;j++){
+                            //alert('col : '+cols[columnIndex]+', ta :'+tacols[j]);
+                            if(cols[columnIndex] == unsortableCols[j]){
+                                sortableColumn = false;
+                                break;
+                            }
+                        }
+                        if(sortableColumn ){
+                            if(sortColumnName == cols[columnIndex]+''){
+                                if(sortDirection == 'ASC'){
+                                    sortDirection = 'DESC';
+                                }else{
+                                    sortDirection = 'ASC';
+                        		}
+                            }else{
+                                sortDirection = 'ASC';
+                            
+                        	}
+                            sortColumnName = cols[columnIndex]+'';
+                            sortColumnIndex = columnIndex;
+                            handleColumnClick(sortColumnName, sortDirection, childObject);
+                        }
+                    },
+                    rowdblclick: function(grid, rowIndex, e) {
+                        clickedId = grid.getSelectionModel().getSelected().get(recId);
+                        if("{!JSENCODE(closeCheck)}" == null || "{!JSENCODE(closeCheck)}" == '' || "{!JSENCODE(closeCheck)}" == 'null'){         
+                        	if(childObjectName != 'Attachment' && editLink != 'dummy'){
+                         			beforeEdit(editLink,clickedId);
+                         		}
+                        	}
+                    },
+                    afterrender: function() {
+                            this.setHeight( this.ownerCt.getInnerHeight() );
+                            this.setWidth('100%');
+                        },
+                        render: function() {
+                            this.ownerCt.addListener('resize', function() {
+                                Ext.each( this.items.items, function(item) { item.fireEvent('afterrender'); } );
+                            });
+                     }
+
+
+                },
+                    
+            viewConfig: {forceFit: true, scrollOffset:0}, 
+            selModel: new Ext.grid.RowSelectionModel({singleSelect : !{!multiSelectOption}})          
+        }); 
+        var unsortableCols = {!unsortableCols};
+        if(grid!=null && sortColumnIndex!=null && sortDirection != null){
+             var newColName = colsHdrs[sortColumnIndex];
+             if(sortDirection == 'ASC'){
+                 imgPath = '{!$Resource.SDEFStyles}/SDEFimages/arrow_sort_ascending.gif';
+             }else if(sortDirection == 'DESC'){
+                 imgPath = '{!$Resource.SDEFStyles}/SDEFimages/arrow_sort_descending.gif';
+             } 
+             newColName += '<img style="width:13px;height:13px" src="'+ imgPath +'"/>';
+             grid.getColumnModel().setColumnHeader(sortColumnIndex,newColName);  
+        }
+      var gridPanel = new Ext.Panel({
+       layout:'fit',
+       id:'gridPanelId',
+       height:Ext.getCmp('south-panel').getHeight()-55,
+       width:Ext.getCmp('south-panel').getWidth()-156,
+       border:true,
+       cls:'gridPanelCls'
+                  
+      });
+      gridPanel.add(grid);
+      return gridPanel;            
+    }
+   TabAuditDetails = function() {
+        var tabs = new Ext.Panel({
+            contentEl: 'my-tabs',
+            layout: 'fit',
+            id: 'AuditDetailsTab',
+            height:125,
+            cls:'TabAuditDetailsCls',
+            viewConfig: {forceFit: true}
+        });
+        return tabs;
+        }
+        
+    TabDisplayToProfile = function() {
+        var tabs = new Ext.Panel({
+            contentEl: 'itemSelector',
+            layout: 'fit',
+            id: 'DisplayToProfileTab',
+            viewConfig: {forceFit: true}
+        });
+        return tabs;
+        }
+        
+    if(typeof(elem)!='undefined'){    
+        if(childObjectName==parentObject && tabName=='Auditing'){
+            var audittab = Ext.getCmp('AuditDetailsTab');//new TabAuditDetails();
+            var profiletab = Ext.getCmp('DisplayToProfileTab');//new TabAuditDetails();
+            var historytab = Ext.getCmp('HistoryTab');
+            
+            if (audittab == null || typeof(audittab)=='undefined') {
+                
+                var Atab = new TabAuditDetails();
+                elem.remove(historytab);
+                elem.add(Atab);
+            }
+            else {
+                if (audittab != null) audittab.show();
+                if (profiletab != null) profiletab.hide();
+                if (historytab != null) elem.remove(historytab);
+            }
+                
+        }else if(childObjectName==parentObject && tabName=='DisplayTo'){
+            
+            var audittab = Ext.getCmp('AuditDetailsTab');//new TabAuditDetails();
+            var profiletab = Ext.getCmp('DisplayToProfileTab');//new TabAuditDetails();
+            var historytab = Ext.getCmp('HistoryTab');
+            if (profiletab == null || typeof(profiletab) =='undefined') {
+                
+                var Dtab = new TabDisplayToProfile();
+                elem.remove(historytab);
+                elem.add(Dtab);
+                refreshProfile();
+            }
+            else {
+                if (audittab != null) audittab.hide();
+                if (profiletab != null) profiletab.show();
+                if (historytab != null) elem.remove(historytab);
+                
+            }
+             
+                
+        }else{
+            flag=false;
+            elem.removeAll();  
+            elem.getEl().child('.x-panel-body').update('');
+            elem.doLayout();
+            var dGrid = new DataGrid();
+            elem.add(dGrid); 
+        }   
+            elem.doLayout();
+        }        
+         var recordExist = {!disableMenuItems};
+               
+        var recordIdArray = new Array('menuOpen','menuAcknowledged','menuInProgress','menuClosed','menuSystemEntries','menuUserEntries','menuAllEntries');
+        var closeIdArray = new Array('addHistories','addFiles','addTask','inprogressBroadcast','closedbroadcast','addIncPriority','addIncCategory','addIncBroadcast','linkToIncident','addCategory','addStandardDescription','addStandardResolution','addAction','assignSupportExperts','addClient','addOrganization','addTemplate','linkCI','userClosedIncId','userProgressIncId','userAcknowledgedIncId','userOpenIncId');        /*for(var i = 0; i < recordIdArray.length; i++){
+           /* if(typeof(Ext.getCmp(recordIdArray[i]))!='undefined')
+                Ext.getCmp(recordIdArray[i]).setDisabled(recordExist);
+        }*/
+            
+        for(var i = 0; i < idArray.length; i++){
+            if(typeof(Ext.getCmp(idArray[i]))!='undefined')
+                Ext.getCmp(idArray[i]).setDisabled(true);
+        }
+        var hasNext = {!hasNext};
+         if(typeof(Ext.getCmp('prevId')) != 'undefined')
+                Ext.getCmp('prevId').setDisabled({!IF(hasPrevious,false,true)});
+        if(typeof(Ext.getCmp('nextId')) != 'undefined')
+                Ext.getCmp('nextId').setDisabled({!IF(hasNext,false,true)});
+                
+         if(parentPageId == null || parentPageId == 'null' || parentPageId == ''){
+            if(typeof(Ext.getCmp('nextId')) != 'undefined')
+                Ext.getCmp('nextId').setDisabled(true);
+        } 
+        
+        if(typeof(Ext.getCmp('nextId')) != 'undefined' && recordExist)
+                Ext.getCmp('nextId').setDisabled(true);
+           var isModifiable =  {!isModifiable};  
+           var historyId = "{!historyId}";
+           var historyPageName = "{!historyPageName}";
+           var historyActionId = "{!historyActionId}";
+           function AlterCIExpBtnStatus(){
+                if(pageName=="Task__c"){
+                    var linkRecord = "{!linkRecord}";
+                    ChangeBtnStatus(linkRecord);
+                }
+            }
+    </script>
+    </apex:outputPanel>
+
+    <script>
+            function handleTabLoad(){
+                    if(!alreadyRun){
+                        flag=false;
+                        elem.removeAll();  
+                        elem.getEl().child('.x-panel-body').update('');
+                        elem.doLayout();
+                        var dGrid = new DataGrid();
+                        elem.add(dGrid);
+                        elem.doLayout(); 
+                        var hasNext = {!hasNext};
+                        if(typeof(Ext.getCmp('prevId')) != 'undefined'){
+                                Ext.getCmp('prevId').setDisabled({!IF(hasPrevious,false,true)});
+                        }
+                        if(typeof(Ext.getCmp('nextId')) != 'undefined'){
+                                Ext.getCmp('nextId').setDisabled({!IF(hasNext,false,true)});
+                        }    
+                        if(parentPageId == null || parentPageId == 'null' || parentPageId == ''){
+                            if(typeof(Ext.getCmp('nextId')) != 'undefined')
+                                Ext.getCmp('nextId').setDisabled(true);
+                        } 
+                        
+                        if(typeof(Ext.getCmp('nextId')) != 'undefined' && recordExist)
+                            Ext.getCmp('nextId').setDisabled(true);
+                            
+                        for(var i = 0; i < idArray.length; i++){
+                            if(typeof(Ext.getCmp(idArray[i]))!='undefined')
+                                Ext.getCmp(idArray[i]).setDisabled(true);
+                        }
+                        
+                       alreadyRun = true; 
+                    }
+            }
+        function disableAll(){
+                document.getElementById('{!$Component.str_closeId}').value = 'true';
+                var idArray1 = new Array('fileDelete','editTask','editHistory','editIncBroadcast','editIncPriority','editIncCategory','editCategory','editStandardDesc','editStandardRes','editAction','editClient','editOrganization','unAssignSuppExp','unLinkTemplates','editIncTemp','unLinkCI','unLinkToIncident');
+                
+                for(var i = 0; i < idArray1.length; i++){
+                    //alert(Ext.getCmp(idArray[i]));
+                    if(typeof(Ext.getCmp(idArray1[i]))!='undefined')
+                        Ext.getCmp(idArray1[i]).setDisabled(true);
+                }
+                
+               /* for(var i = 0; i < recordIdArray.length; i++){
+                    if(typeof(Ext.getCmp(recordIdArray[i]))!='undefined')
+                        Ext.getCmp(recordIdArray[i]).setDisabled(true);
+                }*/
+                var closeIdArray1 = new Array('addHistories','addFiles','addTask','addIncPriority','addIncCategory','addIncBroadcast','linkToIncident','addCategory','addStandardDescription','addStandardResolution','addAction','assignSupportExperts','addClient','addOrganization','addTemplate','linkCI');       
+                for(var i = 0; i < closeIdArray1.length; i++){
+                    if(typeof(Ext.getCmp(closeIdArray1[i]))!='undefined') 
+                        Ext.getCmp(closeIdArray1[i]).setDisabled(true);
+                }
+           // }
+            }
+            
+            function enableAll(){
+                document.getElementById('{!$Component.str_closeId}').value = null;
+                //tabReload(childObject);
+            }
+            var AddHandler = function(button,event) {  add(addEditLink);}; 
+            var EditHandler = function(button,event) { beforeEdit(editLink,selectedId);};
+            var AllHandler = function(button,event) {  allFilter(childObject,'{!strAll}');};
+            var OpenHandler = function(button,event) {  openFilter(childObject,'{!strOpen}');};
+            var AcknowledgedHandler = function(button,event) {  acknowledgedFilter(childObject,'{!strAcknowledge}');};
+            var InProgressHandler = function(button,event) {  inProgressFilter(childObject,'{!strInProgress}');};
+            var ClosedHandler = function(button,event) {  closedFilter(childObject,'{!strClose}');};
+            var UserEntriesHandler = function(button,event) {userEntriesFilter(childObject,'false');};
+            var SystemEntriesHandler = function(button,event) {systemEntriesFilter(childObject,'true');};
+            var AllEntriesHandler = function(button,event) {allEntriesFilter(childObject,'all');};
+            var LinkHandler = function(button,event) {linkToIncident();};
+            var OpenFileHandler = function(button,event) {openAttachId(selectedId);};
+            var DeleteFileHandler = function(button,event) {confirmation(selectedId);};
+            var AssignSupportHandler = function(button,event) {assignSupportStaff();};
+            var AssignSupportHandler1 = function(button,event) {assignSupportQueue();};
+            var UnassignSupportHandler = function(button,event) {unLinkToCategory(selectedId);};
+            var LinkTemplateHandler = function(button,event) {  linkTemplate();};
+            var UnlinkTemplateHandler = function(button,event) {  unLinkTemplate();};
+            var LinkCIHandler = function(button,event) {  linkCI();};
+             var LinkServiceHandler = function(){linkService();};
+            var UnlinkCIHandler = function(button,event) { 
+                    var newTaskId = "";
+                    var newAccountId = "";
+                    if(pageName=="Task__c"){
+                        newTaskId = AssignNewTaskId();
+                        unLinkCITask(selectedId, newTaskId);
+                    }else if(pageName=="User"){
+	                	newTaskId = AssignNewUserId();
+	                	unLinkCIClient(selectedId, newTaskId);
+	                }else if(pageName=="Account"){
+	                	newAccountId = AssignNewAccountId();
+	                	unLinkCIAccount(selectedId, newAccountId);
+	                }
+                };
+            var ChildTemplateOrderHandler = function(button,event) {setChildTemplateOrder();};
+            var NextBtnHandler = function(button,event) {
+                                                        if(parentPageId != null && parentPageId != 'null' && parentPageId != '' && hasNext &&  !recordExist){
+                                                        
+                                                         doNext();
+                                                         }
+                                                         }; 
+            var PreviousBtnHandler = function(button,event) { doPrevious();}; 
+            var UnLinkHandler = function(button,event) { unLinkIncident(selectedId);};
+            
+            function showMessage(message){
+                Ext.MessageBox.show({                       
+                    msg:message ,
+                    width:200,
+                    height:'auto',
+                    buttons: Ext.MessageBox.OK
+                });
+              }
+              
+            function showLinkError(){
+                if(err != null && err != 'null' && err != ''){
+                    showMessage(err);
+                }else{
+                    tabReload(childObject);
+                }
+            }
+            
+            function onPopupComplete(val){
+                checkAutoModify(val);
+               // addNewHistory(val,childObject);
+            }
+           
+            function afterModifyCheckFunction(){
+                tabReload(childObject);
+                if(isModifiable && (err == null || err =='')){
+                    if(historyPageName == 'incidentHistoryPage'){
+                    openPopupWithTitle(historyPageName+'?isLookup=true&Id='+historyId+'&historyActionId='+historyActionId+'&incidentId='+parentPageId,reloadData,'',Ext.isIE7 ? 432 : Ext.isIE8 ? 420 : 418,670);
+                    isModifiable =false;
+                    }else if(historyPageName == 'taskHistoryPage'){
+                        var taskHistoryHeight = Ext.isIE7 ? 438 : Ext.isIE8 ? 428 : 426;
+                        openPopupWithTitle(historyPageName+'?isLookup=true&Id='+historyId,reloadData,'',taskHistoryHeight,670);
+                        isModifiable =false;
+                    }else{
+                    openPopupWithTitle(historyPageName+'?isLookup=true&Id='+historyId,reloadData,'',Ext.isIE7 ? 416 : Ext.isIE8 ? 408 : 408,670);
+                    isModifiable =false;
+                    }
+                }
+            }
+           
+            function refreshDocs(){
+                tabReload(childObject);
+                if(pageName == 'Account')
+                     setNumberOfUsers();
+            }
+            
+            function setId(pageId,isSave){
+                document.getElementById('{!$Component.str_id}').value = pageId;
+                if(isSave != null && typeof isSave != 'undefined' && isSave == true)
+				{
+                    //doNothingOnSave();
+					tabReloadOnStart(childObject);	//doNothing...removed and directly called AF  to cut down extra HTTP Post: Performance fix
+                }else
+				{
+					//doNothing();
+					tabReload(childObject);		//doNothing...removed and directly called AF  to cut down extra HTTP Post: Performance fix
+				}
+            }
+            
+            function reloadData(val){
+                tabReload(childObject);
+            }
+            
+            function openCommonPopup(url, oncompletefunction) {
+                openPopup(url, oncompletefunction, 400, 730);
+            }
+            
+            function openPopupForTemplate(url, oncompletefunction, title) {                     
+                openPopupWithTitle(url, oncompletefunction, title,500,640);
+            }
+            
+            function openNewTabTemplate(url, oncompletefunction, title) {                       
+                 if('{!JSENCODE($currentPage.parameters.wid)}' != null && '{!JSENCODE($currentPage.parameters.wid)}' != ''){
+                    url = url + '&parentWid=' + '{!JSENCODE($currentPage.parameters.wid)}';
+                }
+                openPageForTemplate(url, oncompletefunction, title,title);                
+            }
+            var clientCustLabelPlural = '{!JSINHTMLENCODE($Label.Navigator_Clients)}';
+            var clientCustLabel = '{!JSINHTMLENCODE($Label.ClientWindowHeaderSearchPage)}';
+            
+            var broadcastLabelPlural = '{!JSENCODE($Label.Navigator_Broadcasts)}';  
+            var broadcastLabel = '{!JSENCODE($ObjectType.Broadcasts__c.Label)}'; 
+            
+            var categoryLabelPlural = '{!JSENCODE($Label.Navigator_Category)}';   
+            var categoryLabel = '{!JSENCODE($ObjectType.category__c.Label)}'; 
+            
+            var accountLabelPlural = '{!JSENCODE($Label.Navigator_Accounts)}';
+            var accountLabel = '{!JSENCODE($ObjectType.Account.Label)}';
+            
+            var standardDescriptionLabelPlural = '{!JSENCODE($Label.Navigator_StandardDescription)}';
+            var standardDescriptionLabel = '{!JSENCODE($ObjectType.StandardDescription__c.Label)}';
+            
+            var actionLabelPlural = '{!JSENCODE($Label.Navigator_Action)}';    
+            var actionLabel = '{!JSENCODE($ObjectType.Action__c.Label)}';  
+            
+            var incidentLabelPlural = '{!JSENCODE($Label.Navigator_Incidents)}';
+    		var incidentLabel = '{!JSENCODE($ObjectType.Incident__c.Label)}';  
+			var standardObjectUrl = '';
+            function openNewTabItems(url,pageTitle) { 
+                var header;
+                var title;
+                if(childObjectName.toLowerCase() == 'broadcasts__c'){
+                    header = broadcastLabelPlural;
+                    title = broadcastLabel;
+                    standardObjectUrl = '{!URLFOR($Action.Broadcasts__c.New)}';
+                }else if(childObjectName.toLowerCase() == 'category__c'){
+                    header = categoryLabelPlural;
+                    title = categoryLabel;
+                    standardObjectUrl = '{!URLFOR($Action.Category__c.New)}';
+                }else if(childObjectName.toLowerCase() == 'user'){
+                    header = clientCustLabelPlural;
+                    title = clientCustLabel;
+                    
+                }else if(childObjectName.toLowerCase() == 'account'){
+                    header = accountLabelPlural;
+                    title = accountLabel;
+                    standardObjectUrl = '{!URLFOR($Action.Account.New)}';
+                }else if(childObjectName.toLowerCase() == 'standarddescription__c'){
+                    header = standardDescriptionLabelPlural;
+                    title = standardDescriptionLabel;
+                    standardObjectUrl = '{!URLFOR($Action.StandardDescription__c.New)}';
+                }else if(childObjectName.toLowerCase() == 'action__c'){
+                    header = actionLabelPlural;
+                    title = actionLabel;
+                    standardObjectUrl = '{!URLFOR($Action.Action__c.New)}';
+                }else if(childObjectName.toLowerCase() == 'incident__c'){
+                    header = incidentLabelPlural;
+                    title = incidentLabel;
+                    standardObjectUrl = '{!URLFOR($Action.Incident__c.New)}';
+                    if({!isStandardLayout} && standardObjectUrl!=''){
+                        var startIndex = standardObjectUrl.indexOf('?retURL'); 
+                        if(startIndex != -1){                       
+                            standardObjectUrl = standardObjectUrl.substring(0,startIndex);                        
+                            var prefix = standardObjectUrl.substring((startIndex-5),(startIndex-2));
+                            if(prefix != -1){
+                                standardObjectUrl = standardObjectUrl + '?retURL=/'+prefix+'/o';
+                            }
+                        }
+                     }
+                }else{
+                    header = childObjectName.split('__c')[0]+'s';
+                    title = childObjectName.split('__c')[0]+'s';
+                }
+                var modName = window.parent.getModuleName();
+                if(childObjectName.toLowerCase() == 'standarddescription__c' && modName == 'SSCategory'){
+                	window.parent.parent.parent.parent.addNewTab(pageTitle, header, "NavigatorPage?title="+title+"&target="+encodeURIComponent(url));
+                }else if(childObjectName.toLowerCase() == 'category__c'  && modName == 'SSCategory'){
+                	window.parent.addTab(url, header, title); 
+                }else{
+					
+                    if(isConsoleEnabled && childObjectName.toLowerCase() == 'incident__c')
+                    {
+                            var startIndex = url.indexOf('parentWid'); 
+                            clientId = url.substring((startIndex-21),(startIndex-3));
+                         window.open('/apex/IncidentConsole?clientid='+clientId+'&record_id=');
+                        
+                        }
+                    else if({!isStandardLayout} && standardObjectUrl!=''){
+                        window.open(standardObjectUrl);
+                    
+                    }else{
+                   		window.parent.parent.addNewTab(pageTitle, header, "NavigatorPage?title="+encodeURI(title)+"&target="+encodeURI(url));
+                   }
+                }
+            }
+            
+            function openEditTabItems(url,pageTitle) {    
+                var header;
+                var title;
+                if(childObjectName.toLowerCase() == 'broadcasts__c'){
+                    header = broadcastLabelPlural;
+                    title = broadcastLabel;
+                }else if(childObjectName.toLowerCase() == 'category__c'){
+                    header = categoryLabelPlural;
+                    title = categoryLabel;
+                }else if(childObjectName.toLowerCase() == 'user'){
+                    header = clientCustLabelPlural;
+                    title = clientCustLabel;
+                }else if(childObjectName.toLowerCase() == 'account'){
+                    header = accountLabelPlural;
+                    title = accountLabel;
+                }else if(childObjectName.toLowerCase() == 'standarddescription__c'){
+                    header = standardDescriptionLabelPlural;
+                    title = standardDescriptionLabel;
+                }else if(childObjectName.toLowerCase() == 'action__c'){
+                    header = actionLabelPlural;
+                    title = actionLabel;
+                }else if(childObjectName.toLowerCase() == 'incident__c'){
+                    header = incidentLabelPlural;
+                    title = incidentLabel;
+                }else{
+                    header = childObjectName.split('__c')[0]+'s';
+                    title = childObjectName.split('__c')[0];
+                }
+                var modName = window.parent.getModuleName();
+                
+                if(childObjectName.toLowerCase() == 'standarddescription__c' && modName == 'SSCategory'){
+                	window.parent.parent.parent.parent.addNewTab(pageTitle, header, "NavigatorPage?title="+title+"&target="+encodeURIComponent(url));
+               	}else if(childObjectName.toLowerCase() == 'category__c'  && modName == 'SSCategory'){
+                    window.parent.addTab(url, header, title); 
+                }else{
+                	if(pageTitle == 'IncidentPage' || pageTitle == 'taskPage'){
+                   		//window.parent.parent.parent.addNewTab(pageTitle, header, "NavigatorPage?title=%23"+NameVal+"&tabTitle=%23"+NameVal+"&target="+encodeURIComponent(url)); 
+                        var starIndex = url.indexOf("id=");
+                        var endIndex = url.indexOf("&parentWid=");
+                        var recIdToOpen = url.substring(16,34);
+                        if( (isConsoleEnabled == 'true') && (pageTitle == 'IncidentPage') ){
+                            window.open('/apex/IncidentConsole?record_id='+recIdToOpen);
+                        }else{
+                            window.parent.parent.parent.addNewTab(pageTitle, header, "NavigatorPage?title=%23"+NameVal+"&tabTitle=%23"+NameVal+"&target="+encodeURIComponent(url)); 
+                        }
+                	}else{
+                		if(typeof(window.parent.parent.addNewTab) == "function")
+                			window.parent.parent.addNewTab(pageTitle, header, "NavigatorPage?title="+title+"&tabTitle="+NameVal+"&target="+encodeURIComponent(url));
+                		else
+                			window.parent.parent.parent.addNewTab(pageTitle, header, "NavigatorPage?title="+title+"&tabTitle="+NameVal+"&target="+encodeURIComponent(url));
+                    }	
+                }
+            }
+            
+            function refreshParentList(){
+                window.parent.refreshList();
+            }
+            var parentWid = "{!JSENCODE($CurrentPage.parameters.wid)}";
+            var moduleName;
+                if(typeof(window.parent.getModuleName) == 'function'){
+                    moduleName = window.parent.getModuleName();
+                    var parts = moduleName.split('¬');
+                    moduleName = parts[0];
+                }
+            function add(pageName){
+                
+                var strFormId;
+                var popupTitle ='';
+                var parentName = "{!strObject}";
+                var lableAddDocumentation = '{!JSENCODE($Label.Add_Documentation)}';
+                if(pageName=='DocumentationPage'){
+                    
+                        if (document.all)
+                        {
+                            //its IE
+                            openPopupWithTitle(pageName+"?parentId="+parentPageId+'&isLookup=true&objectType='+parentObject,'',lableAddDocumentation,155,450);
+                        }
+                        else
+                        {
+                            openPopupWithTitle(pageName+"?parentId="+parentPageId+'&isLookup=true&objectType='+parentObject,'',lableAddDocumentation,140,441);
+                        }
+                    
+                    
+                }else{
+                    if(pageName.match('popupId')!=null){
+                        if(pageName.match('popupId=Action')){
+                              if(parentName.match('Incident__c') ){
+                                    openPopupWithTitle(pageName+'&isLookup=true&filterClause='+escape("appliesToIncident__c=true and system__c=false"),onPopupComplete,popupTitle,407,575);
+                              }else if(parentName.match('Broadcasts__c') ){
+                                    openPopupWithTitle(pageName+'&isLookup=true&filterClause='+escape("appliesToBroadcasts__c=true and system__c=false"),onPopupComplete,popupTitle,407,575);
+                              }else if(parentName.match('Task__c') ){
+                                    openPopupWithTitle(pageName+'&isLookup=true&filterClause='+escape("appliesToTask__c=true and system__c=false"),onPopupComplete,popupTitle,407,575);
+                              }
+                        }else{
+                            //openPopupWithTitle(pageName+'&isLookup=true',onPopupComplete,popupTitle,407,575);
+                            openNewTabItems(pageName+'?'+strFormId+'='+parentPageId,pageName);
+                        }
+                    }else{
+                        
+                        strFormId = parentObject.split('__c')[0]+'id';                
+                        if(strFormId == 'IncidentTemplate__Cid'){    
+                        if(getStandardLayout()){               
+                            openNewTabTemplate(pageName+'?standardLayout=true&isLookup=true&'+strFormId+'='+parentPageId+'&module='+moduleName ,reloadData, '{!JSENCODE($Label.CreateLinkedTemplate)}');
+                        }else
+                            openNewTabTemplate(pageName+'?isLookup=true&'+strFormId+'='+parentPageId+'&module='+moduleName ,reloadData, '{!JSENCODE($Label.CreateLinkedTemplate)}');
+                        }else{
+                            
+                            if(pageName == 'StandardResolutionPage'){
+                            	var wHeight = Ext.isIE7 ? 245:223;
+                            	openPopupWithTitle(pageName+'?isLookup=true?&'+strFormId+'='+parentPageId,'',popupTitle,wHeight,600);
+                            }else{
+                            //openPopupWithTitle(pageName+'?isLookup=true?&'+strFormId+'='+parentPageId,'',popupTitle,623,683);
+                            //alert(pageName);
+							// Check customer portal is enabled in case of client new
+							 if(pageName=='ClientPage'){
+                            	openNewTabItems(pageName+('?'+strFormId+'='+parentPageId+'&parentWid='+parentWid+'&moduleName='+moduleName+'&isInactive=true'),pageName);
+                            }
+                            else if(pageName == 'taskPage' || pageName == 'IncidentPage' || pageName == 'categoryPage' || pageName =='StandardDescriptionPage'||  pageName == 'OrganizationPage'|| pageName == 'categorypage'){
+                            
+                            
+                            openNewTabItems(pageName+escape('?'+strFormId+'='+parentPageId+'&parentWid='+parentWid+'&moduleName='+moduleName+'&isInactive=true'),pageName);
+                            }
+                                else {openNewTabItems(pageName+escape('?'+strFormId+'='+parentPageId+'&parentWid='+parentWid+'&moduleName='+moduleName),pageName);}
+                            
+                            //openNewTabItems(pageName+escape('?'+strFormId+'='+parentPageId+'&parentWid='+parentWid+'&moduleName='+moduleName),pageName);
+                            }
+                        }            
+                    }
+                }
+            }
+                
+            function linkTemplateComplete(val){
+                linkTemplateToParent(val,parentPageId);
+            }
+    
+            function unLinkTemplateComplete(val){
+                unLinkTemplateFromParent(val,parentPageId);
+            }    
+    
+            function linkTemplate(){        
+                 var criteria;
+                if( hasRecurrence!=null && hasRecurrence!=undefined && hasRecurrence) 
+                    criteria= escape("templateFor__c='Task' and Hasrecurrence__c = false");
+                else
+                    criteria=escape("templateFor__c='Task'");     
+                       
+                openPopupForTemplate('SearchPage?popupId=Template&isLookup=true&filterObjectId='+parentPageId+'&filterClause='+criteria,linkTemplateComplete,'{!JSENCODE($Label.templatetolink)}');
+                
+            }
+            
+            function linkCI(){
+            	if(pageName=="Account"){
+					openPopupForTemplate('SearchPage?popupId=BMC_BaseElement&isLookup=true&filterObjectId='+parentPageId+"&parentName=Account",linkCIComplete,'');
+				}else if(pageName=="User"){      
+                	openPopupForTemplate('SearchPage?popupId=BMC_BaseElement&isLookup=true&filterObjectId='+parentPageId+'&accid='+accountId+"&parentName=Client",linkCIComplete,'Link CIs');
+                }else{      
+                	openPopupForTemplate('SearchPage?popupId=BMC_BaseElement&isLookup=true&filterObjectId='+parentPageId,linkCIComplete,'Link CIs');
+                }
+            }
+            function linkService(){
+            	 if(pageName=="Account"){
+					openPopupForTemplate('SearchPage?popupId=BMC_BusinessService&isLookup=true&filterObjectId='+parentPageId+"&parentName=Account",linkCIComplete,'Link Services');
+				}
+				else if(pageName=="Change_Request__c"){
+						openPopupForTemplate('SearchPage?popupId=BMC_BusinessService&isLookup=true&filterObjectId='+parentPageId+"&parentName=Change_Request__c",linkCIComplete,'Link Services');
+				}else if(pageName=="Problem__c"){
+					openPopupForTemplate('SearchPage?popupId=BMC_BusinessService&isLookup=true&filterObjectId='+parentPageId+"&parentName=Problem__c",linkCIComplete,'Link Services');
+				}else if(pageName=="User"){      
+                	openPopupForTemplate('SearchPage?popupId=BMC_BusinessService&isLookup=true&filterObjectId='+parentPageId+'&accid='+accountId+"&parentName=Client",linkCIComplete,'Link Services');
+                }else{
+		                openPopupForTemplate('SearchPage?popupId=BMC_BusinessService&isLookup=true&filterObjectId='+parentPageId,linkCIComplete,'Link Services');
+				}
+            }
+            
+            function linkCIComplete(val){
+                var newTaskId = "";
+                var newAccountId = "";
+                if(pageName=="Task__c"){
+                    newTaskId = AssignNewTaskId();
+                    linkCITask(val, newTaskId);
+                }else if(pageName=="User"){
+                	newTaskId = AssignNewUserId();
+                	linkCIClient(val, newTaskId);
+                }else if(pageName=="Account"){
+                	newAccountId = AssignNewAccountId();
+                	linkCIAccount(val, newAccountId);
+                }
+            }
+    
+            function unLinkTemplate(){
+                if(idList != null && idList != ''){
+                    unLinkTemplateFromParent(idList,parentPageId);
+                    idList ='';
+                }else{
+                    Ext.MessageBox.show({                                
+                                title: ' ',
+                                msg:'Please select a record',
+                                width:'auto',
+                                buttons: Ext.MessageBox.OK
+                            });
+                }
+            }
+            
+            function setChildTemplateOrder(){   
+            		var height = 400;
+            		var width =  420;
+	           		if(Ext.isIE7){
+            			 height = 250;
+            		}
+					if(Ext.isIE7 || Ext.isIE8){
+            			width = 420;
+            		}
+            		if(Ext.isSafari){
+            			 height = 405;
+            		}
+                    window.parent.openHierarchyPopupWithTitle('ChildTemplateHierarchy?parentTemplateId='+parentPageId,reloadData,'{!JSENCODE($Label.taskTemplateExecutionOrder)}',height,width, '{!JSENCODE($Label.Close)}');
+            }
+            function composeMailOnComplete(){
+            	getIncidentHistoryRenderer();
+			}
+			
+			function getWinHt(){
+				var xDim = 0;
+				if(Ext.isIE7) 
+					xDim = 665;
+				else if(Ext.isIE) 	//IE 8 & 9
+					xDim = 653;
+				else 				//FireFox chrome etc
+					xDim = 643;
+				return xDim;
+			}
+			
+			function getWinWidth(){
+				var yDim = 0;
+				if(Ext.isIE7)
+					yDim = 622;
+				else if(Ext.isIE) 	//IE 8 & 9
+					yDim = 620;
+				else  				//FireFox chrome etc
+					yDim = 617;
+				return yDim;
+			}
+			
+            function beforeEdit(editLink,selectedId){
+            	var isHistoryEMailRecord = false;
+            	var historyRecIds = '';
+            	if(editLink == 'IncidentHistoryPage'){
+	                historyRecIds = incidentHistoryRecords.split(',');
+	                recordId = parent.incidentId;;
+					emailPageHeader = composeEmailPageHeaderLabel;
+					recordName = parent.incidentName;
+                }
+                else if(editLink.toLowerCase() == 'objecthistorypage' && childObjectName != null 
+					&& childObjectName != '' && childObjectName.toLowerCase() == 'change_history__c'){
+					historyRecIds = changeHistoryRecords.split(',');
+					recordId = parent.changeRequestId;
+					emailPageHeader = composeEmailChangePageHeaderLabel;
+					recordName = parent.changeRequestName;
+				}
+				if(historyRecIds.indexOf(selectedId) != -1){
+		  			isHistoryEMailRecord = true;
+				}
+				if(isHistoryEMailRecord){
+		  			parent.openPopupWithTitle('ComposeEmailPage?recordId='+recordId+'&HistoryId='+ selectedId + '&isNew=false&objectName='+parentObject,composeMailOnComplete,emailPageHeader+ recordName,getWinHt(),getWinWidth(),false);
+                }else{
+                var idArray = new Array(resultSet.length);
+                for(var i = 0;i < resultSet.length; i++){
+                    idArray[i]  = grid.store.getAt(i).get(recId);
+                }
+                
+                if(typeof(window.parent.parent.setIdArray) == 'function'){
+                    window.parent.parent.setIdArray(idArray);
+                }
+                if(childObjectName != null && childObjectName != '')
+                {
+                    if(childObjectName == 'Task__c' || childObjectName == 'Incident__c' || childObjectName == 'BMC_BaseElement__c')
+                    {
+                    fetchData(childObjectName,selectedId);
+            }
+                    else
+                    {
+                        edit(editLink,selectedId);
+                    }
+                }
+              }
+            }
+            function edit(pageName,id){
+                var popupTitle = '';
+                if(pageName!='null' && pageName!=''){
+                  if(isaccess){
+                    if(id!=null && id != ''){
+                    var strFormId;
+                    strFormId = parentObject.split('__c')[0]+'id';              
+                    if(strFormId == 'IncidentTemplate__Cid'){
+                   
+                    if(getStandardLayout()){
+
+                        openNewTabTemplate(pageName+'?standardLayout=true&id='+id+'&isLookup=true&'+strFormId+'='+parentPageId+'&module='+moduleName+'&isDirect=true&columnField='+sortColumnName+'&direction='+sortDirection ,reloadData,'{!JSENCODE($Label.Editlinkedtemplate)}');
+                    }
+                    else
+                        openNewTabTemplate(pageName+'?id='+id+'&isLookup=true&'+strFormId+'='+parentPageId+'&module='+moduleName+'&isDirect=true&columnField='+sortColumnName+'&direction='+sortDirection ,reloadData,'{!JSENCODE($Label.Editlinkedtemplate)}');
+                    }else{
+                        if(pageName.match('History') != null){
+                            if(pageName == 'IncidentHistoryPage'){
+                            openPopupWithTitle(pageName+'?id='+id+'&isLookup=true','',popupTitle,Ext.isIE7 ? 432 : Ext.isIE8 ? 420 : 418,670);
+                            }else if(pageName == 'taskHistoryPage'){
+                                var taskHistoryHeight = Ext.isIE7 ? 438 : Ext.isIE8 ? 428 : 426;
+                                openPopupWithTitle(pageName+'?id='+id+'&isLookup=true','',popupTitle,taskHistoryHeight,670);
+                            }else{
+                            openPopupWithTitle(pageName+'?id='+id+'&isLookup=true','',popupTitle,Ext.isIE7 ? 416 : Ext.isIE8 ? 408 : 408,670);
+                                }
+                            }
+                        else{
+                                if(pageName == 'StandardResolutionPage'){
+                            openPopupWithTitle(pageName+'?id='+id+'&isLookup=true','',popupTitle,228,600);
+                            }else if(pageName=='CMDBManager'){
+                            		var instId = grid.getSelectionModel().getSelected().get(instancdIdField);
+                        			var instName = grid.getSelectionModel().getSelected().get(nameField);;
+                        			var requestContextId = grid.getSelectionModel().getSelected().get(idField);
+                        			var assemblyId = grid.getSelectionModel().getSelected().get(assemblyField);
+                        			var windowUrl = window.parent.parent.parent.location;
+                        			windowUrl = windowUrl.toString();
+                        			if(windowUrl.toLowerCase().indexOf('stdworkspacespage') > 0 || windowUrl.toLowerCase().indexOf('adminhomepage') > 0){
+                        				var cmdbRecordId = instId+'@@'+'ciexplorer';
+                        				var url = "/apex/CMDBManager?cmdbRecordId="+cmdbRecordId;
+                        				rfCMDBwin  = window.open(url);
+                            		}else{
+                            			window.parent.parent.CMDB_RecordID = instId+'@@'+'ciexplorer';
+										window.parent.parent.instName = instName;
+	                        			window.parent.parent.requestContextId = requestContextId;
+	                        			window.parent.parent.assemblyId = assemblyId;
+	                        			var cmdwin = window.parent.parent.CMDBManagerWin;
+	                        			if(cmdwin != null && cmdwin && cmdwin.CheckAndOpenInstance){
+											cmdwin.CheckAndOpenInstance();
+										}
+										var title='{!JSENCODE($Label.Navigator_ConfigurationItems)}';
+	                        			window.parent.parent.addNewTab("CMDBManager",title,"NavigatorPage?title=&tabName="+title+"&reqContextId="+clickedId+"&target=CMDBManager?id=1010");
+                        			}
+                            }else{
+	                           if(isConsoleEnabled && childObjectName.toLowerCase() == 'incident__c'){
+                                 window.open('/apex/IncidentConsole?record_id='+id);
+                                 return;
+                             }
+                            if({!isStandardLayout}){
+                            	window.open('/'+id);
+                            
+                            }else{
+                            	openEditTabItems(pageName+'?id='+id+'&parentWid='+parentWid+'&moduleName='+moduleName+'&isDirect=true&columnField='+sortColumnName+'&direction='+sortDirection,pageName);
+                            }
+                                }
+                            }
+                    }
+                    }else{
+                      checkValidity();
+                    }
+                  }else{
+                    msgBox =Ext.MessageBox.show({                                
+                                title: ' ',
+                                msg:'{!JSENCODE($Label.MsgNoAccessPerm)}',
+                                width:'auto',
+                                buttons: Ext.MessageBox.OK
+                            });
+                    }
+                }
+            }
+            
+            function onCompleteLinkToIncident(val){
+                linkToInc(val);
+            }
+            
+            function onCompleteLinkStaffToCategory(val){
+                
+                linkStaffToCategory(val);
+            }
+            
+            function linkToIncident(){
+                openPopupWithTitle('searchPage?popupid=Incident&isLookup=true&filterClause='+escape("FKBroadcast__c=''"),onCompleteLinkToIncident,'',407,613);
+            }
+            function onCompleteLinkQueueToCategory(val){
+                
+                linkQueueToCategory(val);
+            }
+            function assignSupportStaff(){
+                var link = window.location + '';
+                link = link.substring(link.indexOf('/apex/')+6,link.indexOf('?'));
+                
+                openPopupWithTitle("searchPage?popupid=Client&isLookup=true&filterObjectId="+parentPageId+'&parentpage='+link+'&filterClause='+escape("IsStaffUser__c=true"),onCompleteLinkStaffToCategory,'',407,575);
+            }
+            function assignSupportQueue(){
+                var link = window.location + '';
+                link = link.substring(link.indexOf('/apex/')+6,link.indexOf('?'));
+                
+                
+                openPopup('SearchPage?popupId=Queue&gridHeight=180&isQueurorUser=true&isLookup=true&isOnlyQueueList=true&filterObjectId='+parentPageId+'&parentpage='+link+'&filterClause='+escape("sobjectType IN ('"+'{!incObjNameWithNS}'+"','"+'{!TaskObjNameWithNS}'+"','"+'{!BroadcastObjNameWithNS}'+"')"), onCompleteLinkQueueToCategory,407,575);
+                
+            }
+             function unLinkToCategory(id){
+                if(id!=null && id != ''){
+                    unLinkStaffCategory(id);
+                    selectedId = null;
+                }else{
+                   checkValidity();
+                }
+            }
+            
+            
+            function confirmation(id){
+               
+                if(id!=null && id != ''){                
+                    Ext.MessageBox.confirm('{!JSENCODE($Label.Delete)}', '{!JSENCODE($Label.DeleteConfirmMessage)}', function(btn){
+                               if(btn === 'yes'){
+                        deleteThisFile(id);
+                        //selectedId = null;
+                    }
+                               else{
+                                
+                               }
+                   });
+                }else{
+                    checkValidity();
+                }    
+                
+            }
+            
+         
+       function checkValidity(){
+             msgBox= Ext.MessageBox.show({                                
+                                title: ' ',
+                                msg:'select a record',
+                                width:'auto',
+                                buttons: Ext.MessageBox.OK
+                            });
+       }
+     
+        function openProfilePopup(){
+                openPopup('ProfileSelector?id='+parentPageId,null,325,700);
+            }
+       function showErrorMsg(){
+            if(err != null && err != ''){
+                Ext.MessageBox.show({                                
+                                title: ' ',
+                                msg:err,
+                                width:'auto',
+                                buttons: Ext.MessageBox.OK
+                            });
+            }
+       }
+   
+  </script>
+         <div id="itemSelector" class="x-hide-display">
+         <apex:outputPanel id="profilePanel">
+                  <table border="0">
+                <tr><td>
+                <apex:inputTextArea value="{!selectedProfiles}" id="profileId" cols="50" rows="8" disabled="true" styleClass="clsTextAreaDetailSection" />
+               </td><td valign="bottom" class="btnProfile">
+                <apex:commandbutton onClick="openProfilePopup();" value="Profiles" styleClass="bgBtnGrey" rerender="profileId,wholepage"/>
+              </td>
+                </tr>
+                </table>
+         </apex:outputPanel>
+          </div>
+        <div id="my-tabs" class="x-hide-display">  
+        <input type="hidden" id="urlForStaticResourceId" name="urlForStaticResourceId" value="{!urlForStaticResource}" />       
+        <apex:outputPanel id="divpanelid">        
+            <table class="detailSectionAuditTable">
+                    <tr>
+                        <td class="detailSectionAuditingInputLabelTD">{!$Label.created}</td>
+                        <td class="detailSectionAuditingTextBoxTD">
+                            <apex:inputText value="{!creationDate}" disabled="true" styleClass="clsTextDetailSection" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="detailSectionAuditingInputLabelTD">{!$Label.createdby}</td>
+                         <td class="detailSectionAuditingTextBoxTD">
+                            <apex:inputText value="{!createdby}" disabled="true" styleClass="clsTextDetailSection"/>
+                         </td>
+                    </tr>
+                    <tr>
+                        <td class="detailSectionAuditingInputLabelTD">{!$Label.LastModified}</td>
+                        <td class="detailSectionAuditingTextBoxTD">
+                            <apex:inputText value="{!modificationDate}" disabled="true" styleClass="clsTextDetailSection"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="detailSectionAuditingInputLabelTD" >{!$Label.LastModifiedBy}</td>
+                        <td class="detailSectionAuditingTextBoxTD">
+                            <apex:inputText value="{!modifiedby}" disabled="true" styleClass="clsTextDetailSection"/>
+                        </td>
+                    </tr>
+                </table>
+       </apex:outputPanel>
+        </div>
+    <div id="detailsDiv"></div>
+    <script>
+    function reloadSupportInfo(){
+        reloadData();
+    }
+    </script>
+	<script>
+	var siend = '{!siendtime}';
+	
+	siservertime = (siend - sistart);
+	
+    </script>
+</apex:component>

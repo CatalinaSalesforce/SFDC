@@ -1,0 +1,149 @@
+/**
+ * This class contains unit tests for validating the behavior of Apex classes
+ * and triggers.
+ *
+ * Unit tests are class methods that verify whether a particular piece
+ * of code is working properly. Unit test methods take no arguments,
+ * commit no data to the database, and are flagged with the testMethod
+ * keyword in the method definition.
+ *
+ * All test methods in an organization are executed whenever Apex code is deployed
+ * to a production organization to confirm correctness, ensure code
+ * coverage, and prevent regressions. All Apex classes are
+ * required to have at least 75% code coverage in order to be deployed
+ * to a production organization. In addition, all triggers must have some code coverage.
+ * 
+ * The @isTest class annotation indicates this class only contains test
+ * methods. Classes defined with the @isTest annotation do not count against
+ * the organization size limit for all Apex scripts.
+ *
+ * See the Apex Language Reference for more information about Testing and Code Coverage.
+ */
+@isTest
+private class GroupMaster_Test {
+	
+	public static testmethod void runTest() {
+        groupMaster gm = new groupMaster();
+        gm.isTest = true;
+        
+        gm.getRoles();
+        gm.getProfiles();
+        gm.getGroupList();
+        gm.clearGroups();
+        gm.getOperations();
+        gm.getGroupMasterIsCalculating();
+        gm.reset();
+        
+        // Create some new groups
+        CollaborationGroup cg = new CollaborationGroup( name = 'groupMaster Test Group', collaborationtype = 'Public' );
+        CollaborationGroup cg2 = new CollaborationGroup( name = 'groupMaster Test Group 2', collaborationtype = 'Public' );
+        
+        insert new CollaborationGroup[] { cg, cg2 };
+        
+        FeedItem fp = new FeedItem( body = 'test post', parentid = cg.id, createdbyid = userinfo.getuserid() );
+        insert fp;
+        
+        //CollaborationGroupFeed cgf = [select id from CollaborationGroupFeed
+        //    where feeditemid = :fp.id];
+            
+        FeedComment fc = new FeedComment( commentbody = 'test comment', feeditemid = fp.id );
+        insert fc;
+        
+        // Merge
+        gm.operation = groupMaster.MERGE_OP;
+        gm.getBatchCount();
+        gm.sourceGroup = cg.id;
+        gm.destGroup = cg2.id;
+        
+        gm.addGroup();
+        
+        system.assertEquals( 1, gm.sourceGroups.size() );
+        
+        gm.IDToRemove = cg.id;
+        
+        gm.removeGroup();
+        
+        system.assertEquals( 0, gm.sourceGroups.size() );
+        
+        gm.addGroup();
+        
+        Test.startTest();
+        gm.launchBatch();
+        Test.stopTest();
+    }
+    
+ public static testmethod void runTest2() {
+        groupMaster gm = new groupMaster();
+        gm.isTest = true;
+        
+        // Create some new groups
+        CollaborationGroup cg = new CollaborationGroup( name = 'groupMaster Test Group', collaborationtype = 'Public' );
+        CollaborationGroup cg2 = new CollaborationGroup( name = 'groupMaster Test Group 2', collaborationtype = 'Public' );
+        
+        insert new CollaborationGroup[] { cg, cg2 };
+        
+        FeedItem fp = new FeedItem( linkurl = 'http://tradeconnections.corporate.hsbc.com/en/News-and-Opinion/~/media/TradeConnections/Files/Reports-PDF/Global%20Report.ashx', title = 'google', parentid = cg.id, createdbyid = userinfo.getuserid() );
+        insert fp;
+        
+        //CollaborationGroupFeed cgf = [select id from CollaborationGroupFeed
+        //    where feedpostid = :fp.id];
+            
+        FeedComment fc = new FeedComment( commentbody = 'test comment', feeditemid = fp.id );
+        insert fc;
+        
+        // Copy
+        gm.reset();
+        gm.copySource = cg.id;
+        gm.selectedSource();
+        
+        system.assertNotEquals( null, gm.newName );     
+        
+        gm.operation = groupMaster.COPY_OP;
+        gm.getBatchCount();
+        
+        Test.startTest();
+        gm.launchBatch();
+        Test.stopTest();
+    }
+    
+    public static testmethod void runTest3() {
+        groupMaster gm = new groupMaster();
+        gm.isTest = true;
+        
+        // Create some new groups
+        CollaborationGroup cg = new CollaborationGroup( name = 'groupMaster Test Group', collaborationtype = 'Public' );
+        CollaborationGroup cg2 = new CollaborationGroup( name = 'groupMaster Test Group 2', collaborationtype = 'Public' );
+        
+        insert new CollaborationGroup[] { cg, cg2 };
+        
+        // Mass add members
+        gm.reset();
+        
+        gm.sourceGroupID = cg2.id;
+        gm.sourceRoleID = [select id from UserRole where portaltype = 'None' limit 1].id;
+        gm.sourceProfileID = [select id from Profile where usertype = 'Standard' or usertype = 'CSNOnly' limit 1].id;
+        
+        gm.whichSelect = 1;
+        gm.addGRP();
+        gm.whichSelect = 2;
+        gm.addGRP();
+        gm.whichSelect = 3;
+        gm.addGRP();
+        
+        system.assertEquals( 3, gm.memberSources.size() );
+        
+        gm.IDToRemove = cg2.id;
+        gm.removeGRP();
+        
+        system.assertEquals( 2, gm.memberSources.size() );
+        
+        gm.destGroupID = cg2.id;
+        
+        gm.operation = groupMaster.MEMBER_OP;
+        gm.getBatchCount();
+        
+        Test.startTest();
+        gm.launchBatch();   
+        Test.stopTest();    
+    }
+}

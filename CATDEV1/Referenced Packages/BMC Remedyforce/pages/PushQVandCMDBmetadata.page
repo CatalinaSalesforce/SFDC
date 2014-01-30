@@ -1,0 +1,110 @@
+<apex:page controller="BMCServiceDesk.HandleFutureFailures" >
+<script>
+	var message = '{!message}';
+	function showMessage(){
+		
+		if(message != null && message != '' && message !='null'){
+			alert(message);
+		}
+	
+	}
+
+</script> 
+<apex:outputpanel id="messagePanel">
+<script>
+message = '{!message}';
+
+</script>
+</apex:outputpanel>
+<apex:form id="formID">
+
+<apex:outputpanel id="formpanelId" >
+	
+		<table>
+			<tr>
+				<td>
+					<apex:inputText id="authCodeId" value="{!authCode}" rendered="{!renderAuthPanel}"/>
+					
+				</td>
+				<td>
+				</td>
+				<td>
+					<!-- input type="button" value="confirm" onclick="Confirm();" /> -->
+					<apex:commandButton id="verifyBtnId" value="Verify Code" action="{!verify}" rendered="{!renderAuthPanel}" rerender="messagePanel,formpanelId" oncomplete="showMessage();" />
+					
+				</td>
+				
+			</tr>
+			<tr>
+				<td colspan="4">
+				<apex:outputpanel id="setPasnelId" >
+				<table>
+					<tr>
+						<td> <apex:outputLabel value="To upload OOTB Dashboard & QuickViews" rendered="{!renderButtonPanel}"/>
+						</td>
+						
+						<td>
+                        <apex:actionStatus id="QV">
+                            <apex:facet name="stop">
+                        <apex:commandButton id="Upload_QV" status="QV" value="Upload QV" rendered="{!renderButtonPanel}" action="{!PushQVs}" disabled="{!Qvbutton}" rerender="messagePanel,formpanelId" onComplete="showMessage();" />
+                        </apex:facet>
+                        <apex:facet name="start">
+                            <apex:commandButton value="Upload QV" disabled="true"/>
+                        </apex:facet>
+                    </apex:actionStatus>
+						</td>
+					</tr>
+					<tr>
+						<td> <apex:outputLabel value="To upload CMDB Metadata" rendered="{!renderButtonPanel}"/>
+						</td>
+						
+						<td>
+                        <apex:actionStatus id="CMDB">
+                            <apex:facet name="stop">
+                        <apex:commandButton value="Upload CMDB"  status="CMDB" rendered="{!renderButtonPanel}" action="{!pushCMDB}" disabled="{!CMDBButton}"  rerender="messagePanel,formpanelId" onComplete="showMessage();" />
+                        </apex:facet>
+                        <apex:facet name="start">
+                            <apex:commandButton value="Upload CMDB" disabled="true"/>
+                        </apex:facet>
+                         </apex:actionStatus>
+						</td>
+					</tr>
+					<tr>
+						<td> <apex:outputLabel value="{!$Label.bmcservicedesk__BatchJobsForSummer11} " rendered="{!renderButtonPanel}"/>
+						</td>
+						
+						<td>
+                        <apex:actionStatus id="Batch">
+                         <apex:facet name="stop">
+                        <apex:commandButton disabled="{!BatchButton}" status="Batch" value="{!$Label.bmcservicedesk__ExecuteBatchJobs}" action="{!CallBatchJobs}" id="ExecuteBatch"   rendered="{!renderButtonPanel}" rerender="messagePanel,formpanelId" onComplete="showMessage();"/>
+                        </apex:facet>
+                        <apex:facet name="start">
+                            <apex:commandButton value="{!$Label.bmcservicedesk__ExecuteBatchJobs}" disabled="true"/>
+                        </apex:facet>
+                         </apex:actionStatus>
+						</td>
+					</tr>
+					<tr>
+						<td> <apex:outputLabel value="To execute post install future methods" rendered="{!renderButtonPanel}"/>
+						</td>
+						
+						<td>
+                        <apex:actionStatus id="FutureMethods">
+                         <apex:facet name="stop">
+                        <apex:commandButton disabled="{!FutureMethods}" status="FutureMethods" value="Execute Future Methods" action="{!PostInstallUpgradeFutureMethods}" id="FutureMethodsButton"   rendered="{!renderButtonPanel}" rerender="messagePanel,formpanelId" onComplete="showMessage();"/>
+                        </apex:facet>
+                        <apex:facet name="start">
+                            <apex:commandButton value="Execute Future Methods" disabled="true"/>
+                        </apex:facet>
+                         </apex:actionStatus>
+						</td>
+					</tr>
+				</table>
+				</apex:outputpanel>
+				
+				</td>
+				</tr>
+			</table>
+</apex:outputpanel>	
+ </apex:form> 
+</apex:page>

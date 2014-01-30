@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>CMDB_AttributeDefinition</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>CMDB_AttributeDefinitions</value>
+    </caseValues>
+    <fields>
+        <label><!-- AttributeID --></label>
+        <name>AttributeID__c</name>
+    </fields>
+    <fields>
+        <label><!-- AttributeName --></label>
+        <name>AttributeName__c</name>
+    </fields>
+    <fields>
+        <label><!-- AttributeType --></label>
+        <name>AttributeType__c</name>
+        <picklistValues>
+            <masterLabel>CORE</masterLabel>
+            <translation><!-- CORE --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>INTERNAL_CORE</masterLabel>
+            <translation><!-- INTERNAL_CORE --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>REGULAR</masterLabel>
+            <translation><!-- REGULAR --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- ClassID --></label>
+        <name>ClassID__c</name>
+        <relationshipLabel><!-- CMDB_AttributeDefinitions --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- ClassName --></label>
+        <name>ClassName__c</name>
+    </fields>
+    <fields>
+        <label><!-- CustomProperty --></label>
+        <name>CustomProperty__c</name>
+    </fields>
+    <fields>
+        <label><!-- DataType --></label>
+        <name>DataType__c</name>
+        <picklistValues>
+            <masterLabel>Attachment Field</masterLabel>
+            <translation><!-- Attachment Field --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Attachment Pool</masterLabel>
+            <translation><!-- Attachment Pool --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Character</masterLabel>
+            <translation><!-- Character --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Currency</masterLabel>
+            <translation><!-- Currency --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Date</masterLabel>
+            <translation><!-- Date --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Date/Time</masterLabel>
+            <translation><!-- Date/Time --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Decimal</masterLabel>
+            <translation><!-- Decimal --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Diary</masterLabel>
+            <translation><!-- Diary --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Integer</masterLabel>
+            <translation><!-- Integer --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Real</masterLabel>
+            <translation><!-- Real --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Selection</masterLabel>
+            <translation><!-- Selection --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Time</masterLabel>
+            <translation><!-- Time --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Default Value --></label>
+        <name>Default_Value__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- EntryMode --></label>
+        <name>EntryMode__c</name>
+        <picklistValues>
+            <masterLabel>Display Only</masterLabel>
+            <translation><!-- Display Only --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Optional</masterLabel>
+            <translation><!-- Optional --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Required</masterLabel>
+            <translation><!-- Required --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- EnumType --></label>
+        <name>EnumType__c</name>
+    </fields>
+    <fields>
+        <label><!-- FieldID --></label>
+        <name>FieldID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Hidden --></label>
+        <name>Hidden__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- InstanceID --></label>
+        <name>InstanceID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Is Custom --></label>
+        <name>Is_Custom__c</name>
+    </fields>
+    <fields>
+        <label><!-- MaxLength --></label>
+        <name>MaxLength__c</name>
+    </fields>
+    <fields>
+        <label><!-- Max --></label>
+        <name>Max__c</name>
+    </fields>
+    <fields>
+        <label><!-- Min --></label>
+        <name>Min__c</name>
+    </fields>
+    <fields>
+        <label><!-- Precision --></label>
+        <name>Precision__c</name>
+    </fields>
+    <fields>
+        <label><!-- PrimaryKey --></label>
+        <name>PrimaryKey__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- Values --></label>
+        <name>Values__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

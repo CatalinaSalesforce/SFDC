@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Questions courantes</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Questions courantes</value>
+    </caseValues>
+    <fields>
+        <help><!-- Use this field to enter the answer to the frequently asked question. --></help>
+        <label>Réponse</label>
+        <name>Answer__c</name>
+    </fields>
+    <fields>
+        <label>Catégorie de questions courantes</label>
+        <name>FKFAQ_Category__c</name>
+        <relationshipLabel>Listes de questions courantes</relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Select this field if this record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label>Inactif</label>
+        <name>Inactive__c</name>
+    </fields>
+    <fields>
+        <help><!-- Use this field to enter the frequently asked question. --></help>
+        <label><!-- Question --></label>
+        <name>Question__c</name>
+    </fields>
+    <fields>
+        <label>Somme des évaluations</label>
+        <name>RatingSum__c</name>
+    </fields>
+    <fields>
+        <label>Moyen</label>
+        <name>Rating__c</name>
+    </fields>
+    <fields>
+        <label>Ordre d&apos;affichage Libre service</label>
+        <name>SelfService_Display_Order__c</name>
+    </fields>
+    <fields>
+        <label>Commentaire total</label>
+        <name>Total_Feedback__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <layouts>
+        <layout>Remedyforce FAQ</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Details --></label>
+            <section>Details</section>
+        </sections>
+        <sections>
+            <label><!-- FAQ Detail --></label>
+            <section>FAQ Detail</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel><!-- FAQ Number --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage>Veuillez sélectionner une catégorie de questions courantes.</errorMessage>
+        <name>FAQRule1</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Veuillez saisir une question.</errorMessage>
+        <name>FAQRule2</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Veuillez saisir une réponse.</errorMessage>
+        <name>FAQRule3</name>
+    </validationRules>
+</CustomObjectTranslation>

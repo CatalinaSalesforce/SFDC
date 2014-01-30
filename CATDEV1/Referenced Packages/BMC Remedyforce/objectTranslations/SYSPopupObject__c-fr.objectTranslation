@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Fenêtres contextuelles</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Fenêtres contextuelles</value>
+    </caseValues>
+    <fields>
+        <label>ID de séquence</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label>Nom d&apos;objet contextuel</label>
+        <name>popupObjectName__c</name>
+    </fields>
+    <fields>
+        <label>Rechercher par Inactif</label>
+        <name>searchByInactive__c</name>
+    </fields>
+    <fields>
+        <label>Recherche en fonction de l&apos;état</label>
+        <name>searchByStatus__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel><!-- Popup Id --></nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage>L&apos;ID contextuel existe déjà !</errorMessage>
+        <name>Unique_Popup_Id_Constraint</name>
+    </validationRules>
+</CustomObjectTranslation>

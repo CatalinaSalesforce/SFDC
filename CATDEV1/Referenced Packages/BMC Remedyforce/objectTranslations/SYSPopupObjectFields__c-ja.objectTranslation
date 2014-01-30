@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Field API Name</value>
+    </caseValues>
+    <fields>
+        <label>シーケンスID</label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <help><!-- Data types supported by EXTJS grid component data loader and will be used for sorting --></help>
+        <label>データタイプ</label>
+        <name>dataType__c</name>
+        <picklistValues>
+            <masterLabel>String</masterLabel>
+            <translation><!-- String --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>date</masterLabel>
+            <translation><!-- date --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>float</masterLabel>
+            <translation><!-- float --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>integer</masterLabel>
+            <translation><!-- integer --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label>フィールドの順序</label>
+        <name>fieldOrder__c</name>
+    </fields>
+    <fields>
+        <label>フィールドの幅</label>
+        <name>fieldWidth__c</name>
+    </fields>
+    <fields>
+        <label>FKポップアップオブジェクト</label>
+        <name>popupObjectId__c</name>
+        <relationshipLabel>SYSポップアップオブジェクトフィールド</relationshipLabel>
+    </fields>
+    <nameFieldLabel><!-- Field API Name --></nameFieldLabel>
+</CustomObjectTranslation>

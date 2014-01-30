@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Status</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Status</value>
+    </caseValues>
+    <fields>
+        <help><!-- From the list of options, select the stage that you would like to map to the status. A stage is a visual indicator of the record&apos;s progress from beginning to completion. --></help>
+        <label><!-- Stage --></label>
+        <name>FKSYSStage__c</name>
+        <relationshipLabel><!-- Status --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Sequence Id --></label>
+        <name>Sequence__c</name>
+    </fields>
+    <fields>
+        <label><!-- Stage~ --></label>
+        <name>Stage__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to make this status available when you create broadcast records. --></help>
+        <label><!-- Applies to Broadcasts --></label>
+        <name>appliesToBroadcasts__c</name>
+    </fields>
+    <fields>
+        <label><!-- Applies To Change Approvals --></label>
+        <name>appliesToChangeApprovals__c</name>
+    </fields>
+    <fields>
+        <label><!-- Applies To Change Assessment --></label>
+        <name>appliesToChangeAssessment__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to make this status available when you create Change Request. --></help>
+        <label><!-- Applies to Change --></label>
+        <name>appliesToChange__c</name>
+    </fields>
+    <fields>
+        <label><!-- Applies to Configuration Items --></label>
+        <name>appliesToConfigurationItems__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to make this status available when you create incident records. --></help>
+        <label><!-- Applies to Incident --></label>
+        <name>appliesToIncident__c</name>
+    </fields>
+    <fields>
+        <label><!-- Applies to Preventive Maintenance --></label>
+        <name>appliesToPreventiveMaintenance__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to make this status available when you create Problem. --></help>
+        <label><!-- Applies to Problem --></label>
+        <name>appliesToProblem__c</name>
+    </fields>
+    <fields>
+        <label><!-- Applies to Purchasing --></label>
+        <name>appliesToPurchasing__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to make this status available when you create release records. --></help>
+        <label><!-- Applies To Release --></label>
+        <name>appliesToRelease__c</name>
+    </fields>
+    <fields>
+        <label><!-- Applies to SLA --></label>
+        <name>appliesToSLA__c</name>
+    </fields>
+    <fields>
+        <label><!-- Applies to Services --></label>
+        <name>appliesToServices__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to make this status available when you create task records. --></help>
+        <label><!-- Applies to Task --></label>
+        <name>appliesToTask__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to assign the status as the default link status when you create, open or close records. You can create multiple statuses with the Open and Closed states, but only one status can be the default link status for the Open and Closed states. --></help>
+        <label><!-- Default Link Status --></label>
+        <name>defaultMergeStatus__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field to assign the status as the default status when you create, open, or close records. You can create multiple statuses with the Open and Closed states, but only one status can be the default status for the Open and Closed states. --></help>
+        <label><!-- Default Status --></label>
+        <name>defaultStatus__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select this field if the status record is no longer valid, but the record has to be retained for compliance with the records retention policy. --></help>
+        <label><!-- Inactive --></label>
+        <name>inactive__c</name>
+    </fields>
+    <fields>
+        <label><!-- Stage Progression --></label>
+        <name>stageProgression__c</name>
+    </fields>
+    <fields>
+        <label><!-- State --></label>
+        <name>state__c</name>
+    </fields>
+    <fields>
+        <label><!-- System --></label>
+        <name>system__c</name>
+    </fields>
+    <namedFilters>
+        <errorMessage><!-- Select an active status that applies to change request. --></errorMessage>
+        <name>nf_01I90000000WgEmEAK_00N9000000283K7EAI</name>
+    </namedFilters>
+    <namedFilters>
+        <errorMessage><!-- Select an active status that applies to incidents. --></errorMessage>
+        <name>nf_01I90000000WgEyEAK_00N9000000283LaEAI</name>
+    </namedFilters>
+    <namedFilters>
+        <errorMessage><!-- Select an active status that applies to problems. --></errorMessage>
+        <name>nf_01I90000000WgF3EAK_00N9000000283MkEAI</name>
+    </namedFilters>
+    <namedFilters>
+        <errorMessage><!-- Select an active status that applies to tasks. --></errorMessage>
+        <name>nf_01I90000000WgFlEAK_00N9000000283RIEAY</name>
+    </namedFilters>
+    <namedFilters>
+        <errorMessage><!-- Select an active status that applies to broadcasts. --></errorMessage>
+        <name>nf_01I90000000lPUsEAM_00N900000031qcnEAA</name>
+    </namedFilters>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- A record with this Status already exists. Enter unique Status. --></errorMessage>
+        <name>StatusUniqueCheck</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Please enter value in Status field. --></errorMessage>
+        <name>Status_required</name>
+    </validationRules>
+</CustomObjectTranslation>

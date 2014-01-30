@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>StdFormHelpCommonLink</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>This object allows you to store data linking between changes and problems.</description>
+    <enableActivities>true</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>FKChange__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field stores the foreign key value of the linked change</description>
+        <externalId>false</externalId>
+        <label>Change</label>
+        <referenceTo>Change_Request__c</referenceTo>
+        <relationshipLabel>Linked Problems</relationshipLabel>
+        <relationshipName>Change_Problem_Links</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>FKProblem_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Owner User</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Change_Problem_Links</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>FKProblem__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field stores the foreign key value of the linked problem</description>
+        <externalId>false</externalId>
+        <label>Problem</label>
+        <referenceTo>Problem__c</referenceTo>
+        <relationshipLabel>Linked Change Requests</relationshipLabel>
+        <relationshipName>Change_Problem_Links</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <label>Change Problem Link</label>
+    <nameField>
+        <label>Change Problem Link Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Change Problem Links</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <webLinks>
+        <fullName>Create_Change_Request_and_Link_to_Problem</fullName>
+        <availability>online</availability>
+        <description>Create Change Request and Link to Problem</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Create and Link to Problem</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>if({!Problem__c.State__c}){
+
+var label=&apos;{!JSENCODE( Problem__c.Id )}&apos;;
+var win = window.parent;
+win.location.href=&quot;/apex/BMCServiceDesk__StdProblemExtension?id=&quot;+label+&quot;&amp;action=CreateChangeProblemLink&amp;probId=&quot;+label;
+
+}
+else
+{
+var msg=&apos;{!JSENCODE($Label.bmcservicedesk__problemclosed)}&apos;
+alert(msg);
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Link_Change_Request</fullName>
+        <availability>online</availability>
+        <description>Link Change Request to Problem</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Link Change Request to Problem</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>var stdLayoutScreenWidth = 671;
+var stdLayoutScreenHeight = 500;
+function stdScreenLeft(){
+return parseInt((screen.availWidth/2) - (stdLayoutScreenWidth/2));
+}
+
+function stdScreenTop(){
+return parseInt((screen.availHeight/2) - (stdLayoutScreenHeight/2));
+}
+
+
+if({!Problem__c.State__c}){
+
+window.open(&quot;/apex/BMCServiceDesk__SearchAndLink?filterObjectId={!Problem__c.Id}&amp;parentName=Problem__c&amp;childName=Change_Request__c&amp;filterClause=Inactive__c=false AND State__c=true&quot;,null,&quot;status = 1,height =&quot;+ stdLayoutScreenHeight+&quot;, width = &quot;+ stdLayoutScreenWidth+&quot;,left= &quot;+stdScreenLeft()+&quot;,top=&quot;+ stdScreenTop()+&quot;, resizable = 0,scrollbars=no&quot;);
+}
+else
+{
+var label=&apos;{!JSENCODE($Label.bmcservicedesk__problemclosed)}&apos;
+alert(label);
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Link_Problem</fullName>
+        <availability>online</availability>
+        <description>Link Problem to Change Request</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Link Problem to Change Request</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>var stdLayoutScreenWidth = 671; 
+var stdLayoutScreenHeight = 500; 
+function stdScreenLeft(){ 
+return parseInt((screen.availWidth/2) - (stdLayoutScreenWidth/2)); 
+} 
+
+function stdScreenTop(){ 
+return parseInt((screen.availHeight/2) - (stdLayoutScreenHeight/2)); 
+} 
+
+if({!Change_Request__c.State__c}) {
+
+window.open(&quot;/apex/BMCServiceDesk__SearchAndLink?filterObjectId={!Change_Request__c.Id}&amp;parentName=Change_Request__c&amp;childName=Problem__c&amp;filterClause=Inactive__c=false AND State__c=true&quot;,null,&quot;status = 1,height =&quot;+ stdLayoutScreenHeight+&quot;, width = &quot;+ stdLayoutScreenWidth+&quot;,left= &quot;+stdScreenLeft()+&quot;,top=&quot;+ stdScreenTop()+&quot;, resizable = 0,scrollbars=no&quot;);
+}
+else {
+var label =&apos;{!JSENCODE($Label.bmcservicedesk__CrClosed)}&apos;;
+alert(label);
+}</url>
+    </webLinks>
+</CustomObject>
