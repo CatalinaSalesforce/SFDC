@@ -1,3 +1,0 @@
-<apex:page controller="BMCServiceDesk.AcActionsController" showheader="false" cache="true" contentType="application/x-java-jnlp-file">
-  <apex:outputText value="{!JNLPResponse}"></apex:outputText>
-</apex:page>

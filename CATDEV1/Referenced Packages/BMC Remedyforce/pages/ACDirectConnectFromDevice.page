@@ -1,3 +1,0 @@
-<apex:page controller="BMCServiceDesk.ACDeviceSummary" sidebar="false" contentType="application/x-java-jnlp-file">
-  <apex:outputText value="{!JNLPResponse}"></apex:outputText>
-</apex:page>

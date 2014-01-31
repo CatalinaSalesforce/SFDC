@@ -1,3 +1,0 @@
-<apex:page showHeader="false" standardStylesheets="false" sidebar="false" controller="permissioner.startHereController" >
-
-</apex:page>

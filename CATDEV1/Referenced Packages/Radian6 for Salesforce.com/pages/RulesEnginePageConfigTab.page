@@ -1,3 +1,0 @@
-<apex:page >
-<apex:pageMessage summary="This page is no longer supported" severity="error" strength="3" />
-</apex:page>

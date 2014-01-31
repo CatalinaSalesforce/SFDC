@@ -1,6 +1,0 @@
-<apex:page standardController="BMCServiceDesk__Problem__c" extensions="BMCServiceDesk.StdProblemExtensionController">
-	<apex:form target="_parent">
-		<c:StdLayoutAddNote ObjectName="Problem__c" RecordId="{!JSENCODE(problem.id)}" RecordState="{!problem.BMCServiceDesk__State__c}" />
-   		<apex:actionFunction name="refreshProblem" action="{!refreshProblem}" />
-  	</apex:form>
-</apex:page>

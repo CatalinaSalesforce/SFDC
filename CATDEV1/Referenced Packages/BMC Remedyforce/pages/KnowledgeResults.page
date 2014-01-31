@@ -1,3 +1,0 @@
-<apex:page controller="BMCServiceDesk.KnowledgeResults" showHeader="false" standardStylesheets="false" contentType="text/xml">
-<apex:outputText value="{!strXLMString}" escape="false"></apex:outputText>
-</apex:page>

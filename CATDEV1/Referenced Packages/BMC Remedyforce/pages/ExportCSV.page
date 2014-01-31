@@ -1,7 +1,0 @@
-<apex:page controller="BMCServiceDesk.ReleaseManifestController" cache="true" contentType="{!csvContentType}" showHeader="false" readOnly="true">{!bom} 
-<apex:outputText value="{!parentObjName}: {!parentObjTitle}" />
-"{!JSENCODE(ItemHeader)}","{!JSENCODE($Label.bmcservicedesk__ItemId)}","{!JSENCODE($Label.bmcservicedesk__Description)}","{!JSENCODE($Label.bmcservicedesk__Status)}","{!JSENCODE($Label.bmcservicedesk__DueDateHeader)}","{!JSENCODE($Label.bmcservicedesk__PriorityHeader)}","{!JSENCODE($Label.bmcservicedesk__AssignedTo)}","{!JSENCODE(StatusHeader)}","{!JSENCODE($Label.bmcservicedesk__Order)}"
-<apex:repeat value="{!listTobeExported}" var="item">
-{!item.parentElementType},{!item.parentElement},{!item.description},{!item.status},{!item.dueDate},{!item.priority},{!item.assignedTo},{!IF(RELEASE==objectName,item.manifest.FKStatus__r.Name, IF(INCIDENT==objectName,item.incidentManifest.FKStatus__r.Name,IF(CHANGE==objectName,item.changeManifest.FKStatus__r.Name,IF(PROBLEM==objectName,item.problemManifest.FKStatus__r.Name,''))))},{!IF(RELEASE==objectName,item.manifest.BMCServiceDesk__Order__c, IF(INCIDENT==objectName,item.incidentManifest.BMCServiceDesk__Order__c,IF(CHANGE==objectName,item.changeManifest.BMCServiceDesk__Order__c,IF(PROBLEM==objectName,item.problemManifest.BMCServiceDesk__Order__c,''))))}
-</apex:repeat>
-</apex:page>

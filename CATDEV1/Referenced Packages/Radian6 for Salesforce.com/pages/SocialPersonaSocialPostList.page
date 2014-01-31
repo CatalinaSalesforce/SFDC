@@ -1,5 +1,0 @@
-<apex:page standardController="SocialPersona" extensions="R6Service.PersonaRelatedPostController" showHeader="false">
-    <apex:repeat value="{!posts}" var="p">
-        <div><c:PostRenderer post="{!p}" /></div>
-    </apex:repeat>
-</apex:page>

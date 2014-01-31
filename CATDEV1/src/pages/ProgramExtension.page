@@ -1,1 +1,0 @@
-<apex:page standardController="Program__c" extensions="ProgramExtensionController" action="{!jumpToMyforecast}"/>

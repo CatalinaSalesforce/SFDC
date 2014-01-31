@@ -1,3 +1,0 @@
-<apex:page standardController="Case" extensions="R6Service.SendMessageRedirect" action="{!caseRedirect}" showHeader="false"> 
-    <apex:pageMessages />
-</apex:page>

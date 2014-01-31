@@ -1,3 +1,0 @@
-<apex:page controller="BMCServiceDesk.CMDBGenericController" sidebar="false" contentType="application/x-java-jnlp-file">
-  <apex:outputText value="{!JNLPResponse}"></apex:outputText>
-</apex:page>

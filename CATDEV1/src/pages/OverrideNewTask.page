@@ -1,3 +1,0 @@
-<apex:page standardController="Task" extensions="OverrideNewTaskCls" action="{!createNoRT}">
-  Oops! you should not see this page. Please contact your administrator to resolve this.
-</apex:page>

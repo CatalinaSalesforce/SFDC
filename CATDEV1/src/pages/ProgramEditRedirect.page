@@ -1,2 +1,0 @@
-<apex:page standardcontroller="Program__c" extensions="ProgramEditRedirect" action="{!redirect}">             
-</apex:page>

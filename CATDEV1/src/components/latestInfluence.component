@@ -1,3 +1,0 @@
-<apex:component allowDML="true" controller="influencecontroller" access="global">
-    <apex:outputtext value="{!updated}" escape="false" />
-</apex:component>

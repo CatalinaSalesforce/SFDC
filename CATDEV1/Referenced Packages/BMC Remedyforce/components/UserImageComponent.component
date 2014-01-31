@@ -1,7 +1,0 @@
-<apex:component controller="BMCServiceDesk.UserImageComponentController">
-<apex:attribute type="string" name="UID" description=""  assignTo="{!pUID}" id="UID "/>
-<apex:attribute type="string" name="styleClass" description="" id="styleClass"/>
-<apex:attribute type="string" name="width" description=""  id="height"/>
-<apex:attribute type="string" name="height" description="" id="UID "/>
-<apex:image styleClass="{!styleClass}" width="{!width}" height="{!height}" value="{!SmallUserPhoto}" />
-</apex:component>
